@@ -165,7 +165,7 @@ export default function FotografiaPage() {
             FOTOGRAFÍA
           </h1>
           <p className="font-sans text-sm sm:text-base text-white/80 max-w-xl mx-auto font-light">
-            Registro visual para hotelería, interiorismo, arquitectura y procesos industriales en el sur de Chile.
+            Registro visual para hotelería, interiorismo, arquitectura, Industria & Procesos en el sur de Chile.
           </p>
         </div>
       </section>

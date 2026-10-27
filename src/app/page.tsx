@@ -23,7 +23,7 @@ const HIGHLIGHT_PROJECTS = [
   {
     title: 'Aqua Chile',
     location: 'Puerto Montt & Fiordos',
-    specialty: 'Fotografía de producto y procesos',
+    specialty: 'Fotografía Industrial & Procesos',
     image: '/images/real/bg-portafolios-fotografia-g-min.jpg',
     href: '/servicios/fotografia',
   },
@@ -36,7 +36,7 @@ export default function HomePage() {
       <section
         id="hero"
         aria-label="Puelche Lab Portada"
-        className="relative w-full h-[calc(100vh-70px)] min-h-[600px] flex flex-col items-center justify-center text-center overflow-hidden"
+        className="relative w-full h-[calc(100vh-70px)] min-h-[600px] flex flex-col items-center justify-center text-center overflow-hidden px-6 md:px-12 lg:px-16"
       >
         {/* Background Image: Misty Forest of Puerto Varas */}
         <div className="absolute inset-0 z-0">
@@ -53,6 +53,12 @@ export default function HomePage() {
 
         {/* Hero Center Content: Gigantic White Logo & Tagline */}
         <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 flex flex-col items-center space-y-6">
+          {/* Geographic Identity Badge */}
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-black/40 border border-white/20 text-white font-condensed uppercase tracking-widest text-xs">
+            <span className="w-2 h-2 rounded-full bg-puelche-cyan animate-pulse" />
+            <span>PUERTO VARAS &bull; REGION DE LOS LAGOS</span>
+          </div>
+
           {/* Logo Emblem: White Cloud Camera Puelche Lab */}
           <div className="w-64 sm:w-80 md:w-96 max-w-full drop-shadow-2xl animate-in fade-in zoom-in-95 duration-700">
             <Image
@@ -65,13 +71,13 @@ export default function HomePage() {
             />
           </div>
 
-          {/* Slogan & Description */}
+          {/* Slogan & Description with Fluid Responsive Classes */}
           <div className="space-y-2 text-white">
-            <p className="font-condensed text-xl sm:text-2xl md:text-3xl uppercase tracking-wider font-light text-white/95 drop-shadow">
-              Un Estudio de Diseño Cross Media
-            </p>
+            <h1 className="font-condensed text-5xl sm:text-7xl md:text-8xl uppercase tracking-wider font-light text-white/95 drop-shadow">
+              VIENTO CREATIVO
+            </h1>
             <p className="font-condensed text-2xl sm:text-3xl md:text-4xl uppercase tracking-wide font-bold text-puelche-cyan drop-shadow-md">
-              y Fotografía de Puerto Varas.
+              Un Estudio de Diseño Cross Media y Fotografía de Puerto Varas.
             </p>
           </div>
         </div>
@@ -120,8 +126,8 @@ export default function HomePage() {
               Nos referimos a que hacemos piezas gráficas para todos los medios, ya sean digitales, impresos, y/o audiovisuales. Contamos con un estudio de fotografía y grabación muy bien equipado, tenemos iluminación profesional y equipos de alta gama, tanto para hacer trabajos en tierra o desde el aire, que junto con las habilidades técnicas de nuestro equipo hacemos resaltar tu producto o servicio, haciendo que pase al frente en la vitrina del mercado.
             </p>
 
-            {/* Feature Badges */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 pt-6 border-t border-white/10 font-condensed uppercase tracking-wider text-xs sm:text-sm">
+            {/* Feature Badges with 1 to 2 column responsive grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 pt-6 border-t border-white/10 font-condensed uppercase tracking-wider text-xs sm:text-sm">
               <div className="bg-white/5 border border-white/10 p-3 rounded-lg flex flex-col items-center text-center">
                 <span className="text-puelche-cyan font-bold text-base">ESTUDIO PROPIO</span>
                 <span className="text-white/70 text-xs">En Puerto Varas</span>
@@ -150,15 +156,17 @@ export default function HomePage() {
         className="w-full flex flex-col"
       >
         <div className="bg-puelche-slate py-8 px-6 text-center">
-          <span className="font-condensed uppercase tracking-widest text-xs text-puelche-cyan font-bold block mb-1">
-            Producciones Seleccionadas
-          </span>
-          <h2 className="font-condensed text-3xl sm:text-4xl uppercase tracking-wider text-white font-bold">
-            Fotografía de Alto Nivel en la Patagonia
-          </h2>
+          <div className="max-w-7xl mx-auto">
+            <span className="font-condensed uppercase tracking-widest text-xs text-puelche-cyan font-bold block mb-1">
+              Producciones Seleccionadas
+            </span>
+            <h2 className="font-condensed text-3xl sm:text-4xl uppercase tracking-wider text-white font-bold">
+              Fotografía de Alto Nivel en la Patagonia
+            </h2>
+          </div>
         </div>
 
-        {HIGHLIGHT_PROJECTS.map((proj, idx) => (
+        {HIGHLIGHT_PROJECTS.map((proj) => (
           <div
             key={proj.title}
             className="relative w-full h-[450px] sm:h-[520px] overflow-hidden group border-b border-puelche-slate-dark"

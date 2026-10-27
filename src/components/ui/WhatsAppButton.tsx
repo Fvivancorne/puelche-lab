@@ -4,11 +4,9 @@ import React from 'react';
 import { MessageCircle } from 'lucide-react';
 
 export function WhatsAppButton() {
-  const phoneNumber = '56966177500';
-  const message = encodeURIComponent(
+  const whatsappUrl = 'https://wa.me/56966177500?text=' + encodeURIComponent(
     'Hola Paula y equipo Puelche Lab, me gustaría cotizar un proyecto de fotografía o diseño en Puerto Varas.'
   );
-  const whatsappUrl = `https://wa.me/${phoneNumber}?text=${message}`;
 
   return (
     <aside aria-label="Contacto directo por WhatsApp" className="fixed bottom-6 right-6 z-40">

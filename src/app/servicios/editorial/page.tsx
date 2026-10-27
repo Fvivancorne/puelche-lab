@@ -45,7 +45,7 @@ export default function EditorialPage() {
               Catálogos & Folletos
             </h3>
             <p className="font-sans text-sm text-puelche-gray leading-relaxed">
-              Brochures de alta gama para proyectos inmobiliarios, cartas gastronómicas y catálogos de productos pensados para cautivar al cliente final.
+              Brochures de alta gama para proyectos como Viajes Falabella, guías territoriales, cartas gastronómicas y catálogos de productos pensados para cautivar al cliente final.
             </p>
           </div>
 

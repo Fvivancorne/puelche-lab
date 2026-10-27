@@ -54,6 +54,43 @@ export const metadata: Metadata = {
   },
 };
 
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'ProfessionalService',
+  name: 'Puelche Lab',
+  image: 'https://www.puelchelab.cl/logo-puelche.png',
+  description:
+    'Estudio de diseño cross media, fotografía profesional y desarrollo web en Puerto Varas, Región de Los Lagos.',
+  url: 'https://www.puelchelab.cl',
+  telephone: '+56966177500',
+  priceRange: '$$$',
+  address: {
+    '@type': 'PostalAddress',
+    addressLocality: 'Puerto Varas',
+    addressRegion: 'Región de Los Lagos',
+    addressCountry: 'CL',
+  },
+  geo: {
+    '@type': 'GeoCoordinates',
+    latitude: -41.3195,
+    longitude: -72.9854,
+  },
+  areaServed: [
+    'Puerto Varas',
+    'Llanquihue',
+    'Frutillar',
+    'Puerto Montt',
+    'Chiloé',
+    'Carretera Austral',
+    'Aysén',
+    'Magallanes',
+  ],
+  sameAs: [
+    'https://www.facebook.com/puelchelab',
+    'https://www.instagram.com/puelchelab',
+  ],
+};
+
 export default function RootLayout({
   children,
 }: {
@@ -64,10 +101,16 @@ export default function RootLayout({
       lang="es"
       className={`${sansFont.variable} ${condensedFont.variable} ${monoFont.variable} scroll-smooth`}
     >
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+      </head>
       <body className="min-h-screen bg-white text-puelche-dark font-sans antialiased flex flex-col selection:bg-puelche-cyan selection:text-white">
         <SmoothScrollProvider>
           <Navbar />
-          <main className="flex-1 w-full pt-[70px]">{children}</main>
+          <main className="flex-1 w-full pt-20">{children}</main>
           <Footer />
           <WhatsAppButton />
         </SmoothScrollProvider>
