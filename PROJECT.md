@@ -72,8 +72,8 @@
 |---|------|-------|-------------|--------|
 | M1 | Brand Identity & Core Layout | Navbar with official logo, Footer with real mark & contact, purge Unsplash from service pages, clean next.config.ts | none | DONE |
 | M2 | Portfolio Showcase & Zero-Stock Data | Clean `portfolio.ts` (0 Unsplash), update `/portafolio` page and project modal | M1 | DONE |
-| M3 | Home Page & Cinematic Atmosphere | Home Hero with `bg-home-2.jpg`, Manifiesto with `bg-agencia.jpg`, featured projects, pillars | M2 | IN_PROGRESS |
-| M4 | Real Clients Grid & Contact Brief | Download 20 client logos, `/clientes` page with logo grid, `/contacto` page with 4-step brief | M1 | PLANNED |
+| M3 | Home Page & Cinematic Atmosphere | Home Hero with `bg-home-2.jpg`, Manifiesto with `bg-agencia.jpg`, featured projects, pillars | M2 | DONE |
+| M4 | Real Clients Grid & Contact Brief | Download 20 client logos, `/clientes` page with logo grid, `/contacto` page with 4-step brief | M1 | IN_PROGRESS |
 | M5 | Final E2E Pass & Ledger Certification | Pass 100% of E2E test suite (Tiers 1-4), adversarial hardening (Tier 5), compile clean build, write `docs/ledger.md` | M1, M2, M3, M4, TEST_READY.md | PLANNED |
 | E2E | E2E Testing Track | Independent opaque-box test runner covering Tiers 1-4; produces `TEST_READY.md` | none | DONE |
 
