@@ -1,0 +1,26 @@
+2:"$Sreact.fragment"
+3:"/_next/static/chunks/36vvmxm-izm0g.js"
+4:"/_next/static/chunks/3hq1vcj04xzuf.js"
+5:"/_next/static/chunks/2yhk9aeug-aqs.js"
+6:"/_next/static/chunks/28z_6fismw70x.js"
+7:I[47257,["$3","$4","$5","$6"],"ClientPageRoot"]
+8:"/_next/static/chunks/0g71i8363iype.js"
+9:I[52683,["$3","$4","$5","$6","$8"],"default"]
+c:I[97367,["$3","$4","$5","$6"],"OutletBoundary"]
+d:"$Sreact.suspense"
+11:"ViewportBoundary"
+12:I[97367,["$3","$4","$5","$6"],"$11"]
+13:"MetadataBoundary"
+14:I[97367,["$3","$4","$5","$6"],"$13"]
+10:X
+1:[["children",{"s":"__PAGE__","h":128,"d":{"r":["$","$2","c",{"children":[["$","$L7",null,{"Component":"$9","serverProvidedParams":{"searchParams":{},"params":{},"promises":["$@a","$@b"]}}],[["$","script","script-0",{"src":"/_next/static/chunks/0g71i8363iype.js","async":true}]],["$","$Lc",null,{"children":["$","$d",null,{"name":"Next.MetadataOutlet","children":"$@e"}]}]]}],"p":"$@f","v":null,"s":"$10"}}]]
+0:{"t":{"t":{"s":"","h":16,"c":"$Q1"},"h":{"r":["$","$2","h",{"children":[null,["$","$L12",null,{"children":[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}]]}],["$","$L14",null,{"children":[["$","div",null,{"hidden":true,"children":["$","$d",null,{"name":"Next.Metadata","children":[["$","title","0",{"children":"Puelche Lab — Estudio de Diseño Cross Media & Fotografía | Puerto Varas"}],["$","meta","1",{"name":"description","content":"Estudio boutique de diseño cross-media, fotografía profesional de arquitectura y desarrollo web en Puerto Varas, Región de Los Lagos. Transformamos marcas del sur de Chile."}],["$","meta","2",{"name":"author","content":"Puelche Lab"}],["$","meta","3",{"name":"keywords","content":"Puelche Lab,Fotografía Puerto Varas,Diseño Web Puerto Varas,Branding Patagonia,Fotografía Arquitectura Los Lagos,Estudio Cross Media Chile,AquaChile,Estancia Rilán"}],["$","meta","4",{"name":"creator","content":"Puelche Lab"}],["$","meta","5",{"property":"og:title","content":"Puelche Lab — Diseño Cross Media & Fotografía en Puerto Varas"}],["$","meta","6",{"property":"og:description","content":"Estudio boutique de diseño cross-media, fotografía profesional de arquitectura y desarrollo web en Puerto Varas y la Patagonia chilena."}],["$","meta","7",{"property":"og:url","content":"https://www.puelchelab.cl"}],["$","meta","8",{"property":"og:site_name","content":"Puelche Lab"}],["$","meta","9",{"property":"og:locale","content":"es_CL"}],["$","meta","10",{"property":"og:type","content":"website"}],["$","meta","11",{"name":"twitter:card","content":"summary"}],["$","meta","12",{"name":"twitter:title","content":"Puelche Lab — Diseño Cross Media & Fotografía en Puerto Varas"}],["$","meta","13",{"name":"twitter:description","content":"Estudio boutique de diseño cross-media, fotografía profesional de arquitectura y desarrollo web en Puerto Varas y la Patagonia chilena."}]]}]}],null]}],["$","meta",null,{"name":"next-size-adjust","content":""}]]}],"p":"$@15","v":null,"s":"$10"}},"a":"$@16","u":"$@17","b":"lWy8DTBleK1tqOQk8aZ6N"}
+a:{}
+b:"$1:0:1:d:r:props:children:0:props:serverProvidedParams:params"
+e:null
+17:true
+10:300
+10:C
+16:0
+15:"$undefined"
+f:"$undefined"

@@ -1,0 +1,183 @@
+{
+  "version": 3,
+  "pages404": true,
+  "appType": "app",
+  "caseSensitive": false,
+  "basePath": "",
+  "redirects": [
+    {
+      "source": "/:path+/",
+      "destination": "/:path+",
+      "internal": true,
+      "priority": true,
+      "statusCode": 308,
+      "regex": "^(?:/((?:[^/]+?)(?:/(?:[^/]+?))*))/$"
+    },
+    {
+      "source": "/diseno-de-marca",
+      "destination": "/servicios/branding",
+      "statusCode": 308,
+      "regex": "^(?!/_next)/diseno-de-marca(?:/)?$"
+    },
+    {
+      "source": "/diseno-de-marca/",
+      "destination": "/servicios/branding",
+      "statusCode": 308,
+      "regex": "^(?!/_next)/diseno-de-marca/(?:/)?$"
+    },
+    {
+      "source": "/fotografia-y-edicion-2",
+      "destination": "/servicios/fotografia",
+      "statusCode": 308,
+      "regex": "^(?!/_next)/fotografia-y-edicion-2(?:/)?$"
+    },
+    {
+      "source": "/fotografia-y-edicion-2/",
+      "destination": "/servicios/fotografia",
+      "statusCode": 308,
+      "regex": "^(?!/_next)/fotografia-y-edicion-2/(?:/)?$"
+    },
+    {
+      "source": "/edicion-fotografica",
+      "destination": "/servicios/fotografia",
+      "statusCode": 308,
+      "regex": "^(?!/_next)/edicion-fotografica(?:/)?$"
+    },
+    {
+      "source": "/edicion-fotografica/",
+      "destination": "/servicios/fotografia",
+      "statusCode": 308,
+      "regex": "^(?!/_next)/edicion-fotografica/(?:/)?$"
+    },
+    {
+      "source": "/diseno-editorial",
+      "destination": "/servicios/editorial",
+      "statusCode": 308,
+      "regex": "^(?!/_next)/diseno-editorial(?:/)?$"
+    },
+    {
+      "source": "/diseno-editorial/",
+      "destination": "/servicios/editorial",
+      "statusCode": 308,
+      "regex": "^(?!/_next)/diseno-editorial/(?:/)?$"
+    },
+    {
+      "source": "/redes-sociales",
+      "destination": "/servicios/branding",
+      "statusCode": 308,
+      "regex": "^(?!/_next)/redes-sociales(?:/)?$"
+    },
+    {
+      "source": "/redes-sociales/",
+      "destination": "/servicios/branding",
+      "statusCode": 308,
+      "regex": "^(?!/_next)/redes-sociales/(?:/)?$"
+    },
+    {
+      "source": "/nuestros-clientes",
+      "destination": "/clientes",
+      "statusCode": 308,
+      "regex": "^(?!/_next)/nuestros-clientes(?:/)?$"
+    },
+    {
+      "source": "/nuestros-clientes/",
+      "destination": "/clientes",
+      "statusCode": 308,
+      "regex": "^(?!/_next)/nuestros-clientes/(?:/)?$"
+    }
+  ],
+  "headers": [],
+  "onMatchHeaders": [],
+  "rewrites": {
+    "beforeFiles": [],
+    "afterFiles": [],
+    "fallback": []
+  },
+  "dynamicRoutes": [],
+  "staticRoutes": [
+    {
+      "page": "/",
+      "regex": "^/(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/(?:/)?$"
+    },
+    {
+      "page": "/_global-error",
+      "regex": "^/_global\\-error(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/_global\\-error(?:/)?$"
+    },
+    {
+      "page": "/_not-found",
+      "regex": "^/_not\\-found(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/_not\\-found(?:/)?$"
+    },
+    {
+      "page": "/clientes",
+      "regex": "^/clientes(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/clientes(?:/)?$"
+    },
+    {
+      "page": "/contacto",
+      "regex": "^/contacto(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/contacto(?:/)?$"
+    },
+    {
+      "page": "/portafolio",
+      "regex": "^/portafolio(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/portafolio(?:/)?$"
+    },
+    {
+      "page": "/servicios",
+      "regex": "^/servicios(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/servicios(?:/)?$"
+    },
+    {
+      "page": "/servicios/branding",
+      "regex": "^/servicios/branding(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/servicios/branding(?:/)?$"
+    },
+    {
+      "page": "/servicios/desarrollo-web",
+      "regex": "^/servicios/desarrollo\\-web(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/servicios/desarrollo\\-web(?:/)?$"
+    },
+    {
+      "page": "/servicios/editorial",
+      "regex": "^/servicios/editorial(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/servicios/editorial(?:/)?$"
+    },
+    {
+      "page": "/servicios/fotografia",
+      "regex": "^/servicios/fotografia(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/servicios/fotografia(?:/)?$"
+    }
+  ],
+  "dataRoutes": [],
+  "rsc": {
+    "header": "rsc",
+    "varyHeader": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch",
+    "prefetchHeader": "next-router-prefetch",
+    "didPostponeHeader": "x-nextjs-postponed",
+    "contentTypeHeader": "text/x-component",
+    "suffix": ".rsc",
+    "prefetchSegmentHeader": "next-router-segment-prefetch",
+    "prefetchSegmentSuffix": ".segment.rsc",
+    "prefetchSegmentDirSuffix": ".segments",
+    "clientParamParsing": false,
+    "dynamicRSCPrerender": false
+  },
+  "rewriteHeaders": {
+    "pathHeader": "x-nextjs-rewritten-path",
+    "queryHeader": "x-nextjs-rewritten-query"
+  }
+}
