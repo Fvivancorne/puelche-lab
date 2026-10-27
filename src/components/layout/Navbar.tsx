@@ -158,15 +158,15 @@ export function Navbar() {
               href="/"
               onClick={() => setMobileOpen(false)}
               className={cn(
-                'py-2 border-b border-puelche-slate-light/20',
+                'py-2 border-b border-white/10 font-bold',
                 pathname === '/' ? 'text-puelche-cyan font-semibold' : 'text-white'
               )}
             >
-              Home
+              HOME
             </Link>
 
-            <div className="py-2 border-b border-puelche-slate-light/20 space-y-2">
-              <span className="text-white/60 text-xs">Portafolio</span>
+            <div className="py-2 border-b border-white/10 space-y-2">
+              <span className="text-white/60 text-xs font-bold">PORTAFOLIO</span>
               <div className="pl-3 space-y-2 text-sm">
                 {PORTFOLIO_DROPDOWN.map((item) => (
                   <Link
@@ -174,7 +174,7 @@ export function Navbar() {
                     href={item.href}
                     onClick={() => setMobileOpen(false)}
                     className={cn(
-                      'block py-1 text-white/90 hover:text-puelche-cyan',
+                      'block py-1 text-white/90 hover:text-puelche-cyan text-xs',
                       pathname === item.href && 'text-puelche-cyan font-semibold'
                     )}
                   >
@@ -188,22 +188,22 @@ export function Navbar() {
               href="/clientes"
               onClick={() => setMobileOpen(false)}
               className={cn(
-                'py-2 border-b border-puelche-slate-light/20',
+                'py-2 border-b border-white/10 font-bold',
                 pathname === '/clientes' ? 'text-puelche-cyan font-semibold' : 'text-white'
               )}
             >
-              Clientes
+              CLIENTES
             </Link>
 
             <Link
               href="/contacto"
               onClick={() => setMobileOpen(false)}
               className={cn(
-                'py-2',
+                'py-2 font-bold',
                 pathname === '/contacto' ? 'text-puelche-cyan font-semibold' : 'text-white'
               )}
             >
-              Contacto
+              CONTACTO
             </Link>
           </div>
         </div>

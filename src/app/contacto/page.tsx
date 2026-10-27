@@ -2,9 +2,16 @@
 
 import React, { useState, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
-import { Mail, Phone, Clock, Facebook, Instagram, Send, CheckCircle2, MessageCircle } from 'lucide-react';
+import { Mail, Phone, Clock, MapPin, Facebook, Instagram, Send, CheckCircle2, MessageCircle, RotateCcw } from 'lucide-react';
 
-const SERVICES = [
+const GENUINE_SERVICES = [
+  'Fotografía',
+  'Sitio Web',
+  'Redes Sociales',
+  'Diseño Gráfico',
+];
+
+const DETAILED_SERVICES = [
   'Fotografía Arquitectura & Hotelería',
   'Fotografía Industrial & Dron 4K',
   'Diseño de Marca & Identidad',
@@ -68,6 +75,18 @@ function ContactFormInner() {
     setSubmitted(true);
   };
 
+  const handleReset = () => {
+    setName('');
+    setCompany('');
+    setPhone('');
+    setEmail('');
+    setSelectedServices([]);
+    setSelectedBudget('$1.5M — $3.0M CLP');
+    setSelectedRegion('Puerto Varas & Cuenca Llanquihue');
+    setMessage('');
+    setSubmitted(false);
+  };
+
   return (
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
       {/* Left Column: Formulario */}
@@ -93,17 +112,18 @@ function ContactFormInner() {
                 href={generateWhatsAppLink()}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-6 py-3 bg-puelche-slate text-white hover:bg-puelche-cyan font-condensed uppercase tracking-wider text-xs font-bold rounded-sm transition-colors"
+                className="inline-flex items-center gap-2 px-6 py-3 bg-puelche-cyan text-white hover:bg-puelche-cyan-dark font-condensed uppercase tracking-wider text-xs font-bold rounded-sm transition-colors shadow"
               >
-                <MessageCircle className="w-4 h-4 text-puelche-cyan" />
+                <MessageCircle className="w-4 h-4" />
                 <span>Continuar por WhatsApp</span>
               </a>
               <button
                 type="button"
-                onClick={() => setSubmitted(false)}
-                className="px-6 py-3 border border-puelche-slate text-puelche-slate hover:bg-puelche-slate hover:text-white font-condensed uppercase tracking-wider text-xs font-bold rounded-sm transition-colors"
+                onClick={handleReset}
+                className="inline-flex items-center gap-2 px-6 py-3 bg-puelche-slate text-white hover:bg-puelche-cyan font-condensed uppercase tracking-wider text-xs font-bold rounded-sm transition-colors"
               >
-                Enviar otro requerimiento
+                <RotateCcw className="w-3.5 h-3.5" />
+                <span>Enviar otro requerimiento</span>
               </button>
             </div>
           </div>
@@ -165,13 +185,13 @@ function ContactFormInner() {
               </div>
             </div>
 
-            {/* Solicitud Checkboxes */}
+            {/* Solicitud Checkboxes (Genuine Puelche Lab Fields) */}
             <div>
               <span className="block font-condensed uppercase tracking-wider text-xs font-bold text-puelche-slate mb-2">
-                Solicitud de Servicios
+                Solicitud
               </span>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                {SERVICES.map((service) => (
+              <div className="grid grid-cols-2 gap-3">
+                {GENUINE_SERVICES.map((service) => (
                   <label
                     key={service}
                     className="flex items-center space-x-2 text-sm text-puelche-dark cursor-pointer font-sans select-none"
@@ -182,14 +202,37 @@ function ContactFormInner() {
                       onChange={() => handleCheckboxChange(service)}
                       className="w-4 h-4 text-puelche-cyan focus:ring-puelche-cyan rounded border-gray-300"
                     />
-                    <span className="text-xs">{service}</span>
+                    <span className="text-xs font-medium">{service}</span>
+                  </label>
+                ))}
+              </div>
+            </div>
+
+            {/* Additional Specialization Categories */}
+            <div className="pt-2">
+              <span className="block font-condensed uppercase tracking-wider text-xs text-puelche-slate/80 mb-2">
+                Especialidad Adicional (Opcional)
+              </span>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                {DETAILED_SERVICES.map((service) => (
+                  <label
+                    key={service}
+                    className="flex items-center space-x-2 text-xs text-puelche-gray cursor-pointer font-sans select-none"
+                  >
+                    <input
+                      type="checkbox"
+                      checked={selectedServices.includes(service)}
+                      onChange={() => handleCheckboxChange(service)}
+                      className="w-3.5 h-3.5 text-puelche-cyan focus:ring-puelche-cyan rounded border-gray-300"
+                    />
+                    <span>{service}</span>
                   </label>
                 ))}
               </div>
             </div>
 
             {/* Inversión Estimada & Región */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
               <div>
                 <label
                   htmlFor="budget"
@@ -252,7 +295,7 @@ function ContactFormInner() {
                 className="inline-flex items-center justify-center px-8 py-3.5 bg-puelche-cyan text-white font-condensed uppercase tracking-widest text-sm font-bold rounded-sm hover:bg-puelche-cyan-dark transition-all duration-200 shadow-md hover:scale-[1.02]"
               >
                 <Send className="w-4 h-4 mr-2" />
-                <span>Enviar</span>
+                <span>ENVIAR</span>
               </button>
             </div>
           </form>
@@ -274,6 +317,10 @@ function ContactFormInner() {
             <div className="flex items-center space-x-3 text-puelche-gray hover:text-puelche-cyan transition-colors">
               <Phone className="w-4 h-4 text-puelche-cyan shrink-0" />
               <a href="tel:+56966177500">+56 9 6617 7500</a>
+            </div>
+            <div className="flex items-center space-x-3 text-puelche-gray">
+              <MapPin className="w-4 h-4 text-puelche-cyan shrink-0" />
+              <span>Puerto Varas, Región de Los Lagos, Chile</span>
             </div>
             <div className="flex items-center space-x-3 text-puelche-gray">
               <Clock className="w-4 h-4 text-puelche-cyan shrink-0" />

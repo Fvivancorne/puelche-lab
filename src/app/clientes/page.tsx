@@ -1,6 +1,12 @@
 import React from 'react';
+import type { Metadata } from 'next';
 import Image from 'next/image';
-import Link from 'next/link';
+
+export const metadata: Metadata = {
+  title: 'Clientes | Puelche Lab Puerto Varas — Clientes & Territorio Austral',
+  description:
+    'Empresas, instituciones y proyectos que confían en Puelche Lab a lo largo de Los Lagos, Chiloé, Aysén y Magallanes.',
+};
 
 // The 20 real clients of Puelche Lab
 const CLIENT_LOGOS = [
@@ -69,11 +75,6 @@ export const TESTIMONIALS = [
   },
 ];
 
-export const metadata = {
-  title: 'Clientes & Territorio Austral | Puelche Lab Puerto Varas',
-  description: 'Empresas, hoteles e industrias que confían en Puelche Lab a lo largo de Los Lagos y Patagonia.',
-};
-
 export default function ClientesPage() {
   return (
     <div className="w-full flex-1 bg-puelche-cyan min-h-screen text-white">
@@ -98,6 +99,7 @@ export default function ClientesPage() {
           {CLIENT_LOGOS.map((client) => (
             <div
               key={client.id}
+              data-cursor="CLIENTE"
               className="h-32 sm:h-36 p-6 rounded-lg bg-white/10 border border-white/20 backdrop-blur-sm flex items-center justify-center transition-all duration-300 hover:bg-white/20 hover:scale-105 hover:shadow-lg group"
             >
               <div className="relative w-full h-full flex items-center justify-center">
@@ -183,7 +185,7 @@ export default function ClientesPage() {
             </thead>
             <tbody className="divide-y divide-white/10 text-white/90">
               {CLIENT_PROFILES.map((cp, idx) => (
-                <tr key={idx} className="hover:bg-puelche-sand/20 transition-colors">
+                <tr key={idx} className="hover:bg-puelche-sand/20 transition-colors hover:bg-white/10">
                   <td className="py-3.5 px-6 font-bold">{cp.name}</td>
                   <td className="py-3.5 px-6">{cp.industry}</td>
                   <td className="py-3.5 px-6">{cp.region}</td>

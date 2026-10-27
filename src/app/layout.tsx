@@ -5,6 +5,9 @@ import { SmoothScrollProvider } from '@/components/providers/SmoothScrollProvide
 import { Navbar } from '@/components/layout/Navbar';
 import { Footer } from '@/components/layout/Footer';
 import { WhatsAppButton } from '@/components/ui/WhatsAppButton';
+import { Preloader } from '@/components/ui/Preloader';
+import { CustomCursor } from '@/components/ui/CustomCursor';
+import { PageTransition } from '@/components/ui/PageTransition';
 
 const sansFont = Plus_Jakarta_Sans({
   subsets: ['latin'],
@@ -108,6 +111,9 @@ export default function RootLayout({
         />
       </head>
       <body className="min-h-screen bg-white text-puelche-dark font-sans antialiased flex flex-col selection:bg-puelche-cyan selection:text-white">
+        <Preloader />
+        <CustomCursor />
+        <PageTransition />
         <SmoothScrollProvider>
           <Navbar />
           <main className="flex-1 w-full pt-20">{children}</main>

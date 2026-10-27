@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import Image from 'next/image';
-import Link from 'next/image';
+import Link from 'next/link';
 import { Camera, X, ChevronRight, ChevronLeft } from 'lucide-react';
 
 interface PhotoProject {
@@ -20,10 +20,10 @@ const REAL_PHOTO_PROJECTS: PhotoProject[] = [
     client: 'Estancia Rilan, Hotel y Cava.',
     location: 'Península de Rilán, Chiloé.',
     specialty: 'Fotografías de interiores e inmobiliario',
-    image: '/images/real/bg-portafolios-fotografia-min.jpg',
+    image: '/images/real/bg-portafolios-fotografia-a-min.jpg',
     gallery: [
-      '/images/real/bg-portafolios-fotografia-min.jpg',
       '/images/real/bg-portafolios-fotografia-a-min.jpg',
+      '/images/real/bg-portafolios-fotografia-min.jpg',
       '/images/real/bg-home-2.jpg',
     ],
   },
@@ -32,27 +32,16 @@ const REAL_PHOTO_PROJECTS: PhotoProject[] = [
     client: 'Cala Melí, Cabañas.',
     location: 'Puerto Varas.',
     specialty: 'Fotografías de interiores e inmobiliario.',
-    image: '/images/real/bg-portafolios-fotografia-a-min.jpg',
+    image: '/images/real/bg-portafolios-fotografia-b-min.jpg',
     gallery: [
+      '/images/real/bg-portafolios-fotografia-b-min.jpg',
       '/images/real/bg-portafolios-fotografia-a-min.jpg',
-      '/images/real/bg-portafolios-fotografia-min.jpg',
     ],
   },
   {
     id: 'costaustralis',
     client: 'Costaustralis, Hotel.',
     location: 'Puerto Natales.',
-    specialty: 'Fotografías de interiores e inmobiliario.',
-    image: '/images/real/bg-portafolios-fotografia-b-min.jpg',
-    gallery: [
-      '/images/real/bg-portafolios-fotografia-b-min.jpg',
-      '/images/real/bg-portafolios-fotografia-c-min.jpg',
-    ],
-  },
-  {
-    id: 'cabo-de-hornos',
-    client: 'Cabo de Hornos, Hotel.',
-    location: 'Punta Arenas.',
     specialty: 'Fotografías de interiores e inmobiliario.',
     image: '/images/real/bg-portafolios-fotografia-c-min.jpg',
     gallery: [
@@ -61,14 +50,25 @@ const REAL_PHOTO_PROJECTS: PhotoProject[] = [
     ],
   },
   {
-    id: 'muebles-yunge',
-    client: 'Muebles Yunge.',
-    location: 'Puerto Varas.',
+    id: 'cabo-de-hornos',
+    client: 'Cabo de Hornos, Hotel.',
+    location: 'Punta Arenas.',
     specialty: 'Fotografías de interiores e inmobiliario.',
     image: '/images/real/bg-portafolios-fotografia-d-min.jpg',
     gallery: [
       '/images/real/bg-portafolios-fotografia-d-min.jpg',
+      '/images/real/bg-portafolios-fotografia-c-min.jpg',
+    ],
+  },
+  {
+    id: 'muebles-yunge',
+    client: 'Muebles Yunge.',
+    location: 'Puerto Varas.',
+    specialty: 'Fotografías de interiores e inmobiliario.',
+    image: '/images/real/bg-fotografia-6-min.jpg',
+    gallery: [
       '/images/real/bg-fotografia-6-min.jpg',
+      '/images/real/bg-portafolios-fotografia-d-min.jpg',
     ],
   },
   {
@@ -86,7 +86,7 @@ const REAL_PHOTO_PROJECTS: PhotoProject[] = [
     id: 'aquachile',
     client: 'Aqua Chile.',
     location: 'Puerto Montt & Fiordos.',
-    specialty: 'Fotografía de producto.',
+    specialty: 'Fotografía de producto / Industria & Procesos.',
     image: '/images/real/bg-portafolios-fotografia-g-min.jpg',
     gallery: [
       '/images/real/bg-portafolios-fotografia-g-min.jpg',
@@ -96,11 +96,11 @@ const REAL_PHOTO_PROJECTS: PhotoProject[] = [
   {
     id: 'hotel-ohana',
     client: 'Hotel Ohana.',
-    location: 'Puerto Varas.',
+    location: 'Isla Rapa Nui.',
     specialty: 'Fotografías de interiores e inmobiliario.',
-    image: '/images/real/bg-portafolios-fotografia-h-min.jpg',
+    image: '/images/real/bg-fotografia-9-min.jpg',
     gallery: [
-      '/images/real/bg-portafolios-fotografia-h-min.jpg',
+      '/images/real/bg-fotografia-9-min.jpg',
       '/images/real/bg-portafolios-fotografia-a-min.jpg',
     ],
   },
@@ -109,9 +109,9 @@ const REAL_PHOTO_PROJECTS: PhotoProject[] = [
     client: 'Maestranza San Aurelio.',
     location: 'Puerto Montt.',
     specialty: 'Fotografía de procesos productivos.',
-    image: '/images/real/bg-portafolios-fotografia-i-min.jpg',
+    image: '/images/real/bg-portafolios-fotografia-h-min.jpg',
     gallery: [
-      '/images/real/bg-portafolios-fotografia-i-min.jpg',
+      '/images/real/bg-portafolios-fotografia-h-min.jpg',
       '/images/real/bg-fotografia-9-min.jpg',
     ],
   },
@@ -120,10 +120,10 @@ const REAL_PHOTO_PROJECTS: PhotoProject[] = [
     client: 'Soldasur.',
     location: 'Puerto Montt.',
     specialty: 'Fotografía de procesos productivos.',
-    image: '/images/real/bg-fotografia-9-min.jpg',
+    image: '/images/real/bg-portafolios-fotografia-i-min.jpg',
     gallery: [
-      '/images/real/bg-fotografia-9-min.jpg',
       '/images/real/bg-portafolios-fotografia-i-min.jpg',
+      '/images/real/bg-portafolios-fotografia-h-min.jpg',
     ],
   },
 ];
