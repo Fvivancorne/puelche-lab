@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { Plus_Jakarta_Sans, Playfair_Display, JetBrains_Mono } from 'next/font/google';
+import { Plus_Jakarta_Sans, Oswald, JetBrains_Mono } from 'next/font/google';
 import './globals.css';
 import { SmoothScrollProvider } from '@/components/providers/SmoothScrollProvider';
 import { Navbar } from '@/components/layout/Navbar';
@@ -12,10 +12,11 @@ const sansFont = Plus_Jakarta_Sans({
   display: 'swap',
 });
 
-const serifFont = Playfair_Display({
+const condensedFont = Oswald({
   subsets: ['latin'],
-  variable: '--font-serif',
+  variable: '--font-condensed',
   display: 'swap',
+  weight: ['400', '500', '600', '700'],
 });
 
 const monoFont = JetBrains_Mono({
@@ -25,18 +26,20 @@ const monoFont = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'Puelche Lab — Estudio de Diseño Cross Media & Fotografía | Puerto Varas',
+  title: 'Puelche Lab — Estudio de Diseño Cross Media y Fotografía de Puerto Varas',
   description:
-    'Estudio boutique de diseño cross-media, fotografía profesional de arquitectura y desarrollo web en Puerto Varas, Región de Los Lagos. Transformamos marcas del sur de Chile.',
+    'Somos un Estudio de Diseño Cross Media y Fotografía en Puerto Varas. Piezas gráficas para todos los medios: digitales, impresos y audiovisuales.',
   keywords: [
     'Puelche Lab',
+    'Estudio de Diseño Puerto Varas',
     'Fotografía Puerto Varas',
-    'Diseño Web Puerto Varas',
-    'Branding Patagonia',
-    'Fotografía Arquitectura Los Lagos',
-    'Estudio Cross Media Chile',
-    'AquaChile',
-    'Estancia Rilán',
+    'Diseño Cross Media',
+    'Diseño de Marca',
+    'Desarrollo Web Puerto Varas',
+    'Fotografía Inmobiliaria',
+    'Fotografía Industrial',
+    'Puerto Varas',
+    'Región de Los Lagos',
   ],
   authors: [{ name: 'Puelche Lab' }],
   creator: 'Puelche Lab',
@@ -45,69 +48,28 @@ export const metadata: Metadata = {
     locale: 'es_CL',
     url: 'https://www.puelchelab.cl',
     siteName: 'Puelche Lab',
-    title: 'Puelche Lab — Diseño Cross Media & Fotografía en Puerto Varas',
+    title: 'Puelche Lab — Estudio de Diseño Cross Media y Fotografía',
     description:
-      'Estudio boutique de diseño cross-media, fotografía profesional de arquitectura y desarrollo web en Puerto Varas y la Patagonia chilena.',
+      'Somos un Estudio de Diseño Cross Media y Fotografía en Puerto Varas. Viento creativo en la Patagonia.',
   },
-};
-
-const jsonLd = {
-  '@context': 'https://schema.org',
-  '@type': 'ProfessionalService',
-  name: 'Puelche Lab',
-  image: 'https://www.puelchelab.cl/logo-puelche.png',
-  description:
-    'Estudio de diseño cross media, fotografía profesional y desarrollo web en Puerto Varas, Región de Los Lagos.',
-  url: 'https://www.puelchelab.cl',
-  telephone: '+56966177500',
-  address: {
-    '@type': 'PostalAddress',
-    addressLocality: 'Puerto Varas',
-    addressRegion: 'Región de Los Lagos',
-    addressCountry: 'CL',
-  },
-  geo: {
-    '@type': 'GeoCoordinates',
-    latitude: -41.3195,
-    longitude: -72.9854,
-  },
-  priceRange: '$$$',
-  areaServed: [
-    'Puerto Varas',
-    'Llanquihue',
-    'Frutillar',
-    'Puerto Montt',
-    'Chiloé',
-    'Patagonia',
-  ],
 };
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
     <html
       lang="es"
-      className={`${sansFont.variable} ${serifFont.variable} ${monoFont.variable}`}
+      className={`${sansFont.variable} ${condensedFont.variable} ${monoFont.variable} scroll-smooth`}
     >
-      <head>
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-        />
-      </head>
-      <body className="bg-[#F9F9F6] text-[#18191B] font-sans antialiased selection:bg-[#C29B63] selection:text-[#18191B]">
+      <body className="min-h-screen bg-white text-puelche-dark font-sans antialiased flex flex-col selection:bg-puelche-cyan selection:text-white">
         <SmoothScrollProvider>
-          <div className="min-h-screen flex flex-col">
-            <Navbar />
-            <main id="main-content" className="flex-1 flex flex-col pt-20">
-              {children}
-            </main>
-            <Footer />
-            <WhatsAppButton />
-          </div>
+          <Navbar />
+          <main className="flex-1 w-full pt-[70px]">{children}</main>
+          <Footer />
+          <WhatsAppButton />
         </SmoothScrollProvider>
       </body>
     </html>

@@ -1,233 +1,268 @@
+'use client';
+
+import React, { useState } from 'react';
 import Image from 'next/image';
-import Link from 'next/link';
-import { Camera, Video, Layers, Eye, ShieldCheck, ArrowRight, CheckCircle2 } from 'lucide-react';
-import { PORTFOLIO_PROJECTS } from '@/data/portfolio';
+import Link from 'next/image';
+import { Camera, X, ChevronRight, ChevronLeft } from 'lucide-react';
 
-const PHOTO_PROJECTS = PORTFOLIO_PROJECTS.filter(p => p.category === 'Fotografía');
+interface PhotoProject {
+  id: string;
+  client: string;
+  location: string;
+  specialty: string;
+  image: string;
+  gallery: string[];
+}
 
-export const metadata = {
-  title: 'Fotografía Profesional & Film en Puerto Varas y Patagonia | Puelche Lab',
-  description: 'Documentación visual de alta precisión para arquitectura, hoteles boutique, faenas industriales y paisajes australes. Drones 4K y revelado fine art.',
-};
+const REAL_PHOTO_PROJECTS: PhotoProject[] = [
+  {
+    id: 'estancia-rilan',
+    client: 'Estancia Rilan, Hotel y Cava.',
+    location: 'Península de Rilán, Chiloé.',
+    specialty: 'Fotografías de interiores e inmobiliario',
+    image: '/images/real/bg-portafolios-fotografia-min.jpg',
+    gallery: [
+      '/images/real/bg-portafolios-fotografia-min.jpg',
+      '/images/real/bg-portafolios-fotografia-a-min.jpg',
+      '/images/real/bg-home-2.jpg',
+    ],
+  },
+  {
+    id: 'cala-meli',
+    client: 'Cala Melí, Cabañas.',
+    location: 'Puerto Varas.',
+    specialty: 'Fotografías de interiores e inmobiliario.',
+    image: '/images/real/bg-portafolios-fotografia-a-min.jpg',
+    gallery: [
+      '/images/real/bg-portafolios-fotografia-a-min.jpg',
+      '/images/real/bg-portafolios-fotografia-min.jpg',
+    ],
+  },
+  {
+    id: 'costaustralis',
+    client: 'Costaustralis, Hotel.',
+    location: 'Puerto Natales.',
+    specialty: 'Fotografías de interiores e inmobiliario.',
+    image: '/images/real/bg-portafolios-fotografia-b-min.jpg',
+    gallery: [
+      '/images/real/bg-portafolios-fotografia-b-min.jpg',
+      '/images/real/bg-portafolios-fotografia-c-min.jpg',
+    ],
+  },
+  {
+    id: 'cabo-de-hornos',
+    client: 'Cabo de Hornos, Hotel.',
+    location: 'Punta Arenas.',
+    specialty: 'Fotografías de interiores e inmobiliario.',
+    image: '/images/real/bg-portafolios-fotografia-c-min.jpg',
+    gallery: [
+      '/images/real/bg-portafolios-fotografia-c-min.jpg',
+      '/images/real/bg-portafolios-fotografia-b-min.jpg',
+    ],
+  },
+  {
+    id: 'muebles-yunge',
+    client: 'Muebles Yunge.',
+    location: 'Puerto Varas.',
+    specialty: 'Fotografías de interiores e inmobiliario.',
+    image: '/images/real/bg-portafolios-fotografia-d-min.jpg',
+    gallery: [
+      '/images/real/bg-portafolios-fotografia-d-min.jpg',
+      '/images/real/bg-fotografia-6-min.jpg',
+    ],
+  },
+  {
+    id: 'tagua-tagua',
+    client: 'Tagua Tagua, Lodge.',
+    location: 'Río Puelo / Cochamó.',
+    specialty: 'Fotografías de interiores e inmobiliario.',
+    image: '/images/real/bg-portafolios-fotografia-f-min.jpg',
+    gallery: [
+      '/images/real/bg-portafolios-fotografia-f-min.jpg',
+      '/images/real/bg-agencia.jpg',
+    ],
+  },
+  {
+    id: 'aquachile',
+    client: 'Aqua Chile.',
+    location: 'Puerto Montt & Fiordos.',
+    specialty: 'Fotografía de producto.',
+    image: '/images/real/bg-portafolios-fotografia-g-min.jpg',
+    gallery: [
+      '/images/real/bg-portafolios-fotografia-g-min.jpg',
+      '/images/real/bg-fotografia-9-min.jpg',
+    ],
+  },
+  {
+    id: 'hotel-ohana',
+    client: 'Hotel Ohana.',
+    location: 'Puerto Varas.',
+    specialty: 'Fotografías de interiores e inmobiliario.',
+    image: '/images/real/bg-portafolios-fotografia-h-min.jpg',
+    gallery: [
+      '/images/real/bg-portafolios-fotografia-h-min.jpg',
+      '/images/real/bg-portafolios-fotografia-a-min.jpg',
+    ],
+  },
+  {
+    id: 'maestranza-san-aurelio',
+    client: 'Maestranza San Aurelio.',
+    location: 'Puerto Montt.',
+    specialty: 'Fotografía de procesos productivos.',
+    image: '/images/real/bg-portafolios-fotografia-i-min.jpg',
+    gallery: [
+      '/images/real/bg-portafolios-fotografia-i-min.jpg',
+      '/images/real/bg-fotografia-9-min.jpg',
+    ],
+  },
+  {
+    id: 'soldasur',
+    client: 'Soldasur.',
+    location: 'Puerto Montt.',
+    specialty: 'Fotografía de procesos productivos.',
+    image: '/images/real/bg-fotografia-9-min.jpg',
+    gallery: [
+      '/images/real/bg-fotografia-9-min.jpg',
+      '/images/real/bg-portafolios-fotografia-i-min.jpg',
+    ],
+  },
+];
 
 export default function FotografiaPage() {
+  const [activeModalProject, setActiveModalProject] = useState<PhotoProject | null>(null);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+  const openModal = (proj: PhotoProject) => {
+    setActiveModalProject(proj);
+    setCurrentImageIndex(0);
+  };
+
+  const closeModal = () => {
+    setActiveModalProject(null);
+  };
+
+  const nextImage = () => {
+    if (!activeModalProject) return;
+    setCurrentImageIndex((prev) => (prev + 1) % activeModalProject.gallery.length);
+  };
+
+  const prevImage = () => {
+    if (!activeModalProject) return;
+    setCurrentImageIndex((prev) =>
+      prev === 0 ? activeModalProject.gallery.length - 1 : prev - 1
+    );
+  };
+
   return (
-    <div className="w-full flex-1 pt-8 md:pt-12 pb-24 px-6 md:px-12 bg-puelche-canvas">
-      <div className="max-w-7xl mx-auto">
-        {/* Header Breadcrumb */}
-        <div className="flex items-center gap-2 text-xs font-mono tracking-widest uppercase text-puelche-forest mb-4">
-          <Link href="/servicios" className="hover:text-puelche-ink transition-colors">Servicios</Link>
-          <span className="text-puelche-ink/30">/</span>
-          <span className="text-puelche-copper">Fotografía & Film</span>
-        </div>
-
-        {/* Hero Title */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 border-b border-puelche-ink/10 pb-16 mb-16">
-          <div className="lg:col-span-8 space-y-6">
-            <h1 className="font-serif text-4xl sm:text-6xl md:text-7xl font-bold tracking-tight text-puelche-ink leading-[1.05]">
-              La luz austral capturada con rigor óptico.
-            </h1>
-            <p className="text-lg md:text-xl text-puelche-charcoal leading-relaxed max-w-2xl font-sans">
-              No hacemos fotografía genérica de stock. Documentamos la arquitectura patagónica, la infraestructura productiva y los espacios de hospitalidad conociendo el clima extremo, las mareas y la luz rasante del paralelo 41°.
-            </p>
-          </div>
-          <div className="lg:col-span-4 flex flex-col justify-end">
-            <div className="bg-white p-6 rounded-2xl border border-puelche-ink/10 space-y-4">
-              <span className="text-xs font-mono uppercase tracking-widest text-puelche-forest font-semibold">Resumen de Capacidad</span>
-              <div className="space-y-2 text-xs text-puelche-charcoal font-mono">
-                <div className="flex justify-between border-b border-puelche-ink/5 pb-1">
-                  <span>Equipamiento</span>
-                  <span className="font-bold text-puelche-ink">Full Frame & Dron Cine</span>
-                </div>
-                <div className="flex justify-between border-b border-puelche-ink/5 pb-1">
-                  <span>Resolución</span>
-                  <span className="font-bold text-puelche-ink">61MP RAW / 4K ProRes</span>
-                </div>
-                <div className="flex justify-between border-b border-puelche-ink/5 pb-1">
-                  <span>Radio Operativo</span>
-                  <span className="font-bold text-puelche-ink">Los Lagos a Magallanes</span>
-                </div>
-                <div className="flex justify-between">
-                  <span>Entrega</span>
-                  <span className="font-bold text-puelche-ink">Color Grading & Licencia Total</span>
-                </div>
-              </div>
-              <Link
-                href="/contacto?servicio=fotografia"
-                className="w-full mt-2 block text-center px-4 py-3 rounded-full bg-puelche-ink text-puelche-canvas text-xs font-mono uppercase tracking-widest font-bold hover:bg-puelche-copper hover:text-puelche-ink transition-colors"
-              >
-                Agendar Expedición
-              </Link>
-            </div>
-          </div>
-        </div>
-
-        {/* 4 Pillars of Photo Service */}
-        <div className="mb-20">
-          <div className="text-center max-w-2xl mx-auto mb-12">
-            <span className="text-xs font-mono uppercase tracking-widest text-puelche-copper">Disciplinas Ópticas</span>
-            <h2 className="font-serif text-3xl sm:text-4xl font-bold mt-2 text-puelche-ink">
-              Cuatro campos de especialidad visual
-            </h2>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <div className="bg-white p-8 rounded-2xl border border-puelche-ink/10 space-y-4 hover:shadow-lg transition-all duration-300">
-              <div className="w-12 h-12 rounded-xl bg-puelche-sand flex items-center justify-center text-puelche-ink">
-                <Layers className="w-6 h-6" />
-              </div>
-              <h3 className="font-serif text-xl font-bold text-puelche-ink">Arquitectura & Hotelería</h3>
-              <p className="text-sm text-puelche-charcoal leading-relaxed">
-                Lectura de líneas, volúmenes bioclimáticos y texturas de madera nativa. Corrección de perspectiva y ambientación lumínica nocturna y diurna.
-              </p>
-            </div>
-
-            <div className="bg-white p-8 rounded-2xl border border-puelche-ink/10 space-y-4 hover:shadow-lg transition-all duration-300">
-              <div className="w-12 h-12 rounded-xl bg-puelche-sand flex items-center justify-center text-puelche-ink">
-                <Video className="w-6 h-6" />
-              </div>
-              <h3 className="font-serif text-xl font-bold text-puelche-ink">Inspección Aérea 4K</h3>
-              <p className="text-sm text-puelche-charcoal leading-relaxed">
-                Vuelos con Dron Cine en condiciones de viento patagónico. Planos de relieve territorial, costas de fiordos y avances de obra inmobiliaria.
-              </p>
-            </div>
-
-            <div className="bg-white p-8 rounded-2xl border border-puelche-ink/10 space-y-4 hover:shadow-lg transition-all duration-300">
-              <div className="w-12 h-12 rounded-xl bg-puelche-sand flex items-center justify-center text-puelche-ink">
-                <ShieldCheck className="w-6 h-6" />
-              </div>
-              <h3 className="font-serif text-xl font-bold text-puelche-ink">Industria & Procesos</h3>
-              <p className="text-sm text-puelche-charcoal leading-relaxed">
-                Documentación técnica en centros de cultivo acuícola, plantas de valor agregado y faenas agrícolas sin interrumpir la operación productiva.
-              </p>
-            </div>
-
-            <div className="bg-white p-8 rounded-2xl border border-puelche-ink/10 space-y-4 hover:shadow-lg transition-all duration-300">
-              <div className="w-12 h-12 rounded-xl bg-puelche-sand flex items-center justify-center text-puelche-ink">
-                <Eye className="w-6 h-6" />
-              </div>
-              <h3 className="font-serif text-xl font-bold text-puelche-ink">Gastronomía & Producto</h3>
-              <p className="text-sm text-puelche-charcoal leading-relaxed">
-                Puesta en escena de ingredientes de origen (mariscos, trucha, carnes maduradas y botánicos) con iluminación de estudio de alta fidelidad cromática.
-              </p>
-            </div>
-          </div>
-        </div>
-
-        {/* Selected Works Gallery */}
-        <div className="mb-20">
-          <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-4">
-            <div>
-              <span className="text-xs font-mono uppercase tracking-widest text-puelche-copper">Casos Reales</span>
-              <h2 className="font-serif text-3xl sm:text-4xl font-bold mt-2 text-puelche-ink">
-                Fotografía en el terreno austral
-              </h2>
-            </div>
-            <Link
-              href="/portafolio"
-              className="text-xs font-mono uppercase tracking-wider text-puelche-forest hover:text-puelche-ink flex items-center gap-1.5 font-bold"
-            >
-              <span>Ver archivo completo</span>
-              <ArrowRight className="w-4 h-4" />
-            </Link>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {PHOTO_PROJECTS.slice(0, 3).map((item) => (
-              <div key={item.id} className="group bg-white rounded-2xl overflow-hidden border border-puelche-ink/10 hover:shadow-xl transition-all duration-500">
-                <div className="relative aspect-[4/3] overflow-hidden bg-puelche-sand">
-                  <Image
-                    src={item.image}
-                    alt={item.title}
-                    fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-700"
-                  />
-                  <div className="absolute top-4 left-4">
-                    <span className="px-3 py-1 rounded-full text-[10px] font-mono uppercase bg-black/60 text-white backdrop-blur-sm">
-                      {item.location}
-                    </span>
-                  </div>
-                </div>
-                <div className="p-6 space-y-2">
-                  <div className="text-xs font-mono text-puelche-copper font-semibold">{item.client}</div>
-                  <h4 className="font-serif text-xl font-bold text-puelche-ink">{item.title}</h4>
-                  <p className="text-xs text-puelche-charcoal leading-relaxed">{item.summary}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* The Technical Rig / Equipment Section */}
-        <div className="bg-puelche-ink text-puelche-canvas rounded-3xl p-8 sm:p-14 mb-20">
-          <div className="max-w-3xl">
-            <span className="font-mono text-xs uppercase tracking-widest text-puelche-copper">Parque Técnico</span>
-            <h3 className="font-serif text-3xl sm:text-5xl font-bold mt-2 mb-6">
-              Herramientas de grado cinematográfico para condiciones implacables.
-            </h3>
-            <p className="text-puelche-canvas/80 text-base leading-relaxed mb-8">
-              En el sur de Chile la ventana de buen clima puede durar 45 minutos. No improvisamos con equipamiento de aficionado. Contamos con cuerpos sellados contra lluvia y condensación, ópticas fijas de apertura rápida y sistemas de estabilización giroscópica.
-            </p>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4 border-t border-white/10">
-              <div className="flex items-start gap-3">
-                <CheckCircle2 className="w-5 h-5 text-puelche-copper shrink-0 mt-0.5" />
-                <div>
-                  <h5 className="font-mono text-sm font-bold">Óptica Fija de Arquitectura</h5>
-                  <p className="text-xs text-puelche-canvas/60 mt-1">Lentes descentrables tilt-shift para líneas verticales perfectas sin distorsión.</p>
-                </div>
-              </div>
-              <div className="flex items-start gap-3">
-                <CheckCircle2 className="w-5 h-5 text-puelche-copper shrink-0 mt-0.5" />
-                <div>
-                  <h5 className="font-mono text-sm font-bold">Unidades Dron Certificadas DGAC</h5>
-                  <p className="text-xs text-puelche-canvas/60 mt-1">Operadores con licencia para espacios restringidos, borde costero y parques nacionales.</p>
-                </div>
-              </div>
-              <div className="flex items-start gap-3">
-                <CheckCircle2 className="w-5 h-5 text-puelche-copper shrink-0 mt-0.5" />
-                <div>
-                  <h5 className="font-mono text-sm font-bold">Iluminación Autónoma a Batería</h5>
-                  <p className="text-xs text-puelche-canvas/60 mt-1">Generación de luz en locaciones remotas sin conexión a red eléctrica.</p>
-                </div>
-              </div>
-              <div className="flex items-start gap-3">
-                <CheckCircle2 className="w-5 h-5 text-puelche-copper shrink-0 mt-0.5" />
-                <div>
-                  <h5 className="font-mono text-sm font-bold">Flujo de Color Calibrado (DCI-P3)</h5>
-                  <p className="text-xs text-puelche-canvas/60 mt-1">Garantía de correspondencia entre el archivo digital y la impresión offset en papel.</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* CTA section */}
-        <div className="text-center max-w-xl mx-auto space-y-6">
-          <h3 className="font-serif text-3xl font-bold text-puelche-ink">
-            ¿Planificando una sesión en el sur?
-          </h3>
-          <p className="text-puelche-charcoal text-sm leading-relaxed">
-            Revisamos el pronóstico y la disponibilidad de fechas para asegurar la ventana de luz óptima para tu proyecto.
+    <div className="w-full flex flex-col bg-white">
+      {/* Top Banner */}
+      <section className="bg-puelche-slate py-12 px-6 text-center border-b border-puelche-slate-dark">
+        <div className="max-w-4xl mx-auto space-y-2">
+          <span className="font-condensed uppercase tracking-widest text-xs font-bold text-puelche-cyan">
+            PORTAFOLIO OFICIAL
+          </span>
+          <h1 className="font-condensed text-4xl sm:text-5xl md:text-6xl uppercase tracking-wider text-white font-bold">
+            FOTOGRAFÍA
+          </h1>
+          <p className="font-sans text-sm sm:text-base text-white/80 max-w-xl mx-auto font-light">
+            Registro visual para hotelería, interiorismo, arquitectura y procesos industriales en el sur de Chile.
           </p>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Link
-              href="/contacto?servicio=fotografia"
-              className="px-8 py-4 rounded-full bg-puelche-ink text-puelche-canvas font-mono text-xs uppercase tracking-widest font-bold hover:bg-puelche-copper hover:text-puelche-ink transition-colors"
-            >
-              Consultar Disponibilidad
-            </Link>
-            <Link
-              href="https://wa.me/56966177500?text=Hola%20Puelche%20Lab,%20me%20gustar%C3%ADa%20cotizar%20un%20servicio%20de%20fotograf%C3%ADa"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="px-8 py-4 rounded-full bg-white border border-puelche-ink/20 text-puelche-ink font-mono text-xs uppercase tracking-widest font-bold hover:bg-puelche-sand transition-colors"
-            >
-              Hablar por WhatsApp
-            </Link>
+        </div>
+      </section>
+
+      {/* Panoramic Project Stripes */}
+      <section className="w-full flex flex-col" aria-label="Proyectos de Fotografía">
+        {REAL_PHOTO_PROJECTS.map((proj, idx) => (
+          <div
+            key={proj.id}
+            className="relative w-full h-[450px] sm:h-[520px] md:h-[580px] overflow-hidden group border-b border-gray-900/10"
+          >
+            {/* Panoramic Background Image */}
+            <Image
+              src={proj.image}
+              alt={proj.client}
+              fill
+              priority={idx < 2}
+              className="object-cover object-center transition-transform duration-700 ease-out group-hover:scale-105"
+            />
+            {/* Ambient Shadow Overlay */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/20" />
+
+            {/* Signature Puelche Cyan Overlay Card on Bottom Left */}
+            <div className="absolute bottom-8 left-4 sm:left-8 md:left-12 max-w-md bg-puelche-cyan text-white p-6 sm:p-7 shadow-2xl rounded-sm transition-transform duration-300 group-hover:-translate-y-1">
+              <h2 className="font-condensed uppercase tracking-wider text-lg sm:text-xl font-bold leading-snug">
+                Cliente: {proj.client}
+              </h2>
+              <p className="font-sans text-xs sm:text-sm text-white/95 mt-1 font-light">
+                {proj.location}
+              </p>
+              <p className="font-sans text-xs sm:text-sm text-white/95 mt-0.5 font-light">
+                {proj.specialty}
+              </p>
+
+              <div className="mt-4 pt-3 border-t border-white/30">
+                <button
+                  type="button"
+                  onClick={() => openModal(proj)}
+                  className="inline-flex items-center gap-2 font-condensed uppercase tracking-widest text-xs sm:text-sm font-bold text-white hover:text-puelche-slate-dark transition-colors"
+                >
+                  <span>VER FOTOGRAFÍAS</span>
+                  <ChevronRight className="w-4 h-4" />
+                </button>
+              </div>
+            </div>
+          </div>
+        ))}
+      </section>
+
+      {/* Lightbox Modal */}
+      {activeModalProject && (
+        <div className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center p-4">
+          <button
+            type="button"
+            onClick={closeModal}
+            className="absolute top-6 right-6 text-white hover:text-puelche-cyan p-2 z-10"
+            aria-label="Cerrar visor"
+          >
+            <X className="w-8 h-8" />
+          </button>
+
+          <div className="relative max-w-5xl w-full h-[70vh] flex items-center justify-center">
+            <Image
+              src={activeModalProject.gallery[currentImageIndex]}
+              alt={activeModalProject.client}
+              fill
+              className="object-contain"
+            />
+
+            {activeModalProject.gallery.length > 1 && (
+              <>
+                <button
+                  type="button"
+                  onClick={prevImage}
+                  className="absolute left-2 p-3 bg-black/50 text-white hover:text-puelche-cyan rounded-full"
+                  aria-label="Anterior"
+                >
+                  <ChevronLeft className="w-6 h-6" />
+                </button>
+                <button
+                  type="button"
+                  onClick={nextImage}
+                  className="absolute right-2 p-3 bg-black/50 text-white hover:text-puelche-cyan rounded-full"
+                  aria-label="Siguiente"
+                >
+                  <ChevronRight className="w-6 h-6" />
+                </button>
+              </>
+            )}
+          </div>
+
+          <div className="absolute bottom-6 left-1/2 -translate-x-1/2 text-center text-white font-condensed uppercase tracking-wider">
+            <p className="text-lg font-bold">{activeModalProject.client}</p>
+            <p className="text-xs text-puelche-cyan">{activeModalProject.specialty}</p>
           </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }

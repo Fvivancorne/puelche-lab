@@ -1,356 +1,212 @@
 'use client';
 
-import React, { useEffect, useRef } from 'react';
+import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { ArrowUpRight, ArrowDown, Wind, Sparkles, Compass } from 'lucide-react';
-import { PORTFOLIO_PROJECTS, STUDIO_SERVICES, CLIENT_LOGOS } from '@/data/portfolio';
-import gsap from 'gsap';
+import { ChevronDown, ArrowRight, Camera, Monitor, Compass, Sparkles } from 'lucide-react';
 
-export default function Home() {
-  const heroWipeRef = useRef<HTMLDivElement>(null);
+const HIGHLIGHT_PROJECTS = [
+  {
+    title: 'Estancia Rilan, Hotel y Cava',
+    location: 'Península de Rilán, Chiloé',
+    specialty: 'Fotografías de interiores e inmobiliario',
+    image: '/images/real/bg-portafolios-fotografia-min.jpg',
+    href: '/servicios/fotografia',
+  },
+  {
+    title: 'Cala Melí, Cabañas',
+    location: 'Puerto Varas',
+    specialty: 'Fotografías de interiores e inmobiliario',
+    image: '/images/real/bg-portafolios-fotografia-a-min.jpg',
+    href: '/servicios/fotografia',
+  },
+  {
+    title: 'Aqua Chile',
+    location: 'Puerto Montt & Fiordos',
+    specialty: 'Fotografía de producto y procesos',
+    image: '/images/real/bg-portafolios-fotografia-g-min.jpg',
+    href: '/servicios/fotografia',
+  },
+];
 
-  useEffect(() => {
-    const wipeTarget = heroWipeRef.current;
-    if (wipeTarget) {
-      gsap.set(wipeTarget, { '--wipe-lead': 0, '--wipe-trail': 0 });
-      const wipeState = { progress: 0 };
-      gsap.to(wipeState, {
-        progress: 1,
-        duration: 1.2,
-        delay: 0.2,
-        ease: 'power2.out',
-        onUpdate: () => {
-          gsap.set(wipeTarget, {
-            '--wipe-lead': Math.min(1, 2 * wipeState.progress),
-            '--wipe-trail': Math.max(0, 2 * wipeState.progress - 1),
-          });
-        },
-      });
-    }
-  }, []);
-
-  const featuredProjects = PORTFOLIO_PROJECTS.filter((p) => p.featured);
-
+export default function HomePage() {
   return (
-    <div className="w-full flex flex-col">
-      {/* 1. Hero Editorial Section */}
+    <div className="w-full flex flex-col bg-white">
+      {/* 1. HERO SECTION (100vh with bg-agencia.jpg and white central logo emblem) */}
       <section
         id="hero"
         aria-label="Puelche Lab Portada"
-        className="relative w-full min-h-[85vh] flex flex-col justify-between px-6 md:px-12 lg:px-16 pt-12 pb-16 border-b border-[#E8E8E0] bg-[#F9F9F6] overflow-hidden"
+        className="relative w-full h-[calc(100vh-70px)] min-h-[600px] flex flex-col items-center justify-center text-center overflow-hidden"
       >
-        {/* Atmospheric Backdrop */}
-        <div className="absolute inset-0 z-0 pointer-events-none">
-          <Image
-            src="/images/real/bg-home-2.jpg"
-            alt="Patagonia Austral — Paisaje Puelche Lab"
-            fill
-            priority
-            className="object-cover opacity-15 pointer-events-none"
-          />
-        </div>
-
-        {/* Subtle Grain Texture */}
-        <div className="absolute inset-0 pointer-events-none grain-overlay z-0" />
-
-        <div className="relative z-10 max-w-7xl mx-auto w-full space-y-12 my-auto">
-          {/* Top Geo Badge */}
-          <div className="flex flex-wrap items-center justify-between gap-4 border-b border-[#E8E8E0] pb-6 font-mono text-xs uppercase tracking-widest text-[#8E9089]">
-            <div className="inline-flex items-center gap-2 text-[#18191B]">
-              <span className="w-2 h-2 rounded-full bg-[#C29B63] animate-pulse" />
-              <span>PUERTO VARAS &bull; REGION DE LOS LAGOS</span>
-            </div>
-            <span>DISENO CROSS-MEDIA &bull; FOTOGRAFIA DE AUTOR</span>
-          </div>
-
-          {/* Colossal Kinetic Headline */}
-          <div className="space-y-6 pt-4">
-            <div ref={heroWipeRef} data-wipe-title>
-              <h1 className="wipe-text font-serif text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-normal tracking-tight text-[#18191B] leading-[0.95]">
-                Diseño que Habita <br />
-                <span className="italic font-serif text-[#C29B63]">el Territorio.</span>
-              </h1>
-            </div>
-
-            <p className="font-sans text-lg sm:text-2xl text-[#666863] max-w-3xl leading-relaxed font-light">
-              Elevamos marcas y proyectos patagónicos mediante fotografía de alta gama, dirección de arte contemporánea y arquitectura web de autor.
-            </p>
-          </div>
-
-          {/* Action Row */}
-          <div className="pt-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 border-t border-[#E8E8E0]">
-            <div className="flex items-center gap-4">
-              <Link
-                href="/portafolio"
-                className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-[#18191B] text-[#F9F9F6] font-mono text-xs uppercase tracking-wider hover:bg-[#2C3A32] transition-all shadow-lg hover:scale-105"
-              >
-                <span>Explorar Obras</span>
-                <ArrowUpRight className="w-4 h-4 text-[#C29B63]" />
-              </Link>
-              <Link
-                href="/contacto"
-                className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-[#FFFFFF] border border-[#E8E8E0] text-[#18191B] font-mono text-xs uppercase tracking-wider hover:bg-[#F1F1EB] transition-all"
-              >
-                <span>Cotizar Proyecto</span>
-              </Link>
-            </div>
-
-            <div className="flex items-center gap-2 text-xs font-mono uppercase text-[#8E9089]">
-              <ArrowDown className="w-4 h-4 animate-bounce text-[#C29B63]" />
-              <span>Desliza para conocer la fuerza del Puelche</span>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* 2. Manifiesto & Metáfora Territorial */}
-      <section
-        id="manifiesto"
-        aria-label="El Manifiesto del Puelche"
-        className="w-full py-24 md:py-36 px-6 md:px-12 lg:px-16 bg-[#18191B] text-[#F9F9F6] relative overflow-hidden"
-      >
-        {/* Atmospheric Backdrop */}
-        <div className="absolute inset-0 z-0 pointer-events-none">
+        {/* Background Image: Misty Forest of Puerto Varas */}
+        <div className="absolute inset-0 z-0">
           <Image
             src="/images/real/bg-agencia.jpg"
-            alt="Viento Puelche Cordillera"
+            alt="Puelche Lab — Bosque patagónico Puerto Varas"
             fill
-            className="object-cover opacity-20 pointer-events-none"
+            priority
+            className="object-cover object-center"
           />
+          {/* Subtle vignette overlay */}
+          <div className="absolute inset-0 bg-black/35" />
         </div>
 
-        <div className="relative z-10 max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
-          <div className="lg:col-span-5 space-y-6">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#202225] text-[#C29B63] font-mono text-xs uppercase tracking-widest border border-[#2A2B2E]">
-              <Wind className="w-4 h-4" />
-              <span>ORIGEN &bull; EL VIENTO PUELCHE</span>
-            </div>
-            <h2 className="font-serif text-3xl sm:text-5xl font-normal leading-tight text-[#F9F9F6]">
-              Una fuerza cálida y limpia que transforma el paisaje.
-            </h2>
+        {/* Hero Center Content: Gigantic White Logo & Tagline */}
+        <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 flex flex-col items-center space-y-6">
+          {/* Logo Emblem: White Cloud Camera Puelche Lab */}
+          <div className="w-64 sm:w-80 md:w-96 max-w-full drop-shadow-2xl animate-in fade-in zoom-in-95 duration-700">
+            <Image
+              src="/images/real/logo-puelche.png"
+              alt="Puelche Lab Logo Emblema"
+              width={412}
+              height={282}
+              priority
+              className="w-full h-auto object-contain"
+            />
           </div>
 
-          <div className="lg:col-span-7 space-y-8 font-sans text-base sm:text-lg text-[#AEB0A9] leading-relaxed">
-            <p>
-              En el sur de Chile, el viento Puelche llega desde la cordillera despejando los cielos, templando el aire y revelando la geometría imponente de los volcanes y los lagos.
+          {/* Slogan & Description */}
+          <div className="space-y-2 text-white">
+            <p className="font-condensed text-xl sm:text-2xl md:text-3xl uppercase tracking-wider font-light text-white/95 drop-shadow">
+              Un Estudio de Diseño Cross Media
             </p>
-            <p>
-              Así entendemos nuestro trabajo: una fuerza creativa cross-media que despeja el ruido genérico del mercado y deja a la vista la pureza, el oficio y la verdadera escala de tu marca.
+            <p className="font-condensed text-2xl sm:text-3xl md:text-4xl uppercase tracking-wide font-bold text-puelche-cyan drop-shadow-md">
+              y Fotografía de Puerto Varas.
             </p>
-            <div className="pt-4 grid grid-cols-2 sm:grid-cols-3 gap-6 font-mono text-xs uppercase tracking-wider text-[#C29B63] border-t border-[#2A2B2E]">
-              <div>
-                <span className="block text-2xl sm:text-3xl font-serif text-[#F9F9F6]">10+</span>
-                <span>Años de Oficio</span>
-              </div>
-              <div>
-                <span className="block text-2xl sm:text-3xl font-serif text-[#F9F9F6]">100%</span>
-                <span>Patagonia &amp; Lagos</span>
-              </div>
-              <div>
-                <span className="block text-2xl sm:text-3xl font-serif text-[#F9F9F6]">4K</span>
-                <span>Tecnología Austral</span>
-              </div>
-            </div>
           </div>
+        </div>
+
+        {/* Scroll Indicator */}
+        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-10 text-white/80 flex flex-col items-center space-y-1 animate-bounce">
+          <span className="font-condensed uppercase tracking-widest text-xs text-white/90">Descubre</span>
+          <ChevronDown className="w-5 h-5 text-puelche-cyan" />
         </div>
       </section>
 
-      {/* 3. Core Services Grid (4 Pilares) */}
+      {/* 2. STORYTELLING SECTION (100vh with bg-home-2.jpg and Cross-Media Explanation) */}
       <section
-        id="servicios"
-        aria-label="Servicios Principales"
-        className="w-full py-24 md:py-36 px-6 md:px-12 lg:px-16 bg-[#F9F9F6] border-b border-[#E8E8E0]"
+        id="cross-media"
+        aria-label="Qué es Cross Media"
+        className="relative w-full min-h-[90vh] py-24 px-4 sm:px-6 lg:px-8 flex items-center justify-center overflow-hidden"
       >
-        <div className="max-w-7xl mx-auto space-y-16">
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-8 border-b border-[#E8E8E0]">
-            <div className="space-y-3">
-              <span className="font-mono text-xs uppercase tracking-widest text-[#C29B63]">
-                [ 04 PILARES DE AUTOR ]
-              </span>
-              <h2 className="font-serif text-4xl sm:text-5xl md:text-6xl font-normal text-[#18191B]">
-                Nuestros Servicios
-              </h2>
-            </div>
-            <p className="font-sans text-sm sm:text-base text-[#666863] max-w-md leading-relaxed">
-              Soluciones integrales de diseño y producción visual donde la estética y la tecnología operan en sincronía.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {STUDIO_SERVICES.map((serv, index) => (
-              <div
-                key={serv.id}
-                className="group p-8 sm:p-10 rounded-3xl bg-[#FFFFFF] border border-[#E8E8E0] hover:border-[#C29B63] hover:shadow-xl transition-all duration-300 flex flex-col justify-between space-y-8"
-              >
-                <div className="space-y-6">
-                  <div className="flex items-center justify-between">
-                    <span className="font-mono text-xs text-[#8E9089]">0{index + 1} //</span>
-                    <span className="px-3 py-1 rounded-full bg-[#F1F1EB] font-mono text-[10px] uppercase tracking-wider text-[#666863]">
-                      {serv.tag}
-                    </span>
-                  </div>
-
-                  <h3 className="font-serif text-2xl sm:text-3xl font-normal text-[#18191B] group-hover:text-[#C29B63] transition-colors">
-                    {serv.title}
-                  </h3>
-
-                  <p className="font-sans text-sm sm:text-base text-[#666863] leading-relaxed">
-                    {serv.shortDesc}
-                  </p>
-
-                  <ul className="space-y-2 pt-2 border-t border-[#F1F1EB] font-sans text-xs sm:text-sm text-[#8E9089]">
-                    {serv.details.map((d, i) => (
-                      <li key={i} className="flex items-start gap-2">
-                        <span className="text-[#C29B63] font-mono">&bull;</span>
-                        <span>{d}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
-                <div className="pt-6 border-t border-[#E8E8E0] flex items-center justify-between">
-                  <Link
-                    href={serv.href}
-                    className="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-wider text-[#18191B] group-hover:text-[#C29B63] font-semibold transition-colors"
-                  >
-                    <span>Conocer Servicio</span>
-                    <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-                  </Link>
-                </div>
-              </div>
-            ))}
-          </div>
+        {/* Background Image: Wooden fence and pasture with misty lake */}
+        <div className="absolute inset-0 z-0">
+          <Image
+            src="/images/real/bg-home-2.jpg"
+            alt="Paisaje Sur de Chile — Puelche Lab"
+            fill
+            className="object-cover object-center"
+          />
+          {/* Dark Glass Overlay */}
+          <div className="absolute inset-0 bg-puelche-slate-dark/75 backdrop-blur-[2px]" />
         </div>
-      </section>
 
-      {/* 4. Featured Portfolio Showcase */}
-      <section
-        id="obras"
-        aria-label="Obras y Proyectos Destacados"
-        className="w-full py-24 md:py-36 px-6 md:px-12 lg:px-16 bg-[#F1F1EB] border-b border-[#E8E8E0]"
-      >
-        <div className="max-w-7xl mx-auto space-y-16">
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-8 border-b border-[#E5E5DC]">
-            <div className="space-y-3">
-              <span className="font-mono text-xs uppercase tracking-widest text-[#C29B63]">
-                [ SELECCIÓN DESTACADA ]
-              </span>
-              <h2 className="font-serif text-4xl sm:text-5xl md:text-6xl font-normal text-[#18191B]">
-                Obras Recientes
-              </h2>
-            </div>
-            <Link
-              href="/portafolio"
-              className="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-wider text-[#18191B] hover:text-[#C29B63] transition-colors"
-            >
-              <span>Ver Portafolio Completo</span>
-              <ArrowUpRight className="w-4 h-4" />
-            </Link>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-            {featuredProjects.map((project) => (
-              <div
-                key={project.id}
-                className="group flex flex-col space-y-5 rounded-3xl bg-[#FFFFFF] p-6 sm:p-8 border border-[#E5E5DC] shadow-sm hover:shadow-xl transition-all duration-300"
-              >
-                <div className="relative w-full aspect-[16/10] rounded-2xl overflow-hidden bg-[#E8E8E0]">
-                  <Image
-                    src={project.image}
-                    alt={project.title}
-                    fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-700"
-                  />
-                  <div className="absolute top-4 left-4 px-3 py-1 rounded-full bg-[#18191B]/80 backdrop-blur-md text-[#F9F9F6] font-mono text-[10px] uppercase tracking-wider">
-                    {project.category}
-                  </div>
-                </div>
-
-                <div className="space-y-3 pt-2">
-                  <div className="flex items-center justify-between font-mono text-xs text-[#8E9089]">
-                    <span>{project.location}</span>
-                    <span>{project.year}</span>
-                  </div>
-                  <h3 className="font-serif text-2xl font-normal text-[#18191B] group-hover:text-[#C29B63] transition-colors">
-                    {project.title}
-                  </h3>
-                  <p className="font-sans text-sm text-[#666863] leading-relaxed line-clamp-2">
-                    {project.summary}
-                  </p>
-                </div>
-
-                <div className="pt-4 border-t border-[#EBEBE5] flex flex-wrap gap-2">
-                  {project.deliverables.map((deliv, idx) => (
-                    <span
-                      key={idx}
-                      className="px-2.5 py-1 rounded-md bg-[#F1F1EB] font-mono text-[10px] text-[#666863]"
-                    >
-                      {deliv}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* 5. Clientes & Confianza Territorial */}
-      <section
-        id="clientes-strip"
-        aria-label="Marcas y Clientes"
-        className="w-full py-20 px-6 md:px-12 lg:px-16 bg-[#F9F9F6] border-b border-[#E8E8E0]"
-      >
-        <div className="max-w-7xl mx-auto space-y-10 text-center">
-          <span className="font-mono text-xs uppercase tracking-widest text-[#8E9089]">
-            [ EMPRESAS &bull; HOTELES &bull; INSTITUCIONES DEL SUR ]
+        {/* Center Content Card */}
+        <div className="relative z-10 max-w-4xl mx-auto text-center text-white px-4">
+          <span className="inline-block font-condensed uppercase tracking-widest text-sm text-puelche-cyan font-semibold mb-4 px-3 py-1 rounded bg-puelche-cyan/15 border border-puelche-cyan/30">
+            Puerto Varas &bull; Región de Los Lagos
           </span>
-          <div className="flex flex-wrap items-center justify-center gap-6 sm:gap-10 font-serif text-xl sm:text-2xl text-[#666863]">
-            {CLIENT_LOGOS.map((name, i) => (
-              <span
-                key={i}
-                className="hover:text-[#18191B] transition-colors cursor-default select-none"
-              >
-                {name}
-              </span>
-            ))}
-          </div>
-        </div>
-      </section>
 
-      {/* 6. Closing Call to Action */}
-      <section
-        id="cta-cierre"
-        aria-label="Iniciar Proyecto"
-        className="w-full py-24 md:py-36 px-6 md:px-12 lg:px-16 bg-[#2C3A32] text-[#F9F9F6] text-center relative overflow-hidden"
-      >
-        <div className="max-w-4xl mx-auto space-y-8 relative z-10">
-          <span className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#1E2722] text-[#C29B63] font-mono text-xs uppercase tracking-widest">
-            <Sparkles className="w-3.5 h-3.5" />
-            <span>DAR EL SIGUIENTE PASO</span>
-          </span>
-          <h2 className="font-serif text-4xl sm:text-6xl font-normal leading-tight text-[#F9F9F6]">
-            Hagamos que tu proyecto pase al frente en la vitrina del mercado.
+          <h2 className="font-condensed text-3xl sm:text-4xl md:text-5xl font-bold uppercase tracking-wide text-white mb-8 leading-tight">
+            Somos un Estudio de Diseño Cross Media <br className="hidden sm:inline" />
+            y Fotografía en Puerto Varas.
           </h2>
-          <p className="font-sans text-base sm:text-xl text-[#AEB0A9] max-w-2xl mx-auto font-light leading-relaxed">
-            Conversemos sobre tu próxima producción fotográfica, identidad de marca o plataforma web en Puerto Varas.
-          </p>
-          <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Link
-              href="/contacto"
-              className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-[#C29B63] text-[#18191B] font-mono text-xs uppercase tracking-wider font-semibold hover:bg-[#E6D5B8] transition-all shadow-xl hover:scale-105"
-            >
-              <span>Completar Brief</span>
-              <ArrowUpRight className="w-4 h-4" />
-            </Link>
-            <Link
-              href="/portafolio"
-              className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-transparent border border-[#F9F9F6]/30 text-[#F9F9F6] font-mono text-xs uppercase tracking-wider hover:bg-[#F9F9F6]/10 transition-all"
-            >
-              <span>Ver Trabajos</span>
-            </Link>
+
+          <div className="bg-black/30 border border-white/10 rounded-2xl p-6 sm:p-10 md:p-12 shadow-2xl backdrop-blur-sm space-y-6">
+            <h3 className="font-condensed text-xl sm:text-2xl font-bold text-puelche-cyan uppercase tracking-wider">
+              Pero, ¿Qué es Cross Media?
+            </h3>
+            <p className="font-sans text-base sm:text-lg md:text-xl text-white/90 leading-relaxed font-light text-justify sm:text-center">
+              Nos referimos a que hacemos piezas gráficas para todos los medios, ya sean digitales, impresos, y/o audiovisuales. Contamos con un estudio de fotografía y grabación muy bien equipado, tenemos iluminación profesional y equipos de alta gama, tanto para hacer trabajos en tierra o desde el aire, que junto con las habilidades técnicas de nuestro equipo hacemos resaltar tu producto o servicio, haciendo que pase al frente en la vitrina del mercado.
+            </p>
+
+            {/* Feature Badges */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 pt-6 border-t border-white/10 font-condensed uppercase tracking-wider text-xs sm:text-sm">
+              <div className="bg-white/5 border border-white/10 p-3 rounded-lg flex flex-col items-center text-center">
+                <span className="text-puelche-cyan font-bold text-base">ESTUDIO PROPIO</span>
+                <span className="text-white/70 text-xs">En Puerto Varas</span>
+              </div>
+              <div className="bg-white/5 border border-white/10 p-3 rounded-lg flex flex-col items-center text-center">
+                <span className="text-puelche-cyan font-bold text-base">TIERRA Y AIRE</span>
+                <span className="text-white/70 text-xs">Dron 4K & Cine</span>
+              </div>
+              <div className="bg-white/5 border border-white/10 p-3 rounded-lg flex flex-col items-center text-center">
+                <span className="text-puelche-cyan font-bold text-base">ILUMINACIÓN</span>
+                <span className="text-white/70 text-xs">Set Profesional</span>
+              </div>
+              <div className="bg-white/5 border border-white/10 p-3 rounded-lg flex flex-col items-center text-center">
+                <span className="text-puelche-cyan font-bold text-base">CROSS-MEDIA</span>
+                <span className="text-white/70 text-xs">Digital, Impreso, Video</span>
+              </div>
+            </div>
           </div>
+        </div>
+      </section>
+
+      {/* 3. PORTFOLIO SHOWCASE STRIPES (Panoramic Projects with Cyan Overlay Cards) */}
+      <section
+        id="portafolio-preview"
+        aria-label="Muestra de Portafolio"
+        className="w-full flex flex-col"
+      >
+        <div className="bg-puelche-slate py-8 px-6 text-center">
+          <span className="font-condensed uppercase tracking-widest text-xs text-puelche-cyan font-bold block mb-1">
+            Producciones Seleccionadas
+          </span>
+          <h2 className="font-condensed text-3xl sm:text-4xl uppercase tracking-wider text-white font-bold">
+            Fotografía de Alto Nivel en la Patagonia
+          </h2>
+        </div>
+
+        {HIGHLIGHT_PROJECTS.map((proj, idx) => (
+          <div
+            key={proj.title}
+            className="relative w-full h-[450px] sm:h-[520px] overflow-hidden group border-b border-puelche-slate-dark"
+          >
+            {/* Background Panorama */}
+            <Image
+              src={proj.image}
+              alt={proj.title}
+              fill
+              className="object-cover object-center transition-transform duration-700 ease-out group-hover:scale-105"
+            />
+            {/* Subtle Gradient */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/20" />
+
+            {/* Signature Cyan Overlay Card on Bottom Left */}
+            <div className="absolute bottom-8 left-4 sm:left-8 md:left-12 max-w-md bg-puelche-cyan text-white p-6 sm:p-7 shadow-2xl rounded-sm transition-transform duration-300 group-hover:-translate-y-1">
+              <h3 className="font-condensed uppercase tracking-wider text-lg sm:text-xl font-bold leading-snug">
+                Cliente: {proj.title}
+              </h3>
+              <p className="font-sans text-xs sm:text-sm text-white/95 mt-1 font-light">
+                {proj.location}
+              </p>
+              <p className="font-sans text-xs sm:text-sm text-white/95 mt-0.5 font-light">
+                {proj.specialty}
+              </p>
+
+              <div className="mt-4 pt-3 border-t border-white/30">
+                <Link
+                  href={proj.href}
+                  className="inline-flex items-center gap-2 font-condensed uppercase tracking-widest text-xs sm:text-sm font-bold text-white hover:text-puelche-slate-dark transition-colors"
+                >
+                  <span>VER FOTOGRAFÍAS</span>
+                  <ArrowRight className="w-4 h-4" />
+                </Link>
+              </div>
+            </div>
+          </div>
+        ))}
+
+        {/* View All Projects CTA Banner */}
+        <div className="bg-white py-12 px-6 text-center border-b border-gray-200">
+          <Link
+            href="/servicios/fotografia"
+            className="inline-flex items-center gap-3 px-8 py-4 bg-puelche-slate text-white font-condensed uppercase tracking-widest text-base font-bold rounded-sm hover:bg-puelche-cyan transition-colors duration-200 shadow-md"
+          >
+            <span>Ver Todo el Portafolio</span>
+            <ArrowRight className="w-5 h-5" />
+          </Link>
         </div>
       </section>
     </div>

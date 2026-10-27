@@ -1,386 +1,222 @@
 'use client';
 
-import { useState, Suspense } from 'react';
-import { useSearchParams } from 'next/navigation';
-import Link from 'next/link';
-import {
-  MapPin,
-  Phone,
-  Mail,
-  Clock,
-  Send,
-  MessageCircle,
-  CheckCircle2,
-  Calendar,
-  Sparkles,
-} from 'lucide-react';
+import React, { useState } from 'react';
+import { Mail, Phone, Clock, Facebook, Instagram, Send, CheckCircle2 } from 'lucide-react';
 
-const SERVICES = [
-  'Fotografía Arquitectura & Hotelería',
-  'Fotografía Industrial & Dron 4K',
-  'Diseño de Marca & Identidad',
-  'Desarrollo Web Next.js',
-  'Diseño Editorial & Memorias',
-  'Proyecto Integral Cross-Media',
-];
+export default function ContactoPage() {
+  const [name, setName] = useState('');
+  const [phone, setPhone] = useState('');
+  const [email, setEmail] = useState('');
+  const [message, setMessage] = useState('');
+  const [selectedServices, setSelectedServices] = useState<string[]>([]);
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
-const BUDGETS = [
-  '$1.5M — $3.0M CLP',
-  '$3.0M — $6.0M CLP',
-  '$6.0M — $12.0M CLP',
-  '+$12.0M CLP (Corporativo)',
-];
+  const servicesList = [
+    'Fotografía',
+    'Sitio Web',
+    'Redes Sociales',
+    'Diseño Gráfico',
+  ];
 
-const REGIONS = [
-  'Puerto Varas & Cuenca Llanquihue',
-  'Puerto Montt',
-  'Archipiélago de Chiloé',
-  'Carretera Austral / Aysén',
-  'Magallanes & Torres del Paine',
-  'Santiago / Otra Región',
-];
-
-function ContactForm() {
-  const searchParams = useSearchParams();
-  const initialService = searchParams.get('servicio') || '';
-  const initialProject = searchParams.get('proyecto') || '';
-
-  const [selectedServices, setSelectedServices] = useState<string[]>(
-    initialService ? [initialService] : []
-  );
-  const [selectedBudget, setSelectedBudget] = useState<string>('');
-  const [selectedRegion, setSelectedRegion] = useState<string>('Puerto Varas & Cuenca Llanquihue');
-  const [name, setName] = useState<string>('');
-  const [company, setCompany] = useState<string>('');
-  const [email, setEmail] = useState<string>('');
-  const [phone, setPhone] = useState<string>('');
-  const [details, setDetails] = useState<string>(
-    initialProject ? `Consulta referente al proyecto: ${initialProject}` : ''
-  );
-  const [submitted, setSubmitted] = useState<boolean>(false);
-
-  const toggleService = (srv: string) => {
-    setSelectedServices(prev =>
-      prev.includes(srv) ? prev.filter(s => s !== srv) : [...prev, srv]
+  const handleCheckboxChange = (service: string) => {
+    setSelectedServices((prev) =>
+      prev.includes(service)
+        ? prev.filter((s) => s !== service)
+        : [...prev, service]
     );
-  };
-
-  // Generate pre-filled WhatsApp message
-  const generateWhatsAppLink = () => {
-    const srvText = selectedServices.length > 0 ? selectedServices.join(', ') : 'Servicios generales';
-    const budText = selectedBudget || 'Por definir';
-    const msg = `Hola Puelche Lab,\n\nMi nombre es ${name || 'un prospecto'} de la empresa ${company || 'Independiente'}.\nUbicación: ${selectedRegion}\nServicios de interés: ${srvText}\nPresupuesto estimado: ${budText}\n\nDetalles del proyecto:\n${details || 'Me gustaría coordinar una reunión para evaluar nuestra iniciativa.'}\n\nContacto: ${phone || email || 'vía WhatsApp'}`;
-    return `https://wa.me/56966177500?text=${encodeURIComponent(msg)}`;
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitted(true);
+    setIsSubmitted(true);
   };
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
-      {/* Left Column: Direct Studio Information */}
-      <div className="lg:col-span-5 space-y-8">
-        <div className="bg-white rounded-3xl p-8 sm:p-10 border border-puelche-ink/10 shadow-sm space-y-8">
-          <div>
-            <span className="text-xs font-mono uppercase tracking-widest text-puelche-forest font-semibold">
-              Sede Central
-            </span>
-            <h3 className="font-serif text-2xl font-bold text-puelche-ink mt-2">
-              Puelche Lab — Estudio & Taller
-            </h3>
-            <p className="text-sm text-puelche-charcoal mt-2 leading-relaxed">
-              Ubicados en Puerto Varas, operando con equipamiento propio y vehículos todo terreno para despliegues a lo largo de la Patagonia.
+    <div className="w-full flex flex-col bg-white">
+      {/* Top Section with 2-Column Form Layout */}
+      <section className="max-w-6xl mx-auto px-6 sm:px-8 lg:px-12 py-16 md:py-24 w-full">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
+          {/* Left Column: Formulario */}
+          <div className="lg:col-span-7 space-y-6">
+            <h1 className="font-condensed text-4xl sm:text-5xl font-bold uppercase tracking-wider text-puelche-cyan">
+              Contacto
+            </h1>
+            <p className="font-sans text-sm sm:text-base text-puelche-gray font-light">
+              Para solicitar cotizaciones o información sobre nuestros servicios, por favor completa el formulario:
             </p>
-          </div>
 
-          <div className="space-y-5 text-sm font-sans border-t border-puelche-ink/5 pt-6">
-            <div className="flex items-start gap-4">
-              <div className="w-10 h-10 rounded-xl bg-puelche-sand/60 flex items-center justify-center text-puelche-ink shrink-0 mt-0.5">
-                <MapPin className="w-5 h-5 text-puelche-copper" />
-              </div>
-              <div>
-                <div className="font-mono text-xs text-puelche-forest font-bold uppercase">Dirección Física</div>
-                <div className="text-puelche-ink font-medium mt-0.5">San José 530, Puerto Varas</div>
-                <div className="text-xs text-puelche-charcoal/70">Región de Los Lagos, Chile</div>
-              </div>
-            </div>
-
-            <div className="flex items-start gap-4">
-              <div className="w-10 h-10 rounded-xl bg-puelche-sand/60 flex items-center justify-center text-puelche-ink shrink-0 mt-0.5">
-                <Phone className="w-5 h-5 text-puelche-copper" />
-              </div>
-              <div>
-                <div className="font-mono text-xs text-puelche-forest font-bold uppercase">Teléfono & WhatsApp</div>
-                <div className="text-puelche-ink font-medium mt-0.5">+56 9 6617 7500</div>
-                <div className="text-xs text-puelche-charcoal/70">Línea directa para coordinación de terreno</div>
-              </div>
-            </div>
-
-            <div className="flex items-start gap-4">
-              <div className="w-10 h-10 rounded-xl bg-puelche-sand/60 flex items-center justify-center text-puelche-ink shrink-0 mt-0.5">
-                <Mail className="w-5 h-5 text-puelche-copper" />
-              </div>
-              <div>
-                <div className="font-mono text-xs text-puelche-forest font-bold uppercase">Correo Electrónico</div>
-                <div className="text-puelche-ink font-medium mt-0.5">hola@puelchelab.cl</div>
-                <div className="text-xs text-puelche-charcoal/70">Respuesta formal en menos de 24 hrs hábiles</div>
-              </div>
-            </div>
-
-            <div className="flex items-start gap-4">
-              <div className="w-10 h-10 rounded-xl bg-puelche-sand/60 flex items-center justify-center text-puelche-ink shrink-0 mt-0.5">
-                <Clock className="w-5 h-5 text-puelche-copper" />
-              </div>
-              <div>
-                <div className="font-mono text-xs text-puelche-forest font-bold uppercase">Horario de Operación</div>
-                <div className="text-puelche-ink font-medium mt-0.5">Lunes a Viernes — 09:00 a 18:30 hrs</div>
-                <div className="text-xs text-puelche-charcoal/70">Expediciones fotográficas fines de semana según pronóstico</div>
-              </div>
-            </div>
-          </div>
-
-          <div className="p-4 rounded-2xl bg-puelche-sand/40 border border-puelche-ink/5 flex items-center justify-between">
-            <span className="text-xs font-mono text-puelche-charcoal">¿Necesitas respuesta inmediata?</span>
-            <Link
-              href={generateWhatsAppLink()}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-[#25D366] text-white text-xs font-mono font-bold hover:bg-[#20bd5a] transition-colors"
-            >
-              <MessageCircle className="w-3.5 h-3.5" />
-              <span>Abrir WhatsApp</span>
-            </Link>
-          </div>
-        </div>
-      </div>
-
-      {/* Right Column: Interactive Briefing Form */}
-      <div className="lg:col-span-7">
-        <div className="bg-white rounded-3xl p-8 sm:p-12 border border-puelche-ink/10 shadow-sm">
-          {submitted ? (
-            <div className="py-12 text-center space-y-6">
-              <div className="w-16 h-16 rounded-full bg-puelche-sand text-puelche-forest mx-auto flex items-center justify-center">
-                <CheckCircle2 className="w-10 h-10 text-puelche-copper" />
-              </div>
-              <h3 className="font-serif text-3xl font-bold text-puelche-ink">
-                Brief Recibido con Éxito
-              </h3>
-              <p className="text-puelche-charcoal text-base max-w-md mx-auto leading-relaxed">
-                Gracias {name || 'por tu interés'}. Hemos registrado los requerimientos de {company || 'tu proyecto'}. Uno de nuestros directores se pondrá en contacto contigo en las próximas 24 horas.
-              </p>
-              <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-4">
-                <Link
-                  href={generateWhatsAppLink()}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="px-6 py-3 rounded-full bg-[#25D366] text-white text-xs font-mono uppercase tracking-wider font-bold flex items-center gap-2 hover:bg-[#20bd5a] transition-colors"
-                >
-                  <MessageCircle className="w-4 h-4" />
-                  <span>Agilizar por WhatsApp</span>
-                </Link>
-                <button
-                  onClick={() => setSubmitted(false)}
-                  className="px-6 py-3 rounded-full bg-puelche-sand text-puelche-ink text-xs font-mono uppercase tracking-wider hover:bg-puelche-ink hover:text-white transition-colors"
-                >
-                  Enviar otro requerimiento
-                </button>
-              </div>
-            </div>
-          ) : (
-            <form onSubmit={handleSubmit} className="space-y-8">
-              <div>
-                <span className="text-xs font-mono uppercase tracking-widest text-puelche-copper">
-                  Fase 01 — Disciplinas de Interés
-                </span>
-                <h3 className="font-serif text-2xl font-bold text-puelche-ink mt-1 mb-4">
-                  ¿Qué componentes requiere tu proyecto?
+            {isSubmitted ? (
+              <div className="bg-puelche-cyan/10 border border-puelche-cyan/30 rounded-lg p-8 text-center space-y-3">
+                <CheckCircle2 className="w-12 h-12 text-puelche-cyan mx-auto" />
+                <h3 className="font-condensed text-2xl font-bold uppercase text-puelche-dark">
+                  ¡Mensaje Enviado con Éxito!
                 </h3>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                  {SERVICES.map((srv) => {
-                    const isSelected = selectedServices.includes(srv);
-                    return (
-                      <button
-                        type="button"
-                        key={srv}
-                        onClick={() => toggleService(srv)}
-                        className={`text-left p-3 rounded-xl border text-xs font-mono transition-all duration-200 flex items-center justify-between ${
-                          isSelected
-                            ? 'bg-puelche-ink text-puelche-canvas border-puelche-ink font-bold'
-                            : 'bg-puelche-canvas/60 text-puelche-charcoal border-puelche-ink/10 hover:border-puelche-ink/30'
-                        }`}
-                      >
-                        <span>{srv}</span>
-                        {isSelected && <CheckCircle2 className="w-3.5 h-3.5 text-puelche-copper shrink-0 ml-2" />}
-                      </button>
-                    );
-                  })}
+                <p className="font-sans text-sm text-puelche-gray">
+                  Gracias por escribirnos. Paula Valdivieso o nuestro equipo se pondrá en contacto contigo a la brevedad.
+                </p>
+              </div>
+            ) : (
+              <form onSubmit={handleSubmit} className="space-y-5">
+                <div>
+                  <label
+                    htmlFor="nombre"
+                    className="block font-condensed uppercase tracking-wider text-xs font-bold text-puelche-slate mb-1"
+                  >
+                    Nombre y Apellido *
+                  </label>
+                  <input
+                    id="nombre"
+                    type="text"
+                    required
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    placeholder="Tu nombre completo"
+                    className="w-full px-4 py-3 bg-[#F4F8FA] border border-gray-200 rounded-sm text-sm text-puelche-dark focus:outline-none focus:border-puelche-cyan focus:bg-white transition-colors"
+                  />
                 </div>
-              </div>
 
-              {/* Budget Range */}
-              <div>
-                <span className="text-xs font-mono uppercase tracking-widest text-puelche-copper">
-                  Fase 02 — Rango de Inversión Estimado
-                </span>
-                <h3 className="font-serif text-xl font-bold text-puelche-ink mt-1 mb-3">
-                  Presupuesto objetivo para la iniciativa
-                </h3>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                  {BUDGETS.map((b) => (
-                    <button
-                      type="button"
-                      key={b}
-                      onClick={() => setSelectedBudget(b)}
-                      className={`text-left p-3 rounded-xl border text-xs font-mono transition-all duration-200 ${
-                        selectedBudget === b
-                          ? 'bg-puelche-copper text-puelche-ink font-bold border-puelche-copper'
-                          : 'bg-puelche-canvas/60 text-puelche-charcoal border-puelche-ink/10 hover:border-puelche-ink/30'
-                      }`}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label
+                      htmlFor="telefono"
+                      className="block font-condensed uppercase tracking-wider text-xs font-bold text-puelche-slate mb-1"
                     >
-                      {b}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              {/* Geographic Territory */}
-              <div>
-                <label className="block text-xs font-mono uppercase tracking-widest text-puelche-copper mb-2">
-                  Fase 03 — Ubicación / Territorio de la Obra
-                </label>
-                <select
-                  value={selectedRegion}
-                  onChange={(e) => setSelectedRegion(e.target.value)}
-                  className="w-full p-3.5 rounded-xl border border-puelche-ink/15 bg-puelche-canvas/60 text-sm font-sans text-puelche-ink focus:outline-none focus:ring-2 focus:ring-puelche-copper/40"
-                >
-                  {REGIONS.map((r) => (
-                    <option key={r} value={r}>
-                      {r}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              {/* Contact Information */}
-              <div className="space-y-4 pt-4 border-t border-puelche-ink/10">
-                <span className="text-xs font-mono uppercase tracking-widest text-puelche-copper block">
-                  Fase 04 — Datos de Contacto
-                </span>
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-xs font-mono text-puelche-charcoal mb-1">Nombre Completo *</label>
+                      Teléfono de Contacto *
+                    </label>
                     <input
-                      type="text"
-                      required
-                      placeholder="Ej. Francisca Bennett"
-                      value={name}
-                      onChange={(e) => setName(e.target.value)}
-                      className="w-full p-3 rounded-xl border border-puelche-ink/15 bg-puelche-canvas/60 text-sm focus:outline-none focus:ring-2 focus:ring-puelche-copper/40"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-xs font-mono text-puelche-charcoal mb-1">Empresa / Proyecto</label>
-                    <input
-                      type="text"
-                      placeholder="Ej. Hotel o Inmobiliaria"
-                      value={company}
-                      onChange={(e) => setCompany(e.target.value)}
-                      className="w-full p-3 rounded-xl border border-puelche-ink/15 bg-puelche-canvas/60 text-sm focus:outline-none focus:ring-2 focus:ring-puelche-copper/40"
-                    />
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-xs font-mono text-puelche-charcoal mb-1">Correo Electrónico *</label>
-                    <input
-                      type="email"
-                      required
-                      placeholder="nombre@empresa.cl"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      className="w-full p-3 rounded-xl border border-puelche-ink/15 bg-puelche-canvas/60 text-sm focus:outline-none focus:ring-2 focus:ring-puelche-copper/40"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-xs font-mono text-puelche-charcoal mb-1">Teléfono Móvil / WhatsApp *</label>
-                    <input
+                      id="telefono"
                       type="tel"
                       required
-                      placeholder="+56 9 1234 5678"
                       value={phone}
                       onChange={(e) => setPhone(e.target.value)}
-                      className="w-full p-3 rounded-xl border border-puelche-ink/15 bg-puelche-canvas/60 text-sm focus:outline-none focus:ring-2 focus:ring-puelche-copper/40"
+                      placeholder="+56 9 1234 5678"
+                      className="w-full px-4 py-3 bg-[#F4F8FA] border border-gray-200 rounded-sm text-sm text-puelche-dark focus:outline-none focus:border-puelche-cyan focus:bg-white transition-colors"
                     />
+                  </div>
+
+                  <div>
+                    <label
+                      htmlFor="correo"
+                      className="block font-condensed uppercase tracking-wider text-xs font-bold text-puelche-slate mb-1"
+                    >
+                      Correo Electrónico *
+                    </label>
+                    <input
+                      id="correo"
+                      type="email"
+                      required
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      placeholder="nombre@empresa.cl"
+                      className="w-full px-4 py-3 bg-[#F4F8FA] border border-gray-200 rounded-sm text-sm text-puelche-dark focus:outline-none focus:border-puelche-cyan focus:bg-white transition-colors"
+                    />
+                  </div>
+                </div>
+
+                {/* Solicitud Checkboxes */}
+                <div>
+                  <span className="block font-condensed uppercase tracking-wider text-xs font-bold text-puelche-slate mb-2">
+                    Solicitud
+                  </span>
+                  <div className="grid grid-cols-2 gap-3">
+                    {servicesList.map((service) => (
+                      <label
+                        key={service}
+                        className="flex items-center space-x-2 text-sm text-puelche-dark cursor-pointer font-sans select-none"
+                      >
+                        <input
+                          type="checkbox"
+                          checked={selectedServices.includes(service)}
+                          onChange={() => handleCheckboxChange(service)}
+                          className="w-4 h-4 text-puelche-cyan focus:ring-puelche-cyan rounded border-gray-300"
+                        />
+                        <span>{service}</span>
+                      </label>
+                    ))}
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-xs font-mono text-puelche-charcoal mb-1">
-                    Breve descripción del desafío o fecha tentativa de entrega
+                  <label
+                    htmlFor="mensaje"
+                    className="block font-condensed uppercase tracking-wider text-xs font-bold text-puelche-slate mb-1"
+                  >
+                    Si tienes más detalles de tu solicitud, escríbelas aquí:
                   </label>
                   <textarea
+                    id="mensaje"
                     rows={4}
-                    placeholder="Cuéntanos sobre el alcance, plazos o si requieres una visita técnica en terreno..."
-                    value={details}
-                    onChange={(e) => setDetails(e.target.value)}
-                    className="w-full p-3 rounded-xl border border-puelche-ink/15 bg-puelche-canvas/60 text-sm focus:outline-none focus:ring-2 focus:ring-puelche-copper/40"
+                    value={message}
+                    onChange={(e) => setMessage(e.target.value)}
+                    placeholder="Cuéntanos sobre tu proyecto o lo que necesitas cotizar..."
+                    className="w-full px-4 py-3 bg-[#F4F8FA] border border-gray-200 rounded-sm text-sm text-puelche-dark focus:outline-none focus:border-puelche-cyan focus:bg-white transition-colors resize-none"
                   />
                 </div>
-              </div>
 
-              {/* Action Buttons */}
-              <div className="flex flex-col sm:flex-row items-center gap-4 pt-4">
-                <button
-                  type="submit"
-                  className="w-full sm:w-auto px-8 py-4 rounded-full bg-puelche-ink text-puelche-canvas font-mono text-xs uppercase tracking-widest font-bold hover:bg-puelche-copper hover:text-puelche-ink transition-colors flex items-center justify-center gap-2"
-                >
-                  <Send className="w-4 h-4" />
-                  <span>Enviar Brief por Plataforma</span>
-                </button>
-                <Link
-                  href={generateWhatsAppLink()}
+                <div>
+                  <button
+                    type="submit"
+                    className="inline-flex items-center justify-center px-8 py-3.5 bg-puelche-cyan text-white font-condensed uppercase tracking-widest text-sm font-bold rounded-sm hover:bg-puelche-cyan-dark transition-all duration-200 shadow-md hover:scale-[1.02]"
+                  >
+                    <Send className="w-4 h-4 mr-2" />
+                    <span>Enviar</span>
+                  </button>
+                </div>
+              </form>
+            )}
+          </div>
+
+          {/* Right Column: Datos de Contacto */}
+          <div className="lg:col-span-5 bg-[#F8FAFB] p-8 sm:p-10 rounded-sm border border-gray-100 space-y-8">
+            <div>
+              <h2 className="font-condensed text-3xl font-bold uppercase tracking-wider text-puelche-cyan mb-4">
+                Datos de Contacto
+              </h2>
+              <div className="space-y-3 font-sans text-sm text-puelche-dark">
+                <p className="font-semibold text-base text-puelche-slate">Paula Valdivieso</p>
+                <div className="flex items-center space-x-3 text-puelche-gray hover:text-puelche-cyan transition-colors">
+                  <Mail className="w-4 h-4 text-puelche-cyan shrink-0" />
+                  <a href="mailto:paula.valdivieso@puelchelab.cl">paula.valdivieso@puelchelab.cl</a>
+                </div>
+                <div className="flex items-center space-x-3 text-puelche-gray hover:text-puelche-cyan transition-colors">
+                  <Phone className="w-4 h-4 text-puelche-cyan shrink-0" />
+                  <a href="tel:+56966177500">+56 9 6617 7500</a>
+                </div>
+                <div className="flex items-center space-x-3 text-puelche-gray">
+                  <Clock className="w-4 h-4 text-puelche-cyan shrink-0" />
+                  <span>Lunes a Viernes de 09:00 a 19:00 hrs.</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="pt-6 border-t border-gray-200">
+              <h3 className="font-condensed text-2xl font-bold uppercase tracking-wider text-puelche-cyan mb-4">
+                Redes Sociales
+              </h3>
+              <div className="flex items-center space-x-4">
+                <a
+                  href="https://www.facebook.com/puelchelab"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-full sm:w-auto px-6 py-4 rounded-full bg-puelche-sand/80 hover:bg-[#25D366] hover:text-white text-puelche-ink font-mono text-xs uppercase tracking-widest font-bold transition-all flex items-center justify-center gap-2 border border-puelche-ink/10"
+                  className="w-10 h-10 rounded-full bg-puelche-slate text-white flex items-center justify-center hover:bg-puelche-cyan transition-colors"
+                  aria-label="Facebook Puelche Lab"
                 >
-                  <MessageCircle className="w-4 h-4 text-emerald-600 group-hover:text-white" />
-                  <span>Enviar Directo por WhatsApp</span>
-                </Link>
+                  <Facebook className="w-5 h-5 fill-current" />
+                </a>
+                <a
+                  href="https://www.instagram.com/puelchelab"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-10 h-10 rounded-full bg-puelche-slate text-white flex items-center justify-center hover:bg-puelche-cyan transition-colors"
+                  aria-label="Instagram Puelche Lab"
+                >
+                  <Instagram className="w-5 h-5" />
+                </a>
               </div>
-            </form>
-          )}
-        </div>
-      </div>
-    </div>
-  );
-}
-
-export default function ContactoPage() {
-  return (
-    <div className="w-full flex-1 pt-8 md:pt-12 pb-24 px-6 md:px-12 bg-puelche-canvas">
-      <div className="max-w-7xl mx-auto">
-        {/* Header */}
-        <div className="border-b border-puelche-ink/10 pb-12 mb-12">
-          <div className="flex items-center gap-2 text-xs font-mono tracking-widest uppercase text-puelche-forest mb-4">
-            <span className="w-2 h-2 rounded-full bg-puelche-copper"></span>
-            <span>Mesa de Trabajo & Cotización</span>
+            </div>
           </div>
-          <h1 className="font-serif text-4xl sm:text-6xl md:text-7xl font-bold tracking-tight text-puelche-ink mb-6">
-            Iniciemos una conversación.
-          </h1>
-          <p className="text-lg md:text-xl text-puelche-charcoal max-w-3xl leading-relaxed font-sans">
-            Completa el brief estructurado a continuación o contáctanos de forma directa vía WhatsApp para evaluar disponibilidad de fechas en terreno.
-          </p>
         </div>
-
-        <Suspense fallback={<div className="p-12 text-center font-mono text-xs">Cargando formulario...</div>}>
-          <ContactForm />
-        </Suspense>
-      </div>
+      </section>
     </div>
   );
 }
