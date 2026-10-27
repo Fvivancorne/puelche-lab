@@ -8,8 +8,11 @@ os.makedirs(OUT_DIR, exist_ok=True)
 PAGES = [
     ("home", "http://localhost:3002/"),
     ("portafolio", "http://localhost:3002/portafolio"),
+    ("servicios", "http://localhost:3002/servicios"),
     ("fotografia", "http://localhost:3002/servicios/fotografia"),
+    ("branding", "http://localhost:3002/servicios/branding"),
     ("desarrollo_web", "http://localhost:3002/servicios/desarrollo-web"),
+    ("editorial", "http://localhost:3002/servicios/editorial"),
     ("clientes", "http://localhost:3002/clientes"),
     ("contacto", "http://localhost:3002/contacto"),
 ]
