@@ -11,6 +11,9 @@ const config: Config = {
       colors: {
         background: '#FFFFFF',
         surface: '#F8F9FA',
+        'puelche-cyan': '#59BFD6',
+        'puelche-slate': '#3B3D42',
+        'puelche-dark': '#1D2024',
         puelche: {
           cyan: '#59BFD6',
           'cyan-dark': '#44A8BE',
@@ -21,11 +24,22 @@ const config: Config = {
           dark: '#1D2024',
           gray: '#77797F',
           white: '#FFFFFF',
+          canvas: '#F9F9F6',
+          sand: '#F1F1EB',
+          ink: '#18191B',
+          charcoal: '#666863',
+          copper: '#C29B63',
+          forest: '#2C3A32',
+        },
+        forest: {
+          DEFAULT: '#2C3A32',
+          light: '#3D5045',
+          dark: '#1B241F',
         },
       },
       fontFamily: {
         sans: ['var(--font-sans)', 'sans-serif'],
-        condensed: ['var(--font-condensed)', 'var(--font-sans)', 'sans-serif'],
+        condensed: ['var(--font-condensed)', 'sans-serif'],
         mono: ['var(--font-mono)', 'monospace'],
       },
       letterSpacing: {
