@@ -36,15 +36,15 @@ function MarqueeRow({
         {tripled.map((logo, idx) => (
           <div
             key={`${logo.src}-${idx}`}
-            className="shrink-0 w-28 sm:w-32 md:w-36 h-16 sm:h-20 relative flex items-center justify-center opacity-50 hover:opacity-100 hover:scale-110 transition-all duration-300 grayscale hover:grayscale-0"
+            className="shrink-0 w-36 sm:w-44 md:w-52 h-20 sm:h-24 md:h-28 relative flex items-center justify-center opacity-70 hover:opacity-100 hover:scale-110 transition-all duration-300 px-4 py-2 bg-white/5 rounded-xl border border-white/10 hover:border-white/30 backdrop-blur-xs"
           >
             <Image
               src={logo.src}
               alt={logo.alt}
-              width={144}
-              height={80}
+              width={200}
+              height={100}
               unoptimized
-              className="object-contain w-full h-full brightness-150"
+              className="object-contain max-h-[85%] max-w-[85%] brightness-150 drop-shadow-sm"
             />
           </div>
         ))}

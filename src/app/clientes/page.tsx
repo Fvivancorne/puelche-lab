@@ -93,23 +93,23 @@ export default function ClientesPage() {
         </div>
       </section>
 
-      {/* 20 White Logos Grid */}
-      <section className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 pb-20">
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6 sm:gap-8 items-center justify-center">
+      {/* 20 White Logos Grid — Amplios, Masivos y de Alto Contraste */}
+      <section className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 pb-24">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 sm:gap-8 items-center justify-center">
           {CLIENT_LOGOS.map((client) => (
             <div
               key={client.id}
               data-cursor="CLIENTE"
-              className="h-32 sm:h-36 p-6 rounded-lg bg-white/10 border border-white/20 backdrop-blur-sm flex items-center justify-center transition-all duration-300 hover:bg-white/20 hover:scale-105 hover:shadow-lg group"
+              className="h-44 sm:h-48 p-4 rounded-xl bg-[#1D2024]/50 border border-white/20 backdrop-blur-md flex items-center justify-center transition-all duration-300 hover:bg-[#1D2024]/80 hover:border-white/60 hover:scale-105 hover:shadow-2xl group overflow-hidden"
             >
-              <div className="relative w-full h-full flex items-center justify-center">
+              <div className="relative w-full h-full flex items-center justify-center p-2">
                 <Image
                   src={`/images/real/clients/${client.file}`}
                   alt={`Logo ${client.name} — Cliente Puelche Lab`}
-                  width={270}
-                  height={180}
+                  width={320}
+                  height={200}
                   unoptimized
-                  className="max-h-full max-w-full object-contain filter brightness-100 group-hover:brightness-110 transition-all duration-200"
+                  className="max-h-[85%] max-w-[85%] object-contain filter brightness-100 drop-shadow-md group-hover:scale-110 group-hover:brightness-110 transition-transform duration-300"
                 />
               </div>
             </div>
