@@ -22,8 +22,8 @@ export function WhatsAppButton() {
           <span className="relative inline-flex rounded-full h-3 w-3 bg-puelche-cyan" />
         </span>
         <MessageCircle className="w-5 h-5 text-puelche-cyan group-hover:text-white transition-colors" />
-        <span className="font-condensed text-xs uppercase tracking-wider hidden sm:inline-block font-bold">
-          WhatsApp Directo
+        <span className="font-condensed text-xs uppercase tracking-widest hidden sm:inline-block font-bold">
+          CONVERSEMOS
         </span>
       </a>
     </aside>
