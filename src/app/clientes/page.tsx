@@ -108,6 +108,7 @@ export default function ClientesPage() {
                   alt={`Logo ${client.name} — Cliente Puelche Lab`}
                   width={270}
                   height={180}
+                  unoptimized
                   className="max-h-full max-w-full object-contain filter brightness-100 group-hover:brightness-110 transition-all duration-200"
                 />
               </div>

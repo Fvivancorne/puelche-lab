@@ -8,7 +8,7 @@ import { STUDIO_SERVICES } from '@/data/portfolio';
 
 export function Footer() {
   return (
-    <footer className="w-full bg-puelche-cyan text-white relative overflow-hidden">
+    <footer id="footer" className="w-full bg-puelche-cyan text-white relative overflow-hidden">
       {/* Framed Geometric Container matching the real Puelche Lab signature section */}
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
         <div className="border border-white/60 p-8 sm:p-12 md:p-16 text-center relative">

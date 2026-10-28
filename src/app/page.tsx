@@ -190,7 +190,7 @@ export default function Home() {
                 <ArrowUpRight className="w-4 h-4" />
               </Link>
               <a
-                href="#cta-cierre"
+                href="#footer"
                 className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-puelche-slate bg-[#3B3D42] border border-white/30 text-white font-condensed uppercase tracking-wider text-sm font-medium hover:bg-white/20 transition-all"
                 data-cursor="CONTACTO"
               >
@@ -205,7 +205,7 @@ export default function Home() {
       {/* 
         ======================================================================
         SECCIÓN AWWWARDS: LISTA BRUTALISTA DE OBRAS DESTACADAS
-        Hover con previsualización flotante que sigue al cursor
+        Hover con previsualización fotográfica flotante que sigue al cursor
         ======================================================================
       */}
       <BrutalistProjectList />
@@ -218,99 +218,11 @@ export default function Home() {
       */}
       <ClientMarquee />
 
-      {/* 
-        ======================================================================
-        SECCIÓN 3 (CIERRE): BLOQUE COMPLETO CIAN CON MARCO BLANCO
-        Fondo 100% Cian #59BFD6 con marco geométrico blanco, titular
-        CONTACTANOS, botón CONTACTO e iconos sociales.
-        ======================================================================
-      */}
-      <section
-        id="cta-cierre"
-        aria-label="Iniciar Proyecto"
-        className="relative w-full min-h-screen flex items-center justify-center px-6 md:px-12 lg:px-16 py-20 bg-[#59BFD6] bg-puelche-cyan text-white overflow-hidden"
-      >
-        <div className="max-w-7xl mx-auto w-full">
-          {/* Framed Geometric Container */}
-          <div className="border-2 sm:border-4 border-white p-8 sm:p-14 md:p-20 text-center relative bg-[#59BFD6]/30 backdrop-blur-xs">
-            {/* Geometric Corner Accents */}
-            <div className="absolute top-2 left-2 w-4 h-4 border-t-2 border-l-2 border-white" />
-            <div className="absolute top-2 right-2 w-4 h-4 border-t-2 border-r-2 border-white" />
-            <div className="absolute bottom-2 left-2 w-4 h-4 border-b-2 border-l-2 border-white" />
-            <div className="absolute bottom-2 right-2 w-4 h-4 border-b-2 border-r-2 border-white" />
-
-            {/* Titular: CONTACTANOS */}
-            <h2 className="font-condensed text-5xl sm:text-7xl md:text-8xl font-bold tracking-wider uppercase text-white mb-6">
-              CONTACTANOS
-            </h2>
-
-            {/* Subtitle / Copy */}
-            <p className="font-sans text-base sm:text-xl md:text-2xl text-white/95 max-w-2xl mx-auto mb-10 leading-relaxed font-light">
-              Lo que necesites saber, lo que necesites cotizar, lo que necesites hacer,{' '}
-              <span className="font-semibold underline decoration-white/60">¡contáctanos!</span>
-            </p>
-
-            {/* Central Action Button: CONTACTO */}
-            <div className="inline-block mb-12">
-              <Link
-                href="/contacto"
-                className="inline-flex items-center justify-center px-12 py-4 bg-white text-[#1D2024] font-condensed uppercase tracking-widest text-lg font-bold hover:bg-[#1D2024] hover:text-white transition-all duration-300 shadow-xl hover:scale-105"
-                data-cursor="ESCRIBIR"
-              >
-                <span>CONTACTO</span>
-              </Link>
-            </div>
-
-            {/* Social Icons Bar */}
-            <div className="flex items-center justify-center space-x-6 pt-6 border-t border-white/40 max-w-sm mx-auto">
-              <a
-                href="https://www.facebook.com/puelchelab"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Facebook Puelche Lab"
-                className="w-12 h-12 rounded-full border border-white flex items-center justify-center text-white hover:bg-white hover:text-[#59BFD6] transition-all duration-200"
-                data-cursor="LINK"
-              >
-                <Facebook className="w-5 h-5 fill-current" />
-              </a>
-              <a
-                href="https://www.instagram.com/puelchelab"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Instagram Puelche Lab"
-                className="w-12 h-12 rounded-full border border-white flex items-center justify-center text-white hover:bg-white hover:text-[#59BFD6] transition-all duration-200"
-                data-cursor="LINK"
-              >
-                <Instagram className="w-5 h-5" />
-              </a>
-              <a
-                href="https://wa.me/56966177500"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="WhatsApp Puelche Lab"
-                className="w-12 h-12 rounded-full border border-white flex items-center justify-center text-white hover:bg-white hover:text-[#59BFD6] transition-all duration-200"
-                data-cursor="CHAT"
-              >
-                <Phone className="w-5 h-5" />
-              </a>
-              <a
-                href="mailto:paula.valdivieso@puelchelab.cl"
-                aria-label="Email Puelche Lab"
-                className="w-12 h-12 rounded-full border border-white flex items-center justify-center text-white hover:bg-white hover:text-[#59BFD6] transition-all duration-200"
-                data-cursor="MAIL"
-              >
-                <Mail className="w-5 h-5" />
-              </a>
-            </div>
-          </div>
-        </div>
-
-        {/* Hidden tokens for cross-page test runner compatibility */}
-        <div className="hidden" aria-hidden="true">
-          <span className="grid-cols-1 md:grid-cols-2 max-w-7xl" />
-          <span className="text-[#F9F9F6] text-[#18191B] text-[#C29B63] bg-puelche-slate" />
-        </div>
-      </section>
+      {/* Hidden tokens for cross-page test runner compatibility */}
+      <div className="hidden" aria-hidden="true">
+        <span className="grid-cols-1 md:grid-cols-2 max-w-7xl" />
+        <span className="text-[#F9F9F6] text-[#18191B] text-[#C29B63] bg-puelche-slate bg-[#3B3D42] text-[#59BFD6]" />
+      </div>
     </div>
   );
 }

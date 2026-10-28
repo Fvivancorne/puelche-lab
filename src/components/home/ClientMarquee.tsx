@@ -43,7 +43,8 @@ function MarqueeRow({
               alt={logo.alt}
               width={144}
               height={80}
-              className="object-contain w-full h-full brightness-200 invert"
+              unoptimized
+              className="object-contain w-full h-full brightness-150"
             />
           </div>
         ))}
