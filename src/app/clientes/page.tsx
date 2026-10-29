@@ -228,9 +228,9 @@ export default function ClientesPage() {
   return (
     <div className="w-full flex-1 bg-puelche-cyan text-white min-h-screen">
       {/* Top Banner on Cyan */}
-      <section className="pt-24 pb-16 md:pt-28 md:pb-20 px-6 text-center">
+      <section className="pt-24 pb-12 md:pt-28 md:pb-16 px-6 text-center">
         <div className="max-w-4xl mx-auto space-y-4">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/15 border border-white/20 text-[11px] font-mono tracking-widest uppercase text-white">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/15 border border-white/20 text-[11px] font-mono tracking-widest uppercase text-white shadow-sm">
             <Sparkles className="w-3.5 h-3.5 text-white" />
             <span>Confianza & Trayectoria en el Territorio</span>
           </div>
@@ -240,52 +240,74 @@ export default function ClientesPage() {
           <p className="font-sans text-base sm:text-lg text-white/95 max-w-2xl mx-auto font-light leading-relaxed">
             Empresas, hoteles, industrias y marcas que han confiado su imagen, estrategia y comunicación al viento creativo de Puelche Lab.
           </p>
+
+          {/* Interactive Navigation Anchor Strip — Invitación a Navegar y Scrolear */}
+          <div className="flex flex-wrap items-center justify-center gap-2.5 sm:gap-3 pt-6">
+            <a
+              href="#marcas"
+              className="px-4 py-2 rounded-full bg-black/25 hover:bg-black/40 border border-white/20 text-[11px] sm:text-xs font-mono tracking-wider uppercase text-white transition-all flex items-center gap-2 backdrop-blur-md hover:scale-105 shadow-sm"
+            >
+              <span className="w-1.5 h-1.5 rounded-full bg-[#59BFD6]"></span>
+              <span>20 Marcas</span>
+            </a>
+            <a
+              href="#territorio"
+              className="px-4 py-2 rounded-full bg-black/25 hover:bg-black/40 border border-white/20 text-[11px] sm:text-xs font-mono tracking-wider uppercase text-white transition-all flex items-center gap-2 backdrop-blur-md hover:scale-105 shadow-sm"
+            >
+              <span className="w-1.5 h-1.5 rounded-full bg-white/40"></span>
+              <span>Radio Territorial</span>
+            </a>
+            <a
+              href="#testimonios"
+              className="px-4 py-2 rounded-full bg-black/25 hover:bg-black/40 border border-white/20 text-[11px] sm:text-xs font-mono tracking-wider uppercase text-white transition-all flex items-center gap-2 backdrop-blur-md hover:scale-105 shadow-sm"
+            >
+              <span className="w-1.5 h-1.5 rounded-full bg-white/40"></span>
+              <span>Testimonios</span>
+            </a>
+            <a
+              href="#directorio"
+              className="px-4 py-2 rounded-full bg-black/25 hover:bg-black/40 border border-white/20 text-[11px] sm:text-xs font-mono tracking-wider uppercase text-white transition-all flex items-center gap-2 backdrop-blur-md hover:scale-105 shadow-sm"
+            >
+              <span className="w-1.5 h-1.5 rounded-full bg-white/40"></span>
+              <span>Directorio</span>
+            </a>
+          </div>
         </div>
       </section>
 
-      {/* 20 White Logos Grid — Micro-Fichas & Casos de Estudio Reales */}
-      <section className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 pb-24">
+      {/* 20 White Logos Grid — Diseño Orgánico & Curatorial (Sin números de casilla) */}
+      <section id="marcas" className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 pb-20">
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 sm:gap-7 items-stretch justify-center">
           {CLIENT_LOGOS.map((client) => (
             <div
               key={client.id}
               data-cursor="CLIENTE"
-              className="relative min-h-[220px] rounded-2xl bg-[#14171B]/85 border border-white/15 backdrop-blur-md flex flex-col justify-between overflow-hidden transition-all duration-300 hover:bg-[#14171B] hover:border-white/50 hover:shadow-2xl hover:-translate-y-1 group"
+              className="relative h-48 sm:h-52 rounded-2xl bg-[#14171B]/90 border border-white/10 backdrop-blur-md flex flex-col items-center justify-center overflow-hidden transition-all duration-300 hover:bg-[#14171B] hover:border-[#59BFD6]/60 hover:shadow-[0_20px_50px_rgba(0,0,0,0.45)] hover:-translate-y-1.5 group"
             >
-              {/* Encabezado fijo visible siempre (incluso en mobile) */}
-              <div className="px-4 pt-3.5 pb-1 flex items-center justify-between text-white/70 border-b border-white/5">
-                <span className="font-mono text-[10px] text-[#59BFD6] uppercase tracking-wider">
-                  [{String(client.id).padStart(2, '0')}]
-                </span>
-                <span className="font-mono text-[9px] text-white/60 uppercase tracking-wider truncate max-w-[150px]">
-                  {client.region}
-                </span>
-              </div>
-
-              {/* Logo Centrado con padding óptico */}
-              <div className="relative w-full flex-1 flex items-center justify-center p-6 transition-transform duration-300 group-hover:scale-95 group-hover:-translate-y-3">
+              {/* Logo Centrado con amplitud y respiración */}
+              <div className="relative w-full h-full flex items-center justify-center p-6 transition-all duration-300 group-hover:scale-90 group-hover:-translate-y-4">
                 <Image
                   src={`/images/real/clients/${client.file}`}
                   alt={`Logo oficial ${client.name} — Cliente Puelche Lab`}
                   width={320}
                   height={180}
                   unoptimized
-                  className="max-h-[85px] w-auto max-w-[85%] object-contain filter brightness-100 drop-shadow-md group-hover:brightness-110 transition-all duration-300"
+                  className="max-h-[75px] w-auto max-w-[80%] object-contain filter brightness-100 group-hover:brightness-125 transition-all duration-300 drop-shadow-md"
                 />
               </div>
 
-              {/* Título base en reposo (para vista rápida sin hover) */}
-              <div className="px-4 py-2 bg-black/40 border-t border-white/5 flex items-center justify-between group-hover:opacity-0 transition-opacity duration-200">
-                <span className="font-condensed text-xs font-bold uppercase tracking-wider text-white/90 truncate">
+              {/* Sutil pie de identificación en reposo (limpio, sin números de casilla) */}
+              <div className="absolute bottom-3 inset-x-4 flex items-center justify-between text-white/50 group-hover:opacity-0 transition-opacity duration-200 pointer-events-none">
+                <span className="font-condensed text-xs uppercase tracking-wider text-white/80 font-semibold truncate">
                   {client.name}
                 </span>
-                <span className="text-[10px] text-white/50 font-sans truncate max-w-[120px]">
-                  {client.scope.split('&')[0]}
+                <span className="font-mono text-[9px] text-[#59BFD6] uppercase tracking-wider shrink-0">
+                  {client.region.split(',')[0]}
                 </span>
               </div>
 
-              {/* Micro-Drawer de Alcance & Links al Caso / Sitio Web */}
-              <div className="absolute inset-x-0 bottom-0 p-4 bg-gradient-to-t from-black via-black/95 to-black/85 border-t border-[#59BFD6]/30 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out flex flex-col gap-2 z-10">
+              {/* Micro-Drawer de Alcance & Links al Hover */}
+              <div className="absolute inset-x-0 bottom-0 p-4 bg-gradient-to-t from-black via-black/95 to-black/85 border-t border-[#59BFD6]/40 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out flex flex-col gap-2 z-10">
                 <div className="flex items-center justify-between">
                   <span className="font-condensed text-sm font-bold uppercase tracking-wider text-white">
                     {client.name}
@@ -336,6 +358,20 @@ export default function ClientesPage() {
             </div>
           ))}
         </div>
+
+        {/* Invitación Cinética al Scroll — Elimina el Falso Suelo */}
+        <div className="mt-14 flex flex-col items-center justify-center text-center">
+          <a
+            href="#territorio"
+            className="group inline-flex flex-col items-center gap-2.5 px-6 py-3.5 rounded-full bg-black/30 hover:bg-black/50 border border-white/20 backdrop-blur-md transition-all duration-300 hover:scale-105 shadow-lg"
+          >
+            <div className="flex items-center gap-2.5 font-mono text-xs uppercase tracking-widest text-white/90 group-hover:text-white">
+              <span className="w-2 h-2 rounded-full bg-[#59BFD6] animate-pulse"></span>
+              <span>Explorar Radio Territorial en la Patagonia</span>
+              <span className="text-[#59BFD6] group-hover:translate-y-1 transition-transform">↓</span>
+            </div>
+          </a>
+        </div>
       </section>
 
       {/* Darkroom Cinematic Transition — Alcance Geográfico + Directorio */}
@@ -352,7 +388,7 @@ export default function ClientesPage() {
         </div>
 
         {/* Territorial Scope Grid — Radio de Acción en la Patagonia */}
-        <section className="relative z-10 max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-24">
+        <section id="territorio" className="relative z-10 max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-24 scroll-mt-20">
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6 border-b border-white/10 pb-8">
             <div className="max-w-2xl space-y-3">
               <span className="font-mono text-xs uppercase tracking-widest text-[#59BFD6] block">
@@ -435,7 +471,7 @@ export default function ClientesPage() {
         </section>
 
         {/* Testimonials Section — Voces de Liderazgo Austral */}
-        <section className="relative z-10 max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 pb-24 border-t border-white/10 pt-20">
+        <section id="testimonios" className="relative z-10 max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 pb-24 border-t border-white/10 pt-20 scroll-mt-20">
           <div className="text-center max-w-2xl mx-auto mb-16 space-y-3">
             <span className="font-mono text-xs uppercase tracking-widest text-[#59BFD6] block">
               [TESTIMONIOS & VINCULACIÓN]
@@ -475,7 +511,7 @@ export default function ClientesPage() {
         </section>
 
         {/* Directory Table — Registro Institucional */}
-        <section className="relative z-10 max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 pb-28 border-t border-white/10 pt-20">
+        <section id="directorio" className="relative z-10 max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 pb-28 border-t border-white/10 pt-20 scroll-mt-20">
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
             <div className="max-w-2xl space-y-3">
               <span className="font-mono text-xs uppercase tracking-widest text-[#59BFD6] block">

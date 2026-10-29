@@ -20,11 +20,21 @@ const DETAILED_SERVICES = [
   'Proyecto Integral Cross-Media',
 ];
 
-const BUDGETS = [
+// Constantes técnicas y referencias históricas para suite E2E
+export const BUDGETS = [
   '$1.5M — $3.0M CLP',
   '$3.0M — $6.0M CLP',
   '$6.0M — $12.0M CLP',
   '+$12.0M CLP (Corporativo)',
+];
+
+const PROJECT_SCALES = [
+  'Propuesta a la medida según alcance',
+  'Producción Fotográfica en Terreno / Faena',
+  'Diseño de Marca & Estrategia Cross-Media',
+  'Desarrollo Web Next.js de Autor',
+  'Publicación Editorial / Memoria Corporativa',
+  'Acompañamiento Integral Anual',
 ];
 
 const REGIONS = [
@@ -48,6 +58,7 @@ function ContactFormInner() {
   const [selectedServices, setSelectedServices] = useState<string[]>(
     initialService ? [initialService] : []
   );
+  const [projectScale, setProjectScale] = useState<string>('Propuesta a la medida según alcance');
   const [selectedBudget, setSelectedBudget] = useState<string>('$1.5M — $3.0M CLP');
   const [selectedRegion, setSelectedRegion] = useState<string>('Puerto Varas & Cuenca Llanquihue');
   const [message, setMessage] = useState(
@@ -65,8 +76,7 @@ function ContactFormInner() {
 
   const generateWhatsAppLink = () => {
     const srvText = selectedServices.length > 0 ? selectedServices.join(', ') : 'Servicios generales';
-    const budText = selectedBudget || 'Por definir';
-    const msg = `Hola Puelche Lab,\n\nMi nombre es ${name || 'un prospecto'} de la empresa ${company || 'Independiente'}.\nUbicación: ${selectedRegion}\nServicios de interés: ${srvText}\nPresupuesto estimado: ${budText}\n\nDetalles del proyecto:\n${message || 'Me gustaría coordinar una reunión para evaluar nuestra iniciativa.'}\n\nContacto: ${phone || email || 'vía WhatsApp'}`;
+    const msg = `Hola Puelche Lab,\n\nMi nombre es ${name || 'un prospecto'} de la empresa ${company || 'Independiente'}.\nUbicación: ${selectedRegion}\nServicios de interés: ${srvText}\nModalidad: ${projectScale}\n\nDetalles del proyecto:\n${message || 'Me gustaría coordinar una reunión para evaluar nuestra iniciativa.'}\n\nContacto: ${phone || email || 'vía WhatsApp'}`;
     return `https://wa.me/56966177500?text=${encodeURIComponent(msg)}`;
   };
 
@@ -231,23 +241,23 @@ function ContactFormInner() {
               </div>
             </div>
 
-            {/* Inversión Estimada & Región */}
+            {/* Modalidad de Proyecto & Región */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
               <div>
                 <label
-                  htmlFor="budget"
+                  htmlFor="projectScale"
                   className="block font-condensed uppercase tracking-wider text-xs font-bold text-puelche-slate mb-1"
                 >
-                  Rango de Presupuesto
+                  Modalidad de Proyecto
                 </label>
                 <select
-                  id="budget"
-                  value={selectedBudget}
-                  onChange={(e) => setSelectedBudget(e.target.value)}
+                  id="projectScale"
+                  value={projectScale}
+                  onChange={(e) => setProjectScale(e.target.value)}
                   className="w-full px-4 py-3 bg-[#F4F8FA] border border-gray-200 rounded-sm text-sm text-puelche-dark focus:outline-none focus:border-puelche-cyan"
                 >
-                  {BUDGETS.map((b) => (
-                    <option key={b} value={b}>{b}</option>
+                  {PROJECT_SCALES.map((scale) => (
+                    <option key={scale} value={scale}>{scale}</option>
                   ))}
                 </select>
               </div>
