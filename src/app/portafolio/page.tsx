@@ -1,16 +1,33 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 import { PORTFOLIO_PROJECTS, ProjectItem } from '@/data/portfolio';
 import { MapPin, Calendar, CheckCircle2, X, ArrowUpRight } from 'lucide-react';
 
 const CATEGORIES = ['Todos', 'Fotografía', 'Branding', 'Desarrollo Web', 'Editorial'] as const;
 
-export default function PortfolioPage() {
+function PortfolioContent() {
+  const searchParams = useSearchParams();
+  const projectParam = searchParams.get('proyecto');
+
   const [selectedCategory, setSelectedCategory] = useState<string>('Todos');
   const [activeModalProject, setActiveModalProject] = useState<ProjectItem | null>(null);
+
+  // Auto-open project modal if ?proyecto= query param is provided
+  useEffect(() => {
+    if (projectParam) {
+      const match = PORTFOLIO_PROJECTS.find(
+        (p) =>
+          p.slug === projectParam ||
+          p.id === projectParam ||
+          p.title.toLowerCase().includes(projectParam.toLowerCase())
+      );
+      if (match) setActiveModalProject(match);
+    }
+  }, [projectParam]);
 
   // Pause Lenis and lock body scroll when modal is active
   useEffect(() => {
@@ -216,7 +233,7 @@ export default function PortfolioPage() {
 
             {/* Columna Derecha: Información Editorial con Scroll Nativo Ligero */}
             <div
-              className="w-full md:w-1/2 p-6 sm:p-8 lg:p-10 flex flex-col justify-between overflow-y-auto max-h-[55vh] md:max-h-[92vh] space-y-6"
+              className="w-full md:w-1/2 p-6 sm:p-8 lg:p-10 flex flex-col justify-between overflow-y-auto max-h-[55vh] md:max-h-[90vh] space-y-6"
               data-lenis-prevent="true"
             >
               <div className="space-y-6">
@@ -282,5 +299,13 @@ export default function PortfolioPage() {
         </div>
       )}
     </div>
+  );
+}
+
+export default function PortfolioPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-puelche-dark" />}>
+      <PortfolioContent />
+    </Suspense>
   );
 }
