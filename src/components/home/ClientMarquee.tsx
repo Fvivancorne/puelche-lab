@@ -3,10 +3,35 @@
 import React from 'react';
 import Image from 'next/image';
 
+// Verified authentic client names matching public/images/real/clients/cliente1-1.png to cliente20-1.png
+const CLIENT_NAMES = [
+  'AquaChile',
+  'Soldasur',
+  'Seremi del Medio Ambiente',
+  'Anasac',
+  'Estancia Rilán',
+  'Hotel Quilquico',
+  'Hotel Costaustralis',
+  'Hotel Cabo de Hornos',
+  'Viajes Falabella',
+  'Cala Melí',
+  'Tagua Tagua Lodge',
+  'Hotel Ohana',
+  'Gallo Negro',
+  'Blue Seal Subsea',
+  'Cirumed',
+  'El Triwe',
+  'Centro Maqui',
+  'ARMH',
+  'San Ambrosio',
+  'Saltos del Maullín',
+];
+
 // Generate the list of 20 client logo filenames
 const LOGOS = Array.from({ length: 20 }, (_, i) => ({
   src: `/images/real/clients/cliente${i + 1}-1.png`,
-  alt: `Cliente ${i + 1}`,
+  alt: `Logo oficial ${CLIENT_NAMES[i]} — Cliente Puelche Lab`,
+  name: CLIENT_NAMES[i],
 }));
 
 // Split into two rows
