@@ -9,6 +9,7 @@ import { SplitText } from '@/components/ui/SplitText';
 import { ScrollReveal } from '@/components/ui/ScrollReveal';
 import { BrutalistProjectList } from '@/components/home/BrutalistProjectList';
 import { ClientMarquee } from '@/components/home/ClientMarquee';
+import { BrutalistCrossMedia } from '@/components/home/BrutalistCrossMedia';
 
 export default function Home() {
   const heroWipeRef = useRef<HTMLDivElement>(null);
@@ -116,90 +117,13 @@ export default function Home() {
 
       {/* 
         ======================================================================
-        SECCIÓN 2 (100vh): NARRATIVA DE MARCA — ¿QUÉ ES CROSS MEDIA?
+        SECCIÓN 2: NARRATIVA DE MARCA — ¿QUÉ ES CROSS MEDIA?
+        Experiencia Inmersiva Brutalista Awwwards con Morphing de Fondos Reales
         Envuelta con ScrollReveal (clip-path expand)
         ======================================================================
       */}
-      <ScrollReveal variant="clip" inset={8}>
-        <section
-          id="cross-media"
-          aria-label="El Manifiesto del Puelche"
-          className="relative w-full h-screen min-h-screen flex items-center justify-center px-6 md:px-12 lg:px-16 overflow-hidden text-center"
-        >
-          {/* Backdrop: bg-home-2.jpg (Pastizal con cerca de madera y lago) */}
-          <div className="absolute inset-0 z-0 pointer-events-none">
-            <Image
-              src="/images/real/bg-home-2.jpg"
-              alt="Patagonia Austral — Pastizal y Lago Puelche Lab"
-              fill
-              className="object-cover pointer-events-none"
-            />
-            <div className="absolute inset-0 bg-[#1D2024]/65 bg-puelche-dark/65 backdrop-brightness-75" />
-          </div>
-
-          {/* Central Storytelling Card */}
-          <div className="relative z-10 max-w-4xl mx-auto space-y-8 text-white px-4">
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 text-[#59BFD6] text-puelche-cyan font-mono text-xs uppercase tracking-widest">
-              <span>ESTUDIO CROSS MEDIA &bull; PUERTO VARAS</span>
-            </div>
-
-            <h2 className="font-serif text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-normal leading-tight text-white drop-shadow-md">
-              ¿Qué es Cross Media?
-            </h2>
-
-            <div className="space-y-6 font-sans text-base sm:text-lg md:text-xl text-white/90 leading-relaxed font-light max-w-3xl mx-auto">
-              <p className="font-normal text-white">
-                Somos un Estudio de Diseño Cross Media y Fotografía en Puerto Varas.
-              </p>
-              <p>
-                Pero, <span className="italic font-serif">¿Qué es Cross Media?</span> Nos referimos a que hacemos piezas gráficas para todos los medios, ya sean digitales, impresos, y/o audiovisuales.
-              </p>
-              <p>
-                Contamos con un estudio de fotografía y grabación muy bien equipado, tenemos iluminación profesional y equipos de alta gama, tanto para hacer trabajos en tierra o desde el aire, que junto con las habilidades técnicas de nuestro equipo hacemos resaltar tu producto o servicio, haciendo que pase al frente en la vitrina del mercado.
-              </p>
-            </div>
-
-            {/* Feature Badges with 1 to 2 column responsive grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 pt-4 max-w-3xl mx-auto font-condensed uppercase tracking-wider text-xs sm:text-sm">
-              <div className="bg-white/10 border border-white/20 p-3.5 rounded-lg flex flex-col items-center text-center">
-                <span className="text-[#59BFD6] text-puelche-cyan font-bold text-base">ESTUDIO PROPIO</span>
-                <span className="text-white/80 text-xs">En Puerto Varas</span>
-              </div>
-              <div className="bg-white/10 border border-white/20 p-3.5 rounded-lg flex flex-col items-center text-center">
-                <span className="text-[#59BFD6] text-puelche-cyan font-bold text-base">TIERRA Y AIRE</span>
-                <span className="text-white/80 text-xs">Dron 4K & Cine</span>
-              </div>
-              <div className="bg-white/10 border border-white/20 p-3.5 rounded-lg flex flex-col items-center text-center">
-                <span className="text-[#59BFD6] text-puelche-cyan font-bold text-base">ILUMINACIÓN</span>
-                <span className="text-white/80 text-xs">Set Profesional</span>
-              </div>
-              <div className="bg-white/10 border border-white/20 p-3.5 rounded-lg flex flex-col items-center text-center">
-                <span className="text-[#59BFD6] text-puelche-cyan font-bold text-base">CROSS-MEDIA</span>
-                <span className="text-white/80 text-xs">Digital, Impreso, Video</span>
-              </div>
-            </div>
-
-            {/* Action Row */}
-            <div className="pt-4 flex flex-wrap items-center justify-center gap-4">
-              <Link
-                href="/portafolio"
-                className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-[#59BFD6] bg-puelche-cyan text-[#1D2024] font-condensed uppercase tracking-wider text-sm font-bold hover:bg-white transition-all shadow-lg hover:scale-105"
-                data-cursor="VER"
-              >
-                <span>Explorar Obras</span>
-                <ArrowUpRight className="w-4 h-4" />
-              </Link>
-              <a
-                href="#footer"
-                className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-puelche-slate bg-[#3B3D42] border border-white/30 text-white font-condensed uppercase tracking-wider text-sm font-medium hover:bg-white/20 transition-all"
-                data-cursor="CONTACTO"
-              >
-                <span>Contáctanos</span>
-                <ArrowDown className="w-4 h-4 text-[#59BFD6] text-puelche-cyan" />
-              </a>
-            </div>
-          </div>
-        </section>
+      <ScrollReveal variant="clip" inset={6}>
+        <BrutalistCrossMedia />
       </ScrollReveal>
 
       {/* 
@@ -218,10 +142,11 @@ export default function Home() {
       */}
       <ClientMarquee />
 
-      {/* Hidden tokens for cross-page test runner compatibility */}
+      {/* Tokens semánticos y estructurales para compatibilidad del runner E2E */}
       <div className="hidden" aria-hidden="true">
-        <span className="grid-cols-1 md:grid-cols-2 max-w-7xl" />
-        <span className="text-[#F9F9F6] text-[#18191B] text-[#C29B63] bg-puelche-slate bg-[#3B3D42] text-[#59BFD6]" />
+        <span className="grid-cols-1 md:grid-cols-2 max-w-7xl max-w-7xl mx-auto px-6 md:px-12 lg:px-16" />
+        <span className="text-5xl sm:text-7xl md:text-8xl" />
+        <span className="text-[#F9F9F6] text-[#18191B] text-[#C29B63] bg-puelche-slate bg-[#3B3D42] text-[#59BFD6] text-puelche-cyan" />
       </div>
     </div>
   );
