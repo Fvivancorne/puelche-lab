@@ -1,16 +1,32 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { PORTFOLIO_PROJECTS, ProjectItem } from '@/data/portfolio';
-import { MapPin, Calendar, CheckCircle2, X } from 'lucide-react';
+import { MapPin, Calendar, CheckCircle2, X, ArrowUpRight } from 'lucide-react';
 
 const CATEGORIES = ['Todos', 'Fotografía', 'Branding', 'Desarrollo Web', 'Editorial'] as const;
 
 export default function PortfolioPage() {
   const [selectedCategory, setSelectedCategory] = useState<string>('Todos');
   const [activeModalProject, setActiveModalProject] = useState<ProjectItem | null>(null);
+
+  // Pause Lenis and lock body scroll when modal is active
+  useEffect(() => {
+    const lenis = (window as any).lenisInstance;
+    if (activeModalProject) {
+      if (lenis) lenis.stop();
+      document.body.style.overflow = 'hidden';
+    } else {
+      if (lenis) lenis.start();
+      document.body.style.overflow = '';
+    }
+    return () => {
+      if (lenis) lenis.start();
+      document.body.style.overflow = '';
+    };
+  }, [activeModalProject]);
 
   const filteredProjects = selectedCategory === 'Todos'
     ? PORTFOLIO_PROJECTS
@@ -31,86 +47,98 @@ export default function PortfolioPage() {
             Obras que narran el sur.
           </h1>
           <p className="text-base sm:text-lg text-white/80 max-w-3xl leading-relaxed font-sans font-light">
-            Cada proyecto es un encuentro entre la precisión técnica del diseño cross-media y la fuerza indomable de la Patagonia.
+            Selección curada de proyectos desarrollados para clientes en Puerto Varas, Los Lagos, Chile y Argentina. 
+            Dirección creativa sin artificios, fotografía territorial de autor y plataformas visuales de escala internacional.
           </p>
+        </div>
 
-          {/* Interactive Category Filter Tabs */}
-          <div className="flex flex-wrap items-center gap-2 pt-6">
-            {CATEGORIES.map((cat) => {
-              const isActive = selectedCategory === cat;
-              const count = cat === 'Todos'
-                ? PORTFOLIO_PROJECTS.length
-                : PORTFOLIO_PROJECTS.filter((p) => p.category === cat).length;
+        {/* Category Filters */}
+        <div className="flex flex-wrap items-center gap-2 pb-4">
+          {CATEGORIES.map((category) => {
+            const count = category === 'Todos'
+              ? PORTFOLIO_PROJECTS.length
+              : PORTFOLIO_PROJECTS.filter((p) => p.category === category).length;
+            const isSelected = selectedCategory === category;
 
-              return (
-                <button
-                  key={cat}
-                  type="button"
-                  onClick={() => setSelectedCategory(cat)}
-                  className={`px-5 py-2.5 rounded-full text-xs font-condensed uppercase tracking-wider transition-all duration-300 flex items-center gap-2 ${
-                    isActive
-                      ? 'bg-[#59BFD6] text-white font-bold shadow-md'
-                      : 'bg-[#2B2D31] text-white/80 hover:bg-[#3B3D42] hover:text-white border border-white/10'
-                  }`}
-                >
-                  <span>{cat}</span>
-                  <span className={`text-[10px] px-1.5 py-0.5 rounded-full ${
-                    isActive ? 'bg-white/30 text-white' : 'bg-white/10 text-white/70'
-                  }`}>
-                    {count}
-                  </span>
-                </button>
-              );
-            })}
-          </div>
+            return (
+              <button
+                key={category}
+                onClick={() => setSelectedCategory(category)}
+                className={`px-4 py-2 rounded-full text-xs font-condensed uppercase tracking-wider transition-all duration-300 flex items-center gap-2 border ${
+                  isSelected
+                    ? 'bg-[#59BFD6] border-[#59BFD6] text-puelche-dark font-bold shadow-[0_0_15px_rgba(89,191,214,0.3)]'
+                    : 'bg-white/5 border-white/10 text-white/70 hover:border-white/30 hover:text-white'
+                }`}
+              >
+                <span>{category}</span>
+                <span className={`text-[10px] px-1.5 py-0.5 rounded-full ${
+                  isSelected ? 'bg-puelche-dark/20 text-puelche-dark' : 'bg-white/10 text-white/60'
+                }`}>
+                  {count}
+                </span>
+              </button>
+            );
+          })}
         </div>
       </div>
 
-      {/* Panoramic Bands Portfolio Showcase */}
-      <div className="w-full flex flex-col" aria-label="Proyectos del Portafolio">
-        {filteredProjects.map((project, idx) => (
+      {/* Projects Grid */}
+      <div className="max-w-7xl mx-auto w-full px-6 pb-24 grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-10">
+        {filteredProjects.map((project) => (
           <article
             key={project.id}
-            data-cursor="VER"
-            className="relative w-full aspect-[16/10] sm:aspect-auto sm:h-[80vh] min-h-[500px] flex items-end overflow-hidden border-b border-white/10 group cursor-pointer"
             onClick={() => setActiveModalProject(project)}
+            className="group cursor-pointer bg-white/5 border border-white/10 rounded-xl overflow-hidden hover:border-[#59BFD6]/60 transition-all duration-500 flex flex-col justify-between"
           >
-            {/* Full-Bleed Photograph */}
-            <Image
-              src={project.image}
-              alt={project.title}
-              fill
-              priority={idx < 2}
-              className="object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out"
-              sizes="100vw"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent group-hover:opacity-90 transition-opacity" />
+            <div>
+              <div className="relative aspect-[16/10] w-full overflow-hidden bg-black/40">
+                <Image
+                  src={project.image}
+                  alt={project.title}
+                  fill
+                  className="object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#1D2024] via-transparent to-transparent opacity-80" />
+                <div className="absolute top-4 left-4">
+                  <span className="px-3 py-1 rounded bg-[#59BFD6] text-puelche-dark font-condensed font-bold text-xs uppercase tracking-wider shadow-md">
+                    {project.category}
+                  </span>
+                </div>
+                <div className="absolute top-4 right-4 w-9 h-9 rounded-full bg-black/60 border border-white/20 flex items-center justify-center text-white group-hover:bg-[#59BFD6] group-hover:text-puelche-dark transition-colors duration-300">
+                  <ArrowUpRight className="w-4 h-4" />
+                </div>
+                <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between text-xs font-mono text-white/90">
+                  <span className="flex items-center gap-1.5">
+                    <MapPin className="w-3.5 h-3.5 text-[#59BFD6]" />
+                    {project.location}
+                  </span>
+                  <span className="flex items-center gap-1.5">
+                    <Calendar className="w-3.5 h-3.5 text-[#59BFD6]" />
+                    {project.year}
+                  </span>
+                </div>
+              </div>
 
-            {/* Bottom-Left Cyan Card */}
-            <div className="absolute bottom-8 sm:bottom-12 left-0 z-20 max-w-[92vw] sm:max-w-xl md:max-w-2xl bg-[#59BFD6] rounded-r-2xl sm:rounded-r-3xl shadow-2xl py-4 sm:py-5 px-5 sm:px-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-t border-b border-r border-white/20">
-              <div className="border-b sm:border-b-0 sm:border-r border-[#FBF5F5]/40 pb-3 sm:pb-0 sm:pr-6 text-white font-condensed">
-                <h3 className="text-base sm:text-xl md:text-2xl font-bold uppercase tracking-wide leading-tight">
+              <div className="p-6">
+                <div className="text-xs font-mono text-[#59BFD6] uppercase tracking-wider mb-2">
                   Cliente: {project.client}
+                </div>
+                <h3 className="font-condensed text-2xl sm:text-3xl font-bold uppercase tracking-wide text-white group-hover:text-[#59BFD6] transition-colors mb-3">
+                  {project.title}
                 </h3>
-                <p className="text-xs sm:text-sm text-white/95 mt-1 font-medium">
-                  {project.location}.
+                <p className="text-sm text-white/70 font-sans font-light leading-relaxed mb-4 line-clamp-2">
+                  {project.description}
                 </p>
-                <p className="text-xs sm:text-sm text-white/85 font-light">
-                  {project.specialty || project.category}.
-                </p>
-                {/* Deliverables tags */}
-                {project.deliverables && (
-                  <div className="flex flex-wrap gap-1.5 pt-2">
-                    {project.deliverables.slice(0, 3).map((del) => (
-                      <span
-                        key={del}
-                        className="text-[10px] font-mono px-2 py-0.5 rounded bg-black/20 text-white/90"
-                      >
-                        {del}
-                      </span>
-                    ))}
-                  </div>
-                )}
+              </div>
+            </div>
+
+            <div className="px-6 pb-6 pt-2 border-t border-white/5 flex flex-wrap items-center justify-between gap-3">
+              <div className="flex flex-wrap gap-1.5">
+                {project.deliverables.slice(0, 3).map((d) => (
+                  <span key={d} className="text-[11px] font-mono text-white/50 bg-white/5 px-2 py-1 rounded">
+                    {d}
+                  </span>
+                ))}
               </div>
 
               <div className="shrink-0 w-full sm:w-auto">
@@ -130,80 +158,121 @@ export default function PortfolioPage() {
         ))}
       </div>
 
-      {/* Modal Drawer for Project Detail */}
+      {/* 
+        ======================================================================
+        MODAL DRAWER: SPLIT EDITORIAL 2 COLUMNAS (AWWWARDS GRADE)
+        Con data-lenis-prevent y pausa de Lenis para scroll 100% fluido y natural
+        ======================================================================
+      */}
       {activeModalProject && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-black/70 backdrop-blur-sm animate-in fade-in duration-300"
+          className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 lg:p-10 bg-black/70 backdrop-blur-sm animate-in fade-in duration-300"
           onClick={() => setActiveModalProject(null)}
+          data-lenis-prevent="true"
         >
           <div
-            className="bg-[#1D2024] text-white rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto border border-white/20 shadow-2xl relative"
+            className="bg-[#1D2024] text-white rounded-2xl max-w-5xl w-full max-h-[90vh] overflow-hidden border border-white/20 shadow-2xl relative flex flex-col md:flex-row"
             onClick={(e) => e.stopPropagation()}
+            data-lenis-prevent="true"
           >
+            {/* Botón Cerrar Flotante */}
             <button
               onClick={() => setActiveModalProject(null)}
-              className="absolute top-4 right-4 z-20 w-10 h-10 rounded-full bg-[#3B3D42] text-white flex items-center justify-center hover:bg-[#59BFD6] transition-colors shadow-lg"
+              className="absolute top-4 right-4 z-20 w-10 h-10 rounded-full bg-[#3B3D42]/90 backdrop-blur-sm text-white flex items-center justify-center hover:bg-[#59BFD6] hover:text-puelche-dark transition-colors shadow-xl border border-white/10"
               aria-label="Cerrar modal"
             >
               <X className="w-5 h-5" />
             </button>
 
-            <div className="relative aspect-[16/9] w-full bg-black">
+            {/* Columna Izquierda: Fotografía en Alta Resolución */}
+            <div className="relative w-full md:w-1/2 min-h-[280px] sm:min-h-[360px] md:min-h-full bg-black/60 shrink-0">
               <Image
                 src={activeModalProject.image}
                 alt={activeModalProject.title}
                 fill
+                priority
                 className="object-cover"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-              <div className="absolute bottom-6 left-6 right-6 text-white font-condensed">
-                <span className="px-3 py-1 rounded bg-[#59BFD6] text-white text-xs uppercase font-bold tracking-wider mb-2 inline-block">
+              <div className="absolute inset-0 bg-gradient-to-t from-[#1D2024] via-transparent to-black/30 md:hidden" />
+              
+              {/* Badge de Categoría y Micro-Datos flotantes sobre la foto */}
+              <div className="absolute top-4 left-4 z-10">
+                <span className="px-3.5 py-1 rounded-full bg-[#59BFD6] text-puelche-dark text-xs uppercase font-bold tracking-wider shadow-lg">
                   {activeModalProject.category}
                 </span>
-                <h2 className="text-2xl sm:text-4xl font-bold uppercase tracking-wide">
-                  {activeModalProject.title}
-                </h2>
-                <div className="flex flex-wrap items-center gap-4 text-xs text-white/80 mt-2 font-mono">
-                  <span className="flex items-center gap-1">
-                    <MapPin className="w-3.5 h-3.5 text-[#59BFD6]" />
-                    {activeModalProject.location}
-                  </span>
-                  <span className="flex items-center gap-1">
-                    <Calendar className="w-3.5 h-3.5 text-[#59BFD6]" />
-                    Año {activeModalProject.year}
-                  </span>
-                  <span>Cliente: {activeModalProject.client}</span>
+              </div>
+
+              <div className="absolute bottom-4 left-4 right-4 z-10 hidden md:block font-mono text-xs text-white/90 bg-black/60 backdrop-blur-md p-3 rounded-lg border border-white/10">
+                <div className="flex items-center justify-between">
+                  <span className="text-white/60">CLIENTE</span>
+                  <span className="text-[#59BFD6] font-medium">{activeModalProject.client}</span>
+                </div>
+                <div className="flex items-center justify-between mt-1 pt-1 border-t border-white/10">
+                  <span className="text-white/60">AÑO & EXPEDICIÓN</span>
+                  <span>Año {activeModalProject.year} &bull; {activeModalProject.location}</span>
                 </div>
               </div>
             </div>
 
-            <div className="p-6 sm:p-10 space-y-8 font-sans">
-              <div>
-                <h4 className="font-condensed text-xs uppercase tracking-widest text-[#59BFD6] font-bold mb-2">Desafío & Dirección</h4>
-                <p className="text-base sm:text-lg text-white/90 leading-relaxed font-light">
-                  {activeModalProject.description}
-                </p>
-              </div>
+            {/* Columna Derecha: Información Editorial con Scroll Nativo Ligero */}
+            <div
+              className="w-full md:w-1/2 p-6 sm:p-8 lg:p-10 flex flex-col justify-between overflow-y-auto max-h-[55vh] md:max-h-[92vh] space-y-6"
+              data-lenis-prevent="true"
+            >
+              <div className="space-y-6">
+                <div>
+                  <div className="flex items-center gap-2 text-xs font-mono text-[#59BFD6] uppercase tracking-wider mb-2">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#59BFD6]" />
+                    <span>EXPEDICIÓN PUELCHE LAB</span>
+                  </div>
+                  <h2 className="text-2xl sm:text-3xl lg:text-4xl font-condensed font-bold uppercase tracking-wide leading-tight text-white">
+                    {activeModalProject.title}
+                  </h2>
+                  <div className="flex flex-wrap items-center gap-4 text-xs text-white/70 mt-3 font-mono border-b border-white/10 pb-4">
+                    <span className="flex items-center gap-1">
+                      <MapPin className="w-3.5 h-3.5 text-[#59BFD6]" />
+                      {activeModalProject.location}
+                    </span>
+                    <span className="flex items-center gap-1">
+                      <Calendar className="w-3.5 h-3.5 text-[#59BFD6]" />
+                      Año {activeModalProject.year}
+                    </span>
+                    <span className="md:hidden">Cliente: {activeModalProject.client}</span>
+                  </div>
+                </div>
 
-              <div className="bg-[#2B2D31] p-6 rounded-xl border border-white/10">
-                <h4 className="font-condensed text-xs uppercase tracking-widest text-white font-bold mb-4">Entregables & Soportes Técnicos</h4>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  {activeModalProject.deliverables.map((item) => (
-                    <div key={item} className="flex items-center gap-2.5 text-sm text-white/80">
-                      <CheckCircle2 className="w-4 h-4 text-[#59BFD6] shrink-0" />
-                      <span>{item}</span>
-                    </div>
-                  ))}
+                <div>
+                  <h4 className="font-condensed text-xs uppercase tracking-widest text-[#59BFD6] font-bold mb-2">
+                    Desafío & Dirección
+                  </h4>
+                  <p className="text-sm sm:text-base text-white/90 leading-relaxed font-light">
+                    {activeModalProject.description}
+                  </p>
+                </div>
+
+                <div className="bg-[#2B2D31]/80 p-5 rounded-xl border border-white/10">
+                  <h4 className="font-condensed text-xs uppercase tracking-widest text-white font-bold mb-3">
+                    Entregables & Soportes Técnicos
+                  </h4>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                    {activeModalProject.deliverables.map((item) => (
+                      <div key={item} className="flex items-center gap-2 text-xs sm:text-sm text-white/80">
+                        <CheckCircle2 className="w-4 h-4 text-[#59BFD6] shrink-0" />
+                        <span>{item}</span>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
 
-              <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-4 border-t border-white/10">
-                <div className="text-xs text-white/70">
+              {/* Botón de Conversión CTA */}
+              <div className="pt-4 border-t border-white/10 flex flex-col gap-3">
+                <span className="text-xs text-white/60">
                   ¿Tienes una iniciativa similar en la Región de Los Lagos o Patagonia?
-                </div>
+                </span>
                 <Link
                   href={`/contacto?proyecto=${encodeURIComponent(activeModalProject.title)}`}
-                  className="w-full sm:w-auto text-center px-6 py-3 rounded-full bg-[#59BFD6] text-white text-xs font-condensed uppercase tracking-wider font-bold hover:bg-white hover:text-puelche-dark transition-colors"
+                  className="w-full text-center px-6 py-3.5 rounded-full bg-[#59BFD6] text-puelche-dark text-xs font-condensed uppercase tracking-wider font-bold hover:bg-white transition-all shadow-[0_0_20px_rgba(89,191,214,0.3)] hover:scale-[1.02]"
                 >
                   Cotizar propuesta similar
                 </Link>

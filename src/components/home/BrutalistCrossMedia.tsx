@@ -1,9 +1,11 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowUpRight, ArrowDown, Camera, Sparkles, Wind, Layers } from 'lucide-react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 interface Capability {
   id: string;
@@ -79,23 +81,114 @@ const CAPABILITIES: Capability[] = [
 ];
 
 export function BrutalistCrossMedia() {
-  const [activeIdx, setActiveIdx] = useState<number | null>(null);
+  const [activeIdx, setActiveIdx] = useState<number | null>(0);
+
+  const sectionRef = useRef<HTMLElement>(null);
+  const headlineRef = useRef<HTMLHeadingElement>(null);
+  const subheadRef = useRef<HTMLParagraphElement>(null);
+  const manifestoLeftRef = useRef<HTMLDivElement>(null);
+  const manifestoRightRef = useRef<HTMLDivElement>(null);
+  const cardsContainerRef = useRef<HTMLDivElement>(null);
+  const bgWrapperRef = useRef<HTMLDivElement>(null);
+
+  // Coreografía Direccional del Viento con Scrub en Tiempo Real
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    gsap.registerPlugin(ScrollTrigger);
+
+    const section = sectionRef.current;
+    if (!section) return;
+
+    const ctx = gsap.context(() => {
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: section,
+          start: 'top 85%',
+          end: 'top 15%',
+          scrub: 1, // Inercia líquida al scrollear
+        },
+      });
+
+      // 1. Titular entra deslizándose desde la izquierda
+      if (headlineRef.current) {
+        tl.fromTo(
+          headlineRef.current,
+          { x: -120, opacity: 0.15 },
+          { x: 0, opacity: 1, ease: 'none' },
+          0
+        );
+      }
+
+      // 2. Subtítulo en Serif Itálica entra desde la derecha
+      if (subheadRef.current) {
+        tl.fromTo(
+          subheadRef.current,
+          { x: 100, opacity: 0.15 },
+          { x: 0, opacity: 1, ease: 'none' },
+          0.04
+        );
+      }
+
+      // 3. Manifiesto: Columnas convergen desde lados opuestos
+      if (manifestoLeftRef.current) {
+        tl.fromTo(
+          manifestoLeftRef.current,
+          { x: -80, opacity: 0.2 },
+          { x: 0, opacity: 1, ease: 'none' },
+          0.08
+        );
+      }
+      if (manifestoRightRef.current) {
+        tl.fromTo(
+          manifestoRightRef.current,
+          { x: 80, opacity: 0.2 },
+          { x: 0, opacity: 1, ease: 'none' },
+          0.08
+        );
+      }
+
+      // 4. Las 4 tarjetas de capacidad emergen desde abajo escalonadas
+      if (cardsContainerRef.current) {
+        const cards = cardsContainerRef.current.children;
+        tl.fromTo(
+          cards,
+          { y: 110, opacity: 0.2 },
+          { y: 0, opacity: 1, stagger: 0.08, ease: 'none' },
+          0.12
+        );
+      }
+
+      // 5. Parallax fotográfico en el fondo
+      if (bgWrapperRef.current) {
+        tl.fromTo(
+          bgWrapperRef.current,
+          { yPercent: -10 },
+          { yPercent: 10, ease: 'none' },
+          0
+        );
+      }
+    }, section);
+
+    return () => ctx.revert();
+  }, []);
 
   return (
     <section
+      ref={sectionRef}
       id="cross-media"
       aria-label="El Manifiesto del Puelche y Capacidades Cross Media"
       className="relative w-full min-h-screen flex flex-col justify-between py-20 md:py-28 px-6 md:px-12 lg:px-16 overflow-hidden bg-puelche-dark text-white select-none"
     >
       {/* 
         ======================================================================
-        SISTEMA DE FONDOS CON MORPHING CINEMÁTICO (CROSS-FADE EN TIEMPO REAL)
+        SISTEMA DE FONDOS CON MORPHING CINEMÁTICO (VELO LUMINOSO DE ALTO CONTRASTE)
+        El velo se alivia para que las fotografías se noten nítidas y vibrantes
         ======================================================================
       */}
-      <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+      <div ref={bgWrapperRef} className="absolute inset-0 z-0 pointer-events-none overflow-hidden scale-110">
         {/* Fondo Base / Reposo */}
         <div
-          className={`absolute inset-0 transition-opacity duration-1000 ease-out ${
+          className={`absolute inset-0 transition-opacity duration-700 ease-out ${
             activeIdx === null ? 'opacity-100 scale-100' : 'opacity-0 scale-105'
           } transform transition-transform duration-1000`}
         >
@@ -112,7 +205,7 @@ export function BrutalistCrossMedia() {
         {CAPABILITIES.map((cap, i) => (
           <div
             key={cap.id}
-            className={`absolute inset-0 transition-opacity duration-700 ease-out ${
+            className={`absolute inset-0 transition-opacity duration-500 ease-out ${
               activeIdx === i ? 'opacity-100 scale-105' : 'opacity-0 scale-100'
             } transform transition-transform duration-1000`}
           >
@@ -126,55 +219,75 @@ export function BrutalistCrossMedia() {
           </div>
         ))}
 
-        {/* Velo Cinematográfico Darkroom: Alto Contraste y Grano */}
-        <div className="absolute inset-0 bg-gradient-to-b from-[#1D2024]/85 via-[#1D2024]/80 to-[#1D2024]/95 backdrop-brightness-75" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,rgba(29,32,36,0.85)_100%)] pointer-events-none" />
+        {/* Velo Dinámico de Alto Contraste: Ligero para que la foto brille */}
+        <div
+          className={`absolute inset-0 transition-colors duration-500 ${
+            activeIdx !== null
+              ? 'bg-gradient-to-b from-[#1D2024]/65 via-[#1D2024]/30 to-[#1D2024]/80 backdrop-brightness-95'
+              : 'bg-gradient-to-b from-[#1D2024]/60 via-[#1D2024]/45 to-[#1D2024]/75 backdrop-brightness-90'
+          }`}
+        />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_20%,rgba(29,32,36,0.65)_100%)] pointer-events-none" />
       </div>
 
       {/* Contenido Superior / Encabezado de Sección */}
       <div className="relative z-10 max-w-7xl mx-auto w-full space-y-10">
         {/* Meta Bar Superior: Estilo Archivo Suizo */}
-        <div className="flex flex-wrap items-center justify-between gap-4 border-b border-white/10 pb-4 font-mono text-xs uppercase tracking-widest text-white/50">
+        <div className="flex flex-wrap items-center justify-between gap-4 border-b border-white/15 pb-4 font-mono text-xs uppercase tracking-widest text-white/70">
           <div className="flex items-center gap-3">
             <span className="w-2 h-2 rounded-full bg-puelche-cyan animate-pulse shadow-[0_0_8px_#59BFD6]" />
-            <span className="text-white font-bold tracking-[0.25em]">ARCHIVO 41°S &bull; MANIFIESTO</span>
+            <span className="text-white font-bold tracking-[0.25em] drop-shadow-md">ARCHIVO 41°S &bull; MANIFIESTO</span>
           </div>
-          <div className="flex items-center gap-4 text-puelche-cyan">
+          <div className="flex items-center gap-4 text-puelche-cyan drop-shadow-md">
             <span>PUERTO VARAS &bull; REGION DE LOS LAGOS</span>
-            <span className="hidden sm:inline text-white/30">• 41° 19′ S 72° 59′ W</span>
+            <span className="hidden sm:inline text-white/50">• 41° 19′ S 72° 59′ W</span>
           </div>
         </div>
 
-        {/* Titular Kinetic Monumental */}
+        {/* Titular Kinetic Monumental que entra desde la izquierda */}
         <div className="space-y-6">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white/5 border border-white/15 text-puelche-cyan font-mono text-[11px] sm:text-xs uppercase tracking-widest">
-            <span>ESTUDIO CROSS MEDIA &bull; PUERTO VARAS</span>
+          <div className="flex flex-wrap items-center gap-3">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-black/50 backdrop-blur-md border border-white/20 text-puelche-cyan font-mono text-[11px] sm:text-xs uppercase tracking-widest">
+              <span>ESTUDIO CROSS MEDIA &bull; PUERTO VARAS</span>
+            </div>
+
+            {/* Indicador Flotante de Fondo Activo */}
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-black/60 backdrop-blur-md border border-puelche-cyan/40 text-puelche-cyan font-mono text-[11px] sm:text-xs">
+              <span className="w-1.5 h-1.5 rounded-full bg-puelche-cyan animate-ping" />
+              <span>VISTA: {activeIdx !== null ? CAPABILITIES[activeIdx].title.toUpperCase() : 'PANORÁMICA AUSTRAL'}</span>
+            </div>
           </div>
 
-          <h2 className="font-condensed text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-bold uppercase tracking-tighter text-white leading-[0.88] drop-shadow-2xl">
+          <h2
+            ref={headlineRef}
+            className="font-condensed text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-bold uppercase tracking-tighter text-white leading-[0.88] drop-shadow-[0_4px_30px_rgba(0,0,0,0.95)]"
+          >
             ¿QUÉ ES <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-white/90 to-puelche-cyan">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-white/95 to-puelche-cyan">
               CROSS MEDIA?
             </span>
           </h2>
 
-          <p className="font-serif italic text-xl sm:text-2xl md:text-3xl text-puelche-cyan font-normal max-w-3xl leading-snug">
+          <p
+            ref={subheadRef}
+            className="font-serif italic text-xl sm:text-2xl md:text-3xl text-puelche-cyan font-normal max-w-3xl leading-snug drop-shadow-[0_2px_15px_rgba(0,0,0,0.9)]"
+          >
             El arte de concebir piezas gráficas y cinematográficas para todos los soportes.
           </p>
         </div>
 
-        {/* Manifiesto Editorial de 2 Columnas */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-16 pt-4 border-t border-white/10 font-sans text-base sm:text-lg text-white/80 leading-relaxed font-light">
-          <div className="space-y-4">
-            <p className="text-white font-medium text-lg sm:text-xl">
+        {/* Manifiesto Editorial: 2 Columnas que convergen desde los lados */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-16 pt-4 border-t border-white/15 font-sans text-base sm:text-lg text-white/90 leading-relaxed font-light">
+          <div ref={manifestoLeftRef} className="space-y-4 bg-black/35 backdrop-blur-sm p-5 rounded-xl border border-white/10">
+            <p className="text-white font-medium text-lg sm:text-xl drop-shadow-md">
               Somos un Estudio de Diseño Cross Media y Fotografía en Puerto Varas.
             </p>
-            <p>
-              Pero, <span className="italic font-serif text-white">¿Qué es Cross Media?</span> Nos referimos a que creamos piezas visuales para todos los medios, ya sean digitales, impresos y/o audiovisuales.
+            <p className="drop-shadow-sm">
+              Pero, <span className="italic font-serif text-white font-normal">¿Qué es Cross Media?</span> Nos referimos a que creamos piezas visuales para todos los medios, ya sean digitales, impresos y/o audiovisuales.
             </p>
           </div>
-          <div className="space-y-4">
-            <p>
+          <div ref={manifestoRightRef} className="space-y-4 bg-black/35 backdrop-blur-sm p-5 rounded-xl border border-white/10">
+            <p className="drop-shadow-sm">
               Contamos con un estudio de fotografía y grabación muy bien equipado, iluminación profesional y equipos de alta gama, tanto en tierra firme como desde el aire con dron 4K, haciendo resaltar tu producto o servicio para que pase al frente en la vitrina del mercado.
             </p>
             <div className="flex items-center gap-3 font-mono text-xs text-puelche-cyan tracking-wider pt-2">
@@ -186,16 +299,20 @@ export function BrutalistCrossMedia() {
 
         {/* 
           ======================================================================
-          GRILLA BRUTALISTA DE 4 CAPACIDADES (SPLIT DESKTOP + MOBILE SNAP SWIPE)
+          GRILLA BRUTALISTA DE 4 CAPACIDADES CON PREVIEW FOTOGRÁFICO EN CADA TARJETA
+          Emergen desde abajo al scrollear
           ======================================================================
         */}
         <div className="pt-6">
-          <div className="flex items-center justify-between pb-3 text-xs font-mono uppercase tracking-widest text-white/40">
-            <span>[ 04 CAPACIDADES DE PRODUCCIÓN ]</span>
-            <span className="hidden sm:inline">[ POSA EL CURSOR PARA VISUALIZAR BACKSTAGE ]</span>
+          <div className="flex items-center justify-between pb-3 text-xs font-mono uppercase tracking-widest text-white/70">
+            <span className="flex items-center gap-2">
+              <span className="w-1.5 h-1.5 rounded-full bg-puelche-cyan" />
+              <span>[ 04 CAPACIDADES DE PRODUCCIÓN ]</span>
+            </span>
+            <span className="hidden sm:inline text-puelche-cyan">[ POSA EL CURSOR PARA CAMBIAR EL FONDO EN VIVO ]</span>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div ref={cardsContainerRef} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {CAPABILITIES.map((cap, i) => {
               const Icon = cap.icon;
               const isSelected = activeIdx === i;
@@ -204,32 +321,31 @@ export function BrutalistCrossMedia() {
                 <div
                   key={cap.id}
                   onMouseEnter={() => setActiveIdx(i)}
-                  onMouseLeave={() => setActiveIdx(null)}
-                  onClick={() => setActiveIdx(isSelected ? null : i)}
-                  className={`group relative p-6 sm:p-7 rounded-xl border transition-all duration-300 cursor-pointer flex flex-col justify-between overflow-hidden ${
+                  onClick={() => setActiveIdx(i)}
+                  className={`group relative p-5 sm:p-6 rounded-xl border transition-all duration-300 cursor-pointer flex flex-col justify-between overflow-hidden backdrop-blur-md ${
                     isSelected
-                      ? 'bg-[#1D2024]/90 border-puelche-cyan shadow-[0_0_25px_rgba(89,191,214,0.25)] -translate-y-1.5'
-                      : 'bg-white/5 border-white/10 hover:border-white/25 hover:bg-white/[0.08]'
+                      ? 'bg-[#1D2024]/95 border-puelche-cyan shadow-[0_0_30px_rgba(89,191,214,0.35)] -translate-y-2'
+                      : 'bg-[#1D2024]/70 border-white/15 hover:border-white/35 hover:bg-[#1D2024]/85'
                   }`}
                   data-cursor="FOCO"
                 >
                   {/* Luz de Esquina Activa */}
                   <div
-                    className={`absolute top-0 right-0 w-16 h-16 bg-puelche-cyan/20 blur-xl rounded-full transition-opacity duration-300 ${
+                    className={`absolute top-0 right-0 w-24 h-24 bg-puelche-cyan/25 blur-xl rounded-full transition-opacity duration-300 ${
                       isSelected ? 'opacity-100' : 'opacity-0'
                     }`}
                   />
 
                   {/* Cabecera de la Tarjeta */}
-                  <div className="space-y-4">
+                  <div className="space-y-3">
                     <div className="flex items-center justify-between">
-                      <span className="font-mono text-3xl sm:text-4xl font-bold tracking-tighter text-puelche-cyan">
+                      <span className="font-mono text-3xl sm:text-4xl font-bold tracking-tighter text-puelche-cyan drop-shadow-md">
                         {cap.num}
                       </span>
                       <div
                         className={`p-2 rounded-lg border transition-colors ${
                           isSelected
-                            ? 'bg-puelche-cyan text-puelche-dark border-puelche-cyan'
+                            ? 'bg-puelche-cyan text-puelche-dark border-puelche-cyan shadow-md'
                             : 'bg-white/5 text-white/70 border-white/10 group-hover:text-puelche-cyan'
                         }`}
                       >
@@ -237,11 +353,23 @@ export function BrutalistCrossMedia() {
                       </div>
                     </div>
 
+                    {/* Mini-Ventana Fotográfica de la Tarjeta (Preview Nítido) */}
+                    <div className="relative aspect-[16/10] w-full rounded-lg overflow-hidden border border-white/10 group-hover:border-puelche-cyan/60 transition-colors shadow-inner">
+                      <Image
+                        src={cap.image}
+                        alt={cap.alt}
+                        fill
+                        className="object-cover group-hover:scale-108 transition-transform duration-700 ease-out"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-transparent to-transparent" />
+                      <div className="absolute bottom-2 left-2 right-2 flex items-center justify-between font-mono text-[10px] text-white">
+                        <span className="text-puelche-cyan font-bold truncate">{cap.tag}</span>
+                        <span className="text-white/60">RAW</span>
+                      </div>
+                    </div>
+
                     <div>
-                      <span className="font-mono text-[10px] sm:text-xs text-white/50 uppercase tracking-widest block">
-                        {cap.tag}
-                      </span>
-                      <h3 className="font-condensed text-2xl sm:text-3xl font-bold uppercase tracking-wider text-white mt-1 group-hover:text-puelche-cyan transition-colors">
+                      <h3 className="font-condensed text-2xl font-bold uppercase tracking-wider text-white group-hover:text-puelche-cyan transition-colors">
                         {cap.title}
                       </h3>
                       <p className="font-sans text-xs text-puelche-cyan font-medium tracking-wide">
@@ -249,15 +377,15 @@ export function BrutalistCrossMedia() {
                       </p>
                     </div>
 
-                    <p className="font-sans text-xs sm:text-sm text-white/70 leading-relaxed font-light">
+                    <p className="font-sans text-xs sm:text-sm text-white/80 leading-relaxed font-light">
                       {cap.description}
                     </p>
                   </div>
 
                   {/* Micro-Metadata de Estilo Suizo al pie */}
-                  <div className="pt-6 mt-4 border-t border-white/10 font-mono text-[10px] text-white/40 space-y-1">
-                    <div className="text-white/60 font-medium truncate">{cap.spec}</div>
-                    <div className="text-puelche-cyan/70">{cap.meta}</div>
+                  <div className="pt-4 mt-4 border-t border-white/10 font-mono text-[10px] text-white/50 space-y-1">
+                    <div className="text-white/70 font-medium truncate">{cap.spec}</div>
+                    <div className="text-puelche-cyan/80">{cap.meta}</div>
                   </div>
                 </div>
               );
@@ -266,7 +394,7 @@ export function BrutalistCrossMedia() {
         </div>
 
         {/* Fila de Acciones y Conversión */}
-        <div className="pt-6 flex flex-wrap items-center justify-between gap-6 border-t border-white/10">
+        <div className="pt-6 flex flex-wrap items-center justify-between gap-6 border-t border-white/15">
           <div className="flex flex-wrap items-center gap-4">
             <Link
               href="/portafolio"
@@ -286,7 +414,7 @@ export function BrutalistCrossMedia() {
             </a>
           </div>
 
-          <div className="font-mono text-xs text-white/40 uppercase tracking-widest hidden md:flex items-center gap-3">
+          <div className="font-mono text-xs text-white/60 uppercase tracking-widest hidden md:flex items-center gap-3">
             <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
             <span>ESTUDIO ACTIVO &bull; ATENDIENDO PROYECTOS EN PATAGONIA</span>
           </div>
