@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Share2, MessageCircle, BarChart3, ArrowRight, X, ChevronRight, ChevronLeft, Eye } from 'lucide-react';
+import { ArrowDown, X, ChevronRight, ChevronLeft, Eye, ArrowRight, Instagram, Sparkles } from 'lucide-react';
 
 interface SocialProject {
   id: string;
@@ -66,120 +66,112 @@ export default function RedesSocialesPage() {
   };
 
   return (
-    <div className="w-full flex flex-col bg-white">
-      {/* ── 1. AUTHENTIC HERO BANNER (MacBook Pro BlueSeal shot) ── */}
-      <section className="relative w-full h-[70vh] sm:h-[80vh] md:h-[88vh] overflow-hidden border-b border-puelche-slate-dark">
+    <div className="w-full flex flex-col -mt-20 bg-white selection:bg-puelche-cyan selection:text-white">
+      {/* ── 1. AUTHENTIC HERO BANNER (MacBook Pro BlueSeal shot - Matches media_1793374347503_6ca7696d 1:1) ── */}
+      <section className="relative w-full h-screen min-h-[640px] overflow-hidden bg-black">
         <Image
           src="/images/real/bg-redes-1-min.jpg"
           alt="Puelche Lab - Redes Sociales"
           fill
           priority
-          className="object-cover object-center"
+          className="object-cover object-center scale-105 transition-transform duration-1000"
         />
-        {/* Subtle ambient gradient overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-black/30" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/15 to-black/35" />
 
-        {/* Signature Puelche Cyan Card on Bottom Left */}
-        <div className="absolute bottom-8 left-4 sm:left-8 md:left-12 max-w-lg bg-puelche-cyan text-white p-6 sm:p-8 shadow-2xl rounded-sm">
-          <span className="font-condensed uppercase tracking-widest text-xs font-bold text-white/80 block mb-1">
-            ESTUDIO PUELCHE LAB
-          </span>
-          <h1 className="font-condensed text-3xl sm:text-4xl md:text-5xl uppercase tracking-wider font-bold leading-tight">
-            REDES SOCIALES
-          </h1>
-          <p className="font-sans text-xs sm:text-sm text-white/95 mt-2 font-light leading-relaxed">
-            Estrategia de contenidos, fotografía real y dirección de arte para canales de Instagram, Facebook y plataformas digitales.
-          </p>
-          <div className="mt-4 pt-3 border-t border-white/30 flex items-center justify-between">
-            <button
-              onClick={() => openModal(REAL_SOCIAL_PROJECTS[0])}
-              className="inline-flex items-center gap-2 text-xs sm:text-sm font-condensed uppercase tracking-widest font-bold hover:text-white/80 transition-colors"
-            >
-              <Eye className="w-4 h-4" />
-              <span>Ver Caso BlueSeal.SPA</span>
-            </button>
-            <span className="text-[11px] text-white/70 font-mono">1920 × 1010 HD</span>
+        {/* Floating Cyan Pill: REDES SOCIALES (Left-anchored on bottom left of screen) */}
+        <div className="absolute bottom-12 left-0 sm:left-4 md:left-6 z-20">
+          <div className="bg-puelche-cyan text-white pl-6 pr-8 sm:pl-8 sm:pr-12 py-3.5 sm:py-5 rounded-r-2xl sm:rounded-r-3xl shadow-[0_10px_35px_rgba(89,191,214,0.4)] flex items-center gap-3 backdrop-blur-sm transition-transform duration-300 hover:translate-x-1">
+            <h1 className="font-condensed text-3xl sm:text-5xl md:text-6xl uppercase tracking-wider font-extrabold leading-none">
+              REDES SOCIALES
+            </h1>
           </div>
+        </div>
+
+        {/* Bottom Right Cue to Section 2 */}
+        <div className="absolute bottom-12 right-6 sm:right-12 z-20 hidden sm:flex items-center gap-3 text-white">
+          <button
+            onClick={() => openModal(REAL_SOCIAL_PROJECTS[0])}
+            className="px-5 py-2.5 rounded-full bg-black/60 hover:bg-puelche-cyan text-white text-xs font-mono uppercase tracking-wider backdrop-blur-md border border-white/20 transition-all flex items-center gap-2 hover:scale-105"
+          >
+            <Eye className="w-4 h-4" />
+            <span>Ver Caso BlueSeal.SPA</span>
+          </button>
+          <a
+            href="#estrategia"
+            className="p-2.5 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors"
+            aria-label="Ir a estrategia"
+          >
+            <ArrowDown className="w-4 h-4 animate-bounce text-puelche-cyan" />
+          </a>
         </div>
       </section>
 
-      {/* ── 2. STRATEGY SECTION (bg-redes-2-min.jpg) ── */}
-      <section className="relative w-full py-20 px-6 sm:px-8 lg:px-12 text-white overflow-hidden border-b border-gray-900/10">
+      {/* ── 2. SECTION 2: ORGANIC EDITORIAL TYPOGRAPHY ON LANDSCAPE (Matches media_1793383637189_59b0015a 1:1) ── */}
+      <section
+        id="estrategia"
+        className="relative w-full h-screen min-h-[640px] flex items-center justify-center overflow-hidden bg-black text-white px-6 sm:px-12"
+      >
+        {/* Full Viewport Landscape Image: Patagonian Grassland with wooden fence */}
         <Image
           src="/images/real/bg-redes-2-min.jpg"
-          alt="Estrategia en Redes Sociales"
+          alt="Estrategia en Redes Sociales Puelche Lab"
           fill
-          className="object-cover object-center"
+          priority
+          className="object-cover object-center scale-105 will-change-transform"
         />
-        <div className="absolute inset-0 bg-puelche-slate/90 backdrop-blur-[2px]" />
 
-        <div className="relative z-10 max-w-5xl mx-auto space-y-8">
-          <div className="space-y-4 text-center sm:text-left">
-            <span className="font-condensed uppercase tracking-widest text-xs sm:text-sm font-bold text-puelche-cyan">
-              METODOLOGÍA CROSS-MEDIA
+        {/* Subtle, soft ambient vignette allowing the landscape and text to breathe naturally */}
+        <div className="absolute inset-0 bg-black/35 backdrop-blur-[1px]" />
+
+        {/* Centered Organic Poetic Copy (Identical to original site) */}
+        <div className="relative z-10 max-w-4xl mx-auto text-center space-y-6 sm:space-y-8">
+          {/* Main Headline with delicate editorial tracking */}
+          <h2 className="font-sans text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-light leading-snug sm:leading-tight text-white drop-shadow-[0_2px_15px_rgba(0,0,0,0.8)] tracking-normal">
+            Aplicamos las estrategias que tu marca necesita para atraer,{' '}
+            <span className="font-normal italic">convertir y fidelizar clientes en tus redes sociales.</span>
+          </h2>
+
+          {/* Body Paragraph */}
+          <p className="font-sans text-sm sm:text-base md:text-lg text-white/95 max-w-2xl mx-auto font-light leading-relaxed drop-shadow-[0_2px_10px_rgba(0,0,0,0.8)]">
+            Creamos y administramos comunidades digitales en Facebook, Twitter, YouTube, Instagram, LinkedIn y otras redes sociales. 
+            Configuramos, administramos y monitoreamos cuentas en redes sociales, diseñando una estrategia a través de anuncios publicitarios que se adecuan al objetivo de tu negocio.
+          </p>
+
+          {/* Interactive Portal Icon: 'Haz click en el ícono para ir a conocer nuestro trabajo' */}
+          <div className="pt-4 flex flex-col items-center justify-center space-y-3">
+            <button
+              onClick={() => openModal(REAL_SOCIAL_PROJECTS[0])}
+              data-cursor="explore"
+              data-cursor-text="VER CASO"
+              className="group/btn relative w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-puelche-cyan/90 hover:bg-puelche-cyan text-white flex items-center justify-center shadow-[0_0_30px_rgba(89,191,214,0.5)] transition-all duration-300 hover:scale-110 border border-white/40"
+              aria-label="Abrir caso BlueSeal.SPA"
+            >
+              <Instagram className="w-8 h-8 sm:w-9 sm:h-9 transition-transform duration-300 group-hover/btn:scale-110" />
+              <div className="absolute inset-0 rounded-full animate-ping bg-puelche-cyan opacity-25 pointer-events-none" />
+            </button>
+            <span className="font-mono text-xs sm:text-sm text-white/90 drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)] tracking-wider">
+              Haz click en el ícono para ir a conocer nuestro trabajo.
             </span>
-            <h2 className="font-condensed text-3xl sm:text-4xl md:text-5xl uppercase tracking-wider font-bold leading-tight text-white">
-              &ldquo;Aplicamos las estrategias que tu marca necesita para atraer, convertir y fidelizar clientes en tus redes sociales.&rdquo;
-            </h2>
-            <p className="font-sans text-sm sm:text-base text-white/90 font-light leading-relaxed max-w-3xl">
-              Creamos y administramos comunidades digitales en Facebook, Instagram, YouTube, LinkedIn y otras redes sociales. 
-              Configuramos, administramos y monitoreamos cuentas con fotografía real tomada en terreno, diseñando campañas publicitarias que se adecúan al objetivo concreto de tu negocio.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-4">
-            <div className="p-6 bg-white/10 backdrop-blur-md border border-white/15 rounded-sm space-y-3">
-              <div className="w-10 h-10 rounded-full bg-puelche-cyan/20 flex items-center justify-center text-puelche-cyan">
-                <Share2 className="w-5 h-5" />
-              </div>
-              <h3 className="font-condensed text-xl uppercase tracking-wide font-bold text-white">
-                Contenido Real & Propio
-              </h3>
-              <p className="font-sans text-xs sm:text-sm text-white/80 leading-relaxed font-light">
-                Generamos contenido fotográfico y audiovisual genuino con nuestro propio equipo en Puerto Varas, sin recurrir a bancos de imágenes genéricos.
-              </p>
-            </div>
-
-            <div className="p-6 bg-white/10 backdrop-blur-md border border-white/15 rounded-sm space-y-3">
-              <div className="w-10 h-10 rounded-full bg-puelche-cyan/20 flex items-center justify-center text-puelche-cyan">
-                <MessageCircle className="w-5 h-5" />
-              </div>
-              <h3 className="font-condensed text-xl uppercase tracking-wide font-bold text-white">
-                Coherencia de Marca
-              </h3>
-              <p className="font-sans text-xs sm:text-sm text-white/80 leading-relaxed font-light">
-                Mantenemos una línea gráfica impecable en feeds, historias y reels, asegurando que cada publicación refuerce la personalidad de tu empresa.
-              </p>
-            </div>
-
-            <div className="p-6 bg-white/10 backdrop-blur-md border border-white/15 rounded-sm space-y-3">
-              <div className="w-10 h-10 rounded-full bg-puelche-cyan/20 flex items-center justify-center text-puelche-cyan">
-                <BarChart3 className="w-5 h-5" />
-              </div>
-              <h3 className="font-condensed text-xl uppercase tracking-wide font-bold text-white">
-                Estrategia Cross-Media
-              </h3>
-              <p className="font-sans text-xs sm:text-sm text-white/80 leading-relaxed font-light">
-                Sincronizamos tus campañas en redes sociales con tu sitio web, lanzamientos de producto y material publicitario impreso.
-              </p>
-            </div>
           </div>
         </div>
       </section>
 
       {/* ── 3. BOTTOM CTA ── */}
-      <section className="bg-white py-16 px-6 text-center">
+      <section className="bg-white py-20 px-6 text-center border-t border-gray-100">
         <div className="max-w-2xl mx-auto space-y-6">
-          <h3 className="font-condensed text-2xl sm:text-3xl uppercase tracking-wider font-bold text-puelche-dark">
+          <span className="font-condensed uppercase tracking-widest text-xs font-bold text-puelche-cyan">
+            ESTRATEGIA & GESTIÓN DIGITAL
+          </span>
+          <h3 className="font-condensed text-3xl sm:text-4xl uppercase tracking-wider font-bold text-puelche-dark">
             ¿Listo para llevar tus redes a un nivel profesional?
           </h3>
-          <p className="font-sans text-sm text-puelche-gray font-light">
-            Conversemos sobre tu marca y diseñemos una pauta de contenidos auténtica.
+          <p className="font-sans text-sm sm:text-base text-puelche-gray font-light leading-relaxed">
+            Conversemos sobre tu marca y diseñemos una pauta de contenidos auténtica, con fotografía real en Puerto Varas y la Patagonia.
           </p>
           <div>
             <Link
               href="/contacto"
-              className="inline-flex items-center gap-3 px-8 py-4 bg-puelche-cyan text-white font-condensed uppercase tracking-widest text-sm font-bold rounded-sm hover:bg-puelche-cyan-dark transition-colors shadow-md"
+              className="inline-flex items-center gap-3 px-8 py-4 bg-puelche-cyan text-white font-condensed uppercase tracking-widest text-sm font-bold rounded-sm hover:bg-puelche-cyan-dark transition-colors shadow-lg hover:scale-105 duration-200"
             >
               <span>Cotizar Redes Sociales</span>
               <ArrowRight className="w-4 h-4" />
@@ -188,14 +180,14 @@ export default function RedesSocialesPage() {
         </div>
       </section>
 
-      {/* ── MODAL LIGHTBOX FOR HIGH-RES ASSETS ── */}
+      {/* ── 4. LIGHTBOX MODAL FOR HIGH-RES ASSETS ── */}
       {activeModalProject && (
         <div
           className="fixed inset-0 z-50 bg-black/95 flex flex-col justify-between p-4 sm:p-6 md:p-8 animate-fadeIn"
           role="dialog"
           aria-modal="true"
         >
-          {/* Modal Header */}
+          {/* Header */}
           <div className="flex items-center justify-between text-white border-b border-white/20 pb-4">
             <div>
               <span className="text-puelche-cyan font-condensed uppercase tracking-widest text-xs font-bold block">
@@ -217,7 +209,7 @@ export default function RedesSocialesPage() {
             </button>
           </div>
 
-          {/* Modal Image Display */}
+          {/* Image Display */}
           <div className="relative flex-1 my-4 flex items-center justify-center overflow-hidden">
             <div className="relative w-full h-full max-w-6xl max-h-[75vh]">
               <Image
@@ -250,20 +242,18 @@ export default function RedesSocialesPage() {
             )}
           </div>
 
-          {/* Modal Footer */}
+          {/* Footer */}
           <div className="flex items-center justify-between text-white/80 border-t border-white/20 pt-4 text-xs sm:text-sm font-sans">
             <div>
               Imagen <span className="text-puelche-cyan font-bold">{currentImageIndex + 1}</span> de{' '}
               <span className="font-bold">{activeModalProject.gallery.length}</span>
             </div>
-            <div className="flex items-center gap-4">
-              <Link
-                href="/contacto"
-                className="text-puelche-cyan font-condensed uppercase tracking-wider font-bold hover:underline"
-              >
-                Cotizar Proyecto Similar &rarr;
-              </Link>
-            </div>
+            <Link
+              href="/contacto"
+              className="text-puelche-cyan font-condensed uppercase tracking-wider font-bold hover:underline"
+            >
+              Cotizar Proyecto Similar &rarr;
+            </Link>
           </div>
         </div>
       )}

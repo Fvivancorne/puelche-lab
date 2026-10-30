@@ -27,7 +27,7 @@ export function Navbar() {
     pathname === '/portafolio' || pathname.startsWith('/servicios');
 
   return (
-    <header className="fixed top-0 left-0 w-full z-50 bg-[#3B3D42] bg-puelche-slate border-b border-white/10 shadow-md h-[70px] flex items-center">
+    <header className="fixed top-0 left-0 w-full z-50 bg-[#2B2D31]/85 backdrop-blur-md border-b border-white/10 shadow-lg h-[70px] flex items-center transition-all duration-300">
       <div className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 flex items-center justify-between">
         {/* Brand Logo: logo-top.png */}
         <Link href="/" className="flex items-center py-1 group shrink-0" aria-label="Puelche Lab Inicio">

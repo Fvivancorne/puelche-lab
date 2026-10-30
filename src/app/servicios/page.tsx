@@ -47,7 +47,7 @@ export default function ServiciosPage() {
   return (
     <div className="w-full flex flex-col bg-white">
       {/* Banner */}
-      <section className="bg-puelche-slate py-16 px-6 text-center border-b border-puelche-slate-dark">
+      <section className="bg-puelche-slate pt-28 pb-16 md:pt-32 md:pb-20 px-6 text-center border-b border-puelche-slate-dark">
         <div className="max-w-4xl mx-auto space-y-3">
           <span className="font-condensed uppercase tracking-widest text-xs font-bold text-puelche-cyan">
             ESTUDIO PUELCHE LAB

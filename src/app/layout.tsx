@@ -7,6 +7,8 @@ import { Footer } from '@/components/layout/Footer';
 import { WhatsAppButton } from '@/components/ui/WhatsAppButton';
 import { Preloader } from '@/components/ui/Preloader';
 import { PageTransition } from '@/components/ui/PageTransition';
+import { AwwwardsCursor } from '@/components/ui/AwwwardsCursor';
+import { FilmGrain } from '@/components/ui/FilmGrain';
 
 const sansFont = Plus_Jakarta_Sans({
   subsets: ['latin'],
@@ -112,9 +114,11 @@ export default function RootLayout({
       <body className="min-h-screen bg-white text-puelche-dark font-sans antialiased flex flex-col selection:bg-puelche-cyan selection:text-white">
         <Preloader />
         <PageTransition />
+        <AwwwardsCursor />
+        <FilmGrain />
         <SmoothScrollProvider>
           <Navbar />
-          <main className="flex-1 w-full pt-20">{children}</main>
+          <main className="flex-1 w-full relative pt-20">{children}</main>
           <Footer />
           <WhatsAppButton />
         </SmoothScrollProvider>

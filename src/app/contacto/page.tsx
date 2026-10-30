@@ -372,7 +372,7 @@ function ContactFormInner() {
 export default function ContactoPage() {
   return (
     <div className="w-full flex flex-col bg-white">
-      <section className="max-w-6xl mx-auto px-6 sm:px-8 lg:px-12 py-16 md:py-24 w-full">
+      <section className="max-w-6xl mx-auto px-6 sm:px-8 lg:px-12 pt-28 pb-16 md:pt-32 md:pb-24 w-full">
         <Suspense fallback={<div className="p-8 text-center font-condensed">Cargando formulario...</div>}>
           <ContactFormInner />
         </Suspense>

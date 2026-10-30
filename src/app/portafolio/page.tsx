@@ -50,19 +50,19 @@ function PortfolioContent() {
     : PORTFOLIO_PROJECTS.filter((p) => p.category === selectedCategory);
 
   return (
-    <div className="w-full min-h-screen bg-puelche-dark text-white flex flex-col pt-[70px]">
+    <div className="w-full min-h-screen bg-puelche-dark text-white flex flex-col -mt-20">
       {/* ── AUTHENTIC HERO BANNER (bg-portafolios-min.jpg) ── */}
-      <section className="relative w-full h-[60vh] sm:h-[70vh] md:h-[78vh] overflow-hidden border-b border-white/10">
+      <section className="relative w-full h-screen min-h-[640px] overflow-hidden border-b border-white/10 bg-black">
         <Image
           src="/images/real/bg-portafolios-min.jpg"
           alt="Portafolio Puelche Lab"
           fill
           priority
-          className="object-cover object-center"
+          className="object-cover object-center scale-105 transition-transform duration-1000"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-puelche-dark via-transparent to-black/30" />
+        <div className="absolute inset-0 bg-gradient-to-t from-puelche-dark via-transparent to-black/35" />
 
-        <div className="absolute bottom-10 left-6 sm:left-12 md:left-16 max-w-xl">
+        <div className="absolute bottom-12 left-6 sm:left-12 md:left-16 max-w-xl z-20">
           <h1 className="font-condensed text-5xl sm:text-7xl md:text-8xl font-black uppercase tracking-tight text-[#59BFD6] leading-none mb-3 drop-shadow-md">
             PORTAFOLIO
           </h1>
@@ -125,6 +125,8 @@ function PortfolioContent() {
         {filteredProjects.map((project) => (
           <article
             key={project.id}
+            data-cursor="explore"
+            data-cursor-text="VER OBRA"
             onClick={() => setActiveModalProject(project)}
             className="group cursor-pointer bg-white/5 border border-white/10 rounded-xl overflow-hidden hover:border-[#59BFD6]/60 transition-all duration-500 flex flex-col justify-between"
           >

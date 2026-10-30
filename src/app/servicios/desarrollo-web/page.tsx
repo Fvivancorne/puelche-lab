@@ -93,32 +93,45 @@ export default function DesarrolloWebPage() {
   };
 
   return (
-    <div className="w-full flex flex-col bg-white">
-      {/* ── 1. AUTHENTIC HERO BANNER (bg-portafolios-web-min.jpg) ── */}
-      <section className="relative w-full h-[65vh] sm:h-[75vh] md:h-[82vh] overflow-hidden border-b border-puelche-slate-dark">
+    <div className="w-full flex flex-col -mt-20 bg-white selection:bg-puelche-cyan selection:text-white">
+      {/* ── 1. AUTHENTIC FULL-BLEED 100VH HERO ── */}
+      <section className="relative w-full h-screen min-h-[640px] overflow-hidden bg-black">
         <Image
           src="/images/real/bg-portafolios-web-min.jpg"
-          alt="Puelche Lab - Desarrollo Web"
+          alt="Puelche Lab - Desarrollo Web & Plataformas Digitales"
           fill
           priority
-          className="object-cover object-center"
+          className="object-cover object-center scale-105 transition-transform duration-1000"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-black/40" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-black/40" />
 
-        <div className="absolute bottom-8 left-4 sm:left-8 md:left-12 max-w-xl bg-puelche-cyan text-white p-6 sm:p-8 shadow-2xl rounded-sm">
-          <span className="font-condensed uppercase tracking-widest text-xs font-bold text-white/80 block mb-1">
-            ESTUDIO PUELCHE LAB
-          </span>
-          <h1 className="font-condensed text-3xl sm:text-4xl md:text-5xl uppercase tracking-wider font-bold leading-tight">
-            DESARROLLO WEB
-          </h1>
-          <p className="font-sans text-xs sm:text-sm text-white/95 mt-2 font-light leading-relaxed">
-            &ldquo;Diseñamos, construimos y mantenemos sitios web; diseño impecable, funcionamiento rápido y desempeño optimizado para permitir la mejor experiencia de usuario.&rdquo;
-          </p>
-          <div className="mt-4 pt-3 border-t border-white/30 flex items-center justify-between text-xs font-mono text-white/70">
-            <span>Next.js • React • Alta Fidelidad</span>
-            <span>1920 × 1010 HD</span>
+        {/* Floating Cyan Pill: DESARROLLO WEB */}
+        <div className="absolute top-1/2 -translate-y-1/2 left-0 sm:left-4 md:left-6 z-20">
+          <div className="bg-puelche-cyan text-white pl-6 pr-8 sm:pl-8 sm:pr-12 py-3.5 sm:py-5 rounded-r-2xl sm:rounded-r-3xl shadow-[0_10px_35px_rgba(89,191,214,0.4)] flex items-center gap-3 backdrop-blur-sm transition-transform duration-300 hover:translate-x-1">
+            <h1 className="font-condensed text-3xl sm:text-5xl md:text-6xl uppercase tracking-wider font-extrabold leading-none">
+              DESARROLLO WEB
+            </h1>
           </div>
+        </div>
+
+        {/* Bottom Caption & Manifesto */}
+        <div className="absolute bottom-10 left-6 sm:left-12 right-6 sm:right-12 z-20 flex flex-col sm:flex-row items-start sm:items-end justify-between gap-4 text-white">
+          <div className="max-w-2xl">
+            <span className="font-mono text-xs uppercase tracking-widest text-puelche-cyan block mb-1">
+              ESTUDIO PUELCHE LAB • INGENIERÍA DIGITAL
+            </span>
+            <p className="font-sans text-sm sm:text-base text-white/95 font-light leading-relaxed italic">
+              &ldquo;Diseñamos, construimos y mantenemos sitios web; diseño impecable, funcionamiento rápido y desempeño optimizado para permitir la mejor experiencia de usuario.&rdquo;
+            </p>
+          </div>
+
+          <a
+            href="#obras"
+            className="inline-flex items-center gap-2 text-xs font-mono tracking-widest uppercase text-white/70 hover:text-puelche-cyan transition-colors"
+          >
+            <span>Explorar plataformas web</span>
+            <ChevronRight className="w-4 h-4 animate-bounce text-puelche-cyan" />
+          </a>
         </div>
       </section>
 
@@ -164,20 +177,23 @@ export default function DesarrolloWebPage() {
       </section>
 
       {/* ── 3. PANORAMIC WEB PROJECT STRIPES ── */}
-      <section className="w-full flex flex-col" aria-label="Proyectos de Desarrollo Web">
+      <section id="obras" className="w-full flex flex-col" aria-label="Proyectos de Desarrollo Web">
         {REAL_WEB_PROJECTS.map((proj, idx) => (
           <div
             key={proj.id}
-            className="relative w-full h-[450px] sm:h-[520px] md:h-[580px] overflow-hidden group border-b border-gray-900/10"
+            data-cursor="explore"
+            data-cursor-text="VER WEB"
+            className="relative w-full h-[480px] sm:h-[550px] md:h-[620px] overflow-hidden group border-b border-gray-900/15 cursor-pointer"
+            onClick={() => openModal(proj)}
           >
             <Image
               src={proj.image}
               alt={proj.client}
               fill
               priority={idx < 2}
-              className="object-cover object-center transition-transform duration-700 ease-out group-hover:scale-105"
+              className="object-cover object-center transition-transform duration-1000 ease-out group-hover:scale-105 will-change-transform"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-transparent to-black/25" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-black/30 group-hover:from-black/80 transition-colors duration-500" />
 
             <div className="absolute bottom-8 left-4 sm:left-8 md:left-12 max-w-md bg-puelche-cyan text-white p-6 sm:p-7 shadow-2xl rounded-sm transition-transform duration-300 group-hover:-translate-y-1">
               <span className="text-[10px] font-mono uppercase tracking-widest text-white/75 block">

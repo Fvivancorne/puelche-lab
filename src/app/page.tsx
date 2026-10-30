@@ -35,7 +35,7 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="w-full flex flex-col -mt-[70px]">
+    <div className="w-full flex flex-col -mt-20">
       {/* 
         ======================================================================
         SECCIÓN 1 (100vh): HERO & EMBLEMA COLOSAL BLANCO + SPLIT TEXT
