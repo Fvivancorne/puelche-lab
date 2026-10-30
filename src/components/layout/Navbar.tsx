@@ -8,9 +8,9 @@ import { ChevronDown, Menu, X, ArrowUpRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 const PORTFOLIO_DROPDOWN = [
-  { label: 'Fotografía', href: '/servicios/fotografia' },
   { label: 'Diseño de Marca', href: '/servicios/branding' },
   { label: 'Desarrollo Web', href: '/servicios/desarrollo-web' },
+  { label: 'Fotografía', href: '/servicios/fotografia' },
   { label: 'Edición Fotográfica', href: '/servicios/edicion-fotografica' },
   { label: 'Diseño Editorial', href: '/servicios/editorial' },
   { label: 'Redes Sociales', href: '/servicios/redes-sociales' },

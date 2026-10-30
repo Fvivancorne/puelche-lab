@@ -51,8 +51,29 @@ function PortfolioContent() {
 
   return (
     <div className="w-full min-h-screen bg-puelche-dark text-white flex flex-col pt-[70px]">
-      {/* Editorial Header */}
-      <div className="max-w-7xl mx-auto w-full px-6 py-12 md:py-16">
+      {/* ── AUTHENTIC HERO BANNER (bg-portafolios-min.jpg) ── */}
+      <section className="relative w-full h-[60vh] sm:h-[70vh] md:h-[78vh] overflow-hidden border-b border-white/10">
+        <Image
+          src="/images/real/bg-portafolios-min.jpg"
+          alt="Portafolio Puelche Lab"
+          fill
+          priority
+          className="object-cover object-center"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-puelche-dark via-transparent to-black/30" />
+
+        <div className="absolute bottom-10 left-6 sm:left-12 md:left-16 max-w-xl">
+          <h1 className="font-condensed text-5xl sm:text-7xl md:text-8xl font-black uppercase tracking-tight text-[#59BFD6] leading-none mb-3 drop-shadow-md">
+            PORTAFOLIO
+          </h1>
+          <p className="font-condensed uppercase tracking-wider text-sm sm:text-base md:text-lg text-white font-medium max-w-md leading-relaxed drop-shadow-md">
+            Deslízate hacia abajo y mira lo que este viento a dejado en cada uno de los servicios que tenemos.
+          </p>
+        </div>
+      </section>
+
+      {/* Editorial Header & Filters */}
+      <div className="max-w-7xl mx-auto w-full px-6 py-10 md:py-14">
         <div className="border-b border-white/10 pb-8 mb-8">
           <div className="flex flex-wrap items-center gap-2 text-xs tracking-widest uppercase font-condensed text-[#59BFD6] mb-3">
             <span className="w-2 h-2 rounded-full bg-[#59BFD6]"></span>
@@ -60,9 +81,9 @@ function PortfolioContent() {
             <span className="text-white/30">/</span>
             <span>2020 — 2026</span>
           </div>
-          <h1 className="font-condensed text-4xl sm:text-6xl md:text-7xl font-bold uppercase tracking-tight text-white mb-4">
+          <h2 className="font-condensed text-3xl sm:text-5xl md:text-6xl font-bold uppercase tracking-tight text-white mb-4">
             Obras que narran el sur.
-          </h1>
+          </h2>
           <p className="text-base sm:text-lg text-white/80 max-w-3xl leading-relaxed font-sans font-light">
             Selección curada de proyectos desarrollados para clientes en Puerto Varas, Los Lagos, Chile y Argentina. 
             Dirección creativa sin artificios, fotografía territorial de autor y plataformas visuales de escala internacional.
