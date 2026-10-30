@@ -53,13 +53,6 @@ html.lenis, html.lenis body {
   pointer-events: none;
 }
 
-/* ===== AWWWARDS: Custom Cursor (Desktop Only) ===== */
-@media (hover: hover) and (pointer: fine) {
-  * {
-    cursor: none !important;
-  }
-}
-
 /* ===== AWWWARDS: Reduced Motion Fallback ===== */
 @media (prefers-reduced-motion: reduce) {
   * {

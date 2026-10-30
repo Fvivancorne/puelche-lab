@@ -55,49 +55,64 @@ export function BrutalistProjectList() {
     >
       {/* Section Label */}
       <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-16 mb-12">
-        <div className="flex items-center gap-3 mb-4">
-          <span className="w-2 h-2 rounded-full bg-puelche-cyan animate-pulse" />
-          <span className="font-mono text-xs uppercase tracking-widest text-puelche-cyan">
-            Obras Destacadas
-          </span>
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-white/10 pb-6">
+          <div className="space-y-2">
+            <div className="flex items-center gap-2.5">
+              <span className="w-2 h-2 rounded-full bg-puelche-cyan" />
+              <span className="font-condensed text-xs uppercase tracking-widest text-puelche-cyan font-bold">
+                Archivo Curado &bull; Obras & Expediciones
+              </span>
+            </div>
+            <h2 className="font-condensed text-3xl sm:text-4xl md:text-5xl uppercase tracking-wider text-white font-bold">
+              Proyectos Seleccionados
+            </h2>
+          </div>
+          <p className="font-serif italic text-sm text-white/60 max-w-sm sm:text-right">
+            Arquitectura, industria y hospitalidad retratadas bajo la luz del sur.
+          </p>
         </div>
       </div>
 
-      {/* Brutalist Text List */}
+      {/* Curated Text List */}
       <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-16">
         <ul className="divide-y divide-white/10">
           {FEATURED.map((project, idx) => (
             <li key={project.id}>
               <Link
-                href={`/portafolio`}
-                className="group flex items-center justify-between py-6 md:py-8 transition-colors hover:pl-4 duration-500"
-                data-cursor="VER"
+                href={`/portafolio?proyecto=${project.slug}`}
+                className="group flex flex-col md:flex-row md:items-center justify-between py-6 md:py-8 transition-all hover:pl-3 duration-300 gap-2 md:gap-6"
                 onMouseEnter={() => handleMouseEnter(project)}
                 onMouseLeave={handleMouseLeave}
               >
                 <div className="flex items-baseline gap-4 md:gap-6 overflow-hidden">
-                  {/* Index number */}
-                  <span className="font-mono text-xs text-white/30 tabular-nums shrink-0">
-                    {String(idx + 1).padStart(2, '0')}
+                  {/* Subtle editorial index */}
+                  <span className="font-serif italic text-sm sm:text-base text-puelche-cyan/60 shrink-0">
+                    {String(idx + 1).padStart(2, '0')}.
                   </span>
 
-                  {/* Project title — brutalist size */}
-                  <h3
-                    className="font-condensed uppercase tracking-wide font-bold text-white
-                      text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl
-                      group-hover:text-puelche-cyan transition-colors duration-300
-                      truncate"
-                  >
-                    {project.client}
-                  </h3>
+                  <div className="space-y-1">
+                    <h3
+                      className="font-condensed uppercase tracking-wide font-bold text-white
+                        text-2xl sm:text-3xl md:text-4xl lg:text-5xl
+                        group-hover:text-puelche-cyan transition-colors duration-300
+                        truncate"
+                    >
+                      {project.client}
+                    </h3>
+                    <p className="font-serif italic text-xs sm:text-sm text-white/50 group-hover:text-white/80 transition-colors">
+                      {project.location}
+                    </p>
+                  </div>
                 </div>
 
                 {/* Category + Arrow */}
-                <div className="hidden md:flex items-center gap-4 shrink-0">
-                  <span className="font-mono text-xs text-white/40 uppercase tracking-wider">
+                <div className="flex items-center gap-4 shrink-0 self-end md:self-auto pt-2 md:pt-0">
+                  <span className="font-condensed text-xs uppercase tracking-wider text-white/50 group-hover:text-white transition-colors">
                     {project.category}
                   </span>
-                  <ArrowUpRight className="w-5 h-5 text-white/20 group-hover:text-puelche-cyan group-hover:rotate-45 transition-all duration-300" />
+                  <div className="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center group-hover:bg-puelche-cyan group-hover:text-puelche-dark transition-all">
+                    <ArrowUpRight className="w-4 h-4 text-white/60 group-hover:text-puelche-dark transition-colors" />
+                  </div>
                 </div>
               </Link>
             </li>
@@ -109,7 +124,7 @@ export function BrutalistProjectList() {
       {hoveredProject && (
         <div
           ref={imageRef}
-          className="fixed top-0 left-0 z-50 pointer-events-none w-[300px] md:w-[380px] aspect-[3/4] rounded-lg overflow-hidden shadow-2xl border border-white/10"
+          className="fixed top-0 left-0 z-50 pointer-events-none w-[280px] md:w-[340px] aspect-[4/5] rounded-2xl overflow-hidden shadow-2xl border border-white/20 backdrop-blur-md"
           style={{
             transform: `translate(${pos.current.x}px, ${pos.current.y}px) translate(-50%, -50%)`,
           }}
@@ -119,11 +134,14 @@ export function BrutalistProjectList() {
             alt={hoveredProject.title}
             fill
             className="object-cover"
-            sizes="380px"
+            sizes="340px"
           />
           {/* Bottom gradient overlay with location */}
-          <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/80 to-transparent flex items-end p-4">
-            <span className="font-mono text-[10px] text-white/80 uppercase tracking-wider">
+          <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/90 via-black/40 to-transparent flex flex-col justify-end p-5">
+            <span className="font-condensed text-xs uppercase tracking-wider text-puelche-cyan font-bold">
+              {hoveredProject.client}
+            </span>
+            <span className="font-serif italic text-xs text-white/90">
               {hoveredProject.location}
             </span>
           </div>
@@ -131,15 +149,17 @@ export function BrutalistProjectList() {
       )}
 
       {/* CTA link to full portfolio */}
-      <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-16 mt-12">
+      <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-16 mt-14 flex items-center justify-between flex-wrap gap-4">
         <Link
           href="/portafolio"
-          className="inline-flex items-center gap-3 px-8 py-4 border-2 border-puelche-cyan text-puelche-cyan font-condensed uppercase tracking-widest text-sm font-bold hover:bg-puelche-cyan hover:text-puelche-dark transition-all duration-300"
-          data-cursor="ABRIR"
+          className="inline-flex items-center gap-3 px-8 py-4 rounded-full bg-puelche-cyan text-puelche-dark font-condensed uppercase tracking-wider text-sm font-bold hover:bg-white transition-all duration-300 shadow-lg hover:scale-105"
         >
           <span>Ver Portafolio Completo</span>
           <ArrowUpRight className="w-4 h-4" />
         </Link>
+        <span className="font-serif italic text-xs text-white/40">
+          Fotografía de interiores, faenas marinas y publicaciones impresas.
+        </span>
       </div>
     </section>
   );

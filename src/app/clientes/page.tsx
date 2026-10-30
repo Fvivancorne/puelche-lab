@@ -391,27 +391,27 @@ export default function ClientesPage() {
         <section id="territorio" className="relative z-10 max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-24 scroll-mt-20">
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6 border-b border-white/10 pb-8">
             <div className="max-w-2xl space-y-3">
-              <span className="font-mono text-xs uppercase tracking-widest text-[#59BFD6] block">
-                [COBERTURA TERRITORIAL]
+              <span className="font-serif italic text-sm text-[#59BFD6] block">
+                Territorio &amp; Rutas de Expedición
               </span>
               <h2 className="font-condensed text-4xl sm:text-5xl uppercase tracking-wider font-bold text-white">
                 Radio de Acción en la Patagonia Chilena
               </h2>
-              <p className="font-sans text-sm sm:text-base text-white/70 font-light leading-relaxed">
-                Despliegue fotográfico, técnico y audiovisual con base operativa en Puerto Varas y cobertura en 4 nodos estratégicos del sur austral.
+              <p className="font-sans text-sm sm:text-base text-white/75 font-light leading-relaxed">
+                Presencia en terreno con base operativa en Puerto Varas y cobertura en 4 paisajes del sur austral.
               </p>
             </div>
-            <div className="flex items-center gap-3 text-xs font-mono text-white/50 shrink-0">
-              <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
-              <span>4 NODOS OPERATIVOS ACTIVOS</span>
+            <div className="flex items-center gap-2.5 text-xs font-serif italic text-white/70 shrink-0">
+              <span className="w-2 h-2 rounded-full bg-[#59BFD6]"></span>
+              <span>Cuatro paisajes de trabajo en la Patagonia</span>
             </div>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             <div className="bg-[#181B20]/90 border border-white/10 p-7 rounded-2xl backdrop-blur-md space-y-4 hover:border-[#59BFD6]/50 transition-all duration-300 hover:-translate-y-1 group">
               <div className="flex items-center justify-between">
-                <span className="font-mono text-xs text-[#59BFD6] uppercase tracking-widest font-bold">
-                  Nodo 01
+                <span className="font-serif italic text-xs text-[#59BFD6]">
+                  Nodo 01 &bull; Cuenca Lacustre
                 </span>
                 <MapPin className="w-4 h-4 text-white/40 group-hover:text-[#59BFD6] transition-colors" />
               </div>
@@ -425,8 +425,8 @@ export default function ClientesPage() {
 
             <div className="bg-[#181B20]/90 border border-white/10 p-7 rounded-2xl backdrop-blur-md space-y-4 hover:border-[#59BFD6]/50 transition-all duration-300 hover:-translate-y-1 group">
               <div className="flex items-center justify-between">
-                <span className="font-mono text-xs text-[#59BFD6] uppercase tracking-widest font-bold">
-                  Nodo 02
+                <span className="font-serif italic text-xs text-[#59BFD6]">
+                  Nodo 02 &bull; El Mar Interior
                 </span>
                 <MapPin className="w-4 h-4 text-white/40 group-hover:text-[#59BFD6] transition-colors" />
               </div>
@@ -440,8 +440,8 @@ export default function ClientesPage() {
 
             <div className="bg-[#181B20]/90 border border-white/10 p-7 rounded-2xl backdrop-blur-md space-y-4 hover:border-[#59BFD6]/50 transition-all duration-300 hover:-translate-y-1 group">
               <div className="flex items-center justify-between">
-                <span className="font-mono text-xs text-[#59BFD6] uppercase tracking-widest font-bold">
-                  Nodo 03
+                <span className="font-serif italic text-xs text-[#59BFD6]">
+                  Nodo 03 &bull; Fiordos &amp; Selva Fría
                 </span>
                 <MapPin className="w-4 h-4 text-white/40 group-hover:text-[#59BFD6] transition-colors" />
               </div>
@@ -455,8 +455,8 @@ export default function ClientesPage() {
 
             <div className="bg-[#181B20]/90 border border-white/10 p-7 rounded-2xl backdrop-blur-md space-y-4 hover:border-[#59BFD6]/50 transition-all duration-300 hover:-translate-y-1 group">
               <div className="flex items-center justify-between">
-                <span className="font-mono text-xs text-[#59BFD6] uppercase tracking-widest font-bold">
-                  Nodo 04
+                <span className="font-serif italic text-xs text-[#59BFD6]">
+                  Nodo 04 &bull; El Confín Austral
                 </span>
                 <MapPin className="w-4 h-4 text-white/40 group-hover:text-[#59BFD6] transition-colors" />
               </div>
@@ -473,8 +473,8 @@ export default function ClientesPage() {
         {/* Testimonials Section — Voces de Liderazgo Austral */}
         <section id="testimonios" className="relative z-10 max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 pb-24 border-t border-white/10 pt-20 scroll-mt-20">
           <div className="text-center max-w-2xl mx-auto mb-16 space-y-3">
-            <span className="font-mono text-xs uppercase tracking-widest text-[#59BFD6] block">
-              [TESTIMONIOS & VINCULACIÓN]
+            <span className="font-serif italic text-sm text-[#59BFD6] block">
+              Vínculo Territorial &amp; Confianza
             </span>
             <h2 className="font-condensed text-4xl sm:text-5xl uppercase tracking-wider font-bold text-white">
               Voz de Nuestras Alianzas
@@ -501,7 +501,7 @@ export default function ClientesPage() {
                   <div className="text-xs text-[#59BFD6] font-medium">
                     {t.organization}
                   </div>
-                  <div className="text-[11px] text-white/50 font-mono mt-0.5">
+                  <div className="text-[11px] text-white/50 font-serif italic mt-0.5">
                     {t.location}
                   </div>
                 </div>
@@ -514,8 +514,8 @@ export default function ClientesPage() {
         <section id="directorio" className="relative z-10 max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 pb-28 border-t border-white/10 pt-20 scroll-mt-20">
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
             <div className="max-w-2xl space-y-3">
-              <span className="font-mono text-xs uppercase tracking-widest text-[#59BFD6] block">
-                [REGISTRO INSTITUCIONAL]
+              <span className="font-serif italic text-sm text-[#59BFD6] block">
+                Historial Documentado
               </span>
               <h2 className="font-condensed text-4xl sm:text-5xl uppercase tracking-wider font-bold text-white">
                 Directorio de Relaciones Corporativas
@@ -524,8 +524,8 @@ export default function ClientesPage() {
                 Historial documentado de alcances técnicos e industrias atendidas en la Patagonia.
               </p>
             </div>
-            <div className="font-mono text-xs text-white/50 bg-white/5 px-4 py-2 rounded-lg border border-white/10 self-start md:self-auto">
-              REGISTRO: 12 PERFILES CERTIFICADOS
+            <div className="font-serif italic text-xs text-white/60 bg-white/5 px-4 py-2 rounded-full border border-white/10 self-start md:self-auto">
+              Alianzas y memorias territoriales
             </div>
           </div>
 

@@ -15,11 +15,9 @@ export function Preloader() {
   const slat4Ref = useRef<HTMLDivElement>(null);
   const slat5Ref = useRef<HTMLDivElement>(null);
 
-  // Viewfinder HUD references
+  // Organic editorial references
   const hudTopRef = useRef<HTMLDivElement>(null);
   const hudBottomRef = useRef<HTMLDivElement>(null);
-  const bracketsRef = useRef<HTMLDivElement>(null);
-  const focusRingRef = useRef<HTMLDivElement>(null);
   const introPhaseRef = useRef<HTMLDivElement>(null);
   const lockPillRef = useRef<HTMLDivElement>(null);
 
@@ -290,12 +288,10 @@ export function Preloader() {
     // Initial GSAP setup
     gsap.set(slats, { yPercent: 0 });
     gsap.set([hudTopRef.current, hudBottomRef.current], { opacity: 0, y: -8 });
-    gsap.set(bracketsRef.current, { opacity: 0, scale: 1.25 });
-    gsap.set(focusRingRef.current, { opacity: 0, scale: 1.8 });
     gsap.set(introPhaseRef.current, { opacity: 0, y: 12 });
     gsap.set(lockPillRef.current, { opacity: 0, y: 10 });
 
-    // Master Cinematic Opening Timeline (~4.8s total ceremonial flow)
+    // Master Cinematic Opening Timeline (~3.6s total poetic flow)
     const tl = gsap.timeline({
       onComplete: () => {
         setDone(true);
@@ -305,8 +301,7 @@ export function Preloader() {
       },
     });
 
-    // ── FASE 1: Calibración y Poesía de Entrada (0.0s - 1.2s) ──
-    // Se muestra SOLA para no tapar el logo
+    // ── FASE 1: Calibración y Poesía de Entrada (0.0s - 1.0s) ──
     tl.to([hudTopRef.current, hudBottomRef.current], {
       opacity: 1,
       y: 0,
@@ -319,18 +314,6 @@ export function Preloader() {
         duration: 0.6,
         ease: 'power3.out',
       }, '-=0.2')
-      .to(bracketsRef.current, {
-        opacity: 0.6,
-        scale: 1.12,
-        duration: 0.7,
-        ease: 'power2.out',
-      }, '-=0.4')
-      .to(focusRingRef.current, {
-        opacity: 0.4,
-        scale: 1.4,
-        duration: 0.7,
-        ease: 'power2.out',
-      }, '<')
 
       // La poesía de entrada se retira con elegancia ANTES del ensamble
       .to(introPhaseRef.current, {
@@ -362,34 +345,12 @@ export function Preloader() {
         },
         '-=0.45'
       )
-      // Viewfinder Brackets y Anillo cierran al punto exacto
-      .to(
-        bracketsRef.current,
-        {
-          scale: 1.0,
-          opacity: 1,
-          duration: 0.5,
-          ease: 'power3.out',
-        },
-        '<+=0.1'
-      )
-      .to(
-        focusRingRef.current,
-        {
-          scale: 1.0,
-          opacity: 0.85,
-          duration: 0.5,
-          ease: 'power3.out',
-        },
-        '<'
-      )
-
-      // Destello blanco-cian de "Foco Bloqueado" (Camera Lock)
+      // Destello sutil de condensación
       .to(
         state,
         {
-          flash: 0.8,
-          duration: 0.12,
+          flash: 0.4,
+          duration: 0.15,
           yoyo: true,
           repeat: 1,
           ease: 'power1.inOut',
@@ -397,13 +358,13 @@ export function Preloader() {
         '-=0.1'
       )
 
-      // Aparece el pill de estudio debajo (sin tapar el logo)
+      // Aparece el sello poético debajo
       .to(
         lockPillRef.current,
         {
           opacity: 1,
           y: 0,
-          duration: 0.5,
+          duration: 0.6,
           ease: 'power3.out',
         },
         '-=0.1'
@@ -411,8 +372,8 @@ export function Preloader() {
 
     // ── FASE 3: Respiración Boutique (2.8s - 3.6s) ──
     tl.to(state, {
-      breathe: 1.035,
-      cyanGlow: 1.0,
+      breathe: 1.025,
+      cyanGlow: 0.6,
       duration: 0.45,
       yoyo: true,
       repeat: 1,
@@ -432,10 +393,10 @@ export function Preloader() {
       '+=0.15'
     )
       .to(
-        [bracketsRef.current, focusRingRef.current, lockPillRef.current, hudTopRef.current, hudBottomRef.current],
+        [lockPillRef.current, hudTopRef.current, hudBottomRef.current],
         {
           opacity: 0,
-          scale: 0.9,
+          scale: 0.95,
           duration: 0.4,
           ease: 'power3.in',
         },
@@ -515,91 +476,61 @@ export function Preloader() {
         <canvas ref={canvasRef} className="w-full h-full" />
       </div>
 
-      {/* Interfaz Óptica de Visor de Cámara Fotográfica (HUD) */}
-      <div className="absolute inset-0 z-30 pointer-events-none flex flex-col justify-between p-6 sm:p-10 font-mono text-[11px] sm:text-xs text-white/60">
-        {/* HUD Superior */}
+      {/* Atmósfera Editorial y Poética del Viento */}
+      <div className="absolute inset-0 z-30 pointer-events-none flex flex-col justify-between p-6 sm:p-10 font-sans text-xs text-white/70">
+        {/* Cabecera Superior — Seria, Editorial, sin códigos */}
         <div ref={hudTopRef} className="flex justify-between items-start tracking-widest uppercase">
-          <div className="flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-puelche-cyan animate-pulse shadow-[0_0_8px_#59BFD6]" />
-            <span className="text-white font-bold">REC ● [00:00:05]</span>
-            <span className="hidden sm:inline text-white/40">• 41° 19′ S 72° 59′ W</span>
+          <div className="flex items-center gap-2.5">
+            <span className="w-2 h-2 rounded-full bg-puelche-cyan" />
+            <span className="text-white font-condensed font-medium text-xs sm:text-sm tracking-[0.2em]">PUELCHE LAB</span>
+            <span className="text-white/40 hidden sm:inline">&bull; PUERTO VARAS</span>
           </div>
-          <div className="flex items-center gap-4 text-white/50">
-            <span className="hidden md:inline">PUELCHE OPTICS</span>
-            <span className="text-puelche-cyan font-bold">ISO 100 • 1/250s • f/1.4</span>
+          <div className="text-white/60 font-serif italic text-xs sm:text-sm">
+            Fotografía de Autor &bull; Diseño Cross Media
           </div>
         </div>
 
-        {/* Viewfinder Central (Brackets, Foco y Textos) */}
+        {/* Escenario Central Poético */}
         <div className="relative w-full flex-1 flex items-center justify-center">
-          {/* Anillo de enfoque óptico */}
-          <div
-            ref={focusRingRef}
-            className="absolute w-72 sm:w-88 md:w-96 aspect-square rounded-full border border-puelche-cyan/30 pointer-events-none"
-            style={{ willChange: 'transform, opacity' }}
-          >
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-1.5 h-1.5 bg-puelche-cyan rounded-full" />
-            <div className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2 w-1.5 h-1.5 bg-puelche-cyan rounded-full" />
-            <div className="absolute left-0 top-1/2 -translate-x-1/2 -translate-y-1/2 w-1.5 h-1.5 bg-puelche-cyan rounded-full" />
-            <div className="absolute right-0 top-1/2 translate-x-1/2 -translate-y-1/2 w-1.5 h-1.5 bg-puelche-cyan rounded-full" />
-          </div>
-
-          {/* Brackets [ ] alrededor del logo */}
-          <div
-            ref={bracketsRef}
-            className="relative w-64 sm:w-80 md:w-96 aspect-[412/282] pointer-events-none"
-            style={{ willChange: 'transform, opacity' }}
-          >
-            <div className="absolute top-0 left-0 w-4 h-4 border-t-2 border-l-2 border-puelche-cyan" />
-            <div className="absolute top-0 right-0 w-4 h-4 border-t-2 border-r-2 border-puelche-cyan" />
-            <div className="absolute bottom-0 left-0 w-4 h-4 border-b-2 border-l-2 border-puelche-cyan" />
-            <div className="absolute bottom-0 right-0 w-4 h-4 border-b-2 border-r-2 border-puelche-cyan" />
-
-            {/* Cruz Central de Alineación */}
-            <div className="absolute inset-0 flex items-center justify-center opacity-30 text-puelche-cyan">
-              <span className="text-lg leading-none">+</span>
-            </div>
-          </div>
-
-          {/* Fase 1: Poesía de Apertura — Desaparece antes de que llegue el logo */}
+          {/* Fase 1: Poesía de Apertura — Desaparece suavemente al llegar el logo */}
           <div
             ref={introPhaseRef}
             className="absolute max-w-lg mx-auto text-center px-4 flex flex-col items-center gap-2 pointer-events-none"
           >
-            <span className="font-mono text-[10px] sm:text-xs uppercase tracking-[0.35em] text-puelche-cyan">
-              PATAGONIA AUSTRAL &bull; 41°S
+            <span className="font-serif italic text-sm sm:text-base text-puelche-cyan">
+              El viento cálido que baja de la cordillera
             </span>
-            <h2 className="font-condensed text-2xl sm:text-4xl uppercase tracking-widest text-white font-bold drop-shadow-lg">
+            <h2 className="font-condensed text-3xl sm:text-5xl uppercase tracking-wider text-white font-bold drop-shadow-lg">
               VIENTO CREATIVO
             </h2>
-            <p className="font-mono text-[10px] sm:text-xs text-white/40 tracking-wider">
-              [ BUSCANDO FOCO ÓPTICO ]
+            <p className="font-sans text-xs sm:text-sm text-white/60 tracking-wide font-light">
+              Revelando la luz y las texturas del sur
             </p>
           </div>
 
-          {/* Sello Boutique que aparece sincronizado con el logo YA fijado */}
+          {/* Sello de Autor — Aparece con el logo fijado */}
           <div
             ref={lockPillRef}
-            className="absolute bottom-10 sm:bottom-14 flex items-center gap-3 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 backdrop-blur-md pointer-events-none"
+            className="absolute bottom-10 sm:bottom-14 flex items-center gap-3 px-5 py-2 rounded-full bg-black/40 border border-white/15 backdrop-blur-md pointer-events-none shadow-lg"
           >
-            <span className="font-condensed uppercase tracking-[0.25em] text-xs sm:text-sm text-white/90 font-medium">
-              ESTUDIO CROSS MEDIA
+            <span className="font-condensed uppercase tracking-[0.2em] text-xs sm:text-sm text-white/90 font-medium">
+              ESTUDIO PUELCHE LAB
             </span>
-            <span className="w-1.5 h-1.5 rounded-full bg-puelche-cyan shadow-[0_0_8px_#59BFD6]" />
-            <span className="font-mono text-[10px] sm:text-xs text-puelche-cyan uppercase tracking-wider">
-              PUERTO VARAS &bull; 41°S
+            <span className="w-1.5 h-1.5 rounded-full bg-puelche-cyan" />
+            <span className="font-serif italic text-xs sm:text-sm text-puelche-cyan">
+              Puerto Varas, Patagonia
             </span>
           </div>
         </div>
 
-        {/* HUD Inferior */}
-        <div ref={hudBottomRef} className="flex justify-between items-end tracking-wider text-[10px] sm:text-xs text-white/40">
-          <div className="flex flex-col gap-0.5">
-            <span className="text-white/70 uppercase font-medium">DISEÑO &bull; BRANDING &bull; FOTOGRAFÍA BOUTIQUE</span>
-            <span>PUERTO VARAS &bull; PATAGONIA CHILE</span>
+        {/* Pie Inferior */}
+        <div ref={hudBottomRef} className="flex justify-between items-end tracking-wider text-xs text-white/50">
+          <div className="flex flex-col gap-0.5 font-light">
+            <span className="text-white/80 font-medium">Luz natural &bull; Territorio &bull; Oficio de autor</span>
+            <span className="text-[11px] text-white/40">Región de Los Lagos, Chile</span>
           </div>
-          <div className="hidden sm:flex items-center gap-2 font-mono text-white/40 uppercase">
-            <span>[CLICK O ESC PARA ENTRAR]</span>
+          <div className="hidden sm:flex items-center gap-2 font-condensed uppercase text-white/50 tracking-widest text-[11px]">
+            <span>Haz clic para entrar</span>
           </div>
         </div>
       </div>

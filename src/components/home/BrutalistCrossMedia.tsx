@@ -26,56 +26,56 @@ const CAPABILITIES: Capability[] = [
     id: 'estudio',
     num: '01',
     tag: 'ESPACIO & SET',
-    title: 'Estudio Propio',
+    title: 'Luz de Estudio',
     subtitle: 'En Puerto Varas',
     description:
-      'Set de fotografía y grabación profesional en el centro de Puerto Varas. Espacio de trabajo controlado para producciones comerciales, dirección de arte, retratos corporativos y bodegones de producto.',
+      'Set propio de fotografía y dirección de arte en el centro de Puerto Varas. Un espacio cálido y controlado para bodegones de autor, producto noble, retratos corporativos y sesiones editoriales.',
     image: '/images/real/bg-portafolios-fotografia-d-min.jpg',
-    alt: 'Estudio de fotografía y set de grabación Puelche Lab en Puerto Varas',
-    spec: 'SET CONTROLADO • HIGH-SPEED TETHERING • CICLORAMA',
-    meta: 'PUERTO VARAS LAB • 41° 19′ S',
+    alt: 'Estudio de fotografía y set de trabajo Puelche Lab en Puerto Varas',
+    spec: 'Maderas nativas • Luz suave • Bodegón de autor',
+    meta: 'Sede Puerto Varas • Cuenca Llanquihue',
     icon: Camera,
   },
   {
     id: 'aereo',
     num: '02',
-    tag: 'CINEMATOGRAFÍA AÉREA',
+    tag: 'PAISAJE & ESCALA',
     title: 'Tierra y Aire',
-    subtitle: 'Dron 4K & Cine',
+    subtitle: 'Mirada Territorial',
     description:
-      'Cobertura visual integral tanto a ras de suelo como desde el aire con dron cinematográfico 4K. Registramos la magnitud de la Patagonia, arquitectura territorial, proyectos agropecuarios y hotelería boutique.',
+      'Captura integral a ras de suelo y desde las alturas. Retratamos la inmensidad de la Patagonia: arquitectura bioclimática, campos agropecuarios, hoteles de madera y el silencio de los fiordos.',
     image: '/images/real/bg-fotografia-9-min.jpg',
-    alt: 'Dron 4K y filmación aérea sobre territorio patagónico — Puelche Lab',
-    spec: 'DRON 4K 60FPS • LOG 10-BIT • ND CINEMA FILTERS',
-    meta: 'LOS LAGOS & PATAGONIA • DRONE CREW',
+    alt: 'Fotografía aérea y de territorio austral — Puelche Lab',
+    spec: 'Perspectiva aérea • Escala de paisaje • Luz natural',
+    meta: 'Los Lagos, Chiloé & Fiordos Australes',
     icon: Wind,
   },
   {
     id: 'iluminacion',
     num: '03',
-    tag: 'DIRECCIÓN DE LUZ',
-    title: 'Iluminación',
-    subtitle: 'Set Profesional',
+    tag: 'OFICIO & MATERIA',
+    title: 'Modelado de Luz',
+    subtitle: 'Texturas Nobles',
     description:
-      'Modelamos la atmósfera con iluminación profesional de alta gama, modificadores ópticos y esquemas de estudio diseñados para resaltar texturas nobles, materiales y la presencia de tu marca.',
+      'Esculpimos la atmósfera con iluminación de alta fidelidad, diseñando contrastes suaves que honran la veta de las maderas, la frescura gastronómica, la arquitectura y la identidad viva de tu marca.',
     image: '/images/real/bg-portafolios-fotografia-a-min.jpg',
     alt: 'Set de iluminación profesional y modelado óptico Puelche Lab',
-    spec: 'LUZ CONTINUA CRI 98+ • FLASH ALTA VELOCIDAD • 5600K',
-    meta: 'COLOR ACCURACY • PROFOTO GEAR',
+    spec: 'Atmósfera envolvente • Fidelidad cromática • Detalle táctil',
+    meta: 'Dirección de Arte de Autor',
     icon: Sparkles,
   },
   {
     id: 'crossmedia',
     num: '04',
-    tag: 'ECOSISTEMA OMNICANAL',
+    tag: 'SISTEMAS VIVOS',
     title: 'Cross-Media',
-    subtitle: 'Digital, Impreso, Video',
+    subtitle: 'Digital, Impreso & Cine',
     description:
-      'Concebimos sistemas visuales integrados que trascienden soportes: plataformas web interactivas Next.js, memorias editoriales impresas, packaging, piezas audiovisuales y contenido para redes.',
+      'Concebimos sistemas visuales completos con raíz en el territorio: plataformas web interactivas en Next.js, memorias editoriales en papeles finos, piezas audiovisuales y relatos para redes.',
     image: '/images/real/bg-portafolios-fotografia-b-min.jpg',
-    alt: 'Diseño Cross Media 360: digital, impreso y audiovisual Puelche Lab',
-    spec: 'EDITORIAL FINE ART • NEXT.JS WEB • MOTION GRAPHICS',
-    meta: 'OMNICHANNEL SUITE • BRAND ARCHIVE',
+    alt: 'Diseño Cross Media: digital, impreso y audiovisual Puelche Lab',
+    spec: 'Diseño editorial fine art • Web artesanal • Piezas cinematográficas',
+    meta: 'Ecosistema de Marca Integral',
     icon: Layers,
   },
 ];
@@ -232,29 +232,29 @@ export function BrutalistCrossMedia() {
 
       {/* Contenido Superior / Encabezado de Sección */}
       <div className="relative z-10 max-w-7xl mx-auto w-full space-y-10">
-        {/* Meta Bar Superior: Estilo Archivo Suizo */}
-        <div className="flex flex-wrap items-center justify-between gap-4 border-b border-white/15 pb-4 font-mono text-xs uppercase tracking-widest text-white/70">
+        {/* Meta Bar Superior: Estilo Editorial */}
+        <div className="flex flex-wrap items-center justify-between gap-4 border-b border-white/15 pb-4 text-xs uppercase tracking-widest text-white/75 font-condensed">
           <div className="flex items-center gap-3">
-            <span className="w-2 h-2 rounded-full bg-puelche-cyan animate-pulse shadow-[0_0_8px_#59BFD6]" />
-            <span className="text-white font-bold tracking-[0.25em] drop-shadow-md">ARCHIVO 41°S &bull; MANIFIESTO</span>
+            <span className="w-2 h-2 rounded-full bg-puelche-cyan" />
+            <span className="text-white font-bold tracking-[0.2em]">VIENTO CREATIVO &bull; MANIFIESTO DE AUTOR</span>
           </div>
-          <div className="flex items-center gap-4 text-puelche-cyan drop-shadow-md">
-            <span>PUERTO VARAS &bull; REGION DE LOS LAGOS</span>
-            <span className="hidden sm:inline text-white/50">• 41° 19′ S 72° 59′ W</span>
+          <div className="flex items-center gap-3 text-puelche-cyan">
+            <span className="font-medium">PUERTO VARAS &bull; REGIÓN DE LOS LAGOS</span>
+            <span className="hidden sm:inline text-white/40 font-serif italic lowercase tracking-normal">patagonia chilena</span>
           </div>
         </div>
 
-        {/* Titular Kinetic Monumental que entra desde la izquierda */}
+        {/* Titular Monumental */}
         <div className="space-y-6">
           <div className="flex flex-wrap items-center gap-3">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-black/50 backdrop-blur-md border border-white/20 text-puelche-cyan font-mono text-[11px] sm:text-xs uppercase tracking-widest">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-black/40 backdrop-blur-md border border-white/15 text-puelche-cyan font-condensed text-xs uppercase tracking-wider">
               <span>ESTUDIO CROSS MEDIA &bull; PUERTO VARAS</span>
             </div>
 
-            {/* Indicador Flotante de Fondo Activo */}
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-black/60 backdrop-blur-md border border-puelche-cyan/40 text-puelche-cyan font-mono text-[11px] sm:text-xs">
-              <span className="w-1.5 h-1.5 rounded-full bg-puelche-cyan animate-ping" />
-              <span>VISTA: {activeIdx !== null ? CAPABILITIES[activeIdx].title.toUpperCase() : 'PANORÁMICA AUSTRAL'}</span>
+            {/* Indicador Suave de Vista Activa */}
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-black/50 backdrop-blur-md border border-puelche-cyan/30 text-white/90 font-serif italic text-xs">
+              <span className="w-1.5 h-1.5 rounded-full bg-puelche-cyan" />
+              <span>{activeIdx !== null ? CAPABILITIES[activeIdx].title : 'Panorámica Austral'}</span>
             </div>
           </div>
 
@@ -276,40 +276,39 @@ export function BrutalistCrossMedia() {
           </p>
         </div>
 
-        {/* Manifiesto Editorial: 2 Columnas que convergen desde los lados */}
+        {/* Manifiesto Editorial: 2 Columnas Cálidas */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-16 pt-4 border-t border-white/15 font-sans text-base sm:text-lg text-white/90 leading-relaxed font-light">
-          <div ref={manifestoLeftRef} className="space-y-4 bg-black/35 backdrop-blur-sm p-5 rounded-xl border border-white/10">
+          <div ref={manifestoLeftRef} className="space-y-4 bg-black/30 backdrop-blur-sm p-6 rounded-2xl border border-white/10">
             <p className="text-white font-medium text-lg sm:text-xl drop-shadow-md">
               Somos un Estudio de Diseño Cross Media y Fotografía en Puerto Varas.
             </p>
-            <p className="drop-shadow-sm">
+            <p className="drop-shadow-sm font-light text-white/85">
               Pero, <span className="italic font-serif text-white font-normal">¿Qué es Cross Media?</span> Nos referimos a que creamos piezas visuales para todos los medios, ya sean digitales, impresos y/o audiovisuales.
             </p>
           </div>
-          <div ref={manifestoRightRef} className="space-y-4 bg-black/35 backdrop-blur-sm p-5 rounded-xl border border-white/10">
-            <p className="drop-shadow-sm">
+          <div ref={manifestoRightRef} className="space-y-4 bg-black/30 backdrop-blur-sm p-6 rounded-2xl border border-white/10">
+            <p className="drop-shadow-sm font-light text-white/85">
               Contamos con un estudio de fotografía y grabación muy bien equipado, iluminación profesional y equipos de alta gama, tanto en tierra firme como desde el aire con dron 4K, haciendo resaltar tu producto o servicio para que pase al frente en la vitrina del mercado.
             </p>
-            <div className="flex items-center gap-3 font-mono text-xs text-puelche-cyan tracking-wider pt-2">
+            <div className="flex items-center gap-3 font-serif italic text-sm text-puelche-cyan pt-2">
               <span className="w-1.5 h-1.5 rounded-full bg-puelche-cyan" />
-              <span>EQUIPOS DE CINE &bull; SET PROPIO &bull; DRON 4K</span>
+              <span>Fotografía de autor &bull; Set propio &bull; Territorio austral</span>
             </div>
           </div>
         </div>
 
         {/* 
           ======================================================================
-          GRILLA BRUTALISTA DE 4 CAPACIDADES CON PREVIEW FOTOGRÁFICO EN CADA TARJETA
-          Emergen desde abajo al scrollear
+          GRILLA EDITORIAL DE 4 EXPRESIONES DEL OFICIO
           ======================================================================
         */}
         <div className="pt-6">
-          <div className="flex items-center justify-between pb-3 text-xs font-mono uppercase tracking-widest text-white/70">
+          <div className="flex items-center justify-between pb-4 text-xs font-condensed uppercase tracking-wider text-white/70">
             <span className="flex items-center gap-2">
               <span className="w-1.5 h-1.5 rounded-full bg-puelche-cyan" />
-              <span>[ 04 CAPACIDADES DE PRODUCCIÓN ]</span>
+              <span className="font-bold text-white tracking-widest">CUATRO DIMENSIONES DE NUESTRO OFICIO</span>
             </span>
-            <span className="hidden sm:inline text-puelche-cyan">[ POSA EL CURSOR PARA CAMBIAR EL FONDO EN VIVO ]</span>
+            <span className="hidden sm:inline font-serif italic text-puelche-cyan lowercase tracking-normal">posa el cursor para recorrer la atmósfera visual</span>
           </div>
 
           <div ref={cardsContainerRef} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -322,28 +321,21 @@ export function BrutalistCrossMedia() {
                   key={cap.id}
                   onMouseEnter={() => setActiveIdx(i)}
                   onClick={() => setActiveIdx(i)}
-                  className={`group relative p-5 sm:p-6 rounded-xl border transition-all duration-300 cursor-pointer flex flex-col justify-between overflow-hidden backdrop-blur-md ${
+                  className={`group relative p-5 sm:p-6 rounded-2xl border transition-all duration-300 cursor-pointer flex flex-col justify-between overflow-hidden backdrop-blur-md ${
                     isSelected
-                      ? 'bg-[#1D2024]/95 border-puelche-cyan shadow-[0_0_30px_rgba(89,191,214,0.35)] -translate-y-2'
-                      : 'bg-[#1D2024]/70 border-white/15 hover:border-white/35 hover:bg-[#1D2024]/85'
+                      ? 'bg-[#1D2024]/95 border-puelche-cyan/70 shadow-[0_20px_50px_rgba(0,0,0,0.6)] -translate-y-2'
+                      : 'bg-[#1D2024]/70 border-white/10 hover:border-white/30 hover:bg-[#1D2024]/85'
                   }`}
-                  data-cursor="FOCO"
+                  data-cursor="VER"
                 >
-                  {/* Luz de Esquina Activa */}
-                  <div
-                    className={`absolute top-0 right-0 w-24 h-24 bg-puelche-cyan/25 blur-xl rounded-full transition-opacity duration-300 ${
-                      isSelected ? 'opacity-100' : 'opacity-0'
-                    }`}
-                  />
-
                   {/* Cabecera de la Tarjeta */}
                   <div className="space-y-3">
                     <div className="flex items-center justify-between">
-                      <span className="font-mono text-3xl sm:text-4xl font-bold tracking-tighter text-puelche-cyan drop-shadow-md">
+                      <span className="font-serif italic text-3xl sm:text-4xl text-puelche-cyan drop-shadow-md">
                         {cap.num}
                       </span>
                       <div
-                        className={`p-2 rounded-lg border transition-colors ${
+                        className={`p-2.5 rounded-xl border transition-colors ${
                           isSelected
                             ? 'bg-puelche-cyan text-puelche-dark border-puelche-cyan shadow-md'
                             : 'bg-white/5 text-white/70 border-white/10 group-hover:text-puelche-cyan'
@@ -353,18 +345,17 @@ export function BrutalistCrossMedia() {
                       </div>
                     </div>
 
-                    {/* Mini-Ventana Fotográfica de la Tarjeta (Preview Nítido) */}
-                    <div className="relative aspect-[16/10] w-full rounded-lg overflow-hidden border border-white/10 group-hover:border-puelche-cyan/60 transition-colors shadow-inner">
+                    {/* Mini-Ventana Fotográfica de la Tarjeta */}
+                    <div className="relative aspect-[16/10] w-full rounded-xl overflow-hidden border border-white/10 group-hover:border-puelche-cyan/40 transition-colors shadow-inner">
                       <Image
                         src={cap.image}
                         alt={cap.alt}
                         fill
-                        className="object-cover group-hover:scale-108 transition-transform duration-700 ease-out"
+                        className="object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-transparent to-transparent" />
-                      <div className="absolute bottom-2 left-2 right-2 flex items-center justify-between font-mono text-[10px] text-white">
-                        <span className="text-puelche-cyan font-bold truncate">{cap.tag}</span>
-                        <span className="text-white/60">RAW</span>
+                      <div className="absolute bottom-2 left-3 right-3 flex items-center justify-between text-[11px] text-white">
+                        <span className="font-condensed uppercase tracking-wider text-puelche-cyan font-bold truncate">{cap.tag}</span>
                       </div>
                     </div>
 
@@ -372,7 +363,7 @@ export function BrutalistCrossMedia() {
                       <h3 className="font-condensed text-2xl font-bold uppercase tracking-wider text-white group-hover:text-puelche-cyan transition-colors">
                         {cap.title}
                       </h3>
-                      <p className="font-sans text-xs text-puelche-cyan font-medium tracking-wide">
+                      <p className="font-serif italic text-xs sm:text-sm text-puelche-cyan font-normal tracking-wide">
                         {cap.subtitle}
                       </p>
                     </div>
@@ -382,10 +373,10 @@ export function BrutalistCrossMedia() {
                     </p>
                   </div>
 
-                  {/* Micro-Metadata de Estilo Suizo al pie */}
-                  <div className="pt-4 mt-4 border-t border-white/10 font-mono text-[10px] text-white/50 space-y-1">
-                    <div className="text-white/70 font-medium truncate">{cap.spec}</div>
-                    <div className="text-puelche-cyan/80">{cap.meta}</div>
+                  {/* Micro-Metadata Editorial al pie */}
+                  <div className="pt-4 mt-4 border-t border-white/10 text-xs text-white/60 space-y-1">
+                    <div className="text-white/85 font-medium truncate font-sans text-[11px]">{cap.spec}</div>
+                    <div className="text-puelche-cyan font-serif italic text-[11px]">{cap.meta}</div>
                   </div>
                 </div>
               );
@@ -398,25 +389,23 @@ export function BrutalistCrossMedia() {
           <div className="flex flex-wrap items-center gap-4">
             <Link
               href="/portafolio"
-              className="inline-flex items-center gap-3 px-8 py-4 rounded-full bg-puelche-cyan text-[#1D2024] font-condensed uppercase tracking-wider text-sm font-bold hover:bg-white transition-all shadow-[0_0_20px_rgba(89,191,214,0.3)] hover:scale-105"
-              data-cursor="VER"
+              className="inline-flex items-center gap-3 px-8 py-4 rounded-full bg-puelche-cyan text-[#1D2024] font-condensed uppercase tracking-wider text-sm font-bold hover:bg-white transition-all shadow-lg hover:scale-105"
             >
               <span>Explorar Obras</span>
               <ArrowUpRight className="w-4 h-4" />
             </Link>
             <a
               href="#footer"
-              className="inline-flex items-center gap-3 px-8 py-4 rounded-full bg-[#3B3D42] bg-puelche-slate border border-white/30 text-white font-condensed uppercase tracking-wider text-sm font-medium hover:bg-white/20 transition-all"
-              data-cursor="CONTACTO"
+              className="inline-flex items-center gap-3 px-8 py-4 rounded-full bg-[#3B3D42] bg-puelche-slate border border-white/20 text-white font-condensed uppercase tracking-wider text-sm font-medium hover:bg-white/20 transition-all"
             >
               <span>Contáctanos</span>
               <ArrowDown className="w-4 h-4 text-puelche-cyan" />
             </a>
           </div>
 
-          <div className="font-mono text-xs text-white/60 uppercase tracking-widest hidden md:flex items-center gap-3">
-            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
-            <span>ESTUDIO ACTIVO &bull; ATENDIENDO PROYECTOS EN PATAGONIA</span>
+          <div className="text-xs text-white/70 font-sans hidden md:flex items-center gap-2.5">
+            <span className="w-2 h-2 rounded-full bg-puelche-cyan" />
+            <span className="font-serif italic">Estudio propio en Puerto Varas &bull; Sesiones en toda la Patagonia</span>
           </div>
         </div>
       </div>
