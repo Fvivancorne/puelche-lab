@@ -202,6 +202,8 @@ registerTest('T1.3.4', 'All 15 authentic base assets exist in public/images/real
     'public/images/real/bg-portafolios-fotografia-g-min.jpg',
     'public/images/real/bg-portafolios-fotografia-h-min.jpg',
     'public/images/real/bg-portafolios-fotografia-i-min.jpg',
+    'public/images/real/bg-portafolios-marca-blue-seal-min.jpg',
+    'public/images/real/bg-portafolios-marca-sur-terra-min.jpg',
   ];
   for (const asset of requiredAssets) {
     assert(fileExists(asset), `Missing required real asset: ${asset}`);

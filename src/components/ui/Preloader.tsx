@@ -8,14 +8,18 @@ export function Preloader() {
   const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
-  // 5 Slats Arquitectónicos
-  const slat1Ref = useRef<HTMLDivElement>(null);
-  const slat2Ref = useRef<HTMLDivElement>(null);
-  const slat3Ref = useRef<HTMLDivElement>(null);
-  const slat4Ref = useRef<HTMLDivElement>(null);
-  const slat5Ref = useRef<HTMLDivElement>(null);
+  // Cortinillas Horizontales de Obturador de Medio Formato
+  const shutterTopRef = useRef<HTMLDivElement>(null);
+  const shutterBottomRef = useRef<HTMLDivElement>(null);
 
-  // Organic editorial references
+  // Diafragma y Anillo Óptico de Cámara
+  const lensDiaphragmRef = useRef<HTMLDivElement>(null);
+  const lensInnerRingRef = useRef<HTMLDivElement>(null);
+
+  // Destello Estroboscópico de Exposición
+  const flashOverlayRef = useRef<HTMLDivElement>(null);
+
+  // Textos Editoriales & Sello de Autor
   const hudTopRef = useRef<HTMLDivElement>(null);
   const hudBottomRef = useRef<HTMLDivElement>(null);
   const introPhaseRef = useRef<HTMLDivElement>(null);
@@ -31,14 +35,6 @@ export function Preloader() {
     // Pause Lenis virtual scroll while curtain plays
     const lenis = (window as any).lenisInstance;
     if (lenis) lenis.stop();
-
-    const slats = [
-      slat1Ref.current,
-      slat2Ref.current,
-      slat3Ref.current,
-      slat4Ref.current,
-      slat5Ref.current,
-    ];
 
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -64,7 +60,7 @@ export function Preloader() {
     const img = new window.Image();
     img.src = '/images/real/logo-puelche.png';
 
-    // 1. Grid of tiles for smooth magnetic snap
+    // Grid of tiles for wind assembly
     const COLS = 10;
     const ROWS = 7;
     interface Tile {
@@ -72,14 +68,11 @@ export function Preloader() {
       sy: number;
       sw: number;
       sh: number;
-      // Coordinates relative to logo center
       tx: number;
       ty: number;
-      // Start wind vector
       startX: number;
       startY: number;
       startRot: number;
-      // Explode vector
       expX: number;
       expY: number;
       expRot: number;
@@ -89,9 +82,8 @@ export function Preloader() {
     const tiles: Tile[] = [];
     for (let r = 0; r < ROWS; r++) {
       for (let c = 0; c < COLS; c++) {
-        // Cohesive directional wind flow: comes down from Andes (upper right / 35deg)
         const windDist = 350 + Math.random() * 450;
-        const windAngle = -0.6 + (Math.random() - 0.5) * 0.6; // focused stream
+        const windAngle = -0.6 + (Math.random() - 0.5) * 0.6;
 
         tiles.push({
           sx: (c * 412) / COLS,
@@ -106,175 +98,149 @@ export function Preloader() {
           expX: (Math.random() * 500 + 150) * (Math.random() > 0.25 ? 1 : -0.5),
           expY: -Math.random() * 400 - 150,
           expRot: (Math.random() - 0.5) * 3,
-          delay: Math.random() * 0.12, // Tighter delay: locks as a unified wave
+          delay: Math.random() * 0.12,
         });
       }
     }
 
-    // 2. Ambient Wind Streams (Patagonian gusts that escort the logo)
+    // Ambient Wind Streams
     interface WindParticle {
       x: number;
       y: number;
       len: number;
       speed: number;
       alpha: number;
-      size: number;
     }
-    const windStreams: WindParticle[] = Array.from({ length: 45 }, () => ({
-      x: Math.random() * window.innerWidth + 200,
-      y: Math.random() * window.innerHeight * 0.8 - 100,
-      len: 30 + Math.random() * 90,
-      speed: 8 + Math.random() * 14,
-      alpha: 0.15 + Math.random() * 0.45,
-      size: 1 + Math.random() * 2,
+    const windStreams: WindParticle[] = Array.from({ length: 28 }, () => ({
+      x: Math.random() * window.innerWidth,
+      y: Math.random() * window.innerHeight,
+      len: Math.random() * 120 + 60,
+      speed: Math.random() * 3 + 1.8,
+      alpha: Math.random() * 0.25 + 0.05,
     }));
 
-    // Animation state driven by GSAP
+    // Animation reactive state
     const state = {
-      assemble: 0,      // 0 = scattered wind, 1 = snapped 100%
-      solidCrossfade: 0,// 0 = tiles, 1 = 100% crisp solid logo
-      logoScale: 1.0,
-      breathe: 1.0,
+      assemble: 0,
+      solidCrossfade: 0,
+      flash: 0,
+      breathe: 1,
       cyanGlow: 0,
-      flash: 0,         // Lock flash burst
       explode: 0,
       opacity: 0,
+      lensFocus: 14, // Blur de foco analógico en px (bokeh a nítido)
     };
 
-    // Render loop: 120 FPS Hardware-accelerated canvas
+    // Render loop
     const render = () => {
-      if (isCleanedUp || !ctx || !canvas) return;
+      if (isCleanedUp) return;
 
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      const w = canvas.width;
+      const h = canvas.height;
+      const midX = w / 2;
+      const midY = h / 2;
 
-      const screenW = window.innerWidth;
-      const screenH = window.innerHeight;
+      ctx.clearRect(0, 0, w, h);
 
-      ctx.save();
-      ctx.scale(dpr, dpr);
-
-      // --- A. Draw Ambient Patagonian Wind Streams ---
-      if (state.opacity > 0.05 && state.explode < 0.9) {
+      // 1. Draw ambient wind streams
+      if (state.opacity > 0.05) {
+        ctx.save();
         ctx.strokeStyle = '#59BFD6';
-        windStreams.forEach((p) => {
-          ctx.beginPath();
-          ctx.globalAlpha = p.alpha * state.opacity * (1 - state.explode);
-          ctx.lineWidth = p.size;
-          ctx.lineCap = 'round';
-          ctx.moveTo(p.x, p.y);
-          ctx.lineTo(p.x - p.len, p.y + p.len * 0.35); // wind slant
-          ctx.stroke();
+        ctx.lineWidth = 1 * dpr;
+        for (const p of windStreams) {
+          p.x -= p.speed * dpr * 2.5;
+          p.y += p.speed * dpr * 1.4;
+          if (p.x < -100) p.x = w + 100;
+          if (p.y > h + 100) p.y = -100;
 
-          // Advance wind particle
-          p.x -= p.speed;
-          p.y += p.speed * 0.35;
-          if (p.x < -100 || p.y > screenH + 100) {
-            p.x = screenW + 100 + Math.random() * 150;
-            p.y = Math.random() * screenH * 0.7 - 50;
-          }
-        });
+          ctx.beginPath();
+          ctx.globalAlpha = p.alpha * state.opacity * 0.6;
+          ctx.moveTo(p.x, p.y);
+          ctx.lineTo(p.x + p.len * 0.85, p.y - p.len * 0.45);
+          ctx.stroke();
+        }
+        ctx.restore();
       }
 
-      // --- B. Draw Assembling / Solid Logo ---
-      if (img.complete && img.naturalWidth > 0 && state.opacity > 0.01) {
-        const maxLogoW = Math.min(screenW * 0.72, 330);
-        const logoW = maxLogoW * state.logoScale * state.breathe;
-        const logoH = logoW * (282 / 412);
-        const centerX = screenW / 2;
-        const centerY = screenH / 2 - 12;
+      // 2. Draw Logo: Assembly & Solid Crossfade with Analog Lens Focus
+      ctx.save();
+      ctx.translate(midX, midY);
+      ctx.scale(state.breathe, state.breathe);
 
-        const tileTargetW = logoW / COLS;
-        const tileTargetH = logoH / ROWS;
+      const targetW = Math.min(window.innerWidth * 0.75, 340) * dpr;
+      const targetH = (targetW * 282) / 412;
 
-        // 1. Draw tiles (when assembling or exploding)
-        if (state.solidCrossfade < 0.99 || state.explode > 0) {
-          const tileAlpha = (1 - state.solidCrossfade) * state.opacity;
+      // Soft focus filter simulation on canvas
+      if (state.lensFocus > 0.5) {
+        ctx.filter = `blur(${state.lensFocus * dpr}px)`;
+      } else {
+        ctx.filter = 'none';
+      }
 
-          tiles.forEach((t) => {
-            // Normalized individual progress
-            const pRaw = Math.max(0, Math.min(1, (state.assemble - t.delay) / (1 - t.delay + 0.0001)));
-            // Magnetic acceleration curve
-            const prog = 1 - Math.pow(1 - pRaw, 4);
-
-            let curX = centerX + t.tx * logoW;
-            let curY = centerY + t.ty * logoH;
-            let curRot = 0;
-            let curScale = 1;
-            let a = tileAlpha;
-
-            if (state.explode > 0) {
-              const eProg = Math.pow(state.explode, 2);
-              curX += t.expX * eProg;
-              curY += t.expY * eProg;
-              curRot = t.expRot * eProg;
-              a = Math.max(0, state.opacity * (1 - state.explode * 1.3));
-              curScale = Math.max(0.1, 1 - eProg * 0.6);
-            } else if (pRaw < 1) {
-              curX += t.startX * (1 - prog);
-              curY += t.startY * (1 - prog);
-              curRot = t.startRot * (1 - prog);
-              curScale = 0.4 + 0.6 * prog;
-              a = tileAlpha * prog;
-            }
-
-            if (a > 0.01) {
-              ctx.save();
-              ctx.globalAlpha = a;
-              ctx.translate(curX, curY);
-              ctx.rotate(curRot);
-              ctx.scale(curScale, curScale);
-
-              // Draw slice with slight overlap to guarantee 0 gaps
-              ctx.drawImage(
-                img,
-                t.sx,
-                t.sy,
-                t.sw,
-                t.sh,
-                -tileTargetW / 2 - 0.75,
-                -tileTargetH / 2 - 0.75,
-                tileTargetW + 1.5,
-                tileTargetH + 1.5
-              );
-
-              // Cyan dust gleam while in flight
-              if (prog < 0.95 && state.cyanGlow > 0.1) {
-                ctx.globalCompositeOperation = 'source-atop';
-                ctx.fillStyle = `rgba(89, 191, 214, ${0.5 * (1 - prog)})`;
-                ctx.fillRect(-tileTargetW / 2, -tileTargetH / 2, tileTargetW, tileTargetH);
-              }
-
-              ctx.restore();
-            }
-          });
+      if (img.complete && img.naturalWidth > 0 && state.opacity > 0) {
+        // Cyan ethereal backlight
+        if (state.cyanGlow > 0.05) {
+          ctx.save();
+          ctx.globalAlpha = state.cyanGlow * 0.35 * state.opacity;
+          ctx.shadowColor = '#59BFD6';
+          ctx.shadowBlur = 40 * dpr;
+          ctx.drawImage(img, -targetW / 2, -targetH / 2, targetW, targetH);
+          ctx.restore();
         }
 
-        // 2. Draw 100% PRISTINE SOLID LOGO (No gaps, no seams, razor sharp)
-        if (state.solidCrossfade > 0.01 && state.explode === 0) {
+        // Particle Assembly Phase
+        if (state.solidCrossfade < 0.99) {
           ctx.save();
-          ctx.globalAlpha = state.solidCrossfade * state.opacity;
+          ctx.globalAlpha = state.opacity * (1 - state.solidCrossfade);
 
-          // Soft Cyan Boutique Aura behind solid logo
-          if (state.cyanGlow > 0.05) {
-            ctx.shadowColor = '#59BFD6';
-            ctx.shadowBlur = 24 * state.cyanGlow * dpr;
+          for (const tile of tiles) {
+            const easeProgress = Math.max(
+              0,
+              Math.min(1, (state.assemble - tile.delay) / (1 - tile.delay || 1))
+            );
+            const curEase = 1 - Math.pow(1 - easeProgress, 3);
+
+            let curX = tile.startX * (1 - curEase);
+            let curY = tile.startY * (1 - curEase);
+            let curRot = tile.startRot * (1 - curEase);
+
+            if (state.explode > 0) {
+              const expEase = Math.pow(state.explode, 2);
+              curX += tile.expX * expEase;
+              curY += tile.expY * expEase;
+              curRot += tile.expRot * expEase;
+            }
+
+            const renderTileW = (tile.sw * targetW) / 412;
+            const renderTileH = (tile.sh * targetH) / 282;
+            const tileCenterX = tile.tx * targetW + curX;
+            const tileCenterY = tile.ty * targetH + curY;
+
+            ctx.save();
+            ctx.translate(tileCenterX, tileCenterY);
+            ctx.rotate(curRot);
+
+            ctx.drawImage(
+              img,
+              tile.sx,
+              tile.sy,
+              tile.sw,
+              tile.sh,
+              -renderTileW / 2,
+              -renderTileH / 2,
+              renderTileW,
+              renderTileH
+            );
+            ctx.restore();
           }
+          ctx.restore();
+        }
 
-          ctx.drawImage(
-            img,
-            centerX - logoW / 2,
-            centerY - logoH / 2,
-            logoW,
-            logoH
-          );
-
-          // Flash overlay on lock
-          if (state.flash > 0.01) {
-            ctx.globalCompositeOperation = 'source-atop';
-            ctx.fillStyle = `rgba(255, 255, 255, ${state.flash})`;
-            ctx.fillRect(centerX - logoW / 2, centerY - logoH / 2, logoW, logoH);
-          }
-
+        // Solid Vector Logo Phase (100% Crisp)
+        if (state.solidCrossfade > 0.01) {
+          ctx.save();
+          ctx.globalAlpha = state.opacity * state.solidCrossfade;
+          ctx.drawImage(img, -targetW / 2, -targetH / 2, targetW, targetH);
           ctx.restore();
         }
       }
@@ -286,10 +252,13 @@ export function Preloader() {
     animationFrameId = requestAnimationFrame(render);
 
     // Initial GSAP setup
-    gsap.set(slats, { yPercent: 0 });
+    gsap.set([shutterTopRef.current, shutterBottomRef.current], { yPercent: 0 });
+    gsap.set(lensDiaphragmRef.current, { opacity: 0, scale: 0.85, rotation: -25 });
+    gsap.set(lensInnerRingRef.current, { scale: 0.6, opacity: 0 });
+    gsap.set(flashOverlayRef.current, { opacity: 0 });
     gsap.set([hudTopRef.current, hudBottomRef.current], { opacity: 0, y: -8 });
     gsap.set(introPhaseRef.current, { opacity: 0, y: 12 });
-    gsap.set(lockPillRef.current, { opacity: 0, y: 10 });
+    gsap.set(lockPillRef.current, { opacity: 0, y: 12 });
 
     // Master Cinematic Opening Timeline (~3.6s total poetic flow)
     const tl = gsap.timeline({
@@ -301,7 +270,7 @@ export function Preloader() {
       },
     });
 
-    // ── FASE 1: Calibración y Poesía de Entrada (0.0s - 1.0s) ──
+    // ── FASE 1: Búsqueda de Foco y Calibración Óptica (0.0s - 1.0s) ──
     tl.to([hudTopRef.current, hudBottomRef.current], {
       opacity: 1,
       y: 0,
@@ -314,109 +283,143 @@ export function Preloader() {
         duration: 0.6,
         ease: 'power3.out',
       }, '-=0.2')
+      .to(lensDiaphragmRef.current, {
+        opacity: 1,
+        scale: 1,
+        rotation: 0,
+        duration: 1.2,
+        ease: 'power2.out',
+      }, '-=0.4')
+      .to(lensInnerRingRef.current, {
+        opacity: 0.7,
+        scale: 1,
+        duration: 1.0,
+        ease: 'power2.out',
+      }, '<+=0.1')
 
-      // La poesía de entrada se retira con elegancia ANTES del ensamble
+      // La poesía de entrada se retira con suavidad antes del ensamble
       .to(introPhaseRef.current, {
         opacity: 0,
         y: -15,
         duration: 0.4,
         ease: 'power2.in',
-      }, '+=0.2');
+      }, '+=0.1');
 
-    // ── FASE 2: Ráfaga del Puelche y Unión Magnética (1.4s - 2.8s) ──
+    // ── FASE 2: Ráfaga del Puelche, Enfoque Manual y Condensación (1.1s - 2.2s) ──
     tl.to(
       state,
       {
         opacity: 1,
         assemble: 1,
-        cyanGlow: 0.9,
-        duration: 1.2,
-        ease: 'expo.out', // Snaps cleanly without lagging pieces
+        lensFocus: 0, // El foco pasa de bokeh analógico a nitidez absoluta
+        cyanGlow: 0.8,
+        duration: 1.1,
+        ease: 'expo.out',
       },
       '-=0.1'
     )
-      // Transición fluida e instantánea al logo sólido 100% puro
+      // Transición al logo sólido
       .to(
         state,
         {
           solidCrossfade: 1,
-          duration: 0.35,
+          duration: 0.3,
           ease: 'power2.out',
         },
-        '-=0.45'
+        '-=0.3'
       )
-      // Destello sutil de condensación
+      // Rotación precisa del anillo de apertura (Ajuste de diafragma f/2.8)
       .to(
-        state,
+        lensDiaphragmRef.current,
         {
-          flash: 0.4,
-          duration: 0.15,
-          yoyo: true,
-          repeat: 1,
+          rotation: 15,
+          scale: 1.02,
+          duration: 0.4,
           ease: 'power1.inOut',
         },
-        '-=0.1'
-      )
+        '<'
+      );
 
-      // Aparece el sello poético debajo
+    // ── FASE 3: El Disparo de Obturador & Destello de Exposición (2.2s - 2.6s) ──
+    // Momento en que la cámara registra la imagen: micro-compresión y flash estroboscópico
+    tl.to(
+      flashOverlayRef.current,
+      {
+        opacity: 0.85,
+        duration: 0.08,
+        ease: 'power4.in',
+      },
+      '-=0.05'
+    )
+      .to(
+        flashOverlayRef.current,
+        {
+          opacity: 0,
+          duration: 0.35,
+          ease: 'power2.out',
+        }
+      )
+      // Sello de autor emerge tras el destello
       .to(
         lockPillRef.current,
         {
           opacity: 1,
           y: 0,
-          duration: 0.6,
+          duration: 0.5,
           ease: 'power3.out',
         },
-        '-=0.1'
+        '-=0.2'
       );
 
-    // ── FASE 3: Respiración Boutique (2.8s - 3.6s) ──
+    // ── FASE 4: Respiración de Estudio (2.6s - 3.2s) ──
     tl.to(state, {
-      breathe: 1.025,
-      cyanGlow: 0.6,
-      duration: 0.45,
+      breathe: 1.02,
+      duration: 0.4,
       yoyo: true,
       repeat: 1,
       ease: 'sine.inOut',
     });
 
-    // ── FASE 4: Ráfaga en Polvo / Dispersión Cinética (3.6s - 4.1s) ──
+    // ── FASE 5: Descompresión y Desvanecimiento de Elementos Centrales (3.2s - 3.5s) ──
     tl.to(
-      state,
+      [lensDiaphragmRef.current, lockPillRef.current, hudTopRef.current, hudBottomRef.current],
       {
-        solidCrossfade: 0, // Regresa a partículas para la explosión
-        explode: 1,
         opacity: 0,
-        duration: 0.5,
-        ease: 'power4.in',
-      },
-      '+=0.15'
+        scale: 0.95,
+        duration: 0.35,
+        ease: 'power2.in',
+      }
     )
       .to(
-        [lockPillRef.current, hudTopRef.current, hudBottomRef.current],
+        state,
         {
           opacity: 0,
-          scale: 0.95,
-          duration: 0.4,
-          ease: 'power3.in',
+          duration: 0.3,
+          ease: 'power2.in',
         },
         '<'
       );
 
-    // ── FASE 5: Apertura Asimétrica de los 5 Slats (4.0s - 4.8s) ──
+    // ── FASE 6: Apertura de Cortinillas de Obturador Dual (3.4s - 4.2s) ──
+    // Cortina superior sube, cortina inferior baja
     tl.to(
-      slats,
+      shutterTopRef.current,
       {
         yPercent: -100,
-        duration: 0.85,
-        stagger: {
-          each: 0.08,
-          from: 'center', // Apertura desde el centro hacia los lados
-        },
+        duration: 0.8,
         ease: 'power4.inOut',
       },
-      '-=0.15'
-    );
+      '-=0.1'
+    )
+      .to(
+        shutterBottomRef.current,
+        {
+          yPercent: 100,
+          duration: 0.8,
+          ease: 'power4.inOut',
+        },
+        '<'
+      );
 
     // Skip handler (Click o tecla Escape)
     const handleSkip = () => {
@@ -443,8 +446,8 @@ export function Preloader() {
   return (
     <aside
       ref={containerRef}
-      className="fixed inset-0 z-[9999] flex select-none overflow-hidden cursor-pointer bg-[#1D2024]"
-      aria-label="Apertura poética Puelche Lab"
+      className="fixed inset-0 z-[9999] flex select-none overflow-hidden cursor-pointer"
+      aria-label="Apertura fotográfica Puelche Lab"
       onClick={() => {
         setDone(true);
         sessionStorage.setItem('puelche-loaded', '1');
@@ -452,47 +455,79 @@ export function Preloader() {
         if (lenisRef) lenisRef.start();
       }}
     >
-      {/* 5 Columnas Verticales Arquitectónicas (Slats) */}
-      <div className="absolute inset-0 flex w-full h-full pointer-events-none z-10">
-        <div ref={slat1Ref} className="relative w-1/5 h-full bg-[#1D2024] border-r border-white/5">
-          <div className="absolute bottom-0 inset-x-0 h-1 bg-puelche-cyan shadow-[0_0_12px_#59BFD6]" />
-        </div>
-        <div ref={slat2Ref} className="relative w-1/5 h-full bg-[#191B1F] border-r border-white/5">
-          <div className="absolute bottom-0 inset-x-0 h-1 bg-puelche-cyan shadow-[0_0_12px_#59BFD6]" />
-        </div>
-        <div ref={slat3Ref} className="relative w-1/5 h-full bg-[#15171A] border-r border-white/5">
-          <div className="absolute bottom-0 inset-x-0 h-1 bg-puelche-cyan shadow-[0_0_12px_#59BFD6]" />
-        </div>
-        <div ref={slat4Ref} className="relative w-1/5 h-full bg-[#191B1F] border-r border-white/5">
-          <div className="absolute bottom-0 inset-x-0 h-1 bg-puelche-cyan shadow-[0_0_12px_#59BFD6]" />
-        </div>
-        <div ref={slat5Ref} className="relative w-1/5 h-full bg-[#1D2024]">
-          <div className="absolute bottom-0 inset-x-0 h-1 bg-puelche-cyan shadow-[0_0_12px_#59BFD6]" />
-        </div>
-      </div>
+      {/* Cortinilla Superior de Obturador */}
+      <div
+        ref={shutterTopRef}
+        className="absolute top-0 left-0 right-0 h-1/2 bg-[#121417] border-b border-white/10 z-10"
+        style={{ willChange: 'transform' }}
+      />
 
-      {/* Escenario Central: Canvas de Partículas y Logo Sólido */}
-      <div className="absolute inset-0 z-20 pointer-events-none flex items-center justify-center">
-        <canvas ref={canvasRef} className="w-full h-full" />
-      </div>
+      {/* Cortinilla Inferior de Obturador */}
+      <div
+        ref={shutterBottomRef}
+        className="absolute bottom-0 left-0 right-0 h-1/2 bg-[#121417] border-t border-white/10 z-10"
+        style={{ willChange: 'transform' }}
+      />
 
-      {/* Atmósfera Editorial y Poética del Viento */}
-      <div className="absolute inset-0 z-30 pointer-events-none flex flex-col justify-between p-6 sm:p-10 font-sans text-xs text-white/70">
-        {/* Cabecera Superior — Seria, Editorial, sin códigos */}
-        <div ref={hudTopRef} className="flex justify-between items-start tracking-widest uppercase">
-          <div className="flex items-center gap-2.5">
+      {/* Destello de Exposición Estroboscópico de Sala Oscura */}
+      <div
+        ref={flashOverlayRef}
+        className="fixed inset-0 bg-[#FFFDF2] z-30 pointer-events-none mix-blend-screen"
+        style={{ willChange: 'opacity' }}
+      />
+
+      {/* Canvas Central de Partículas del Viento */}
+      <canvas
+        ref={canvasRef}
+        className="absolute inset-0 z-20 pointer-events-none"
+      />
+
+      {/* Interfaz de Visor Óptico & Textos Editoriales */}
+      <div className="absolute inset-0 z-20 flex flex-col justify-between p-6 sm:p-10 pointer-events-none">
+        {/* Cabecera Editorial */}
+        <div ref={hudTopRef} className="flex justify-between items-start tracking-wider text-xs">
+          <div className="flex items-center gap-3">
             <span className="w-2 h-2 rounded-full bg-puelche-cyan" />
-            <span className="text-white font-condensed font-medium text-xs sm:text-sm tracking-[0.2em]">PUELCHE LAB</span>
-            <span className="text-white/40 hidden sm:inline">&bull; PUERTO VARAS</span>
+            <span className="font-condensed uppercase tracking-widest text-white/90 font-medium">
+              PUELCHE LAB &bull; PUERTO VARAS
+            </span>
           </div>
-          <div className="text-white/60 font-serif italic text-xs sm:text-sm">
-            Fotografía de Autor &bull; Diseño Cross Media
-          </div>
+          <span className="font-serif italic text-white/50 text-[11px] sm:text-xs">
+            Luz de estudio &bull; Territorio austral
+          </span>
         </div>
 
-        {/* Escenario Central Poético */}
-        <div className="relative w-full flex-1 flex items-center justify-center">
-          {/* Fase 1: Poesía de Apertura — Desaparece suavemente al llegar el logo */}
+        {/* Centro: Anillo de Diafragma Óptico & Sello de Exposición */}
+        <div className="relative flex items-center justify-center">
+          {/* Anillo de Diafragma de Objetivo Prime (Lens Aperture Ring) */}
+          <div
+            ref={lensDiaphragmRef}
+            className="w-[280px] sm:w-[380px] md:w-[460px] aspect-square rounded-full border border-white/15 backdrop-blur-[2px] flex items-center justify-center relative pointer-events-none shadow-[0_0_50px_rgba(0,0,0,0.5)]"
+            style={{ willChange: 'transform, opacity' }}
+          >
+            {/* Graduaciones Perimetrales de Diafragma */}
+            <div className="absolute top-3 inset-x-0 text-center font-serif italic text-[10px] sm:text-xs text-white/40 tracking-wider">
+              Apertura f/2.8 &bull; Objetivo de Autor
+            </div>
+            <div className="absolute bottom-3 inset-x-0 text-center font-condensed uppercase text-[9px] sm:text-[10px] text-puelche-cyan tracking-[0.25em]">
+              85mm Prime &bull; Puerto Varas 41°S
+            </div>
+
+            {/* Muescas Ópticas Norte / Sur / Este / Oeste */}
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-0.5 h-2.5 bg-puelche-cyan/60" />
+            <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-0.5 h-2.5 bg-puelche-cyan/60" />
+            <div className="absolute left-0 top-1/2 -translate-y-1/2 h-0.5 w-2.5 bg-puelche-cyan/60" />
+            <div className="absolute right-0 top-1/2 -translate-y-1/2 h-0.5 w-2.5 bg-puelche-cyan/60" />
+
+            {/* Anillo Interno Concétrico */}
+            <div
+              ref={lensInnerRingRef}
+              className="w-3/4 h-3/4 rounded-full border border-puelche-cyan/20 border-dashed"
+              style={{ willChange: 'transform, opacity' }}
+            />
+          </div>
+
+          {/* Poesía de Entrada — Transiciona antes del ensamble */}
           <div
             ref={introPhaseRef}
             className="absolute max-w-lg mx-auto text-center px-4 flex flex-col items-center gap-2 pointer-events-none"
@@ -504,29 +539,29 @@ export function Preloader() {
               VIENTO CREATIVO
             </h2>
             <p className="font-sans text-xs sm:text-sm text-white/60 tracking-wide font-light">
-              Revelando la luz y las texturas del sur
+              Búsqueda de foco óptico &bull; Revelando la luz del sur
             </p>
           </div>
 
-          {/* Sello de Autor — Aparece con el logo fijado */}
+          {/* Sello de Autor — Aparece con el destello de la toma */}
           <div
             ref={lockPillRef}
-            className="absolute bottom-10 sm:bottom-14 flex items-center gap-3 px-5 py-2 rounded-full bg-black/40 border border-white/15 backdrop-blur-md pointer-events-none shadow-lg"
+            className="absolute -bottom-16 sm:-bottom-20 flex items-center gap-3 px-5 py-2 rounded-full bg-black/60 border border-white/20 backdrop-blur-md pointer-events-none shadow-2xl"
           >
-            <span className="font-condensed uppercase tracking-[0.2em] text-xs sm:text-sm text-white/90 font-medium">
+            <span className="font-condensed uppercase tracking-[0.2em] text-xs sm:text-sm text-white/95 font-medium">
               ESTUDIO PUELCHE LAB
             </span>
-            <span className="w-1.5 h-1.5 rounded-full bg-puelche-cyan" />
+            <span className="w-1.5 h-1.5 rounded-full bg-puelche-cyan shadow-[0_0_8px_#59BFD6]" />
             <span className="font-serif italic text-xs sm:text-sm text-puelche-cyan">
               Puerto Varas, Patagonia
             </span>
           </div>
         </div>
 
-        {/* Pie Inferior */}
+        {/* Pie Inferior Editorial */}
         <div ref={hudBottomRef} className="flex justify-between items-end tracking-wider text-xs text-white/50">
           <div className="flex flex-col gap-0.5 font-light">
-            <span className="text-white/80 font-medium">Luz natural &bull; Territorio &bull; Oficio de autor</span>
+            <span className="text-white/80 font-medium">Toma de autor &bull; Territorio &bull; Oficio fotográfico</span>
             <span className="text-[11px] text-white/40">Región de Los Lagos, Chile</span>
           </div>
           <div className="hidden sm:flex items-center gap-2 font-condensed uppercase text-white/50 tracking-widest text-[11px]">

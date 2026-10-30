@@ -5,7 +5,7 @@ export interface ProjectItem {
   client: string;
   location: string;
   specialty?: string;
-  category: 'Fotografía' | 'Branding' | 'Desarrollo Web' | 'Editorial';
+  category: 'Fotografía' | 'Edición Fotográfica' | 'Branding' | 'Desarrollo Web' | 'Editorial';
   year: string;
   summary: string;
   description: string;
@@ -15,7 +15,7 @@ export interface ProjectItem {
 }
 
 export const PORTFOLIO_PROJECTS: ProjectItem[] = [
-  // 1. Estancia Rilán
+  // ── 1. FOTOGRAFÍA DE AUTOR & TERRITORIO ──
   {
     id: 'estancia-rilan',
     slug: 'estancia-rilan',
@@ -31,7 +31,6 @@ export const PORTFOLIO_PROJECTS: ProjectItem[] = [
     deliverables: ['Fotografía de Arquitectura', 'Interiores', 'Fotografía Aérea 4K', 'Campaña Editorial'],
     featured: true,
   },
-  // 2. Cala Melí
   {
     id: 'cala-meli',
     slug: 'cala-meli',
@@ -47,7 +46,6 @@ export const PORTFOLIO_PROJECTS: ProjectItem[] = [
     deliverables: ['Fotografía Inmobiliaria', 'Dron Paisajístico', 'Contenido Web'],
     featured: true,
   },
-  // 3. Costaustralis
   {
     id: 'hotel-costaustralis',
     slug: 'hotel-costaustralis',
@@ -63,7 +61,6 @@ export const PORTFOLIO_PROJECTS: ProjectItem[] = [
     deliverables: ['Fotografía Hotelera', 'Interiores', 'Catálogo de Huéspedes'],
     featured: true,
   },
-  // 4. Cabo de Hornos
   {
     id: 'hotel-cabo-de-hornos',
     slug: 'hotel-cabo-de-hornos',
@@ -79,7 +76,6 @@ export const PORTFOLIO_PROJECTS: ProjectItem[] = [
     deliverables: ['Fotografía de Arquitectura', 'Interiores Históricos', 'Iluminación Nocturna'],
     featured: true,
   },
-  // 5. Muebles Yunge
   {
     id: 'muebles-yunge',
     slug: 'muebles-yunge',
@@ -95,7 +91,6 @@ export const PORTFOLIO_PROJECTS: ProjectItem[] = [
     deliverables: ['Fotografía de Mobiliario', 'Detalle de Oficio', 'Catálogo Comercial'],
     featured: true,
   },
-  // 6. Tagua Tagua Lodge
   {
     id: 'tagua-tagua-lodge',
     slug: 'tagua-tagua-lodge',
@@ -111,7 +106,6 @@ export const PORTFOLIO_PROJECTS: ProjectItem[] = [
     deliverables: ['Fotografía Turística', 'Video Aéreo Drone', 'Brochure Digital'],
     featured: false,
   },
-  // 7. AquaChile
   {
     id: 'aquachile',
     slug: 'aquachile',
@@ -127,7 +121,6 @@ export const PORTFOLIO_PROJECTS: ProjectItem[] = [
     deliverables: ['Fotografía Industrial', 'Procesos Productivos', 'Fotografía Gastronómica'],
     featured: true,
   },
-  // 8. Hotel Ohana
   {
     id: 'hotel-ohana',
     slug: 'hotel-ohana',
@@ -143,7 +136,6 @@ export const PORTFOLIO_PROJECTS: ProjectItem[] = [
     deliverables: ['Fotografía Hotelera', 'Paisajismo', 'Contenido Digital'],
     featured: false,
   },
-  // 9. Maestranza San Aurelio
   {
     id: 'maestranza-san-aurelio',
     slug: 'maestranza-san-aurelio',
@@ -159,7 +151,6 @@ export const PORTFOLIO_PROJECTS: ProjectItem[] = [
     deliverables: ['Fotografía Industrial', 'Seguridad & Faena', 'Memoria Técnica'],
     featured: false,
   },
-  // 10. Soldasur
   {
     id: 'soldasur',
     slug: 'soldasur',
@@ -175,52 +166,237 @@ export const PORTFOLIO_PROJECTS: ProjectItem[] = [
     deliverables: ['Fotografía Técnica', 'Operaciones Portuarias', 'Brochure Industrial'],
     featured: false,
   },
-  // 11. Blue Seal (Branding)
+
+  // ── 2. EDICIÓN FOTOGRÁFICA & RETOQUE DE AUTOR ──
+  {
+    id: 'doosan-edicion',
+    slug: 'doosan-edicion',
+    title: 'Doosan — Maquinaria Pesada & Equipamientos',
+    client: 'Doosan',
+    location: 'Zona Sur & Austral',
+    specialty: 'Servicio y venta de equipamientos para la construcción',
+    category: 'Edición Fotográfica',
+    year: '2024',
+    summary: 'Tratamiento digital avanzado de cromatismo, texturas de metal y luminosidad en maquinaria de alto tonelaje.',
+    description: 'Edición y revelado digital de faenas de construcción bajo lluvia y barro en el sur de Chile, resaltando el poder de la maquinaria.',
+    image: '/images/real/bg-edit-fotografica-2-min.jpg',
+    deliverables: ['Retoque Técnico', 'Ajuste Cromático', 'Catálogo de Maquinaria'],
+    featured: true,
+  },
+  {
+    id: 'fire-safe-edicion',
+    slug: 'fire-safe-edicion',
+    title: 'Fire Safe — Seguridad Contra Incendios',
+    client: 'Fire Safe',
+    location: 'Santiago & Los Lagos',
+    specialty: 'Seguridad para edificios y condominios',
+    category: 'Edición Fotográfica',
+    year: '2023',
+    summary: 'Edición fotográfica de sistemas de ingeniería, gabinetes hidrantes y simulaciones de emergencia.',
+    description: 'Postproducción de alta fidelidad para manuales normativos y presentaciones institucionales de prevención de incendios.',
+    image: '/images/real/bg-portafolios-edicion-fotografia-2-min.jpg',
+    deliverables: ['Postproducción Digital', 'Composición Visual', 'Manual de Seguridad'],
+    featured: false,
+  },
+  {
+    id: 'bomberos-santiago-edicion',
+    slug: 'bomberos-santiago-edicion',
+    title: '20ª Cía. de Bomberos de Santiago — Especialidad en Altura',
+    client: 'Vigésima Compañía de Bomberos de Santiago',
+    location: 'Santiago, Chile',
+    specialty: 'Proyecto Pro-Bono de Honor',
+    category: 'Edición Fotográfica',
+    year: '2023',
+    summary: 'Campaña visual y postproducción de la nueva unidad especializada en incendios en altura.',
+    description: 'Proyecto pro-bono creado con orgullo por Puelche Lab para la Vigésima Compañía de Bomberos de Santiago. Su insignia y manual visual hoy viste cada butaca de su máquina de rescate.',
+    image: '/images/real/bg-edit-fotografica-7-min.jpg',
+    deliverables: ['Edición de Campaña', 'Dirección de Arte', 'Retoque de Interiores'],
+    featured: true,
+  },
+  {
+    id: 'carnaval-del-sur-edicion',
+    slug: 'carnaval-del-sur-edicion',
+    title: 'Carnaval del Sur — Teatro, Máscaras & Bosque',
+    client: 'Carnaval del Sur',
+    location: 'Puerto Varas & Cerro Philippi',
+    specialty: 'Artes escénicas y entretención',
+    category: 'Edición Fotográfica',
+    year: '2024',
+    summary: 'Postproducción cinematográfica de máscaras teatrales y vestuarios en la selva fría valdiviana.',
+    description: 'Alineación cromática y realce de luces mágicas en las obras de teatro callejero y circo que habitan los bosques del sur.',
+    image: '/images/real/bg-edit-fotografica-9-min.jpg',
+    deliverables: ['Edición Escénica', 'Color Grading', 'Campaña Pública'],
+    featured: false,
+  },
+  {
+    id: 'campana-interna-puelche',
+    slug: 'campana-interna-puelche',
+    title: 'Puelche Lab — Ensayos Visuales & Sala de Magia',
+    client: 'Puelche Lab Studio',
+    location: 'Puerto Varas, Patagonia',
+    specialty: 'Investigación estética de autor',
+    category: 'Edición Fotográfica',
+    year: '2024',
+    summary: 'Ensayos tonales sobre la neblina matutina del Lago Llanquihue y la luz filtrada por el bosque templado.',
+    description: 'Espacio de experimentación continua donde perfeccionamos los flujos de revelado digital, máscaras de luminosidad y colorimetría para nuestros clientes.',
+    image: '/images/real/bg-edit-fotografica-5-min.jpg',
+    deliverables: ['Sala de Magia', 'Fine Art Retouching', 'Ensayo Visual'],
+    featured: false,
+  },
+
+  // ── 3. DISEÑO DE MARCA & IDENTIDAD ──
   {
     id: 'blue-seal',
     slug: 'blue-seal',
     title: 'Blue Seal — Robótica & Buceo Técnico',
     client: 'Blue Seal Subsea Technologies',
-    location: 'Puerto Montt',
-    specialty: 'Identidad de marca y robótica submarina',
+    location: 'Puerto Montt & Océano Pacífico',
+    specialty: 'Trabajos submarinos, equipo técnico humano y robótica',
     category: 'Branding',
     year: '2023',
     summary: 'Identidad visual integral, imagotipo de alta mar y narrativa técnica para robótica submarina.',
-    description: 'Construcción de un lenguaje de marca de ingeniería y confianza extrema en profundidades marinas.',
-    image: '/images/real/bg-portafolios-fotografia-h-min.jpg',
+    description: 'Construcción de un lenguaje de marca de ingeniería y confianza extrema en profundidades marinas, uniendo la precisión de los robots ROV con el buceo profesional.',
+    image: '/images/real/bg-portafolios-marca-blue-seal-min.jpg',
     deliverables: ['Manual de Identidad', 'Señalética de Flota', 'Diseño de Plataforma Web'],
     featured: true,
   },
-  // 12. Sur Terra (Desarrollo Web)
   {
     id: 'sur-terra',
     slug: 'sur-terra',
     title: 'Sur Terra — Propiedades de Conservación',
     client: 'Sur Terra Inmobiliaria',
-    location: 'Lago Llanquihue',
-    specialty: 'Plataforma web inmobiliaria en Next.js',
-    category: 'Desarrollo Web',
+    location: 'Lago Llanquihue & Cuenca Austral',
+    specialty: 'Servicio de venta de propiedades y reservas',
+    category: 'Branding',
     year: '2024',
-    summary: 'Plataforma web minimalista de parcelaciones ecológicas y reservas de conservación.',
-    description: 'Sitio web ultra-rápido en Next.js con mapas interactivos satelitales y visor de parcelas.',
-    image: '/images/real/bg-fotografia-6-min.jpg',
-    deliverables: ['Desarrollo Web Next.js', 'Buscador de Lotes', 'Filtro de Inversión'],
+    summary: 'Identidad visual y papelería corporativa para parcelaciones ecológicas y reservas naturales protegidas.',
+    description: 'Creación de marca para una inmobiliaria que comprende la fragilidad y nobleza del territorio patagónico: tipografía editorial sobria, tonos de musgo y tierra húmeda.',
+    image: '/images/real/bg-portafolios-marca-sur-terra-min.jpg',
+    deliverables: ['Identidad Corporativa', 'Brochure de Inversión', 'Ecosistema de Marca'],
     featured: true,
   },
-  // 13. Viajes Falabella (Editorial)
+  {
+    id: 'cirumed-marca',
+    slug: 'cirumed-marca',
+    title: 'Cirumed — Insumos Médicos & Quirúrgicos',
+    client: 'Cirumed',
+    location: 'Santiago & Los Lagos',
+    specialty: 'Proveedores de insumos médicos para el área de estética',
+    category: 'Branding',
+    year: '2023',
+    summary: 'Sistema de identidad visual clínica y de alta precisión para distribución hospitalaria.',
+    description: 'Diseño integral de marca y papelería técnica para insumos de estética y cirugía con los más altos estándares biomédicos.',
+    image: '/images/real/bg-portafolios-marca-cirumed-min.jpg',
+    deliverables: ['Diseño de Marca', 'Empaque & Packaging', 'Normas Gráficas'],
+    featured: false,
+  },
+  {
+    id: 'gallo-negro-marca',
+    slug: 'gallo-negro-marca',
+    title: 'Gallo Negro — Café & Restorán de Autor',
+    client: 'Gallo Negro',
+    location: 'Región de Los Lagos',
+    specialty: 'Café y restorán de especialidad',
+    category: 'Branding',
+    year: '2023',
+    summary: 'Identidad rústica y contemporánea inspirada en el fuego, el café tostado y la calidez del sur.',
+    description: 'Desarrollo de imagotipo, cartas menús artesanales y delantales para un punto de encuentro gastronómico inolvidable.',
+    image: '/images/real/bg-portafolios-marca-gallo-negro-min.jpg',
+    deliverables: ['Identidad Visual', 'Carta Menú', 'Señalética'],
+    featured: false,
+  },
+  {
+    id: 'centro-maqui-marca',
+    slug: 'centro-maqui-marca',
+    title: 'Centro Maqui — Superfrutos de la Patagonia',
+    client: 'Centro Maqui',
+    location: 'Los Lagos, Chile',
+    specialty: 'Nutracéutica y superfrutos australes',
+    category: 'Branding',
+    year: '2023',
+    summary: 'Marca científica y orgánica para la exportación de extractos puros de maqui silvestre.',
+    description: 'Diseño de identidad y etiquetado para productos nutracéuticos de alta concentración antioxidante cosechados a orillas de los lagos del sur.',
+    image: '/images/real/bg-portafolios-marca-maqui-min.jpg',
+    deliverables: ['Diseño de Marca', 'Etiquetado de Producto', 'Identidad Territorial'],
+    featured: false,
+  },
+
+  // ── 4. DESARROLLO WEB ARTESANAL ──
+  {
+    id: 'web-estancia-rilan',
+    slug: 'web-estancia-rilan',
+    title: 'Estancia Rilán — Plataforma Web de Hospitalidad',
+    client: 'Estancia Rilán',
+    location: 'Península de Rilán, Chiloé',
+    specialty: 'Arquitectura web inmersiva para reservas boutique',
+    category: 'Desarrollo Web',
+    year: '2024',
+    summary: 'Plataforma web con recorridos fotográficos a pantalla completa y motor de contacto directo.',
+    description: 'Sitio desarrollado para sumergir a viajeros globales en la arquitectura de tejuelas de alerce, la gastronomía del mar interior y los paseos a caballo.',
+    image: '/images/real/bg-portafolios-web-rilan-min.jpg',
+    deliverables: ['Desarrollo Web Next.js', 'Motor de Reservas', 'Optimización Móvil'],
+    featured: true,
+  },
+  {
+    id: 'web-tierrasur',
+    slug: 'web-tierrasur',
+    title: 'Tierra Sur — Visor Satelital Inmobiliario',
+    client: 'Tierra Sur / Sur Terra',
+    location: 'Cuenca Lago Llanquihue',
+    specialty: 'Portal web inmobiliario con mapas y filtros de lotes',
+    category: 'Desarrollo Web',
+    year: '2024',
+    summary: 'Portal minimalista con geolocalización de reservas naturales y buscador de macrolotes.',
+    description: 'Desarrollo en Next.js con mapas interactivos satelitales, visor de cotas topográficas y descarga de fichas técnicas en tiempo real.',
+    image: '/images/real/bg-portafolios-web-tierrasur-min.jpg',
+    deliverables: ['Plataforma Web', 'Visor de Planimetría', 'Integración CRM'],
+    featured: false,
+  },
+
+  // ── 5. DISEÑO EDITORIAL FINE ART ──
   {
     id: 'viajes-falabella-patagonia',
     slug: 'viajes-falabella-patagonia',
     title: 'Guía Territorial Patagonia Austral',
     client: 'Viajes Falabella',
-    location: 'Chile & Argentina',
+    location: 'Patagonia Chilena & Argentina',
     specialty: 'Diseño editorial de catálogo gran formato',
     category: 'Editorial',
-    year: '2022',
+    year: '2023',
     summary: 'Diseño editorial de catálogo de gran formato y curaduría fotográfica de destinos australes.',
-    description: 'Diagramación con grilla suiza, espacios limpios y mapas topográficos vectoriales.',
-    image: '/images/real/bg-portafolios-fotografia-d-min.jpg',
+    description: 'Diagramación con grilla suiza, espacios limpios, mapas topográficos vectoriales y tipografía de lectura reposada.',
+    image: '/images/real/bg-portafolios-editorial-Viajes-estudios-min.jpg',
     deliverables: ['Diseño Editorial', 'Curaduría de Contenido', 'Impresión Fine Art'],
+    featured: true,
+  },
+  {
+    id: 'libro-memoria-corporativa',
+    slug: 'libro-memoria-corporativa',
+    title: 'Libros Corporativos & Memorias de Colección',
+    client: 'Instituciones & Empresas Australes',
+    location: 'Puerto Varas & Santiago',
+    specialty: 'Edición en papeles de algodón y encuadernación artesanal',
+    category: 'Editorial',
+    year: '2023',
+    summary: 'Publicaciones institucionales de pasta dura, folios bilingües y acabados en bajorrelieve.',
+    description: 'Curaduría de archivo histórico, entrevistas y fotografía documental reunidas en piezas de colección perdurables.',
+    image: '/images/real/bg-portafolios-editorial-libro-min.jpg',
+    deliverables: ['Dirección de Arte', 'Pre-prensa Fine Art', 'Edición Bilingüe'],
+    featured: false,
+  },
+  {
+    id: 'catalogo-botanico-phyllum',
+    slug: 'catalogo-botanico-phyllum',
+    title: 'Phyllum — Catálogo Científico & Agrícola',
+    client: 'Phyllum Biotecnología',
+    location: 'Región de Los Lagos',
+    specialty: 'Manual técnico botánico y agronómico',
+    category: 'Editorial',
+    year: '2024',
+    summary: 'Diagramación de fichas botánicas, infografías de suelo y fotografía macro de cultivos.',
+    description: 'Diseño editorial de alta precisión técnica para ingenieros agrónomos, con tablas comparativas y claves taxonómicas claras.',
+    image: '/images/real/bg-portafolios-editorial-phyllum-min.jpg',
+    deliverables: ['Diagramación Editorial', 'Infografía Técnica', 'Edición Digital'],
     featured: false,
   },
 ];
@@ -252,6 +428,19 @@ export const STUDIO_SERVICES = [
       'Fotografía aérea y de procesos productivos con dron 4K.',
       'Fotografía gastronómica y de producto en estudio propio.',
       'Postproducción y retoque digital de precisión (sala de magia).',
+    ],
+  },
+  {
+    id: 'edicion-fotografica',
+    title: 'Edición Fotográfica & Postproducción',
+    shortDesc: 'Sala de magia digital, revelado fino, balance cromático y retoque de faenas extremas.',
+    href: '/servicios/edicion-fotografica',
+    tag: 'Sala de Magia',
+    details: [
+      'Ajuste cromático y color grading cinematográfico.',
+      'Retoque digital de piezas industriales y arquitectura.',
+      'Composiciones de campaña y estética editorial.',
+      'Calibración para catálogos fine-art y medios digitales.',
     ],
   },
   {

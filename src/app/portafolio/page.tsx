@@ -7,7 +7,7 @@ import { useSearchParams } from 'next/navigation';
 import { PORTFOLIO_PROJECTS, ProjectItem } from '@/data/portfolio';
 import { MapPin, Calendar, CheckCircle2, X, ArrowUpRight } from 'lucide-react';
 
-const CATEGORIES = ['Todos', 'Fotografía', 'Branding', 'Desarrollo Web', 'Editorial'] as const;
+const CATEGORIES = ['Todos', 'Fotografía', 'Edición Fotográfica', 'Branding', 'Desarrollo Web', 'Editorial'] as const;
 
 function PortfolioContent() {
   const searchParams = useSearchParams();
