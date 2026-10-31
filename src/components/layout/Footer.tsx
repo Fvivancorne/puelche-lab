@@ -82,10 +82,10 @@ export function Footer() {
               <Facebook className="w-5 h-5 fill-current" />
             </a>
             <a
-              href="https://www.instagram.com/puelchelab"
+              href="https://www.instagram.com/puelche_lab/"
               target="_blank"
               rel="noopener noreferrer"
-              aria-label="Instagram Puelche Lab"
+              aria-label="Instagram @puelche_lab"
               className="w-10 h-10 rounded-full border border-white/70 flex items-center justify-center text-white hover:bg-white hover:text-puelche-cyan transition-all duration-200"
             >
               <Instagram className="w-5 h-5" />

@@ -354,11 +354,11 @@ function ContactFormInner() {
               <Facebook className="w-5 h-5 fill-current" />
             </a>
             <a
-              href="https://www.instagram.com/puelchelab"
+              href="https://www.instagram.com/puelche_lab/"
               target="_blank"
               rel="noopener noreferrer"
               className="w-10 h-10 rounded-full bg-puelche-slate text-white flex items-center justify-center hover:bg-puelche-cyan transition-colors"
-              aria-label="Instagram Puelche Lab"
+              aria-label="Instagram @puelche_lab"
             >
               <Instagram className="w-5 h-5" />
             </a>
