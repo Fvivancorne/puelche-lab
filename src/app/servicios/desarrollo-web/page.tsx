@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Monitor, Smartphone, Globe, ArrowRight, X, ChevronRight, ChevronLeft, Eye, Zap, ShieldCheck } from 'lucide-react';
@@ -91,6 +91,28 @@ export default function DesarrolloWebPage() {
       prev === 0 ? activeModalProject.gallery.length - 1 : prev - 1
     );
   };
+
+  useEffect(() => {
+    const lenis = typeof window !== 'undefined' ? (window as any).lenisInstance : null;
+    if (activeModalProject) {
+      if (lenis) lenis.stop();
+      document.body.style.overflow = 'hidden';
+      const handleKeyDown = (e: KeyboardEvent) => {
+        if (e.key === 'Escape') closeModal();
+        if (e.key === 'ArrowRight') nextImage();
+        if (e.key === 'ArrowLeft') prevImage();
+      };
+      window.addEventListener('keydown', handleKeyDown);
+      return () => {
+        if (lenis) lenis.start();
+        document.body.style.overflow = '';
+        window.removeEventListener('keydown', handleKeyDown);
+      };
+    } else {
+      if (lenis) lenis.start();
+      document.body.style.overflow = '';
+    }
+  }, [activeModalProject]);
 
   return (
     <div className="w-full flex flex-col -mt-20 bg-white selection:bg-puelche-cyan selection:text-white">
@@ -247,7 +269,7 @@ export default function DesarrolloWebPage() {
       {/* ── MODAL LIGHTBOX ── */}
       {activeModalProject && (
         <div
-          className="fixed inset-0 z-50 bg-black/95 flex flex-col justify-between p-4 sm:p-6 md:p-8 animate-fadeIn"
+          className="fixed inset-0 z-[100] bg-[#0c0d10] flex flex-col justify-between p-4 sm:p-6 md:p-8 animate-fadeIn"
           role="dialog"
           aria-modal="true"
         >

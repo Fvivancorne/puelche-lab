@@ -206,7 +206,7 @@ function PortfolioContent() {
       */}
       {activeModalProject && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 lg:p-10 bg-black/70 backdrop-blur-sm animate-in fade-in duration-300"
+          className="fixed inset-0 z-[100] flex items-center justify-center p-3 sm:p-6 lg:p-10 bg-black/70 backdrop-blur-sm animate-in fade-in duration-300"
           onClick={() => setActiveModalProject(null)}
           data-lenis-prevent="true"
         >
