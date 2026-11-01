@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Camera, X, ChevronRight, ChevronLeft, ArrowDown, Eye, ArrowRight } from 'lucide-react';
+import { Camera, X, ChevronRight, ChevronLeft, ArrowDown, Eye, ArrowRight, Compass, Sparkles } from 'lucide-react';
 
 interface PhotoProject {
   id: string;
@@ -12,9 +12,102 @@ interface PhotoProject {
   specialty: string;
   image: string;
   gallery: string[];
+  tag?: string;
+  quote?: string;
 }
 
+const FEATURED_EXPEDITIONS: PhotoProject[] = [
+  {
+    id: 'nazca-oceanografia',
+    client: 'Nazca Oceanografía & Robótica Submarina',
+    location: 'Puerto Montt & Océano Pacífico',
+    specialty: 'Servicios oceanográficos, batimetría y robot submarino DEFENDER.',
+    image: '/images/real/facebook/fb-nazca-1.jpg',
+    gallery: [
+      '/images/real/facebook/fb-nazca-1.jpg',
+      '/images/real/facebook/fb-nazca-2.jpg',
+      '/images/real/facebook/fb-nazca-3.jpg',
+    ],
+    tag: 'Faena en Alta Mar',
+    quote: 'Realizamos una producción integral de fotografía y dron para Nazca, especialista en servicios oceanográficos, hidrográficos y robótica submarina, con el objetivo de documentar sus operaciones en terreno.',
+  },
+  {
+    id: 'cohosting-chile',
+    client: 'CoHosting Chile — Interiorismo Austral',
+    location: 'Puerto Varas & Lago Llanquihue',
+    specialty: 'Fotografía de interiores, luz natural y arquitectura residencial contemporánea.',
+    image: '/images/real/facebook/fb-cohosting-1.jpg',
+    gallery: [
+      '/images/real/facebook/fb-cohosting-1.jpg',
+      '/images/real/facebook/fb-cohosting-2.jpg',
+    ],
+    tag: 'Interiorismo Boutique',
+    quote: 'Un nuevo trabajo de fotografía de interiores e inmobiliario para nuestros queridos amigos de @cohostingchile, una bellísima casa a las afueras de Puerto Varas, exquisita luz y vistas abiertas al sur.',
+  },
+  {
+    id: 'parcelaciones-sur',
+    client: 'Parcelaciones & Cuencas Fluviales',
+    location: 'Cuenca Austral & Llanquihue',
+    specialty: 'Fotografía aérea y dron 4K de loteos ecológicos y ríos patagónicos.',
+    image: '/images/real/facebook/fb-parcelacion-1.jpg',
+    gallery: [
+      '/images/real/facebook/fb-parcelacion-1.jpg',
+      '/images/real/facebook/fb-parcelacion-2.jpg',
+    ],
+    tag: 'Dron & Paisajismo',
+    quote: 'Registro aéreo de alta resolución capturando los meandros del río, praderas de pastizales y el desarrollo de parcelaciones de conservación en equilibrio con el ecosistema.',
+  },
+  {
+    id: 'estancia-rilan',
+    client: 'Estancia Rilán — Hotel y Cava',
+    location: 'Península de Rilán, Chiloé',
+    specialty: 'Fotografías de interiores, arquitectura vernácula y cava subterránea.',
+    image: '/images/real/bg-portafolios-fotografia-a-min.jpg',
+    gallery: [
+      '/images/real/bg-portafolios-fotografia-a-min.jpg',
+      '/images/real/bg-portafolios-fotografia-min.jpg',
+      '/images/real/bg-home-2.jpg',
+    ],
+    tag: 'Hito de Hospitalidad',
+    quote: 'Captura de la quietud y luz austral en la península de Rilán, documentando la comunión entre la arquitectura contemporánea de maderas nativas y la gastronomía del mar interior.',
+  },
+];
+
 const REAL_PHOTO_PROJECTS: PhotoProject[] = [
+  {
+    id: 'nazca-oceanografia-grid',
+    client: 'Nazca Oceanografía & Robótica Submarina',
+    location: 'Puerto Montt & Océano Pacífico.',
+    specialty: 'Faena marítima, batimetría y robot submarino DEFENDER.',
+    image: '/images/real/facebook/fb-nazca-1.jpg',
+    gallery: [
+      '/images/real/facebook/fb-nazca-1.jpg',
+      '/images/real/facebook/fb-nazca-2.jpg',
+      '/images/real/facebook/fb-nazca-3.jpg',
+    ],
+  },
+  {
+    id: 'cohosting-chile-grid',
+    client: 'CoHosting Chile',
+    location: 'Puerto Varas & Lago Llanquihue.',
+    specialty: 'Fotografía de interiores e inmobiliario de alta gama.',
+    image: '/images/real/facebook/fb-cohosting-1.jpg',
+    gallery: [
+      '/images/real/facebook/fb-cohosting-1.jpg',
+      '/images/real/facebook/fb-cohosting-2.jpg',
+    ],
+  },
+  {
+    id: 'parcelaciones-sur-grid',
+    client: 'Parcelaciones & Cuencas Fluviales',
+    location: 'Cuenca Austral & Llanquihue.',
+    specialty: 'Fotografía aérea y dron 4K de loteos ecológicos y ríos.',
+    image: '/images/real/facebook/fb-parcelacion-1.jpg',
+    gallery: [
+      '/images/real/facebook/fb-parcelacion-1.jpg',
+      '/images/real/facebook/fb-parcelacion-2.jpg',
+    ],
+  },
   {
     id: 'estancia-rilan',
     client: 'Estancia Rilan, Hotel y Cava.',
@@ -131,6 +224,7 @@ const REAL_PHOTO_PROJECTS: PhotoProject[] = [
 export default function FotografiaPage() {
   const [activeModalProject, setActiveModalProject] = useState<PhotoProject | null>(null);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [activeExpeditionIdx, setActiveExpeditionIdx] = useState(0);
 
   const openModal = (proj: PhotoProject) => {
     setActiveModalProject(proj);
@@ -150,6 +244,16 @@ export default function FotografiaPage() {
     if (!activeModalProject) return;
     setCurrentImageIndex((prev) =>
       prev === 0 ? activeModalProject.gallery.length - 1 : prev - 1
+    );
+  };
+
+  const nextExpedition = () => {
+    setActiveExpeditionIdx((prev) => (prev + 1) % FEATURED_EXPEDITIONS.length);
+  };
+
+  const prevExpedition = () => {
+    setActiveExpeditionIdx((prev) =>
+      prev === 0 ? FEATURED_EXPEDITIONS.length - 1 : prev - 1
     );
   };
 
@@ -175,9 +279,11 @@ export default function FotografiaPage() {
     }
   }, [activeModalProject]);
 
+  const currentExpedition = FEATURED_EXPEDITIONS[activeExpeditionIdx];
+
   return (
     <div className="w-full flex flex-col -mt-20 bg-white selection:bg-puelche-cyan selection:text-white">
-      {/* ── 1. AUTHENTIC FULL-BLEED 100VH HERO (Matches original puelchelab.cl/fotografia-y-edicion-2/ 1:1) ── */}
+      {/* ── 1. AUTHENTIC FULL-BLEED 100VH HERO ── */}
       <section className="relative w-full h-screen min-h-[640px] overflow-hidden bg-black">
         {/* Full Viewport Background Image: Estancia Rilán pavilion at night with starry sky */}
         <Image
@@ -191,7 +297,7 @@ export default function FotografiaPage() {
         {/* Cinematic ambient optical vignette */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-black/40" />
 
-        {/* Floating Cyan Pill: FOTOGRAFÍA (Left-anchored exactly like original site) */}
+        {/* Floating Cyan Pill: FOTOGRAFÍA (Left-anchored) */}
         <div className="absolute top-1/2 -translate-y-1/2 left-0 sm:left-4 md:left-6 z-20">
           <div className="bg-puelche-cyan text-white pl-6 pr-8 sm:pl-8 sm:pr-12 py-3.5 sm:py-5 rounded-r-2xl sm:rounded-r-3xl shadow-[0_10px_35px_rgba(89,191,214,0.4)] flex items-center gap-3 backdrop-blur-sm transition-transform duration-300 hover:translate-x-1">
             <h1 className="font-condensed text-3xl sm:text-5xl md:text-6xl uppercase tracking-wider font-extrabold leading-none">
@@ -212,16 +318,161 @@ export default function FotografiaPage() {
           </div>
 
           <a
-            href="#obras"
+            href="#carrusel-expediciones"
             className="inline-flex items-center gap-2 text-xs font-mono tracking-widest uppercase text-white/70 hover:text-puelche-cyan transition-colors"
           >
-            <span>Deslizar para explorar obras</span>
+            <span>Ver expediciones en terreno</span>
             <ArrowDown className="w-4 h-4 animate-bounce text-puelche-cyan" />
           </a>
         </div>
       </section>
 
-      {/* ── 2. PANORAMIC PROJECT BANDS WITH OPTICAL HOVER ── */}
+      {/* ── 2. CARRUSEL CINEMÁTICO AWWWARDS: EXPEDICIONES & FAENA EN TERRENO ── */}
+      <section id="carrusel-expediciones" className="bg-[#0b0d11] text-white py-16 sm:py-20 px-4 sm:px-8 lg:px-12 border-b border-white/10 relative overflow-hidden">
+        {/* Ambient Gradient Flares */}
+        <div className="absolute -top-32 -left-32 w-80 h-80 bg-puelche-cyan/10 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute -bottom-32 -right-32 w-80 h-80 bg-puelche-cyan/5 rounded-full blur-3xl pointer-events-none" />
+
+        <div className="max-w-7xl mx-auto space-y-8 relative z-10">
+          {/* Header */}
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-white/15 pb-6">
+            <div>
+              <div className="flex items-center gap-2 text-puelche-cyan font-mono text-xs uppercase tracking-widest mb-2">
+                <Compass className="w-3.5 h-3.5" />
+                <span>Expediciones en Terreno • Faena Marítima, Drones & Arquitectura</span>
+              </div>
+              <h2 className="font-condensed text-3xl sm:text-4xl md:text-5xl font-bold uppercase tracking-wider text-white">
+                Producciones de Alta Complejidad
+              </h2>
+            </div>
+
+            {/* Paginator & Navigation Controls */}
+            <div className="flex items-center gap-4">
+              <span className="font-mono text-sm tracking-widest text-white/60">
+                <span className="text-puelche-cyan font-bold">{String(activeExpeditionIdx + 1).padStart(2, '0')}</span> / {String(FEATURED_EXPEDITIONS.length).padStart(2, '0')}
+              </span>
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={prevExpedition}
+                  className="p-3 rounded-full bg-white/5 hover:bg-puelche-cyan hover:text-white text-white/80 transition-all border border-white/10 hover:border-puelche-cyan"
+                  aria-label="Expedición anterior"
+                >
+                  <ChevronLeft className="w-5 h-5" />
+                </button>
+                <button
+                  onClick={nextExpedition}
+                  className="p-3 rounded-full bg-white/5 hover:bg-puelche-cyan hover:text-white text-white/80 transition-all border border-white/10 hover:border-puelche-cyan"
+                  aria-label="Siguiente expedición"
+                >
+                  <ChevronRight className="w-5 h-5" />
+                </button>
+              </div>
+            </div>
+          </div>
+
+          {/* Expedition Selector Tabs */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-3">
+            {FEATURED_EXPEDITIONS.map((item, idx) => (
+              <button
+                key={item.id}
+                onClick={() => setActiveExpeditionIdx(idx)}
+                className={`text-left p-3 sm:p-4 rounded-sm transition-all duration-300 border ${
+                  activeExpeditionIdx === idx
+                    ? 'bg-white/10 border-puelche-cyan shadow-[0_0_20px_rgba(89,191,214,0.2)]'
+                    : 'bg-white/[0.02] border-white/10 hover:bg-white/[0.06] hover:border-white/20'
+                }`}
+              >
+                <span className="font-mono text-[10px] text-puelche-cyan block mb-1">
+                  0{idx + 1} • {item.tag}
+                </span>
+                <span className="font-condensed font-bold text-sm sm:text-base uppercase tracking-wider block text-white truncate">
+                  {item.client.split('—')[0]}
+                </span>
+              </button>
+            ))}
+          </div>
+
+          {/* Active Expedition Stage */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 items-stretch bg-white/[0.03] border border-white/10 rounded-sm p-4 sm:p-6 md:p-8">
+            {/* Visual Frame (7 cols) */}
+            <div
+              className="lg:col-span-7 relative min-h-[340px] sm:min-h-[440px] md:min-h-[500px] rounded-sm overflow-hidden group cursor-pointer bg-black/40"
+              onClick={() => openModal(currentExpedition)}
+            >
+              <Image
+                src={currentExpedition.image}
+                alt={currentExpedition.client}
+                fill
+                priority
+                className="object-cover object-center transition-transform duration-700 ease-out group-hover:scale-105"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-transparent to-black/20" />
+
+              {/* Badges Overlay */}
+              <div className="absolute top-4 left-4 flex flex-wrap gap-2">
+                <span className="px-3 py-1 bg-puelche-cyan text-white font-condensed text-xs uppercase font-bold tracking-wider rounded-sm shadow">
+                  {currentExpedition.tag}
+                </span>
+                <span className="px-3 py-1 bg-black/60 backdrop-blur-sm text-white/90 font-mono text-[11px] uppercase tracking-wider rounded-sm border border-white/15">
+                  {currentExpedition.gallery.length} tomas de alta resolución
+                </span>
+              </div>
+
+              {/* Hover Action */}
+              <div className="absolute bottom-4 right-4 bg-black/75 hover:bg-puelche-cyan text-white px-4 py-2 rounded-sm text-xs font-condensed uppercase tracking-wider font-bold transition-all flex items-center gap-2 border border-white/20">
+                <Eye className="w-3.5 h-3.5" />
+                <span>Ver Galería Completa</span>
+              </div>
+            </div>
+
+            {/* Narrative & Details (5 cols) */}
+            <div className="lg:col-span-5 flex flex-col justify-between space-y-6">
+              <div className="space-y-4">
+                <div className="flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-puelche-cyan">
+                  <span>{currentExpedition.location}</span>
+                </div>
+                <h3 className="font-condensed text-2xl sm:text-3xl md:text-4xl font-bold uppercase tracking-wider text-white leading-tight">
+                  {currentExpedition.client}
+                </h3>
+                <p className="font-sans text-sm text-white/80 font-light leading-relaxed">
+                  {currentExpedition.specialty}
+                </p>
+
+                {currentExpedition.quote && (
+                  <div className="p-4 bg-white/[0.04] border-l-2 border-puelche-cyan rounded-r-sm space-y-2 mt-4">
+                    <p className="font-sans text-xs sm:text-sm text-white/90 font-light italic leading-relaxed">
+                      &ldquo;{currentExpedition.quote}&rdquo;
+                    </p>
+                    <span className="text-[11px] font-condensed uppercase tracking-wider text-puelche-cyan block font-semibold">
+                      — Puelche Lab Producciones, Puerto Varas
+                    </span>
+                  </div>
+                )}
+              </div>
+
+              {/* Action Buttons */}
+              <div className="pt-6 border-t border-white/10 flex flex-wrap items-center gap-3">
+                <button
+                  onClick={() => openModal(currentExpedition)}
+                  className="inline-flex items-center gap-2 px-6 py-3 bg-puelche-cyan text-white font-condensed uppercase tracking-wider font-bold text-sm rounded-sm hover:bg-puelche-cyan-dark transition-all shadow-md hover:scale-[1.02]"
+                >
+                  <Eye className="w-4 h-4" />
+                  <span>Explorar Fotografías</span>
+                </button>
+                <Link
+                  href={`/contacto?servicio=Fotograf%C3%ADa&proyecto=${encodeURIComponent(currentExpedition.client)}`}
+                  className="inline-flex items-center gap-2 px-5 py-3 border border-white/20 hover:border-white text-white font-condensed uppercase tracking-wider font-bold text-sm rounded-sm hover:bg-white/10 transition-colors"
+                >
+                  <span>Cotizar Faena</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── 3. PANORAMIC PROJECT BANDS WITH OPTICAL HOVER ── */}
       <section id="obras" className="w-full flex flex-col" aria-label="Proyectos de Fotografía">
         {REAL_PHOTO_PROJECTS.map((proj, idx) => (
           <div
@@ -248,60 +499,34 @@ export default function FotografiaPage() {
                 Expedición {idx + 1} de {REAL_PHOTO_PROJECTS.length}
               </span>
               <h2 className="font-condensed uppercase tracking-wider text-xl sm:text-2xl font-bold leading-snug">
-                Cliente: {proj.client}
+                CLIENTE: {proj.client.toUpperCase()}
               </h2>
-              <p className="font-sans text-xs sm:text-sm text-white/95 mt-1 font-light">
+              <p className="font-sans text-xs sm:text-sm text-white/90 mt-1 font-light">
                 {proj.location}
               </p>
-              <p className="font-sans text-xs sm:text-sm text-white/95 mt-0.5 font-light">
+              <p className="font-sans text-xs text-white/80 font-light">
                 {proj.specialty}
               </p>
 
+              {/* Interactive View CTA Button */}
               <div className="mt-4 pt-3 border-t border-white/30 flex items-center justify-between">
                 <button
-                  type="button"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    openModal(proj);
-                  }}
-                  className="inline-flex items-center gap-2 font-condensed uppercase tracking-widest text-xs sm:text-sm font-bold text-white hover:text-white/80 transition-colors"
+                  onClick={() => openModal(proj)}
+                  className="inline-flex items-center gap-2 text-xs sm:text-sm font-condensed uppercase tracking-wider font-bold text-white hover:text-white/80 transition-colors"
                 >
-                  <Eye className="w-4 h-4" />
                   <span>VER FOTOGRAFÍAS</span>
-                  <ChevronRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+                  <ChevronRight className="w-4 h-4" />
                 </button>
-                <span className="text-[11px] text-white/70 font-mono">1920 × 1010 HD</span>
+                <span className="text-[11px] text-white/70 font-mono">
+                  {idx + 1} / {REAL_PHOTO_PROJECTS.length}
+                </span>
               </div>
             </div>
           </div>
         ))}
       </section>
 
-      {/* ── 3. BOTTOM CTA ── */}
-      <section className="bg-white py-20 px-6 text-center border-t border-gray-100">
-        <div className="max-w-2xl mx-auto space-y-6">
-          <span className="font-condensed uppercase tracking-widest text-xs font-bold text-puelche-cyan">
-            PRODUCCIÓN FOTOGRÁFICA EN TERRENO
-          </span>
-          <h3 className="font-condensed text-3xl sm:text-4xl uppercase tracking-wider font-bold text-puelche-dark">
-            ¿Planeando documentar tu arquitectura, hotel o faena?
-          </h3>
-          <p className="font-sans text-sm sm:text-base text-puelche-gray font-light leading-relaxed">
-            Operamos con equipo propio, ópticas de primera línea y drones 4K en Puerto Varas, Chiloé, Llanquihue y toda la Patagonia.
-          </p>
-          <div>
-            <Link
-              href="/contacto"
-              className="inline-flex items-center gap-3 px-8 py-4 bg-puelche-cyan text-white font-condensed uppercase tracking-widest text-sm font-bold rounded-sm hover:bg-puelche-cyan-dark transition-colors shadow-lg hover:scale-105 duration-200"
-            >
-              <span>Cotizar Producción Fotográfica</span>
-              <ArrowRight className="w-4 h-4" />
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* ── 4. LIGHTBOX MODAL ── */}
+      {/* ── 4. LIGHTBOX MODAL WITH REAL GALLERY AND LENIS PAUSE ── */}
       {activeModalProject && (
         <div
           className="fixed inset-0 z-[100] bg-[#0c0d10] flex flex-col justify-between p-4 sm:p-6 md:p-8 animate-fadeIn"
@@ -318,7 +543,7 @@ export default function FotografiaPage() {
                 {activeModalProject.client}
               </h2>
               <p className="text-xs sm:text-sm text-white/70 font-sans font-light">
-                {activeModalProject.location} • {activeModalProject.specialty}
+                {activeModalProject.location} &bull; {activeModalProject.specialty}
               </p>
             </div>
             <button
@@ -330,19 +555,19 @@ export default function FotografiaPage() {
             </button>
           </div>
 
-          {/* Image Display */}
+          {/* Active Image Canvas */}
           <div className="relative flex-1 my-4 flex items-center justify-center overflow-hidden">
             <div className="relative w-full h-full max-w-6xl max-h-[75vh]">
               <Image
                 src={activeModalProject.gallery[currentImageIndex]}
-                alt={`${activeModalProject.client} - Fotografía ${currentImageIndex + 1}`}
+                alt={`${activeModalProject.client} - Foto ${currentImageIndex + 1}`}
                 fill
                 priority
                 className="object-contain"
               />
             </div>
 
-            {/* Navigation Arrows */}
+            {/* Gallery Navigation Controls */}
             {activeModalProject.gallery.length > 1 && (
               <>
                 <button
@@ -363,17 +588,17 @@ export default function FotografiaPage() {
             )}
           </div>
 
-          {/* Footer */}
+          {/* Footer & Conversion Link */}
           <div className="flex items-center justify-between text-white/80 border-t border-white/20 pt-4 text-xs sm:text-sm font-sans">
             <div>
-              Fotografía <span className="text-puelche-cyan font-bold">{currentImageIndex + 1}</span> de{' '}
+              Imagen <span className="text-puelche-cyan font-bold">{currentImageIndex + 1}</span> de{' '}
               <span className="font-bold">{activeModalProject.gallery.length}</span>
             </div>
             <Link
-              href="/contacto"
+              href={`/contacto?proyecto=${encodeURIComponent(activeModalProject.client)}`}
               className="text-puelche-cyan font-condensed uppercase tracking-wider font-bold hover:underline"
             >
-              Cotizar Expedición Similar &rarr;
+              Cotizar Proyecto Similar &rarr;
             </Link>
           </div>
         </div>

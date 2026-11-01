@@ -46,18 +46,32 @@ export function Footer() {
           </p>
 
           {/* Verified Studio Contact Details */}
-          <div className="text-xs sm:text-sm font-sans text-white/95 space-y-1 mb-8">
-            <p className="font-semibold">Paula Valdivieso &bull; Directora de Arte y Fotografía</p>
-            <p>
-              <a href="mailto:paula.valdivieso@puelchelab.cl" className="underline hover:text-puelche-slate-dark">
-                paula.valdivieso@puelchelab.cl
-              </a>
-              {' '}&bull;{' '}
-              <a href="tel:+56966177500" className="underline hover:text-puelche-slate-dark">
-                +56 9 6617 7500
-              </a>
-            </p>
-            <p className="text-white/80">Puerto Varas, Región de Los Lagos, Chile</p>
+          <div className="text-xs sm:text-sm font-sans text-white/95 space-y-2 mb-8">
+            <div>
+              <p className="font-semibold">Alejandro Lattes Corona &bull; Fundador &bull; Dirección Creativa & Fotografía</p>
+              <p>
+                <a href="mailto:alejandro@puelchelab.cl" className="underline hover:text-puelche-slate-dark">
+                  alejandro@puelchelab.cl
+                </a>
+                {' '}&bull;{' '}
+                <a href="tel:+56999363705" className="underline hover:text-puelche-slate-dark">
+                  +56 9 9936 3705
+                </a>
+              </p>
+            </div>
+            <div>
+              <p className="font-semibold">Paula Valdivieso &bull; Directora de Arte y Fotografía</p>
+              <p>
+                <a href="mailto:paula.valdivieso@puelchelab.cl" className="underline hover:text-puelche-slate-dark">
+                  paula.valdivieso@puelchelab.cl
+                </a>
+                {' '}&bull;{' '}
+                <a href="tel:+56966177500" className="underline hover:text-puelche-slate-dark">
+                  +56 9 6617 7500
+                </a>
+              </p>
+            </div>
+            <p className="text-white/80 pt-1">Puerto Varas, Región de Los Lagos, Chile</p>
           </div>
 
           {/* Action Button */}
@@ -73,10 +87,10 @@ export function Footer() {
           {/* Social Icons */}
           <div className="flex items-center justify-center space-x-6 pt-4 border-t border-white/30 max-w-xs mx-auto">
             <a
-              href="https://www.facebook.com/puelchelab"
+              href="https://www.facebook.com/PuelcheLabPublicidad/"
               target="_blank"
               rel="noopener noreferrer"
-              aria-label="Facebook Puelche Lab"
+              aria-label="Facebook Puelche Lab Oficial"
               className="w-10 h-10 rounded-full border border-white/70 flex items-center justify-center text-white hover:bg-white hover:text-puelche-cyan transition-all duration-200"
             >
               <Facebook className="w-5 h-5 fill-current" />

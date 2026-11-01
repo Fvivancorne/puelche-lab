@@ -318,23 +318,42 @@ function ContactFormInner() {
           <h2 className="font-condensed text-3xl font-bold uppercase tracking-wider text-puelche-cyan mb-4">
             Datos de Contacto
           </h2>
-          <div className="space-y-3 font-sans text-sm text-puelche-dark">
-            <p className="font-semibold text-base text-puelche-slate">Paula Valdivieso</p>
-            <div className="flex items-center space-x-3 text-puelche-gray hover:text-puelche-cyan transition-colors">
-              <Mail className="w-4 h-4 text-puelche-cyan shrink-0" />
-              <a href="mailto:paula.valdivieso@puelchelab.cl">paula.valdivieso@puelchelab.cl</a>
+          <div className="space-y-4 font-sans text-sm text-puelche-dark">
+            <div className="p-3 bg-white rounded border border-gray-100 space-y-1.5 shadow-sm">
+              <p className="font-semibold text-base text-puelche-slate">Alejandro Lattes Corona</p>
+              <p className="text-xs text-puelche-gray uppercase font-condensed tracking-wider">Fundador &bull; Dirección Creativa & Fotografía</p>
+              <div className="flex items-center space-x-2 text-puelche-gray hover:text-puelche-cyan transition-colors pt-1">
+                <Mail className="w-3.5 h-3.5 text-puelche-cyan shrink-0" />
+                <a href="mailto:alejandro@puelchelab.cl">alejandro@puelchelab.cl</a>
+              </div>
+              <div className="flex items-center space-x-2 text-puelche-gray hover:text-puelche-cyan transition-colors">
+                <Phone className="w-3.5 h-3.5 text-puelche-cyan shrink-0" />
+                <a href="tel:+56999363705">+56 9 9936 3705</a>
+              </div>
             </div>
-            <div className="flex items-center space-x-3 text-puelche-gray hover:text-puelche-cyan transition-colors">
-              <Phone className="w-4 h-4 text-puelche-cyan shrink-0" />
-              <a href="tel:+56966177500">+56 9 6617 7500</a>
+
+            <div className="p-3 bg-white rounded border border-gray-100 space-y-1.5 shadow-sm">
+              <p className="font-semibold text-base text-puelche-slate">Paula Valdivieso</p>
+              <p className="text-xs text-puelche-gray uppercase font-condensed tracking-wider">Socia &bull; Dirección Comercial & Cotizaciones</p>
+              <div className="flex items-center space-x-2 text-puelche-gray hover:text-puelche-cyan transition-colors pt-1">
+                <Mail className="w-3.5 h-3.5 text-puelche-cyan shrink-0" />
+                <a href="mailto:paula.valdivieso@puelchelab.cl">paula.valdivieso@puelchelab.cl</a>
+              </div>
+              <div className="flex items-center space-x-2 text-puelche-gray hover:text-puelche-cyan transition-colors">
+                <Phone className="w-3.5 h-3.5 text-puelche-cyan shrink-0" />
+                <a href="tel:+56966177500">+56 9 6617 7500</a>
+              </div>
             </div>
-            <div className="flex items-center space-x-3 text-puelche-gray">
-              <MapPin className="w-4 h-4 text-puelche-cyan shrink-0" />
-              <span>Puerto Varas, Región de Los Lagos, Chile</span>
-            </div>
-            <div className="flex items-center space-x-3 text-puelche-gray">
-              <Clock className="w-4 h-4 text-puelche-cyan shrink-0" />
-              <span>Lunes a Viernes de 09:00 a 19:00 hrs.</span>
+
+            <div className="pt-2 space-y-2">
+              <div className="flex items-center space-x-3 text-puelche-gray">
+                <MapPin className="w-4 h-4 text-puelche-cyan shrink-0" />
+                <span>Puerto Varas, Región de Los Lagos, Chile</span>
+              </div>
+              <div className="flex items-center space-x-3 text-puelche-gray">
+                <Clock className="w-4 h-4 text-puelche-cyan shrink-0" />
+                <span>Lunes a Viernes de 09:00 a 19:00 hrs.</span>
+              </div>
             </div>
           </div>
         </div>
@@ -345,11 +364,11 @@ function ContactFormInner() {
           </h3>
           <div className="flex items-center space-x-4">
             <a
-              href="https://www.facebook.com/puelchelab"
+              href="https://www.facebook.com/PuelcheLabPublicidad/"
               target="_blank"
               rel="noopener noreferrer"
               className="w-10 h-10 rounded-full bg-puelche-slate text-white flex items-center justify-center hover:bg-puelche-cyan transition-colors"
-              aria-label="Facebook Puelche Lab"
+              aria-label="Facebook Puelche Lab Oficial"
             >
               <Facebook className="w-5 h-5 fill-current" />
             </a>
