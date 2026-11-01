@@ -224,16 +224,29 @@ function PortfolioContent() {
               <X className="w-5 h-5" />
             </button>
 
-            {/* Columna Izquierda: Fotografía en Alta Resolución */}
-            <div className="relative w-full md:w-1/2 min-h-[280px] sm:min-h-[360px] md:min-h-full bg-black/60 shrink-0">
-              <Image
-                src={activeModalProject.image}
-                alt={activeModalProject.title}
-                fill
-                priority
-                className="object-cover"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#1D2024] via-transparent to-black/30 md:hidden" />
+            {/* Columna Izquierda: Fotografía en Alta Resolución Centrada con Marco */}
+            <div className="relative w-full md:w-1/2 min-h-[300px] sm:min-h-[400px] md:min-h-full bg-[#08090c] shrink-0 flex items-center justify-center p-4 sm:p-6 overflow-hidden">
+              {/* Ambient blur background */}
+              <div className="absolute inset-0 overflow-hidden pointer-events-none">
+                <Image
+                  src={activeModalProject.image}
+                  alt=""
+                  fill
+                  className="object-cover blur-3xl opacity-25 scale-125"
+                  aria-hidden="true"
+                />
+                <div className="absolute inset-0 bg-black/60" />
+              </div>
+              <div className="relative w-full h-full min-h-[260px] md:min-h-[480px] flex items-center justify-center z-10">
+                <Image
+                  src={activeModalProject.image}
+                  alt={activeModalProject.title}
+                  fill
+                  priority
+                  className="object-contain object-center drop-shadow-[0_20px_40px_rgba(0,0,0,0.9)]"
+                />
+              </div>
+              <div className="absolute inset-0 bg-gradient-to-t from-[#1D2024] via-transparent to-black/30 md:hidden z-10 pointer-events-none" />
               
               {/* Badge de Categoría y Micro-Datos flotantes sobre la foto */}
               <div className="absolute top-4 left-4 z-10">
