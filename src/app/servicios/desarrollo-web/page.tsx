@@ -80,17 +80,42 @@ export default function DesarrolloWebPage() {
     setActiveModalProject(null);
   };
 
-  const nextImage = () => {
+  const nextProject = () => {
     if (!activeModalProject) return;
-    setCurrentImageIndex((prev) => (prev + 1) % activeModalProject.gallery.length);
+    const currIdx = REAL_WEB_PROJECTS.findIndex((p) => p.id === activeModalProject.id);
+    const nextIdx = (currIdx + 1) % REAL_WEB_PROJECTS.length;
+    setActiveModalProject(REAL_WEB_PROJECTS[nextIdx]);
+    setCurrentImageIndex(0);
   };
 
-  const prevImage = () => {
+  const prevProject = () => {
     if (!activeModalProject) return;
-    setCurrentImageIndex((prev) =>
-      prev === 0 ? activeModalProject.gallery.length - 1 : prev - 1
-    );
+    const currIdx = REAL_WEB_PROJECTS.findIndex((p) => p.id === activeModalProject.id);
+    const prevIdx = (currIdx - 1 + REAL_WEB_PROJECTS.length) % REAL_WEB_PROJECTS.length;
+    setActiveModalProject(REAL_WEB_PROJECTS[prevIdx]);
+    setCurrentImageIndex(0);
   };
+
+  const handleNext = () => {
+    if (!activeModalProject) return;
+    if (activeModalProject.gallery.length > 1 && currentImageIndex < activeModalProject.gallery.length - 1) {
+      setCurrentImageIndex((prev) => prev + 1);
+    } else {
+      nextProject();
+    }
+  };
+
+  const handlePrev = () => {
+    if (!activeModalProject) return;
+    if (activeModalProject.gallery.length > 1 && currentImageIndex > 0) {
+      setCurrentImageIndex((prev) => prev - 1);
+    } else {
+      prevProject();
+    }
+  };
+
+  const nextImage = handleNext;
+  const prevImage = handlePrev;
 
   useEffect(() => {
     const lenis = typeof window !== 'undefined' ? (window as any).lenisInstance : null;
@@ -99,8 +124,10 @@ export default function DesarrolloWebPage() {
       document.body.style.overflow = 'hidden';
       const handleKeyDown = (e: KeyboardEvent) => {
         if (e.key === 'Escape') closeModal();
-        if (e.key === 'ArrowRight') nextImage();
-        if (e.key === 'ArrowLeft') prevImage();
+        if (e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D') handleNext();
+        if (e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A') handlePrev();
+        if (e.key === 'ArrowDown' || e.key === 'PageDown') nextProject();
+        if (e.key === 'ArrowUp' || e.key === 'PageUp') prevProject();
       };
       window.addEventListener('keydown', handleKeyDown);
       return () => {
@@ -112,7 +139,7 @@ export default function DesarrolloWebPage() {
       if (lenis) lenis.start();
       document.body.style.overflow = '';
     }
-  }, [activeModalProject]);
+  }, [activeModalProject, currentImageIndex]);
 
   return (
     <div className="w-full flex flex-col -mt-20 bg-white selection:bg-puelche-cyan selection:text-white">
@@ -317,24 +344,51 @@ export default function DesarrolloWebPage() {
               />
             </div>
 
-            {activeModalProject.gallery.length > 1 && (
-              <>
-                <button
-                  onClick={prevImage}
-                  className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 p-3 rounded-full bg-black/60 hover:bg-puelche-cyan text-white transition-all shadow-lg"
-                  aria-label="Pantalla anterior"
-                >
-                  <ChevronLeft className="w-6 h-6" />
-                </button>
-                <button
-                  onClick={nextImage}
-                  className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 p-3 rounded-full bg-black/60 hover:bg-puelche-cyan text-white transition-all shadow-lg"
-                  aria-label="Siguiente pantalla"
-                >
-                  <ChevronRight className="w-6 h-6" />
-                </button>
-              </>
-            )}
+            {/* Botones Laterales Flotantes en Pantalla (< y >) */}
+            <button
+              onClick={handlePrev}
+              className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 z-30 p-3 sm:p-3.5 rounded-full bg-black/75 hover:bg-[#59BFD6] text-white hover:text-puelche-dark transition-all border border-white/20 shadow-2xl backdrop-blur-md hover:scale-110 active:scale-95"
+              aria-label="Anterior (←)"
+              title="Anterior (←)"
+            >
+              <ChevronLeft className="w-6 h-6" />
+            </button>
+            <button
+              onClick={handleNext}
+              className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 z-30 p-3 sm:p-3.5 rounded-full bg-black/75 hover:bg-[#59BFD6] text-white hover:text-puelche-dark transition-all border border-white/20 shadow-2xl backdrop-blur-md hover:scale-110 active:scale-95"
+              aria-label="Siguiente (→)"
+              title="Siguiente (→)"
+            >
+              <ChevronRight className="w-6 h-6" />
+            </button>
+
+            {/* Barrita Lateral Tickeable de Proyectos Web */}
+            <aside
+              aria-label="Proyectos de desarrollo web"
+              className="hidden lg:flex absolute right-4 bottom-4 z-30 items-center gap-1.5 px-3 py-1.5 rounded-full bg-black/70 backdrop-blur-md border border-white/15 shadow-xl"
+            >
+              {REAL_WEB_PROJECTS.map((proj, idx) => {
+                const isActive = proj.id === activeModalProject.id;
+                return (
+                  <button
+                    key={proj.id}
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setActiveModalProject(proj);
+                      setCurrentImageIndex(0);
+                    }}
+                    className={`transition-all duration-300 rounded-full ${
+                      isActive
+                        ? 'w-5 h-1.5 bg-[#59BFD6] shadow-[0_0_8px_#59BFD6]'
+                        : 'w-2 h-1 bg-white/30 hover:bg-white/80 hover:w-3.5'
+                    }`}
+                    title={`${idx + 1}. ${proj.client}`}
+                    aria-label={`Ver ${proj.client}`}
+                  />
+                );
+              })}
+            </aside>
           </div>
 
           <div className="flex items-center justify-between text-white/80 border-t border-white/20 pt-4 text-xs sm:text-sm font-sans">

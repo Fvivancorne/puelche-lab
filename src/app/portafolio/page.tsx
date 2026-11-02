@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, Suspense } from 'react';
+import React, { useState, useEffect, useCallback, Suspense } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
@@ -17,6 +17,14 @@ function PortfolioContent() {
   const [activeModalProject, setActiveModalProject] = useState<ProjectItem | null>(null);
   const [currentImageIndex, setCurrentImageIndex] = useState<number>(0);
 
+  const filteredProjects = selectedCategory === 'Todos'
+    ? PORTFOLIO_PROJECTS
+    : PORTFOLIO_PROJECTS.filter((p) => p.category === selectedCategory);
+
+  const currentProjectIndex = activeModalProject
+    ? filteredProjects.findIndex((p) => p.id === activeModalProject.id)
+    : -1;
+
   const activeGallery = activeModalProject
     ? (activeModalProject.gallery && activeModalProject.gallery.length > 0
         ? activeModalProject.gallery
@@ -27,6 +35,29 @@ function PortfolioContent() {
     setActiveModalProject(project);
     setCurrentImageIndex(0);
   };
+
+  const nextProject = useCallback((e?: React.MouseEvent) => {
+    if (e) e.stopPropagation();
+    const list = filteredProjects.length > 0 ? filteredProjects : PORTFOLIO_PROJECTS;
+    const currIdx = activeModalProject ? list.findIndex((p) => p.id === activeModalProject.id) : 0;
+    const nextIdx = (currIdx + 1) % list.length;
+    setActiveModalProject(list[nextIdx]);
+    setCurrentImageIndex(0);
+  }, [activeModalProject, filteredProjects]);
+
+  const prevProject = useCallback((e?: React.MouseEvent) => {
+    if (e) e.stopPropagation();
+    const list = filteredProjects.length > 0 ? filteredProjects : PORTFOLIO_PROJECTS;
+    const currIdx = activeModalProject ? list.findIndex((p) => p.id === activeModalProject.id) : 0;
+    const prevIdx = (currIdx - 1 + list.length) % list.length;
+    setActiveModalProject(list[prevIdx]);
+    setCurrentImageIndex(0);
+  }, [activeModalProject, filteredProjects]);
+
+  const activeProjectList = filteredProjects.length > 0 ? filteredProjects : PORTFOLIO_PROJECTS;
+  const activeProjectIndex = activeModalProject ? activeProjectList.findIndex((p) => p.id === activeModalProject.id) : 0;
+  const prevProjectItem = activeProjectList[(activeProjectIndex - 1 + activeProjectList.length) % activeProjectList.length];
+  const nextProjectItem = activeProjectList[(activeProjectIndex + 1) % activeProjectList.length];
 
   const nextImage = (e?: React.MouseEvent) => {
     if (e) e.stopPropagation();
@@ -42,23 +73,37 @@ function PortfolioContent() {
     }
   };
 
-  // Keyboard navigation for multi-piece gallery & escape to close
+  // Keyboard navigation for multi-piece gallery, next/prev project & escape to close
   useEffect(() => {
     if (!activeModalProject) return;
 
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
         setActiveModalProject(null);
-      } else if (e.key === 'ArrowRight' && activeGallery.length > 1) {
-        setCurrentImageIndex((prev) => (prev + 1) % activeGallery.length);
-      } else if (e.key === 'ArrowLeft' && activeGallery.length > 1) {
-        setCurrentImageIndex((prev) => (prev - 1 + activeGallery.length) % activeGallery.length);
+      } else if (e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D') {
+        if (e.shiftKey || activeGallery.length <= 1 || currentImageIndex === activeGallery.length - 1) {
+          nextProject();
+        } else {
+          setCurrentImageIndex((prev) => prev + 1);
+        }
+      } else if (e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A') {
+        if (e.shiftKey || activeGallery.length <= 1 || currentImageIndex === 0) {
+          prevProject();
+        } else {
+          setCurrentImageIndex((prev) => prev - 1);
+        }
+      } else if (e.key === 'ArrowDown' || e.key === 'PageDown') {
+        e.preventDefault();
+        nextProject();
+      } else if (e.key === 'ArrowUp' || e.key === 'PageUp') {
+        e.preventDefault();
+        prevProject();
       }
     };
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [activeModalProject, activeGallery.length]);
+  }, [activeModalProject, activeGallery.length, currentImageIndex, nextProject, prevProject]);
 
   // Auto-open project modal if ?proyecto= query param is provided
   useEffect(() => {
@@ -91,10 +136,6 @@ function PortfolioContent() {
       document.body.style.overflow = '';
     };
   }, [activeModalProject]);
-
-  const filteredProjects = selectedCategory === 'Todos'
-    ? PORTFOLIO_PROJECTS
-    : PORTFOLIO_PROJECTS.filter((p) => p.category === selectedCategory);
 
   return (
     <div className="w-full min-h-screen bg-puelche-dark text-white flex flex-col -mt-20">
@@ -248,15 +289,84 @@ function PortfolioContent() {
       {/* 
         ======================================================================
         MODAL DRAWER: SPLIT EDITORIAL 2 COLUMNAS (AWWWARDS GRADE)
-        Con data-lenis-prevent y pausa de Lenis para scroll 100% fluido y natural
+        Navegación completa por teclado (← / → / A / D) y barrita lateral tickeable
         ======================================================================
       */}
       {activeModalProject && (
         <div
-          className="fixed inset-0 z-[100] flex items-center justify-center p-3 sm:p-6 lg:p-10 bg-black/70 backdrop-blur-sm animate-in fade-in duration-300"
+          className="fixed inset-0 z-[100] flex items-center justify-center p-3 sm:p-6 lg:p-10 bg-black/80 backdrop-blur-md animate-in fade-in duration-300"
           onClick={() => setActiveModalProject(null)}
           data-lenis-prevent="true"
         >
+          {/* ── BOTONES LATERALES FLOTANTES EN PANTALLA (< y >) ── */}
+          <button
+            type="button"
+            onClick={prevProject}
+            className="fixed left-2 sm:left-4 lg:left-6 top-1/2 -translate-y-1/2 z-[110] group flex items-center gap-2 p-3 sm:p-3.5 rounded-full bg-[#18191B]/95 hover:bg-[#59BFD6] text-white hover:text-puelche-dark border border-white/20 hover:border-[#59BFD6] shadow-[0_0_30px_rgba(0,0,0,0.85)] backdrop-blur-md transition-all duration-300 hover:scale-110 active:scale-95"
+            aria-label="Proyecto anterior"
+            title={`Anterior: ${prevProjectItem?.title}`}
+          >
+            <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6" />
+            <span className="hidden xl:inline-block max-w-0 overflow-hidden whitespace-nowrap group-hover:max-w-xs transition-all duration-300 font-condensed text-xs uppercase tracking-wider font-bold pr-1">
+              Anterior
+            </span>
+          </button>
+
+          <button
+            type="button"
+            onClick={nextProject}
+            className="fixed right-2 sm:right-4 lg:right-6 top-1/2 -translate-y-1/2 z-[110] group flex items-center gap-2 p-3 sm:p-3.5 rounded-full bg-[#18191B]/95 hover:bg-[#59BFD6] text-white hover:text-puelche-dark border border-white/20 hover:border-[#59BFD6] shadow-[0_0_30px_rgba(0,0,0,0.85)] backdrop-blur-md transition-all duration-300 hover:scale-110 active:scale-95"
+            aria-label="Siguiente proyecto"
+            title={`Siguiente: ${nextProjectItem?.title}`}
+          >
+            <span className="hidden xl:inline-block max-w-0 overflow-hidden whitespace-nowrap group-hover:max-w-xs transition-all duration-300 font-condensed text-xs uppercase tracking-wider font-bold pl-1 text-right">
+              Siguiente
+            </span>
+            <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6" />
+          </button>
+
+          {/* ── BARRITA LATERAL VERTICAL TICKEABLE DE PROYECTOS ── */}
+          <aside
+            aria-label="Navegación lateral de proyectos"
+            className="hidden 2xl:flex fixed right-20 top-1/2 -translate-y-1/2 z-[105] flex-col items-center gap-1.5 p-2.5 rounded-full bg-[#18191B]/90 backdrop-blur-md border border-white/15 shadow-2xl max-h-[75vh] overflow-y-auto scrollbar-none"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <span className="text-[8px] font-mono uppercase text-white/40 tracking-widest writing-mode-vertical mb-1 select-none">
+              OBRAS
+            </span>
+            {filteredProjects.map((proj, idx) => {
+              const isActive = proj.id === activeModalProject.id;
+              return (
+                <button
+                  key={proj.id}
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setActiveModalProject(proj);
+                    setCurrentImageIndex(0);
+                  }}
+                  className={`group relative flex items-center justify-center p-1 rounded-full transition-all duration-200 ${
+                    isActive ? 'scale-125' : 'hover:scale-110'
+                  }`}
+                  aria-label={`Ir a ${proj.title}`}
+                  title={`${idx + 1}. ${proj.title}`}
+                >
+                  <span
+                    className={`block rounded-full transition-all duration-300 ${
+                      isActive
+                        ? 'w-6 h-1.5 bg-[#59BFD6] shadow-[0_0_10px_#59BFD6]'
+                        : 'w-2 h-1 bg-white/30 group-hover:bg-white/80 group-hover:w-4'
+                    }`}
+                  />
+                  {/* Tooltip on hover */}
+                  <span className="absolute right-full mr-3 hidden group-hover:block whitespace-nowrap px-3 py-1 rounded-md bg-[#18191B] border border-white/20 text-white font-condensed text-xs uppercase tracking-wider shadow-2xl z-30 pointer-events-none">
+                    {idx + 1}. {proj.title}
+                  </span>
+                </button>
+              );
+            })}
+          </aside>
+
           <div
             className="bg-[#1D2024] text-white rounded-2xl max-w-5xl w-full max-h-[90vh] overflow-hidden border border-white/20 shadow-2xl relative flex flex-col md:flex-row"
             onClick={(e) => e.stopPropagation()}
@@ -265,14 +375,57 @@ function PortfolioContent() {
             {/* Botón Cerrar Flotante */}
             <button
               onClick={() => setActiveModalProject(null)}
-              className="absolute top-4 right-4 z-20 w-10 h-10 rounded-full bg-[#3B3D42]/90 backdrop-blur-sm text-white flex items-center justify-center hover:bg-[#59BFD6] hover:text-puelche-dark transition-colors shadow-xl border border-white/10"
+              className="absolute top-4 right-4 z-30 w-10 h-10 rounded-full bg-[#3B3D42]/90 backdrop-blur-sm text-white flex items-center justify-center hover:bg-[#59BFD6] hover:text-puelche-dark transition-colors shadow-xl border border-white/10"
               aria-label="Cerrar modal"
             >
               <X className="w-5 h-5" />
             </button>
 
+            {/* Header de Navegación de Proyecto y Atajos */}
+            <div className="absolute top-4 left-4 right-16 z-20 flex items-center justify-between pointer-events-none">
+              <div className="flex items-center gap-2 pointer-events-auto">
+                <span className="px-3 py-1 rounded-full bg-[#59BFD6] text-puelche-dark text-xs uppercase font-bold tracking-wider shadow-lg">
+                  {activeModalProject.category}
+                </span>
+
+                <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-black/70 backdrop-blur-md border border-white/10 text-white/90 font-mono text-[11px] uppercase tracking-wider">
+                  <button
+                    type="button"
+                    onClick={prevProject}
+                    className="hover:text-[#59BFD6] p-0.5 transition-colors"
+                    title="Proyecto anterior (←)"
+                  >
+                    <ChevronLeft className="w-3.5 h-3.5" />
+                  </button>
+                  <span className="font-semibold text-white">
+                    {activeProjectIndex >= 0 ? activeProjectIndex + 1 : 1} / {filteredProjects.length}
+                  </span>
+                  <button
+                    type="button"
+                    onClick={nextProject}
+                    className="hover:text-[#59BFD6] p-0.5 transition-colors"
+                    title="Siguiente proyecto (→)"
+                  >
+                    <ChevronRight className="w-3.5 h-3.5" />
+                  </button>
+                </div>
+
+                {activeGallery.length > 1 && (
+                  <span className="hidden sm:inline-block px-3 py-1 rounded-full bg-black/70 backdrop-blur-md border border-white/10 text-white/90 font-mono text-[11px] uppercase tracking-wider">
+                    Pieza {currentImageIndex + 1} de {activeGallery.length}
+                  </span>
+                )}
+              </div>
+
+              <span className="hidden md:inline-flex items-center gap-1.5 font-mono text-[10px] text-white/60 uppercase tracking-wider bg-black/50 backdrop-blur-md px-2.5 py-1 rounded-full border border-white/10">
+                <span>Navegar:</span>
+                <kbd className="px-1.5 py-0.5 rounded bg-white/10 text-white font-mono text-[9px] border border-white/15">←</kbd>
+                <kbd className="px-1.5 py-0.5 rounded bg-white/10 text-white font-mono text-[9px] border border-white/15">→</kbd>
+              </span>
+            </div>
+
             {/* Columna Izquierda: Fotografía en Alta Resolución Centrada con Marco y Navegación Multi-Pieza */}
-            <div className="relative w-full md:w-1/2 min-h-[320px] sm:min-h-[420px] md:min-h-[540px] bg-[#08090c] shrink-0 flex items-center justify-center p-4 sm:p-6 overflow-hidden">
+            <div className="relative w-full md:w-1/2 min-h-[320px] sm:min-h-[420px] md:min-h-[540px] bg-[#08090c] shrink-0 flex items-center justify-center p-4 sm:p-6 overflow-hidden pt-16">
               {/* Ambient blur background */}
               <div className="absolute inset-0 overflow-hidden pointer-events-none">
                 <Image
@@ -318,18 +471,6 @@ function PortfolioContent() {
                   </button>
                 </>
               )}
-
-              {/* Badge de Categoría y Contador de Piezas */}
-              <div className="absolute top-4 left-4 z-20 flex items-center gap-2">
-                <span className="px-3.5 py-1 rounded-full bg-[#59BFD6] text-puelche-dark text-xs uppercase font-bold tracking-wider shadow-lg">
-                  {activeModalProject.category}
-                </span>
-                {activeGallery.length > 1 && (
-                  <span className="px-3 py-1 rounded-full bg-black/70 backdrop-blur-md border border-white/10 text-white/90 font-mono text-[11px] uppercase tracking-wider">
-                    Pieza {currentImageIndex + 1} de {activeGallery.length}
-                  </span>
-                )}
-              </div>
 
               {/* Miniaturas de selección rápida */}
               {activeGallery.length > 1 && (
