@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { ChevronDown, Menu, X, ArrowUpRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { SoundscapeToggle } from '@/components/ui/SoundscapeToggle';
 
 const PORTFOLIO_DROPDOWN = [
   { label: 'Diseño de Marca', href: '/servicios/branding' },
@@ -118,8 +119,10 @@ export function Navbar() {
           </Link>
         </nav>
 
-        {/* CTA & Mobile Toggle */}
-        <div className="flex items-center gap-3">
+        {/* CTA & Soundscape & Mobile Toggle */}
+        <div className="flex items-center gap-2.5 sm:gap-3">
+          <SoundscapeToggle />
+
           <Link
             href="/contacto"
             className="hidden sm:inline-flex items-center gap-2 px-5 py-2 rounded-sm bg-puelche-cyan text-white hover:bg-puelche-cyan-dark font-condensed uppercase tracking-wider text-xs font-bold transition-all duration-200 shadow"

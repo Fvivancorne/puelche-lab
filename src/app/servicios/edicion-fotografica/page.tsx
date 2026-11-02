@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Sliders, X, ChevronRight, ChevronLeft, ArrowRight, ArrowDown, Eye } from 'lucide-react';
+import { BeforeAfterSlider } from '@/components/ui/BeforeAfterSlider';
 
 interface EditProject {
   id: string;
@@ -158,16 +159,21 @@ export default function EdicionFotograficaPage() {
           </div>
 
           <a
-            href="#obras"
+            href="#mesa-de-retoque"
             className="inline-flex items-center gap-2 text-xs font-mono tracking-widest uppercase text-white/70 hover:text-puelche-cyan transition-colors"
           >
-            <span>Deslizar para explorar obras</span>
+            <span>Deslizar para mesa de revelado</span>
             <ArrowDown className="w-4 h-4 animate-bounce text-puelche-cyan" />
           </a>
         </div>
       </section>
 
-      {/* ── 2. PANORAMIC PROJECT BANDS WITH OPTICAL HOVER ── */}
+      {/* ── 2. MESA DE REVELADO & RETOQUE FINE ART (BEFORE / AFTER INTERACTIVO) ── */}
+      <section id="mesa-de-retoque" className="w-full bg-[#18191B] py-16 md:py-24 px-4 sm:px-6 md:px-12 lg:px-16 border-b border-white/10">
+        <BeforeAfterSlider />
+      </section>
+
+      {/* ── 3. PANORAMIC PROJECT BANDS WITH OPTICAL HOVER ── */}
       <section id="obras" className="w-full flex flex-col" aria-label="Proyectos de Edición Fotográfica">
         {REAL_EDICION_PROJECTS.map((proj, idx) => (
           <div

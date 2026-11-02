@@ -10,6 +10,8 @@ import { ScrollReveal } from '@/components/ui/ScrollReveal';
 import { BrutalistProjectList } from '@/components/home/BrutalistProjectList';
 import { ClientMarquee } from '@/components/home/ClientMarquee';
 import { BrutalistCrossMedia } from '@/components/home/BrutalistCrossMedia';
+import { WindParticleCanvas } from '@/components/ui/WindParticleCanvas';
+import { BeforeAfterSlider } from '@/components/ui/BeforeAfterSlider';
 
 export default function Home() {
   const heroWipeRef = useRef<HTMLDivElement>(null);
@@ -60,6 +62,9 @@ export default function Home() {
           />
           <div className="absolute inset-0 bg-[#1D2024]/40 backdrop-brightness-90" />
         </div>
+
+        {/* Kinetic Puelche Wind Particle Physics */}
+        <WindParticleCanvas className="z-[5]" />
 
         {/* Top Geo Badge */}
         <div className="relative z-10 max-w-7xl mx-auto w-full flex items-center justify-between font-mono text-xs uppercase tracking-widest text-white/80 border-b border-white/20 pb-4">
@@ -125,6 +130,20 @@ export default function Home() {
       <ScrollReveal variant="clip" inset={6}>
         <BrutalistCrossMedia />
       </ScrollReveal>
+
+      {/* 
+        ======================================================================
+        SECCIÓN AWWWARDS: MESA INTERACTIVA DE REVELADO (BEFORE & AFTER SLIDER)
+        Dial táctil para comparar capturas RAW vs Masters terminados
+        ======================================================================
+      */}
+      <section className="relative w-full bg-[#18191B] py-20 md:py-32 px-6 md:px-12 lg:px-16 border-t border-b border-white/10 overflow-hidden">
+        {/* Kinetic Watermark Typography */}
+        <div className="absolute -top-10 left-1/2 -translate-x-1/2 select-none pointer-events-none opacity-[0.03] whitespace-nowrap font-condensed text-[14vw] font-black uppercase text-white leading-none">
+          REVELADO PUELCHE
+        </div>
+        <BeforeAfterSlider />
+      </section>
 
       {/* 
         ======================================================================

@@ -1059,6 +1059,74 @@ registerTest('T5.5', 'Staff Protocol: opengraph-image.tsx implements dynamic bra
 });
 
 // ============================================================================
+// TIER 6: AWWWARDS CHAMPION SHOWSTOPPERS (Site of the Day / SOTD Contracts)
+// ============================================================================
+
+registerTest('T6.1', 'Awwwards Showstopper: BeforeAfterSlider exports 3 authentic case studies', 6, 'Awwwards-BeforeAfter', () => {
+  const slider = readFile('src/components/ui/BeforeAfterSlider.tsx');
+  assertContains(slider, 'export const BEFORE_AFTER_CASES', 'Missing BEFORE_AFTER_CASES export');
+  assertContains(slider, 'id: \'doosan\'', 'Missing Doosan case');
+  assertContains(slider, 'id: \'arrebol\'', 'Missing Arrebol case');
+  assertContains(slider, 'id: \'bomberos\'', 'Missing Bomberos case');
+  assertContains(slider, 'data-testid="before-after-slider"', 'Missing before-after-slider testid');
+});
+
+registerTest('T6.2', 'Awwwards Showstopper: BeforeAfterSlider implements W3C slider accessibility and keyboard navigation', 6, 'Awwwards-A11y', () => {
+  const slider = readFile('src/components/ui/BeforeAfterSlider.tsx');
+  assertContains(slider, 'role="slider"', 'Missing role="slider"');
+  assertContains(slider, 'aria-valuenow', 'Missing aria-valuenow');
+  assertContains(slider, 'ArrowLeft', 'Missing ArrowLeft keyboard handler');
+  assertContains(slider, 'ArrowRight', 'Missing ArrowRight keyboard handler');
+  assertContains(slider, 'data-cursor="ARRASTRAR"', 'Missing ARRASTRAR cursor trigger');
+});
+
+registerTest('T6.3', 'Awwwards Showstopper: Real Before/After image pairs exist on disk and exceed 50KB', 6, 'Awwwards-Assets', () => {
+  const requiredPairs = [
+    'public/images/real/before-after/doosan-raw.jpg',
+    'public/images/real/before-after/doosan-master.jpg',
+    'public/images/real/before-after/arrebol-raw.jpg',
+    'public/images/real/before-after/arrebol-master.jpg',
+    'public/images/real/before-after/bomberos-raw.jpg',
+    'public/images/real/before-after/bomberos-master.jpg',
+  ];
+  for (const pair of requiredPairs) {
+    assert(fileExists(pair), `Missing Before/After asset: ${pair}`);
+    assert(getFileSize(pair) > 50000, `Asset file is too small or corrupted: ${pair}`);
+  }
+});
+
+registerTest('T6.4', 'Awwwards Showstopper: WindParticleCanvas implements 2D physics, DPR scaling and IntersectionObserver', 6, 'Awwwards-WindPhysics', () => {
+  const canvasComp = readFile('src/components/ui/WindParticleCanvas.tsx');
+  assertContains(canvasComp, 'getContext(\'2d\'', 'Missing canvas 2d context');
+  assertContains(canvasComp, 'IntersectionObserver', 'Missing IntersectionObserver for zero offscreen CPU');
+  assertContains(canvasComp, 'prefers-reduced-motion', 'Missing prefers-reduced-motion support');
+  assertContains(canvasComp, 'devicePixelRatio', 'Missing devicePixelRatio scaling');
+  assertContains(canvasComp, 'data-testid="wind-particle-canvas"', 'Missing wind-particle-canvas testid');
+});
+
+registerTest('T6.5', 'Awwwards Showstopper: SoundscapeToggle implements Web Audio API procedural brown noise without network assets', 6, 'Awwwards-WebAudio', () => {
+  const soundComp = readFile('src/components/ui/SoundscapeToggle.tsx');
+  assertContains(soundComp, 'AudioContext', 'Missing AudioContext Web Audio API initialization');
+  assertContains(soundComp, 'createBiquadFilter', 'Missing BiquadFilter lowpass modeling');
+  assertContains(soundComp, 'exponentialRampToValueAtTime', 'Missing exponential gain volume ramping');
+  assertContains(soundComp, 'data-testid="soundscape-toggle"', 'Missing soundscape-toggle testid');
+});
+
+registerTest('T6.6', 'Awwwards Showstopper: Home page integrates WindParticleCanvas in Hero and BeforeAfterSlider showcase', 6, 'Awwwards-HomeIntegration', () => {
+  const home = readFile('src/app/page.tsx');
+  assertContains(home, '<WindParticleCanvas', 'Home page missing WindParticleCanvas in Hero');
+  assertContains(home, '<BeforeAfterSlider', 'Home page missing BeforeAfterSlider showcase');
+  assertContains(home, 'REVELADO PUELCHE', 'Home page missing kinetic watermark typography');
+});
+
+registerTest('T6.7', 'Awwwards Showstopper: AwwwardsCursor recognizes drag state with tactile ARRASTRAR badge', 6, 'Awwwards-Cursor', () => {
+  const cursor = readFile('src/components/ui/AwwwardsCursor.tsx');
+  assertContains(cursor, '\'drag\'', 'Cursor missing drag state');
+  assertContains(cursor, 'ARRASTRAR', 'Cursor missing ARRASTRAR label');
+  assertContains(cursor, 'data-cursor="ARRASTRAR"', 'Cursor missing ARRASTRAR selector');
+});
+
+// ============================================================================
 // RUNNER EXECUTION ENGINE
 // ============================================================================
 
@@ -1088,6 +1156,7 @@ async function runSuite() {
         'TIER 3: CROSS-FEATURE COMBINATIONS (12 Pairwise Tests)',
         'TIER 4: REAL-WORLD WORKLOAD SCENARIOS (6 Persona Journeys)',
         'TIER 5: STAFF-LEVEL PROTOCOLS (5 Infrastructure & GEO Tests)',
+        'TIER 6: AWWWARDS CHAMPION SHOWSTOPPERS (7 SOTD Experience Tests)',
       ];
       console.log(`\n${BOLD}${MAGENTA}--- ${tierNames[currentTier]} ---${RESET}`);
     }

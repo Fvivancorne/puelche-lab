@@ -6,7 +6,7 @@ import gsap from 'gsap';
 export function AwwwardsCursor() {
   const cursorRef = useRef<HTMLDivElement>(null);
   const textRef = useRef<HTMLSpanElement>(null);
-  const [cursorState, setCursorState] = useState<'default' | 'explore' | 'button' | 'hidden'>('default');
+  const [cursorState, setCursorState] = useState<'default' | 'explore' | 'button' | 'drag' | 'hidden'>('default');
   const [cursorText, setCursorText] = useState<string>('');
 
   useEffect(() => {
@@ -35,10 +35,14 @@ export function AwwwardsCursor() {
       const target = e.target as HTMLElement | null;
       if (!target) return;
 
+      const dragTarget = target.closest('[data-cursor="ARRASTRAR"], .cursor-ew-resize');
       const exploreTarget = target.closest('[data-cursor="explore"], .group, article, .cursor-explore');
       const buttonTarget = target.closest('button, a, input, select, textarea, [role="button"]');
 
-      if (exploreTarget && !buttonTarget) {
+      if (dragTarget) {
+        setCursorState('drag');
+        setCursorText('ARRASTRAR');
+      } else if (exploreTarget && !buttonTarget) {
         setCursorState('explore');
         const customText = (exploreTarget as HTMLElement).getAttribute('data-cursor-text') || 'VER';
         setCursorText(customText);
@@ -90,6 +94,17 @@ export function AwwwardsCursor() {
       {cursorState === 'button' && (
         <div className="w-10 h-10 rounded-full border border-white/90 bg-white/10 scale-110 flex items-center justify-center transition-all duration-300 ease-out shadow-[0_0_15px_rgba(255,255,255,0.4)]">
           <div className="w-1.5 h-1.5 rounded-full bg-white" />
+        </div>
+      )}
+
+      {/* Drag State: Tactile horizontal pill for Before/After slider */}
+      {cursorState === 'drag' && (
+        <div className="relative px-3.5 py-1.5 rounded-full border border-[#C29B63] bg-[#18191B]/90 backdrop-blur-md flex items-center gap-1.5 transition-all duration-300 ease-out shadow-[0_0_20px_rgba(194,155,99,0.5)] scale-105">
+          <span className="text-[#C29B63] text-xs">‹</span>
+          <span className="font-condensed font-bold uppercase tracking-widest text-[10px] text-white select-none">
+            {cursorText || 'ARRASTRAR'}
+          </span>
+          <span className="text-[#C29B63] text-xs">›</span>
         </div>
       )}
 
