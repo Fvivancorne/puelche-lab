@@ -77,6 +77,20 @@ const REAL_EDITORIAL_PROJECTS: EditorialProject[] = [
       '/images/real/bg-portafolios-editorial-libro3-min.jpg',
     ],
   },
+  {
+    id: 'pillan-aguas-azules',
+    client: 'Pillán de las Aguas Azules',
+    service: 'Ensayos de naturaleza viva, volcán Osorno y mitología austral',
+    category: 'Libro de Autor & Territorio',
+    description: 'Obra editorial que documenta la fuerza de la geografía austral a través de ensayos visuales, poesía territorial e impresión de estándar fine-art.',
+    image: '/images/real/facebook/albums/pillan_aguas_azules/pillan_aguas_azules_001.jpg',
+    gallery: [
+      '/images/real/facebook/albums/pillan_aguas_azules/pillan_aguas_azules_001.jpg',
+      '/images/real/facebook/albums/pillan_aguas_azules/pillan_aguas_azules_002.jpg',
+      '/images/real/facebook/albums/pillan_aguas_azules/pillan_aguas_azules_003.jpg',
+      '/images/real/facebook/albums/pillan_aguas_azules/pillan_aguas_azules_004.jpg',
+    ],
+  },
 ];
 
 export default function EditorialPage() {
@@ -307,13 +321,25 @@ export default function EditorialPage() {
           </div>
 
           <div className="relative flex-1 my-4 flex items-center justify-center overflow-hidden">
-            <div className="relative w-full h-full max-w-6xl max-h-[75vh]">
+            {/* Ambient blur backdrop */}
+            <div className="absolute inset-0 overflow-hidden pointer-events-none">
+              <Image
+                src={activeModalProject.gallery[currentImageIndex]}
+                alt=""
+                fill
+                className="object-cover blur-3xl opacity-20 scale-125"
+                aria-hidden="true"
+              />
+              <div className="absolute inset-0 bg-black/50" />
+            </div>
+
+            <div className="relative w-full h-full max-w-6xl max-h-[75vh] z-10 flex items-center justify-center">
               <Image
                 src={activeModalProject.gallery[currentImageIndex]}
                 alt={`${activeModalProject.client} - Pliego ${currentImageIndex + 1}`}
                 fill
                 priority
-                className="object-contain"
+                className="object-contain object-center drop-shadow-[0_20px_40px_rgba(0,0,0,0.9)]"
               />
             </div>
 

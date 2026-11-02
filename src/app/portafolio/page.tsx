@@ -5,7 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { PORTFOLIO_PROJECTS, ProjectItem } from '@/data/portfolio';
-import { MapPin, Calendar, CheckCircle2, X, ArrowUpRight } from 'lucide-react';
+import { MapPin, Calendar, CheckCircle2, X, ArrowUpRight, ChevronLeft, ChevronRight } from 'lucide-react';
 
 const CATEGORIES = ['Todos', 'Fotografía', 'Edición Fotográfica', 'Branding', 'Desarrollo Web', 'Editorial'] as const;
 
@@ -15,6 +15,50 @@ function PortfolioContent() {
 
   const [selectedCategory, setSelectedCategory] = useState<string>('Todos');
   const [activeModalProject, setActiveModalProject] = useState<ProjectItem | null>(null);
+  const [currentImageIndex, setCurrentImageIndex] = useState<number>(0);
+
+  const activeGallery = activeModalProject
+    ? (activeModalProject.gallery && activeModalProject.gallery.length > 0
+        ? activeModalProject.gallery
+        : [activeModalProject.image])
+    : [];
+
+  const handleOpenProject = (project: ProjectItem) => {
+    setActiveModalProject(project);
+    setCurrentImageIndex(0);
+  };
+
+  const nextImage = (e?: React.MouseEvent) => {
+    if (e) e.stopPropagation();
+    if (activeGallery.length > 1) {
+      setCurrentImageIndex((prev) => (prev + 1) % activeGallery.length);
+    }
+  };
+
+  const prevImage = (e?: React.MouseEvent) => {
+    if (e) e.stopPropagation();
+    if (activeGallery.length > 1) {
+      setCurrentImageIndex((prev) => (prev - 1 + activeGallery.length) % activeGallery.length);
+    }
+  };
+
+  // Keyboard navigation for multi-piece gallery & escape to close
+  useEffect(() => {
+    if (!activeModalProject) return;
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setActiveModalProject(null);
+      } else if (e.key === 'ArrowRight' && activeGallery.length > 1) {
+        setCurrentImageIndex((prev) => (prev + 1) % activeGallery.length);
+      } else if (e.key === 'ArrowLeft' && activeGallery.length > 1) {
+        setCurrentImageIndex((prev) => (prev - 1 + activeGallery.length) % activeGallery.length);
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [activeModalProject, activeGallery.length]);
 
   // Auto-open project modal if ?proyecto= query param is provided
   useEffect(() => {
@@ -25,7 +69,10 @@ function PortfolioContent() {
           p.id === projectParam ||
           p.title.toLowerCase().includes(projectParam.toLowerCase())
       );
-      if (match) setActiveModalProject(match);
+      if (match) {
+        setActiveModalProject(match);
+        setCurrentImageIndex(0);
+      }
     }
   }, [projectParam]);
 
@@ -224,37 +271,89 @@ function PortfolioContent() {
               <X className="w-5 h-5" />
             </button>
 
-            {/* Columna Izquierda: Fotografía en Alta Resolución Centrada con Marco */}
-            <div className="relative w-full md:w-1/2 min-h-[300px] sm:min-h-[400px] md:min-h-full bg-[#08090c] shrink-0 flex items-center justify-center p-4 sm:p-6 overflow-hidden">
+            {/* Columna Izquierda: Fotografía en Alta Resolución Centrada con Marco y Navegación Multi-Pieza */}
+            <div className="relative w-full md:w-1/2 min-h-[320px] sm:min-h-[420px] md:min-h-[540px] bg-[#08090c] shrink-0 flex items-center justify-center p-4 sm:p-6 overflow-hidden">
               {/* Ambient blur background */}
               <div className="absolute inset-0 overflow-hidden pointer-events-none">
                 <Image
-                  src={activeModalProject.image}
+                  src={activeGallery[currentImageIndex] || activeModalProject.image}
                   alt=""
                   fill
-                  className="object-cover blur-3xl opacity-25 scale-125"
+                  className="object-cover blur-3xl opacity-25 scale-125 transition-all duration-700"
                   aria-hidden="true"
                 />
                 <div className="absolute inset-0 bg-black/60" />
               </div>
-              <div className="relative w-full h-full min-h-[260px] md:min-h-[480px] flex items-center justify-center z-10">
+
+              {/* Main Artwork Centered (Anti-Cropping) */}
+              <div className="relative w-full h-full min-h-[260px] md:min-h-[460px] flex items-center justify-center z-10">
                 <Image
-                  src={activeModalProject.image}
-                  alt={activeModalProject.title}
+                  src={activeGallery[currentImageIndex] || activeModalProject.image}
+                  alt={`${activeModalProject.title} — Pieza ${currentImageIndex + 1}`}
                   fill
                   priority
-                  className="object-contain object-center drop-shadow-[0_20px_40px_rgba(0,0,0,0.9)]"
+                  className="object-contain object-center drop-shadow-[0_20px_40px_rgba(0,0,0,0.9)] transition-all duration-500"
                 />
               </div>
               <div className="absolute inset-0 bg-gradient-to-t from-[#1D2024] via-transparent to-black/30 md:hidden z-10 pointer-events-none" />
-              
-              {/* Badge de Categoría y Micro-Datos flotantes sobre la foto */}
-              <div className="absolute top-4 left-4 z-10">
+
+              {/* Controles de Navegación < y > (si hay más de 1 pieza) */}
+              {activeGallery.length > 1 && (
+                <>
+                  <button
+                    type="button"
+                    onClick={prevImage}
+                    className="absolute left-3 top-1/2 -translate-y-1/2 z-30 w-10 h-10 rounded-full bg-black/70 hover:bg-[#59BFD6] hover:text-puelche-dark text-white flex items-center justify-center transition-all border border-white/20 shadow-2xl backdrop-blur-md hover:scale-110 active:scale-95"
+                    aria-label="Pieza anterior"
+                  >
+                    <ChevronLeft className="w-5 h-5" />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={nextImage}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 z-30 w-10 h-10 rounded-full bg-black/70 hover:bg-[#59BFD6] hover:text-puelche-dark text-white flex items-center justify-center transition-all border border-white/20 shadow-2xl backdrop-blur-md hover:scale-110 active:scale-95"
+                    aria-label="Siguiente pieza"
+                  >
+                    <ChevronRight className="w-5 h-5" />
+                  </button>
+                </>
+              )}
+
+              {/* Badge de Categoría y Contador de Piezas */}
+              <div className="absolute top-4 left-4 z-20 flex items-center gap-2">
                 <span className="px-3.5 py-1 rounded-full bg-[#59BFD6] text-puelche-dark text-xs uppercase font-bold tracking-wider shadow-lg">
                   {activeModalProject.category}
                 </span>
+                {activeGallery.length > 1 && (
+                  <span className="px-3 py-1 rounded-full bg-black/70 backdrop-blur-md border border-white/10 text-white/90 font-mono text-[11px] uppercase tracking-wider">
+                    Pieza {currentImageIndex + 1} de {activeGallery.length}
+                  </span>
+                )}
               </div>
 
+              {/* Miniaturas de selección rápida */}
+              {activeGallery.length > 1 && (
+                <div className="absolute bottom-16 md:bottom-20 z-20 flex items-center gap-2 px-3 py-1.5 rounded-full bg-black/70 backdrop-blur-md border border-white/15">
+                  {activeGallery.map((img, idx) => (
+                    <button
+                      key={img + idx}
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setCurrentImageIndex(idx);
+                      }}
+                      className={`w-2.5 h-2.5 rounded-full transition-all duration-300 ${
+                        currentImageIndex === idx
+                          ? 'bg-[#59BFD6] scale-125 shadow-[0_0_8px_#59BFD6]'
+                          : 'bg-white/30 hover:bg-white/70'
+                      }`}
+                      aria-label={`Ver pieza ${idx + 1}`}
+                    />
+                  ))}
+                </div>
+              )}
+
+              {/* Micro-datos cliente y expedición */}
               <div className="absolute bottom-4 left-4 right-4 z-10 hidden md:block font-mono text-xs text-white/90 bg-black/60 backdrop-blur-md p-3 rounded-lg border border-white/10">
                 <div className="flex items-center justify-between">
                   <span className="text-white/60">CLIENTE</span>
@@ -338,10 +437,53 @@ function PortfolioContent() {
   );
 }
 
+const portfolioSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'CollectionPage',
+  name: 'Portafolio de Obras y Expediciones — Puelche Lab',
+  description:
+    'Catálogo de obras de diseño de marca, fotografía territorial, publicaciones editoriales y plataformas web desarrolladas en Puerto Varas y la Patagonia.',
+  url: 'https://www.puelchelab.cl/portafolio',
+  publisher: {
+    '@type': 'Organization',
+    name: 'Puelche Lab',
+    url: 'https://www.puelchelab.cl',
+  },
+  mainEntity: {
+    '@type': 'ItemList',
+    itemListElement: PORTFOLIO_PROJECTS.map((p, idx) => ({
+      '@type': 'ListItem',
+      position: idx + 1,
+      item: {
+        '@type': 'CreativeWork',
+        name: p.title,
+        description: p.summary,
+        creator: {
+          '@type': 'Organization',
+          name: 'Puelche Lab',
+        },
+        image: `https://www.puelchelab.cl${p.image}`,
+        genre: p.category,
+        datePublished: p.year,
+        locationCreated: {
+          '@type': 'Place',
+          name: p.location,
+        },
+      },
+    })),
+  },
+};
+
 export default function PortfolioPage() {
   return (
-    <Suspense fallback={<div className="min-h-screen bg-puelche-dark" />}>
-      <PortfolioContent />
-    </Suspense>
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(portfolioSchema) }}
+      />
+      <Suspense fallback={<div className="min-h-screen bg-puelche-dark" />}>
+        <PortfolioContent />
+      </Suspense>
+    </>
   );
 }

@@ -1013,6 +1013,52 @@ registerTest('T4.6', 'Scenario: Complete Anti-Stock Compliance & Asset Resolutio
 });
 
 // ============================================================================
+// TIER 5: STAFF-LEVEL PROTOCOLS (5 Tests)
+// ============================================================================
+
+registerTest('T5.1', 'Staff Protocol: sitemap.ts maps all canonical routes with weighted priorities', 5, 'Staff-Sitemap', () => {
+  const sitemap = readFile('src/app/sitemap.ts');
+  assertContains(sitemap, 'export default function sitemap', 'sitemap default export missing');
+  assertContains(sitemap, '/portafolio', 'Sitemap missing /portafolio route');
+  assertContains(sitemap, '/servicios/fotografia', 'Sitemap missing /servicios/fotografia');
+  assertContains(sitemap, '/servicios/branding', 'Sitemap missing /servicios/branding');
+  assertContains(sitemap, 'priority: 1.0', 'Home priority 1.0 missing');
+});
+
+registerTest('T5.2', 'Staff Protocol: robots.ts explicitly configures AI search crawlers and sitemap', 5, 'Staff-Robots', () => {
+  const robots = readFile('src/app/robots.ts');
+  assertContains(robots, 'export default function robots', 'robots default export missing');
+  assertContains(robots, 'GPTBot', 'Robots missing GPTBot permission');
+  assertContains(robots, 'PerplexityBot', 'Robots missing PerplexityBot permission');
+  assertContains(robots, 'sitemap.xml', 'Robots missing sitemap reference');
+});
+
+registerTest('T5.3', 'Staff Protocol: layout.tsx maps canonical Wikidata entities for GEO authority', 5, 'Staff-WikidataGEO', () => {
+  const layout = readFile('src/app/layout.tsx');
+  assertContains(layout, 'wikidata.org/wiki/Q1012921', 'Puerto Varas Wikidata Q1012921 missing');
+  assertContains(layout, 'wikidata.org/wiki/Q2170', 'Región de Los Lagos Wikidata Q2170 missing');
+  assertContains(layout, 'wikidata.org/wiki/Q1507', 'Patagonia Wikidata Q1507 missing');
+  assertContains(layout, 'metadataBase', 'metadataBase missing in layout.tsx');
+});
+
+registerTest('T5.4', 'Staff Protocol: Zod Jev contracts and /api/contact route validate lead payloads', 5, 'Staff-ZodJev', () => {
+  const contracts = readFile('src/contracts/index.ts');
+  assertContains(contracts, 'ContactBriefSchema', 'ContactBriefSchema missing in contracts');
+  assertContains(contracts, 'buildWhatsAppLink', 'buildWhatsAppLink missing in contracts');
+  const apiRoute = readFile('src/app/api/contact/route.ts');
+  assertContains(apiRoute, 'ContactBriefSchema.safeParse', 'API route missing Zod safeParse validation');
+  assertContains(apiRoute, 'export async function POST', 'API route missing POST handler');
+});
+
+registerTest('T5.5', 'Staff Protocol: opengraph-image.tsx implements dynamic branded safe-zones', 5, 'Staff-OpenGraph', () => {
+  const og = readFile('src/app/opengraph-image.tsx');
+  assertContains(og, 'PUELCHE', 'OG image missing studio brand title');
+  assertContains(og, 'width: 1200', 'OG image width must be 1200');
+  assertContains(og, 'height: 630', 'OG image height must be 630');
+  assertContains(og, 'PUERTO VARAS • PATAGONIA • CHILE', 'OG image missing territorial geo badge');
+});
+
+// ============================================================================
 // RUNNER EXECUTION ENGINE
 // ============================================================================
 
@@ -1041,6 +1087,7 @@ async function runSuite() {
         'TIER 2: BOUNDARY & CORNER CASES (55 Robustness Tests)',
         'TIER 3: CROSS-FEATURE COMBINATIONS (12 Pairwise Tests)',
         'TIER 4: REAL-WORLD WORKLOAD SCENARIOS (6 Persona Journeys)',
+        'TIER 5: STAFF-LEVEL PROTOCOLS (5 Infrastructure & GEO Tests)',
       ];
       console.log(`\n${BOLD}${MAGENTA}--- ${tierNames[currentTier]} ---${RESET}`);
     }

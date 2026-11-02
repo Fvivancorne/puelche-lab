@@ -219,6 +219,19 @@ const REAL_PHOTO_PROJECTS: PhotoProject[] = [
       '/images/real/bg-portafolios-fotografia-h-min.jpg',
     ],
   },
+  {
+    id: 'turistour-expediciones',
+    client: 'Turistour Patagonia',
+    location: 'Puerto Varas & Cruce Andino.',
+    specialty: 'Fotografía de expediciones, turismo lacustre y territorio.',
+    image: '/images/real/facebook/albums/turistour/turistour_001.jpg',
+    gallery: [
+      '/images/real/facebook/albums/turistour/turistour_001.jpg',
+      '/images/real/facebook/albums/turistour/turistour_002.jpg',
+      '/images/real/facebook/albums/turistour/turistour_003.jpg',
+      '/images/real/facebook/albums/turistour/turistour_004.jpg',
+    ],
+  },
 ];
 
 export default function FotografiaPage() {

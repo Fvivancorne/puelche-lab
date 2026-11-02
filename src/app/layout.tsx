@@ -30,6 +30,7 @@ const monoFont = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://www.puelchelab.cl'),
   title: 'Puelche Lab — Estudio de Diseño Cross Media y Fotografía de Puerto Varas',
   description:
     'Somos un Estudio de Diseño Cross Media y Fotografía en Puerto Varas. Piezas gráficas para todos los medios: digitales, impresos y audiovisuales.',
@@ -93,6 +94,100 @@ const jsonLd = {
     'https://www.facebook.com/puelchelab',
     'https://www.instagram.com/puelche_lab/',
   ],
+  about: [
+    {
+      '@type': 'Place',
+      name: 'Puerto Varas',
+      sameAs: 'https://www.wikidata.org/wiki/Q1012921',
+    },
+    {
+      '@type': 'AdministrativeArea',
+      name: 'Región de Los Lagos',
+      sameAs: 'https://www.wikidata.org/wiki/Q2170',
+    },
+    {
+      '@type': 'Place',
+      name: 'Patagonia',
+      sameAs: 'https://www.wikidata.org/wiki/Q1507',
+    },
+    {
+      '@type': 'Place',
+      name: 'Archipiélago de Chiloé',
+      sameAs: 'https://www.wikidata.org/wiki/Q193630',
+    },
+    {
+      '@type': 'Place',
+      name: 'Lago Llanquihue',
+      sameAs: 'https://www.wikidata.org/wiki/Q154432',
+    },
+  ],
+  knowsAbout: [
+    'Cross-media Design',
+    'Commercial Photography',
+    'Brand Identity',
+    'Fine-Art Editorial Design',
+    'Next.js Web Development',
+    'Architecture Photography',
+  ],
+  founder: {
+    '@type': 'Person',
+    name: 'Paula Valdivieso',
+    jobTitle: 'Directora Creativa',
+    email: 'paula.valdivieso@puelchelab.cl',
+  },
+  contactPoint: {
+    '@type': 'ContactPoint',
+    telephone: '+56966177500',
+    contactType: 'customer service',
+    areaServed: 'CL',
+    availableLanguage: ['Spanish', 'English'],
+  },
+  hasOfferCatalog: {
+    '@type': 'OfferCatalog',
+    name: 'Servicios de Estudio Creativo',
+    itemListElement: [
+      {
+        '@type': 'Offer',
+        itemOffered: {
+          '@type': 'Service',
+          name: 'Fotografía Profesional & Film',
+          description: 'Interiores, arquitectura, faenas marítimas y drones 4K en el sur de Chile.',
+        },
+      },
+      {
+        '@type': 'Offer',
+        itemOffered: {
+          '@type': 'Service',
+          name: 'Diseño de Marca & Identidad Cross-Media',
+          description: 'Estrategia de marca, manual de normas, señalética y narrativa con raíz territorial.',
+        },
+      },
+      {
+        '@type': 'Offer',
+        itemOffered: {
+          '@type': 'Service',
+          name: 'Diseño Editorial & Publicaciones',
+          description: 'Memorias anuales, libros fotográficos corporativos y catálogos de arte.',
+        },
+      },
+      {
+        '@type': 'Offer',
+        itemOffered: {
+          '@type': 'Service',
+          name: 'Edición Fotográfica & Postproducción',
+          description: 'Sala de magia digital, revelado fino y balance cromático de precisión.',
+        },
+      },
+      {
+        '@type': 'Offer',
+        itemOffered: {
+          '@type': 'Service',
+          name: 'Desarrollo Web & Experiencias Digitales',
+          description: 'Sitios web rápidos, elegantes y nivel boutique programados en Next.js.',
+        },
+      },
+    ],
+  },
 };
 
 export default function RootLayout({

@@ -295,13 +295,25 @@ export default function DesarrolloWebPage() {
           </div>
 
           <div className="relative flex-1 my-4 flex items-center justify-center overflow-hidden">
-            <div className="relative w-full h-full max-w-6xl max-h-[75vh]">
+            {/* Ambient blur backdrop */}
+            <div className="absolute inset-0 overflow-hidden pointer-events-none">
+              <Image
+                src={activeModalProject.gallery[currentImageIndex]}
+                alt=""
+                fill
+                className="object-cover blur-3xl opacity-20 scale-125"
+                aria-hidden="true"
+              />
+              <div className="absolute inset-0 bg-black/50" />
+            </div>
+
+            <div className="relative w-full h-full max-w-6xl max-h-[75vh] z-10 flex items-center justify-center">
               <Image
                 src={activeModalProject.gallery[currentImageIndex]}
                 alt={`${activeModalProject.client} - Pantalla ${currentImageIndex + 1}`}
                 fill
                 priority
-                className="object-contain"
+                className="object-contain object-center drop-shadow-[0_20px_40px_rgba(0,0,0,0.9)]"
               />
             </div>
 
