@@ -124,6 +124,7 @@ class ProceduralPatagonianWind {
 
 export function SoundscapeToggle({ className = '' }: { className?: string }) {
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
+  const [isHovered, setIsHovered] = useState<boolean>(false);
   const soundEngineRef = useRef<ProceduralPatagonianWind | null>(null);
 
   useEffect(() => {
@@ -150,30 +151,52 @@ export function SoundscapeToggle({ className = '' }: { className?: string }) {
     <button
       type="button"
       onClick={toggleSound}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
       data-testid="soundscape-toggle"
-      aria-label={isPlaying ? 'Desactivar paisaje sonoro del Puelche' : 'Activar paisaje sonoro del Puelche'}
-      className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full font-mono text-[11px] uppercase tracking-widest border transition-all duration-300 backdrop-blur-md select-none group ${
-        isPlaying
-          ? 'bg-[#59BFD6]/15 border-[#59BFD6] text-[#59BFD6] shadow-[0_0_12px_rgba(89,191,214,0.3)]'
-          : 'bg-white/5 border-white/15 text-white/70 hover:border-white/30 hover:text-white'
+      aria-label={isPlaying ? 'Desactivar sonido ambiental' : 'Activar sonido ambiental'}
+      className={`relative inline-flex items-center gap-2.5 h-8 px-3 rounded-full bg-white/[0.05] hover:bg-white/[0.1] border border-white/10 hover:border-white/20 backdrop-blur-md transition-all duration-300 select-none group focus:outline-none focus:ring-1 focus:ring-[#59BFD6]/50 ${
+        isPlaying ? 'border-[#59BFD6]/30 bg-white/[0.08]' : ''
       } ${className}`}
     >
-      {isPlaying ? (
-        <>
-          {/* Animated Equalizer Bars */}
-          <div className="flex items-end gap-0.5 h-3.5 w-3.5 py-0.5">
-            <span className="w-0.5 bg-[#59BFD6] rounded-full animate-[pulse_0.6s_ease-in-out_infinite] h-full" />
-            <span className="w-0.5 bg-[#59BFD6] rounded-full animate-[pulse_0.9s_ease-in-out_infinite] h-2/3" />
-            <span className="w-0.5 bg-[#59BFD6] rounded-full animate-[pulse_0.75s_ease-in-out_infinite] h-4/5" />
-          </div>
-          <span className="font-semibold">VIENTO: ACTIVO</span>
-        </>
-      ) : (
-        <>
-          <VolumeX className="w-3.5 h-3.5 text-white/50 group-hover:text-white/80 transition-colors" />
-          <span>SONIDO: OFF</span>
-        </>
-      )}
+      {/* 4 Kinetic Equalizer Soundwave Bars (Awwwards Boutique Standard) */}
+      <div className="flex items-center gap-[2.5px] h-3.5 w-3.5 justify-center" aria-hidden="true">
+        <span
+          className={`w-[1.5px] rounded-full transition-all duration-300 ${
+            isPlaying ? 'bg-[#59BFD6] animate-soundwave-1' : 'h-[2px] bg-white/40'
+          }`}
+        />
+        <span
+          className={`w-[1.5px] rounded-full transition-all duration-300 ${
+            isPlaying ? 'bg-[#59BFD6] animate-soundwave-2' : 'h-[2px] bg-white/40'
+          }`}
+        />
+        <span
+          className={`w-[1.5px] rounded-full transition-all duration-300 ${
+            isPlaying ? 'bg-[#59BFD6] animate-soundwave-3' : 'h-[2px] bg-white/40'
+          }`}
+        />
+        <span
+          className={`w-[1.5px] rounded-full transition-all duration-300 ${
+            isPlaying ? 'bg-[#59BFD6] animate-soundwave-4' : 'h-[2px] bg-white/40'
+          }`}
+        />
+      </div>
+
+      {/* Label: Minimalist typographic audio indicator */}
+      <span className="font-mono text-[10px] tracking-[0.2em] uppercase font-medium text-white/70 group-hover:text-white transition-colors">
+        {isPlaying ? (isHovered ? 'MUTE' : 'SOUND') : 'SOUND'}
+      </span>
+
+      {/* Micro Status Dot */}
+      <span
+        className={`w-1.5 h-1.5 rounded-full transition-all duration-300 ${
+          isPlaying
+            ? 'bg-[#59BFD6] shadow-[0_0_8px_#59BFD6] scale-105'
+            : 'bg-white/20 group-hover:bg-white/40'
+        }`}
+        aria-hidden="true"
+      />
     </button>
   );
 }
