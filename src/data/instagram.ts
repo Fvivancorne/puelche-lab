@@ -130,9 +130,9 @@ export const INSTAGRAM_POSTS: InstagramPost[] = [
   {
     id: "DNRhZyEOL7E",
     shortcode: "DNRhZyEOL7E",
-    title: "Refugio Austral — Sesión Inmobiliaria en Puerto Varas",
+    title: "Hotel Arrebol — Arquitectura en Madera & Paisaje Austral",
     category: "Interiores & Arquitectura",
-    caption: "Un nuevo trabajo de fotografía de interiores e inmobiliario para nuestros queridos amigos de @cohostingchile, una bellísima casa a las afueras de #puertovaras, exquisito diseño y atmósfera acogedora.\n#fotografiadeinmobiliarias #fotografiadearquitectura #fotografiadeinteriores #sesiondefotos #arquitectura",
+    caption: "Sesión de fotografía de arquitectura e interiores para este icónico hotel boutique emplazado en las alturas de Puerto Varas. Maderas nativas, luz cálida y diálogo armónico con el bosque y el lago Llanquihue.\n#fotografiadearquitectura #fotografiadeinteriores #hotelpatagonia #puertovaras #estudiodefotografia",
     image: "/images/real/instagram/ig-DNRhZyEOL7E.webp",
     instagramUrl: "https://www.instagram.com/puelche_lab/p/DNRhZyEOL7E/"
   },
