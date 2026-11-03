@@ -66,44 +66,55 @@ export default function Home() {
         {/* Kinetic Puelche Wind Particle Physics */}
         <WindParticleCanvas className="z-[5]" />
 
-        {/* Top Geo Badge */}
-        <div className="relative z-10 max-w-7xl mx-auto w-full flex items-center justify-between font-mono text-xs uppercase tracking-widest text-white/80 border-b border-white/20 pb-4">
-          <div className="inline-flex items-center gap-2 text-white">
-            <span className="w-2 h-2 rounded-full bg-[#59BFD6] bg-puelche-cyan animate-pulse" />
-            <span>PUERTO VARAS &bull; REGION DE LOS LAGOS</span>
+        {/* Top Geo Badge & Technical Coordinates */}
+        <div className="relative z-10 max-w-7xl mx-auto w-full flex items-center justify-between font-mono text-[11px] sm:text-xs uppercase tracking-[0.25em] text-white/70 border-b border-white/10 pb-5">
+          <div className="inline-flex items-center gap-2.5 text-white">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#59BFD6] bg-puelche-cyan animate-pulse shadow-[0_0_8px_#59BFD6]" />
+            <span>41°19&apos;S 72°59&apos;W &bull; PUERTO VARAS &bull; REGION DE LOS LAGOS</span>
           </div>
-          <span className="hidden sm:inline">DISENO CROSS-MEDIA &bull; FOTOGRAFIA DE AUTOR</span>
+          <span className="hidden md:inline font-mono text-white/50">
+            DISENO CROSS-MEDIA &bull; FOTOGRAFIA DE AUTOR
+          </span>
         </div>
 
-        {/* Center: Colossal White Emblem & Kinetic Headline */}
-        <div className="relative z-10 max-w-4xl mx-auto w-full my-auto flex flex-col items-center justify-center space-y-6">
+        {/* Center: Asimetría Editorial Suiza — Espacio Negativo Monumental */}
+        <div className="relative z-10 max-w-5xl mx-auto w-full my-auto flex flex-col items-center justify-center py-12 md:py-16 space-y-8">
+          {/* Subtle Studio Mark / Monogram */}
+          <div className="relative w-40 sm:w-52 md:w-64 aspect-[412/282] drop-shadow-2xl opacity-90 transition-transform duration-700 hover:scale-105">
+            <Image
+              src="/images/real/logo-puelche.png"
+              alt="Puelche Lab — Viento Creativo"
+              fill
+              priority
+              className="object-contain"
+            />
+          </div>
+
           <div
             ref={heroWipeRef}
             data-wipe-title="true"
-            className="flex flex-col items-center justify-center"
+            className="flex flex-col items-center justify-center space-y-4 max-w-4xl text-center"
           >
-            {/* Colossal Emblem: logo-puelche.png */}
-            <div className="relative w-64 sm:w-80 md:w-96 lg:w-[420px] aspect-[412/282] drop-shadow-2xl mb-2">
-              <Image
-                src="/images/real/logo-puelche.png"
-                alt="Puelche Lab — Viento Creativo"
-                fill
-                priority
-                className="object-contain"
-              />
-            </div>
+            {/* Editorial Category Tag */}
+            <span className="font-mono text-[11px] sm:text-xs uppercase tracking-[0.35em] text-[#59BFD6] font-medium">
+              ESTUDIO DE AUTOR &bull; EXPEDICIONES VISUALES
+            </span>
 
-            {/* SplitText Headline with fluid scale */}
+            {/* SplitText Headline: VIENTO CREATIVO with pristine kerning & breathing room */}
             <SplitText
               text="VIENTO CREATIVO"
               as="h1"
               animation="scatter"
-              className="font-condensed text-5xl sm:text-7xl md:text-8xl uppercase tracking-wider font-bold text-white drop-shadow-lg"
+              className="font-condensed text-5xl sm:text-7xl md:text-8xl lg:text-9xl uppercase tracking-[0.06em] font-bold text-white drop-shadow-2xl leading-none"
             />
+
+            <h2 className="font-condensed text-lg sm:text-2xl md:text-3xl uppercase tracking-[0.2em] font-light text-white/90 pt-1">
+              Diseño Cross Media &bull; Fotografía de Autor
+            </h2>
           </div>
 
-          <p className="font-sans text-base sm:text-xl md:text-2xl font-light text-white/95 max-w-2xl mx-auto tracking-wide leading-relaxed drop-shadow-md">
-            Un Estudio de Diseño Cross Media y Fotografía de Puerto Varas.
+          <p className="font-sans text-base sm:text-lg md:text-xl font-light text-white/80 max-w-2xl mx-auto tracking-wide leading-relaxed drop-shadow-md">
+            Un Estudio de Diseño Cross Media y Fotografía de Puerto Varas. Obra visual esculpida bajo el rigor y la luz de la Patagonia austral.
           </p>
         </div>
 

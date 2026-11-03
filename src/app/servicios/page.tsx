@@ -45,52 +45,69 @@ const SERVICES_LIST = [
 
 export default function ServiciosPage() {
   return (
-    <div className="w-full flex flex-col bg-white">
-      {/* Banner */}
-      <section className="bg-puelche-slate pt-28 pb-16 md:pt-32 md:pb-20 px-6 text-center border-b border-puelche-slate-dark">
-        <div className="max-w-4xl mx-auto space-y-3">
-          <span className="font-condensed uppercase tracking-widest text-xs font-bold text-puelche-cyan">
-            ESTUDIO PUELCHE LAB
-          </span>
-          <h1 className="font-condensed text-4xl sm:text-5xl md:text-6xl uppercase tracking-wider text-white font-bold">
+    <div className="w-full flex flex-col bg-[#0b0d10] text-white min-h-screen selection:bg-[#59BFD6] selection:text-[#0b0d10]">
+      {/* ── BANNER EDITORIAL DARK LUXURY ── */}
+      <section className="relative pt-32 pb-20 md:pt-40 md:pb-28 px-6 text-center border-b border-white/10 overflow-hidden bg-gradient-to-b from-[#14161a] via-[#0b0d10] to-[#0b0d10]">
+        {/* Kinetic Watermark */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 select-none pointer-events-none opacity-[0.02] whitespace-nowrap font-condensed text-[18vw] font-black uppercase text-white leading-none">
+          CAPACIDADES
+        </div>
+
+        <div className="relative z-10 max-w-4xl mx-auto space-y-4">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#59BFD6]/10 border border-[#59BFD6]/30 text-[#59BFD6] font-mono text-xs uppercase tracking-widest">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#59BFD6] animate-pulse" />
+            <span>ESTUDIO PUELCHE LAB &bull; OFICIO & TERRITORIO</span>
+          </div>
+
+          <h1 className="font-condensed text-5xl sm:text-6xl md:text-7xl lg:text-8xl uppercase tracking-tight text-white font-bold leading-none">
             NUESTROS SERVICIOS
           </h1>
-          <p className="font-sans text-sm sm:text-base text-white/80 max-w-xl mx-auto font-light leading-relaxed">
-            Diseño Cross Media y Fotografía profesional en Puerto Varas y la Región de Los Lagos.
+
+          <p className="font-sans text-base sm:text-lg text-white/75 max-w-2xl mx-auto font-light leading-relaxed pt-2">
+            Diseño Cross Media y Fotografía profesional en Puerto Varas y la Región de Los Lagos. Disciplina técnica, dirección de arte de autor y narrativa territorial.
           </p>
         </div>
       </section>
 
-      {/* Grid of 6 Services */}
-      <section className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-16 md:py-24">
+      {/* ── GRILLA DE 6 SERVICIOS DE AUTOR ── */}
+      <section className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-20 md:py-32">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {SERVICES_LIST.map((serv) => {
+          {SERVICES_LIST.map((serv, idx) => {
             const Icon = serv.icon;
             return (
               <div
                 key={serv.title}
-                className="p-8 bg-[#F8FAFB] border border-gray-100 rounded-sm hover:border-puelche-cyan/50 hover:shadow-lg transition-all duration-300 flex flex-col justify-between group"
+                className="p-8 sm:p-10 bg-white/[0.03] hover:bg-white/[0.06] border border-white/10 hover:border-[#59BFD6]/40 rounded-xl transition-all duration-500 flex flex-col justify-between group hover:-translate-y-1.5 hover:shadow-[0_20px_50px_rgba(0,0,0,0.8)]"
               >
                 <div>
-                  <div className="w-12 h-12 rounded-full bg-puelche-cyan/15 flex items-center justify-center text-puelche-cyan mb-6 group-hover:bg-puelche-cyan group-hover:text-white transition-colors duration-200">
-                    <Icon className="w-6 h-6" />
+                  <div className="flex items-center justify-between mb-8">
+                    <div className="w-14 h-14 rounded-xl bg-white/[0.05] border border-white/10 flex items-center justify-center text-[#59BFD6] group-hover:bg-[#59BFD6] group-hover:text-puelche-dark transition-all duration-300 group-hover:scale-105 shadow-lg">
+                      <Icon className="w-7 h-7" />
+                    </div>
+                    <span className="font-mono text-xs text-white/30 group-hover:text-[#59BFD6] transition-colors">
+                      [ {String(idx + 1).padStart(2, '0')} ]
+                    </span>
                   </div>
-                  <h2 className="font-condensed text-2xl uppercase tracking-wider font-bold text-puelche-dark mb-3">
+
+                  <h2 className="font-condensed text-3xl uppercase tracking-wide font-bold text-white mb-3 group-hover:text-[#59BFD6] transition-colors">
                     {serv.title}
                   </h2>
-                  <p className="font-sans text-sm text-puelche-gray leading-relaxed mb-6">
+
+                  <p className="font-sans text-sm sm:text-base text-white/70 font-light leading-relaxed mb-8">
                     {serv.desc}
                   </p>
                 </div>
 
-                <div className="pt-4 border-t border-gray-200">
+                <div className="pt-6 border-t border-white/10 flex items-center justify-between">
                   <Link
                     href={serv.href}
-                    className="inline-flex items-center gap-2 font-condensed uppercase tracking-widest text-xs font-bold text-puelche-cyan hover:text-puelche-slate transition-colors"
+                    className="inline-flex items-center gap-2 font-mono uppercase tracking-widest text-xs font-semibold text-[#59BFD6] group-hover:text-white transition-colors"
                   >
                     <span>Ver Detalles</span>
-                    <ArrowRight className="w-4 h-4" />
+                    <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
                   </Link>
+
+                  <span className="w-1.5 h-1.5 rounded-full bg-white/20 group-hover:bg-[#59BFD6] transition-colors" />
                 </div>
               </div>
             );
