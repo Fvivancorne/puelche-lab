@@ -12,6 +12,7 @@ import { ClientMarquee } from '@/components/home/ClientMarquee';
 import { BrutalistCrossMedia } from '@/components/home/BrutalistCrossMedia';
 import { WindParticleCanvas } from '@/components/ui/WindParticleCanvas';
 import { BeforeAfterSlider } from '@/components/ui/BeforeAfterSlider';
+import { OrganicStoriesSection } from '@/components/home/OrganicStoriesSection';
 
 export default function Home() {
   const heroWipeRef = useRef<HTMLDivElement>(null);
@@ -155,6 +156,14 @@ export default function Home() {
         </div>
         <BeforeAfterSlider />
       </section>
+
+      {/* 
+        ======================================================================
+        SECCIÓN AWWWARDS ORGÁNICA: CRÓNICAS DEL PUELCHE & RELATOS VIVOS
+        Módulo empático y humano de relatos de autor que se expanden
+        ======================================================================
+      */}
+      <OrganicStoriesSection />
 
       {/* 
         ======================================================================
