@@ -369,9 +369,9 @@ function PortfolioContent() {
             </button>
           </div>
 
-          {/* ── CAJA CENTRAL DEL MODAL (2 COLUMNAS EDITORIALES) ── */}
+          {/* ── CAJA CENTRAL DEL MODAL (FORMATO DE GRAN ESCALA: 68% FOTO GIGANTE / 32% TEXTO) ── */}
           <div
-            className="bg-[#18191D] text-white rounded-[24px] sm:rounded-[32px] max-w-5xl w-full max-h-[90vh] overflow-hidden border border-white/15 shadow-[0_30px_90px_rgba(0,0,0,0.95)] relative flex flex-col md:flex-row z-10 animate-in zoom-in-95 duration-200"
+            className="bg-[#141518] text-white rounded-[24px] sm:rounded-[32px] max-w-7xl w-[96vw] max-h-[90vh] overflow-hidden border border-white/15 shadow-[0_30px_90px_rgba(0,0,0,0.95)] relative flex flex-col lg:flex-row z-10 animate-in zoom-in-95 duration-200"
             onClick={(e) => e.stopPropagation()}
             data-lenis-prevent="true"
           >
@@ -384,28 +384,28 @@ function PortfolioContent() {
               <X className="w-5 h-5" />
             </button>
 
-            {/* Columna Izquierda: Fotografía en Alta Resolución Centrada con Marco y Navegación Multi-Pieza */}
-            <div className="relative w-full md:w-1/2 min-h-[300px] sm:min-h-[420px] md:min-h-[540px] bg-[#0c0d10] shrink-0 flex items-center justify-center p-4 sm:p-6 overflow-hidden">
+            {/* Columna Izquierda: Fotografía de Gran Formato (68% del ancho en Desktop, sin recortes) */}
+            <div className="relative w-full lg:w-[68%] min-h-[380px] sm:min-h-[500px] lg:min-h-[700px] bg-[#090a0d] shrink-0 flex items-center justify-center p-4 sm:p-8 overflow-hidden">
               {/* Ambient blur glow */}
               <div className="absolute inset-0 overflow-hidden pointer-events-none">
                 <Image
                   src={activeGallery[currentImageIndex] || activeModalProject.image}
                   alt=""
                   fill
-                  className="object-cover blur-3xl opacity-30 scale-125 transition-all duration-700"
+                  className="object-cover blur-3xl opacity-35 scale-125 transition-all duration-700"
                   aria-hidden="true"
                 />
-                <div className="absolute inset-0 bg-black/50" />
+                <div className="absolute inset-0 bg-black/40" />
               </div>
 
-              {/* Main Artwork Centered (Anti-Cropping) */}
-              <div className="relative w-full h-full min-h-[260px] sm:min-h-[360px] md:min-h-[460px] flex items-center justify-center z-10">
+              {/* Main Artwork Centered (Anti-Cropping & Gran Escala) */}
+              <div className="relative w-full h-full min-h-[340px] sm:min-h-[460px] lg:min-h-[660px] flex items-center justify-center z-10">
                 <Image
                   src={activeGallery[currentImageIndex] || activeModalProject.image}
                   alt={`${activeModalProject.title} — Pieza ${currentImageIndex + 1}`}
                   fill
                   priority
-                  className="object-contain object-center drop-shadow-[0_20px_40px_rgba(0,0,0,0.9)] transition-all duration-500"
+                  className="object-contain object-center drop-shadow-[0_25px_60px_rgba(0,0,0,0.95)] transition-all duration-500"
                 />
               </div>
 
@@ -415,29 +415,29 @@ function PortfolioContent() {
                   <button
                     type="button"
                     onClick={prevImage}
-                    className="absolute left-3 top-1/2 -translate-y-1/2 z-30 w-9 h-9 rounded-full bg-black/70 hover:bg-[#59BFD6] hover:text-puelche-dark text-white flex items-center justify-center transition-all border border-white/20 shadow-2xl backdrop-blur-md"
+                    className="absolute left-4 top-1/2 -translate-y-1/2 z-30 w-11 h-11 rounded-full bg-black/75 hover:bg-[#59BFD6] hover:text-puelche-dark text-white flex items-center justify-center transition-all border border-white/20 shadow-2xl backdrop-blur-md hover:scale-105 active:scale-95"
                     aria-label="Pieza anterior"
                   >
-                    <ChevronLeft className="w-5 h-5" />
+                    <ChevronLeft className="w-6 h-6" />
                   </button>
                   <button
                     type="button"
                     onClick={nextImage}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 z-30 w-9 h-9 rounded-full bg-black/70 hover:bg-[#59BFD6] hover:text-puelche-dark text-white flex items-center justify-center transition-all border border-white/20 shadow-2xl backdrop-blur-md"
+                    className="absolute right-4 top-1/2 -translate-y-1/2 z-30 w-11 h-11 rounded-full bg-black/75 hover:bg-[#59BFD6] hover:text-puelche-dark text-white flex items-center justify-center transition-all border border-white/20 shadow-2xl backdrop-blur-md hover:scale-105 active:scale-95"
                     aria-label="Siguiente pieza"
                   >
-                    <ChevronRight className="w-5 h-5" />
+                    <ChevronRight className="w-6 h-6" />
                   </button>
                 </>
               )}
 
               {/* Badge de Categoría y Contador de Piezas */}
               <div className="absolute top-4 left-4 z-20 flex items-center gap-2">
-                <span className="px-3.5 py-1 rounded-full bg-[#59BFD6] text-puelche-dark text-xs uppercase font-bold tracking-wider shadow-lg">
+                <span className="px-4 py-1.5 rounded-full bg-[#59BFD6] text-puelche-dark text-xs uppercase font-bold tracking-wider shadow-lg">
                   {activeModalProject.category}
                 </span>
                 {activeGallery.length > 1 && (
-                  <span className="px-3 py-1 rounded-full bg-black/70 backdrop-blur-md border border-white/10 text-white/90 font-mono text-[11px] uppercase tracking-wider">
+                  <span className="px-3.5 py-1.5 rounded-full bg-black/70 backdrop-blur-md border border-white/10 text-white/90 font-mono text-[11px] uppercase tracking-wider">
                     Pieza {currentImageIndex + 1} de {activeGallery.length}
                   </span>
                 )}
@@ -466,7 +466,7 @@ function PortfolioContent() {
               )}
 
               {/* Micro-datos cliente y expedición en la base de la imagen */}
-              <div className="absolute bottom-4 left-4 right-4 z-10 hidden md:block font-mono text-xs text-white/90 bg-black/70 backdrop-blur-md p-3 rounded-xl border border-white/10">
+              <div className="absolute bottom-4 left-4 right-4 z-10 hidden md:block font-mono text-xs text-white/90 bg-black/75 backdrop-blur-md p-3.5 rounded-2xl border border-white/10">
                 <div className="flex items-center justify-between">
                   <span className="text-white/60">CLIENTE</span>
                   <span className="text-[#59BFD6] font-medium">{activeModalProject.client}</span>
@@ -480,7 +480,7 @@ function PortfolioContent() {
 
             {/* Columna Derecha: Información Editorial con Scroll Nativo */}
             <div
-              className="w-full md:w-1/2 p-6 sm:p-8 lg:p-9 flex flex-col justify-between overflow-y-auto max-h-[55vh] md:max-h-[90vh] space-y-6 bg-[#18191D]"
+              className="w-full lg:w-[32%] p-6 sm:p-8 lg:p-9 flex flex-col justify-between overflow-y-auto max-h-[50vh] lg:max-h-[92vh] space-y-6 bg-[#141518]"
               data-lenis-prevent="true"
             >
               <div className="space-y-6">
