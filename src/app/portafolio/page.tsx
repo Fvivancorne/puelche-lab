@@ -5,7 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { PORTFOLIO_PROJECTS, ProjectItem } from '@/data/portfolio';
-import { MapPin, Calendar, CheckCircle2, X, ArrowUpRight, ChevronLeft, ChevronRight } from 'lucide-react';
+import { MapPin, Calendar, CheckCircle2, X, ArrowUpRight, ChevronLeft, ChevronRight, ChevronUp, ChevronDown } from 'lucide-react';
 
 const CATEGORIES = ['Todos', 'Fotografía', 'Edición Fotográfica', 'Branding', 'Desarrollo Web', 'Editorial'] as const;
 
@@ -81,17 +81,9 @@ function PortfolioContent() {
       if (e.key === 'Escape') {
         setActiveModalProject(null);
       } else if (e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D') {
-        if (e.shiftKey || activeGallery.length <= 1 || currentImageIndex === activeGallery.length - 1) {
-          nextProject();
-        } else {
-          setCurrentImageIndex((prev) => prev + 1);
-        }
+        nextProject();
       } else if (e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A') {
-        if (e.shiftKey || activeGallery.length <= 1 || currentImageIndex === 0) {
-          prevProject();
-        } else {
-          setCurrentImageIndex((prev) => prev - 1);
-        }
+        prevProject();
       } else if (e.key === 'ArrowDown' || e.key === 'PageDown') {
         e.preventDefault();
         nextProject();
@@ -288,308 +280,307 @@ function PortfolioContent() {
 
       {/* 
         ======================================================================
-        RUNWAY INMERSIVO FULL-BLEED DE PROYECTOS (ESTILO LOCOMOTIVE / STUDIO FREIGHT)
-        Experiencia cinematográfica a pantalla completa (100vw x 100vh)
-        Navegación completa por teclado (← / → / A / D / ESC) y riel lateral tickeable
+        MODAL DRAWER: SPLIT EDITORIAL 2 COLUMNAS (AWWWARDS GRADE)
+        Centrado, de alto contraste, sin sangrado de fondo.
+        Navegación completa por teclado (← / → / ESC), flechas laterales flotantes
+        y scrubber vertical discreto.
         ======================================================================
       */}
       {activeModalProject && (
         <div
-          className="fixed inset-0 z-[100] w-screen h-screen min-h-screen bg-black/70 backdrop-blur-sm bg-[#08090c] text-white overflow-y-auto overflow-x-hidden flex flex-col animate-in fade-in duration-300 selection:bg-[#59BFD6] selection:text-[#08090c]"
+          className="fixed inset-0 z-[100] flex items-center justify-center p-3 sm:p-6 lg:p-10 bg-black/85 bg-black/70 backdrop-blur-sm backdrop-blur-md animate-in fade-in duration-200"
+          onClick={() => setActiveModalProject(null)}
           data-lenis-prevent="true"
         >
-          {/* ── BARRA SUPERIOR FIJA DE COMANDO EDITORIAL ── */}
-          <header className="sticky top-0 z-50 w-full px-6 md:px-12 py-4 bg-[#08090c]/90 backdrop-blur-md border-b border-white/10 flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <span className="font-mono text-xs uppercase tracking-widest text-[#59BFD6] bg-[#59BFD6]/10 px-2.5 py-1 rounded-sm border border-[#59BFD6]/30">
-                [ {activeProjectIndex >= 0 ? String(activeProjectIndex + 1).padStart(2, '0') : '01'} / {String(filteredProjects.length).padStart(2, '0')} ]
-              </span>
-              <span className="font-condensed text-xs uppercase tracking-wider font-bold text-white/90 hidden sm:inline">
-                {activeModalProject.category}
-              </span>
-              <span className="text-white/30 hidden sm:inline">&bull;</span>
-              <span className="font-mono text-xs text-white/60 hidden md:inline">
-                Cliente: <strong className="text-white font-medium">{activeModalProject.client}</strong>
-              </span>
-            </div>
+          {/* Fondo oscuro sólido extra para garantizar 100% de legibilidad sin sangrado de fondo */}
+          <div className="absolute inset-0 bg-[#090a0d]/95 pointer-events-none" />
 
-            <div className="flex items-center gap-3">
-              <div className="hidden lg:flex items-center gap-2 font-mono text-[10px] text-white/50 uppercase tracking-widest bg-white/[0.04] px-3 py-1.5 rounded-full border border-white/10">
-                <span>Navegar:</span>
-                <kbd className="px-1.5 py-0.5 rounded bg-white/10 text-white font-mono text-[9px] border border-white/15">←</kbd>
-                <kbd className="px-1.5 py-0.5 rounded bg-white/10 text-white font-mono text-[9px] border border-white/15">→</kbd>
-                <span className="text-white/30">|</span>
-                <span>Cerrar:</span>
-                <kbd className="px-1.5 py-0.5 rounded bg-white/10 text-white font-mono text-[9px] border border-white/15">ESC</kbd>
-              </div>
-
-              {/* Botón Cerrar Modal Accesible */}
-              <button
-                type="button"
-                onClick={() => setActiveModalProject(null)}
-                className="group flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 hover:bg-[#59BFD6] text-white hover:text-puelche-dark transition-all duration-300 border border-white/15 shadow-lg"
-                aria-label="Cerrar modal"
-              >
-                <span className="font-mono text-[11px] uppercase tracking-wider hidden sm:inline font-medium">
-                  Cerrar
-                </span>
-                <X className="w-4 h-4 transition-transform group-hover:rotate-90 duration-300" />
-              </button>
-            </div>
-          </header>
-
-          {/* ── BOTONES LATERALES FLOTANTES EN PANTALLA (< y >) ── */}
+          {/* ── BOTONES DE NAVEGACIÓN LATERAL FLOTANTES (< y >) ── */}
           <button
             type="button"
             onClick={prevProject}
-            className="fixed left-3 sm:left-6 top-1/2 -translate-y-1/2 z-[110] group flex items-center gap-2 p-3 sm:p-4 rounded-full bg-[#18191B]/95 hover:bg-[#59BFD6] text-white hover:text-puelche-dark border border-white/20 hover:border-[#59BFD6] shadow-[0_0_30px_rgba(0,0,0,0.85)] backdrop-blur-md transition-all duration-300 hover:scale-110 active:scale-95"
+            className="hidden xl:flex fixed left-4 2xl:left-8 top-1/2 -translate-y-1/2 z-[110] w-12 h-12 rounded-full bg-[#16171B]/95 hover:bg-[#59BFD6] text-white hover:text-puelche-dark border border-white/20 hover:border-[#59BFD6] shadow-[0_0_30px_rgba(0,0,0,0.85)] backdrop-blur-md transition-all duration-300 hover:scale-110 active:scale-95 items-center justify-center group"
             aria-label="Proyecto anterior"
-            title={`Anterior: ${prevProjectItem?.title}`}
+            title={`Anterior: ${prevProjectItem?.title} (←)`}
           >
-            <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6" />
-            <span className="hidden xl:inline-block max-w-0 overflow-hidden whitespace-nowrap group-hover:max-w-xs transition-all duration-300 font-condensed text-xs uppercase tracking-wider font-bold pr-1">
-              Anterior
-            </span>
+            <ChevronLeft className="w-6 h-6 transition-transform group-hover:-translate-x-0.5" />
           </button>
 
           <button
             type="button"
             onClick={nextProject}
-            className="fixed right-3 sm:right-6 top-1/2 -translate-y-1/2 z-[110] group flex items-center gap-2 p-3 sm:p-4 rounded-full bg-[#18191B]/95 hover:bg-[#59BFD6] text-white hover:text-puelche-dark border border-white/20 hover:border-[#59BFD6] shadow-[0_0_30px_rgba(0,0,0,0.85)] backdrop-blur-md transition-all duration-300 hover:scale-110 active:scale-95"
+            className="hidden xl:flex fixed right-4 2xl:right-8 top-1/2 -translate-y-1/2 z-[110] w-12 h-12 rounded-full bg-[#16171B]/95 hover:bg-[#59BFD6] text-white hover:text-puelche-dark border border-white/20 hover:border-[#59BFD6] shadow-[0_0_30px_rgba(0,0,0,0.85)] backdrop-blur-md transition-all duration-300 hover:scale-110 active:scale-95 items-center justify-center group"
             aria-label="Siguiente proyecto"
-            title={`Siguiente: ${nextProjectItem?.title}`}
+            title={`Siguiente: ${nextProjectItem?.title} (→)`}
           >
-            <span className="hidden xl:inline-block max-w-0 overflow-hidden whitespace-nowrap group-hover:max-w-xs transition-all duration-300 font-condensed text-xs uppercase tracking-wider font-bold pl-1 text-right">
-              Siguiente
-            </span>
-            <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6" />
+            <ChevronRight className="w-6 h-6 transition-transform group-hover:translate-x-0.5" />
           </button>
 
-          {/* ── BARRITA LATERAL VERTICAL TICKEABLE DE PROYECTOS ── */}
-          <aside
-            aria-label="Navegación lateral de proyectos"
-            className="hidden 2xl:flex fixed right-24 top-1/2 -translate-y-1/2 z-[105] flex-col items-center gap-1.5 p-2.5 rounded-full bg-[#18191B]/90 backdrop-blur-md border border-white/15 shadow-2xl max-h-[75vh] overflow-y-auto scrollbar-none"
+          {/* ── BARRITA LATERAL DISCRETA Y ELEGANTE (SCRUBBER VERTICAL) ── */}
+          <div
+            className="hidden 2xl:flex fixed right-20 top-1/2 -translate-y-1/2 z-[105] flex-col items-center gap-2 p-2.5 rounded-full bg-[#16171B]/95 backdrop-blur-md border border-white/15 shadow-2xl"
             onClick={(e) => e.stopPropagation()}
           >
-            <span className="text-[8px] font-mono uppercase text-white/40 tracking-widest writing-mode-vertical mb-1 select-none">
-              OBRAS
-            </span>
-            {filteredProjects.map((proj, idx) => {
-              const isActive = proj.id === activeModalProject.id;
-              return (
-                <button
-                  key={proj.id}
-                  type="button"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setActiveModalProject(proj);
-                    setCurrentImageIndex(0);
-                  }}
-                  className={`group relative flex items-center justify-center p-1 rounded-full transition-all duration-200 ${
-                    isActive ? 'scale-125' : 'hover:scale-110'
-                  }`}
-                  aria-label={`Ir a ${proj.title}`}
-                  title={`${idx + 1}. ${proj.title}`}
-                >
-                  <span
-                    className={`block rounded-full transition-all duration-300 ${
-                      isActive
-                        ? 'w-6 h-1.5 bg-[#59BFD6] shadow-[0_0_10px_#59BFD6]'
-                        : 'w-2 h-1 bg-white/30 group-hover:bg-white/80 group-hover:w-4'
-                    }`}
-                  />
-                  <span className="absolute right-full mr-3 hidden group-hover:block whitespace-nowrap px-3 py-1 rounded-md bg-[#18191B] border border-white/20 text-white font-condensed text-xs uppercase tracking-wider shadow-2xl z-30 pointer-events-none">
-                    {idx + 1}. {proj.title}
-                  </span>
-                </button>
-              );
-            })}
-          </aside>
+            <button
+              type="button"
+              onClick={prevProject}
+              className="p-1 rounded-full text-white/50 hover:text-[#59BFD6] transition-colors"
+              title="Proyecto anterior"
+            >
+              <ChevronUp className="w-4 h-4" />
+            </button>
 
-          {/* ── CONTENIDO PRINCIPAL: RUNWAY INMERSIVO FULL-BLEED ── */}
-          <main className="flex-1 w-full max-w-6xl mx-auto px-6 sm:px-10 lg:px-16 py-12 md:py-20 flex flex-col space-y-16 max-h-[90vh] overflow-y-auto">
-            {/* 1. Header Editorial Monumental */}
-            <div className="space-y-6 border-b border-white/10 pb-10">
-              <div className="flex flex-wrap items-center gap-4 font-mono text-xs text-[#59BFD6] uppercase tracking-widest">
-                <span className="inline-flex items-center gap-2">
-                  <span className="w-2 h-2 rounded-full bg-[#59BFD6] animate-pulse" />
-                  EXPEDICIÓN PUELCHE LAB
-                </span>
-                <span>&bull;</span>
-                <span className="flex items-center gap-1.5 text-white/70">
-                  <MapPin className="w-3.5 h-3.5 text-[#59BFD6]" />
-                  {activeModalProject.location}
-                </span>
-                <span>&bull;</span>
-                <span className="flex items-center gap-1.5 text-white/70">
-                  <Calendar className="w-3.5 h-3.5 text-[#59BFD6]" />
-                  Año {activeModalProject.year}
-                </span>
-              </div>
-
-              <h1 className="font-condensed text-4xl sm:text-6xl md:text-7xl lg:text-8xl uppercase tracking-tight font-bold text-white leading-none">
-                {activeModalProject.title}
-              </h1>
-
-              <div className="flex flex-wrap items-center gap-2 pt-2">
-                <span className="font-mono text-xs text-white/50 uppercase tracking-widest mr-2">Soporte:</span>
-                <span className="px-3 py-1 rounded-full bg-white/10 text-white font-mono text-xs uppercase tracking-wider border border-white/10">
-                  {activeModalProject.category}
-                </span>
-                <span className="px-3 py-1 rounded-full bg-[#59BFD6]/15 text-[#59BFD6] font-mono text-xs uppercase tracking-wider border border-[#59BFD6]/30">
-                  Cliente: {activeModalProject.client}
-                </span>
-              </div>
+            <div className="font-mono text-[10px] text-[#59BFD6] font-bold tracking-wider">
+              {String(activeProjectIndex + 1).padStart(2, '0')}
             </div>
 
-            {/* 2. Escenario Fotográfico a Pantalla Completa (The Masterpiece Artwork Stage) */}
-            <div className="relative w-full rounded-xl overflow-hidden bg-[#040507] border border-white/10 p-4 sm:p-8 md:p-12 shadow-[0_20px_60px_rgba(0,0,0,0.9)] flex flex-col items-center justify-center">
-              {/* Resplandor ambiental de fondo */}
-              <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-20 blur-3xl">
+            {/* Track interactivo */}
+            <div
+              className="relative w-1.5 h-32 bg-white/10 rounded-full overflow-hidden cursor-pointer"
+              title="Progreso de obras (click para navegar)"
+              onClick={(e) => {
+                const rect = e.currentTarget.getBoundingClientRect();
+                const clickY = e.clientY - rect.top;
+                const ratio = Math.max(0, Math.min(1, clickY / rect.height));
+                const targetIdx = Math.floor(ratio * activeProjectList.length);
+                setActiveModalProject(activeProjectList[targetIdx]);
+                setCurrentImageIndex(0);
+              }}
+            >
+              <div
+                className="absolute top-0 left-0 w-full bg-[#59BFD6] rounded-full transition-all duration-300 shadow-[0_0_8px_#59BFD6]"
+                style={{
+                  height: `${((activeProjectIndex + 1) / activeProjectList.length) * 100}%`,
+                }}
+              />
+            </div>
+
+            <div className="font-mono text-[9px] text-white/40">
+              {String(activeProjectList.length).padStart(2, '0')}
+            </div>
+
+            <button
+              type="button"
+              onClick={nextProject}
+              className="p-1 rounded-full text-white/50 hover:text-[#59BFD6] transition-colors"
+              title="Siguiente proyecto"
+            >
+              <ChevronDown className="w-4 h-4" />
+            </button>
+          </div>
+
+          {/* ── CAJA CENTRAL DEL MODAL (2 COLUMNAS EDITORIALES) ── */}
+          <div
+            className="bg-[#18191D] text-white rounded-[24px] sm:rounded-[32px] max-w-5xl w-full max-h-[90vh] overflow-hidden border border-white/15 shadow-[0_30px_90px_rgba(0,0,0,0.95)] relative flex flex-col md:flex-row z-10 animate-in zoom-in-95 duration-200"
+            onClick={(e) => e.stopPropagation()}
+            data-lenis-prevent="true"
+          >
+            {/* Botón Cerrar Flotante */}
+            <button
+              onClick={() => setActiveModalProject(null)}
+              className="absolute top-4 right-4 z-20 w-10 h-10 rounded-full bg-[#2B2D32]/90 hover:bg-[#59BFD6] text-white hover:text-puelche-dark flex items-center justify-center transition-all shadow-xl border border-white/15 backdrop-blur-md"
+              aria-label="Cerrar modal"
+            >
+              <X className="w-5 h-5" />
+            </button>
+
+            {/* Columna Izquierda: Fotografía en Alta Resolución Centrada con Marco y Navegación Multi-Pieza */}
+            <div className="relative w-full md:w-1/2 min-h-[300px] sm:min-h-[420px] md:min-h-[540px] bg-[#0c0d10] shrink-0 flex items-center justify-center p-4 sm:p-6 overflow-hidden">
+              {/* Ambient blur glow */}
+              <div className="absolute inset-0 overflow-hidden pointer-events-none">
                 <Image
                   src={activeGallery[currentImageIndex] || activeModalProject.image}
                   alt=""
                   fill
-                  className="object-cover scale-150"
+                  className="object-cover blur-3xl opacity-30 scale-125 transition-all duration-700"
                   aria-hidden="true"
                 />
+                <div className="absolute inset-0 bg-black/50" />
               </div>
 
-              {/* Obra Principal en Resolución Completa (Anti-Cropping) */}
-              <div className="relative w-full min-h-[380px] sm:min-h-[520px] md:min-h-[640px] flex items-center justify-center z-10">
+              {/* Main Artwork Centered (Anti-Cropping) */}
+              <div className="relative w-full h-full min-h-[260px] sm:min-h-[360px] md:min-h-[460px] flex items-center justify-center z-10">
                 <Image
                   src={activeGallery[currentImageIndex] || activeModalProject.image}
                   alt={`${activeModalProject.title} — Pieza ${currentImageIndex + 1}`}
                   fill
                   priority
-                  className="object-contain object-center drop-shadow-[0_25px_50px_rgba(0,0,0,0.95)] transition-all duration-500"
+                  className="object-contain object-center drop-shadow-[0_20px_40px_rgba(0,0,0,0.9)] transition-all duration-500"
                 />
               </div>
 
-              {/* Controles Multi-Pieza si hay más de 1 imagen */}
+              {/* Controles de Navegación de Piezas de Galería < y > */}
               {activeGallery.length > 1 && (
-                <div className="relative z-20 w-full mt-8 pt-6 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4">
-                  <div className="flex items-center gap-2">
+                <>
+                  <button
+                    type="button"
+                    onClick={prevImage}
+                    className="absolute left-3 top-1/2 -translate-y-1/2 z-30 w-9 h-9 rounded-full bg-black/70 hover:bg-[#59BFD6] hover:text-puelche-dark text-white flex items-center justify-center transition-all border border-white/20 shadow-2xl backdrop-blur-md"
+                    aria-label="Pieza anterior"
+                  >
+                    <ChevronLeft className="w-5 h-5" />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={nextImage}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 z-30 w-9 h-9 rounded-full bg-black/70 hover:bg-[#59BFD6] hover:text-puelche-dark text-white flex items-center justify-center transition-all border border-white/20 shadow-2xl backdrop-blur-md"
+                    aria-label="Siguiente pieza"
+                  >
+                    <ChevronRight className="w-5 h-5" />
+                  </button>
+                </>
+              )}
+
+              {/* Badge de Categoría y Contador de Piezas */}
+              <div className="absolute top-4 left-4 z-20 flex items-center gap-2">
+                <span className="px-3.5 py-1 rounded-full bg-[#59BFD6] text-puelche-dark text-xs uppercase font-bold tracking-wider shadow-lg">
+                  {activeModalProject.category}
+                </span>
+                {activeGallery.length > 1 && (
+                  <span className="px-3 py-1 rounded-full bg-black/70 backdrop-blur-md border border-white/10 text-white/90 font-mono text-[11px] uppercase tracking-wider">
+                    Pieza {currentImageIndex + 1} de {activeGallery.length}
+                  </span>
+                )}
+              </div>
+
+              {/* Miniaturas de selección rápida de fotos */}
+              {activeGallery.length > 1 && (
+                <div className="absolute bottom-16 md:bottom-20 z-20 flex items-center gap-2 px-3 py-1.5 rounded-full bg-black/70 backdrop-blur-md border border-white/15">
+                  {activeGallery.map((img, idx) => (
                     <button
+                      key={img + idx}
                       type="button"
-                      onClick={prevImage}
-                      className="p-2.5 rounded-full bg-white/10 hover:bg-[#59BFD6] hover:text-puelche-dark text-white transition-all border border-white/15"
-                      aria-label="Pieza anterior"
-                    >
-                      <ChevronLeft className="w-4 h-4" />
-                    </button>
-                    <span className="font-mono text-xs uppercase tracking-widest text-white/70 px-2">
-                      Pieza {currentImageIndex + 1} de {activeGallery.length}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setCurrentImageIndex(idx);
+                      }}
+                      className={`w-2.5 h-2.5 rounded-full transition-all duration-300 ${
+                        currentImageIndex === idx
+                          ? 'bg-[#59BFD6] scale-125 shadow-[0_0_8px_#59BFD6]'
+                          : 'bg-white/30 hover:bg-white/70'
+                      }`}
+                      aria-label={`Ver pieza ${idx + 1}`}
+                    />
+                  ))}
+                </div>
+              )}
+
+              {/* Micro-datos cliente y expedición en la base de la imagen */}
+              <div className="absolute bottom-4 left-4 right-4 z-10 hidden md:block font-mono text-xs text-white/90 bg-black/70 backdrop-blur-md p-3 rounded-xl border border-white/10">
+                <div className="flex items-center justify-between">
+                  <span className="text-white/60">CLIENTE</span>
+                  <span className="text-[#59BFD6] font-medium">{activeModalProject.client}</span>
+                </div>
+                <div className="flex items-center justify-between mt-1 pt-1 border-t border-white/10">
+                  <span className="text-white/60">AÑO & EXPEDICIÓN</span>
+                  <span>Año {activeModalProject.year} &bull; {activeModalProject.location}</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Columna Derecha: Información Editorial con Scroll Nativo */}
+            <div
+              className="w-full md:w-1/2 p-6 sm:p-8 lg:p-9 flex flex-col justify-between overflow-y-auto max-h-[55vh] md:max-h-[90vh] space-y-6 bg-[#18191D]"
+              data-lenis-prevent="true"
+            >
+              <div className="space-y-6">
+                {/* Header Editorial del Modal */}
+                <div>
+                  <div className="flex items-center justify-between gap-2 mb-2 pr-12">
+                    <div className="flex items-center gap-2 text-xs font-mono text-[#59BFD6] uppercase tracking-wider">
+                      <span className="w-1.5 h-1.5 rounded-full bg-[#59BFD6] animate-pulse" />
+                      <span>EXPEDICIÓN PUELCHE LAB</span>
+                    </div>
+                    {/* Contador de Obra */}
+                    <span className="font-mono text-[11px] text-white/50 bg-white/5 px-2.5 py-0.5 rounded-full border border-white/10">
+                      {String(activeProjectIndex + 1).padStart(2, '0')} / {String(activeProjectList.length).padStart(2, '0')}
                     </span>
-                    <button
-                      type="button"
-                      onClick={nextImage}
-                      className="p-2.5 rounded-full bg-white/10 hover:bg-[#59BFD6] hover:text-puelche-dark text-white transition-all border border-white/15"
-                      aria-label="Siguiente pieza"
-                    >
-                      <ChevronRight className="w-4 h-4" />
-                    </button>
                   </div>
 
-                  {/* Tira de Miniaturas (Filmstrip Selector) */}
-                  <div className="flex items-center gap-2.5 overflow-x-auto max-w-full pb-1">
-                    {activeGallery.map((img, idx) => (
-                      <button
-                        key={img + idx}
-                        type="button"
-                        onClick={() => setCurrentImageIndex(idx)}
-                        className={`relative w-14 h-10 rounded-sm overflow-hidden border transition-all duration-300 shrink-0 ${
-                          currentImageIndex === idx
-                            ? 'border-[#59BFD6] scale-105 shadow-[0_0_12px_#59BFD6]'
-                            : 'border-white/20 opacity-50 hover:opacity-100 hover:border-white/50'
-                        }`}
-                        aria-label={`Ver pieza ${idx + 1}`}
-                      >
-                        <Image src={img} alt="" fill className="object-cover" />
-                      </button>
+                  <h2 className="text-2xl sm:text-3xl font-condensed font-bold uppercase tracking-wide leading-tight text-white">
+                    {activeModalProject.title}
+                  </h2>
+
+                  <div className="flex flex-wrap items-center gap-3 text-xs text-white/70 mt-3 font-mono border-b border-white/10 pb-4">
+                    <span className="flex items-center gap-1">
+                      <MapPin className="w-3.5 h-3.5 text-[#59BFD6]" />
+                      {activeModalProject.location}
+                    </span>
+                    <span className="flex items-center gap-1">
+                      <Calendar className="w-3.5 h-3.5 text-[#59BFD6]" />
+                      Año {activeModalProject.year}
+                    </span>
+                    <span className="md:hidden">Cliente: {activeModalProject.client}</span>
+                  </div>
+                </div>
+
+                {/* Desafío & Dirección */}
+                <div>
+                  <div className="inline-block px-2.5 py-1 rounded bg-[#59BFD6]/15 border border-[#59BFD6]/30 mb-2">
+                    <h4 className="font-condensed text-xs uppercase tracking-widest text-[#59BFD6] font-bold">
+                      Desafío & Dirección
+                    </h4>
+                  </div>
+                  <p className="text-sm sm:text-base text-white/85 leading-relaxed font-light">
+                    {activeModalProject.description}
+                  </p>
+                </div>
+
+                {/* Entregables & Soportes Técnicos */}
+                <div className="bg-[#22242A]/80 p-5 rounded-2xl border border-white/10">
+                  <h4 className="font-condensed text-xs uppercase tracking-widest text-white font-bold mb-3">
+                    Entregables & Soportes Técnicos
+                  </h4>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                    {activeModalProject.deliverables.map((item) => (
+                      <div key={item} className="flex items-center gap-2 text-xs sm:text-sm text-white/85">
+                        <CheckCircle2 className="w-4 h-4 text-[#59BFD6] shrink-0" />
+                        <span>{item}</span>
+                      </div>
                     ))}
                   </div>
                 </div>
-              )}
-            </div>
-
-            {/* 3. Narrativa Editorial & Entregables Técnicos en Doble Columna */}
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start pt-4">
-              {/* Columna Izquierda: Desafío & Dirección Artística */}
-              <div className="lg:col-span-7 space-y-6">
-                <div className="space-y-3">
-                  <span className="font-mono text-xs uppercase tracking-[0.25em] text-[#59BFD6] font-medium">
-                    DIRECCIÓN ARTÍSTICA &bull; ANÁLISIS DE CASO
-                  </span>
-                  <h3 className="font-condensed text-3xl sm:text-4xl uppercase tracking-wide font-bold text-white">
-                    Desafío & Dirección
-                  </h3>
-                </div>
-                <p className="font-sans text-base sm:text-lg text-white/85 font-light leading-relaxed">
-                  {activeModalProject.description}
-                </p>
               </div>
 
-              {/* Columna Derecha: Entregables Técnicos & Conversión */}
-              <div className="lg:col-span-5 space-y-6 bg-white/[0.03] p-8 rounded-xl border border-white/10">
-                <div className="space-y-2">
-                  <span className="font-mono text-xs uppercase tracking-widest text-[#59BFD6]">
-                    ALCANCE DEL PROYECTO
+              {/* Botón de Conversión CTA y Navegación Móvil */}
+              <div className="pt-4 border-t border-white/10 space-y-4">
+                {/* Atajo de navegación móvil entre proyectos */}
+                <div className="flex xl:hidden items-center justify-between text-xs font-mono text-white/60 bg-white/5 p-2 rounded-xl border border-white/10">
+                  <button
+                    type="button"
+                    onClick={prevProject}
+                    className="flex items-center gap-1 hover:text-[#59BFD6] transition-colors px-2 py-1"
+                  >
+                    <ChevronLeft className="w-4 h-4" />
+                    <span>Anterior</span>
+                  </button>
+                  <span className="text-[#59BFD6] font-bold">
+                    {activeProjectIndex + 1} / {activeProjectList.length}
                   </span>
-                  <h4 className="font-condensed text-xl sm:text-2xl uppercase tracking-wider font-bold text-white">
-                    Entregables & Soportes Técnicos
-                  </h4>
+                  <button
+                    type="button"
+                    onClick={nextProject}
+                    className="flex items-center gap-1 hover:text-[#59BFD6] transition-colors px-2 py-1"
+                  >
+                    <span>Siguiente</span>
+                    <ChevronRight className="w-4 h-4" />
+                  </button>
                 </div>
 
-                <div className="space-y-3 border-t border-white/10 pt-4">
-                  {activeModalProject.deliverables.map((item) => (
-                    <div key={item} className="flex items-start gap-3 text-sm text-white/85">
-                      <CheckCircle2 className="w-4 h-4 text-[#59BFD6] shrink-0 mt-0.5" />
-                      <span className="font-sans font-light">{item}</span>
-                    </div>
-                  ))}
-                </div>
-
-                <div className="pt-6 border-t border-white/10 space-y-3">
-                  <span className="font-mono text-[11px] text-white/50 block">
-                    ¿Iniciativa similar en la Patagonia o territorio austral?
+                <div className="space-y-2">
+                  <span className="text-xs text-white/60 block">
+                    ¿Tienes una iniciativa similar en la Región de Los Lagos o Patagonia?
                   </span>
                   <Link
                     href={`/contacto?proyecto=${encodeURIComponent(activeModalProject.title)}`}
-                    className="w-full text-center px-6 py-4 rounded-full bg-[#59BFD6] text-puelche-dark font-condensed uppercase tracking-wider font-bold text-xs hover:bg-white transition-all shadow-[0_0_25px_rgba(89,191,214,0.35)] flex items-center justify-center gap-2 group hover:scale-[1.02]"
+                    className="w-full text-center px-6 py-3.5 rounded-full bg-[#59BFD6] text-puelche-dark text-xs font-condensed uppercase tracking-wider font-bold hover:bg-white transition-all shadow-[0_0_20px_rgba(89,191,214,0.3)] hover:scale-[1.01] block"
                   >
-                    <span>Cotizar propuesta similar</span>
-                    <ArrowUpRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                    Cotizar propuesta similar
                   </Link>
                 </div>
               </div>
             </div>
-
-            {/* 4. Siguiente Obra (Continuous Flow — Estilo Locomotive Runway) */}
-            <div className="border-t border-white/10 pt-16 pb-8">
-              <button
-                type="button"
-                onClick={nextProject}
-                className="w-full group p-8 sm:p-12 rounded-xl bg-white/[0.02] hover:bg-white/[0.06] border border-white/10 hover:border-[#59BFD6]/40 transition-all duration-500 text-left flex flex-col md:flex-row md:items-center justify-between gap-6"
-              >
-                <div className="space-y-2">
-                  <span className="font-mono text-xs uppercase tracking-[0.25em] text-[#59BFD6] group-hover:text-white transition-colors">
-                    CONTINUAR LA EXPEDICIÓN &bull; SIGUIENTE OBRA
-                  </span>
-                  <h3 className="font-condensed text-3xl sm:text-5xl uppercase tracking-wide font-bold text-white group-hover:text-[#59BFD6] transition-colors">
-                    {nextProjectItem?.title}
-                  </h3>
-                  <p className="font-mono text-xs text-white/50">
-                    {nextProjectItem?.category} &bull; {nextProjectItem?.location}
-                  </p>
-                </div>
-
-                <div className="w-14 h-14 rounded-full bg-white/10 group-hover:bg-[#59BFD6] text-white group-hover:text-puelche-dark flex items-center justify-center transition-all duration-300 shrink-0 group-hover:scale-110">
-                  <ChevronRight className="w-7 h-7" />
-                </div>
-              </button>
-            </div>
-          </main>
+          </div>
         </div>
       )}
     </div>
