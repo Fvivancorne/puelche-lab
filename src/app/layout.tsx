@@ -206,7 +206,7 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
-      <body className="min-h-screen bg-white text-puelche-dark font-sans antialiased flex flex-col selection:bg-puelche-cyan selection:text-white">
+      <body className="min-h-screen bg-[#111215] text-white font-sans antialiased flex flex-col selection:bg-puelche-cyan selection:text-white">
         <Preloader />
         <PageTransition />
         <AwwwardsCursor />

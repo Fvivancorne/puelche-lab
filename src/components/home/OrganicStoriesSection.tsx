@@ -1,9 +1,9 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { ArrowUpRight, ChevronDown, Compass, Sparkles, MapPin, Feather, Quote } from 'lucide-react';
+import { ArrowUpRight, MapPin, Feather, Quote, Compass } from 'lucide-react';
 
 interface OrganicStory {
   id: string;
@@ -122,191 +122,275 @@ const STORIES: OrganicStory[] = [
 ];
 
 export function OrganicStoriesSection() {
-  const [expandedStoryId, setExpandedStoryId] = useState<string | null>('estancia-rilan');
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const [scrollProgress, setScrollProgress] = useState(0);
+  const [activeStoryIdx, setActiveStoryIdx] = useState(0);
 
-  const toggleStory = (id: string) => {
-    setExpandedStoryId((prev) => (prev === id ? null : id));
-  };
+  useEffect(() => {
+    let ticking = false;
+
+    const handleScroll = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          if (!sectionRef.current) return;
+          const rect = sectionRef.current.getBoundingClientRect();
+          const totalScrollable = rect.height - window.innerHeight;
+          if (totalScrollable <= 0) return;
+
+          // Progress va de 0 a 1 mientras la sección cruza la pantalla
+          const currentProgress = Math.max(0, Math.min(1, -rect.top / totalScrollable));
+          setScrollProgress(currentProgress);
+
+          const storyIndex = Math.min(
+            STORIES.length - 1,
+            Math.floor(currentProgress * STORIES.length)
+          );
+          setActiveStoryIdx(storyIndex);
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const activeStory = STORIES[activeStoryIdx] || STORIES[0];
 
   return (
     <section
       id="cronicas-de-autor"
       aria-label="Crónicas del Puelche — Relatos Vivos de Autor"
-      className="relative w-full bg-[#111215] text-white py-24 sm:py-32 md:py-40 px-6 sm:px-10 lg:px-16 border-t border-b border-white/[0.08] overflow-hidden"
+      className="relative w-full bg-[#0d0e12] text-white border-t border-b border-white/[0.08]"
     >
-      {/* Resplandor ambiental orgánico en segundo plano */}
-      <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] rounded-full bg-[#59BFD6]/[0.03] blur-[140px] pointer-events-none" />
-      <div className="absolute bottom-1/4 right-1/4 w-[600px] h-[600px] rounded-full bg-[#C29B63]/[0.03] blur-[160px] pointer-events-none" />
+      {/* 
+        ======================================================================
+        VERSIÓN ESCRITORIO: STICKY HORIZONTAL SCROLL RUNWAY (350vh)
+        La pantalla se fija en top-0 y el avance del scroll vertical desplaza
+        las fotografías monumentales y tarjetas flotantes de derecha a izquierda.
+        ======================================================================
+      */}
+      <div
+        ref={sectionRef}
+        className="hidden md:block relative w-full h-[350vh]"
+      >
+        <div className="sticky top-0 w-full h-screen min-h-screen overflow-hidden flex flex-col justify-between">
+          {/* Cabecera Flotante Discreta */}
+          <header className="absolute top-6 left-8 md:left-16 z-30 pointer-events-none">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-black/60 backdrop-blur-md border border-white/10 text-[#59BFD6] font-mono text-xs uppercase tracking-[0.25em]">
+              <Feather className="w-3.5 h-3.5 text-[#59BFD6]" />
+              <span>CRÓNICAS DEL PUELCHE &bull; RELATOS DE CAMPO</span>
+            </div>
+          </header>
 
-      {/* Marca de agua tipográfica suave */}
-      <div className="absolute -top-12 right-10 select-none pointer-events-none opacity-[0.02] font-serif italic text-[16vw] font-normal text-white leading-none">
-        Relatos
-      </div>
+          {/* Track Horizontal de Obras */}
+          <div
+            className="flex h-full will-change-transform transition-transform ease-out duration-100"
+            style={{
+              width: `${STORIES.length * 100}vw`,
+              transform: `translate3d(-${scrollProgress * (STORIES.length - 1) * 100}vw, 0, 0)`,
+            }}
+          >
+            {STORIES.map((story, idx) => (
+              <div
+                key={story.id}
+                className="w-screen h-full shrink-0 relative flex items-center justify-end px-8 md:px-16 lg:px-24 py-16"
+              >
+                {/* Fotografía Monumental de Fondo Completo (100% Pantalla) */}
+                <div className="absolute inset-0 z-0">
+                  <Image
+                    src={story.image}
+                    alt={story.alt}
+                    fill
+                    priority={idx === 0}
+                    className="object-cover object-center scale-105 transition-transform duration-1000"
+                    sizes="100vw"
+                  />
+                  {/* Gradiente cinemático de alto contraste para garantizar 100% legibilidad */}
+                  <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/50 to-black/90 pointer-events-none" />
+                  <div className="absolute inset-0 bg-black/20 pointer-events-none" />
+                </div>
 
-      <div className="max-w-6xl mx-auto space-y-16 relative z-10">
-        {/* Cabecera Editorial Empática */}
-        <div className="space-y-6 max-w-3xl">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/[0.04] border border-white/10 text-[#59BFD6] font-mono text-xs uppercase tracking-[0.25em]">
-            <Feather className="w-3.5 h-3.5 text-[#59BFD6]" />
-            <span>CRÓNICAS DEL PUELCHE &bull; RELATOS DE CAMPO</span>
+                {/* Tarjeta Flotante de Cristal Oscuro con el Relato */}
+                <article className="relative z-10 max-w-xl w-full bg-[#111215]/85 backdrop-blur-md rounded-[28px] sm:rounded-[36px] border border-white/15 p-8 sm:p-10 shadow-[0_30px_90px_rgba(0,0,0,0.85)] space-y-6">
+                  {/* Metadata de Cabecera */}
+                  <div className="space-y-2">
+                    <div className="flex items-center justify-between font-mono text-xs text-[#59BFD6]">
+                      <span className="font-bold tracking-wider">[ {story.num} / 04 ]</span>
+                      <span className="text-[#C29B63] uppercase tracking-wider">{story.role}</span>
+                    </div>
+
+                    <h3 className="font-condensed text-3xl sm:text-4xl lg:text-5xl uppercase tracking-tight font-bold text-white leading-tight">
+                      {story.title}
+                    </h3>
+
+                    <div className="flex items-center gap-1.5 text-xs font-mono text-white/60">
+                      <MapPin className="w-3.5 h-3.5 text-[#59BFD6]" />
+                      <span>{story.location}</span>
+                    </div>
+                  </div>
+
+                  {/* Cita Editorial en Serif Cursiva */}
+                  <div className="p-5 rounded-2xl bg-white/[0.04] border-l-2 border-[#C29B63] space-y-2">
+                    <Quote className="w-4 h-4 text-[#C29B63]/70" />
+                    <p className="font-serif italic text-base sm:text-lg text-white/95 leading-relaxed font-light">
+                      &ldquo;{story.curatorQuote}&rdquo;
+                    </p>
+                    <span className="font-mono text-[11px] uppercase tracking-widest text-[#C29B63] block">
+                      &mdash; {story.quoteAuthor}
+                    </span>
+                  </div>
+
+                  {/* Crónica de Campo */}
+                  <div className="space-y-2">
+                    <span className="font-condensed text-xs uppercase tracking-[0.25em] text-[#59BFD6] font-bold block">
+                      Crónica de Expedición
+                    </span>
+                    <p className="font-sans text-sm sm:text-base text-white/85 font-light leading-relaxed line-clamp-4">
+                      {story.chronicle}
+                    </p>
+                  </div>
+
+                  {/* Bitácora Técnica & CTA */}
+                  <div className="pt-4 border-t border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <div className="grid grid-cols-2 gap-3 font-mono text-[10px] text-white/60">
+                      <div>
+                        <span className="block text-white/40 uppercase">Momento Solar</span>
+                        <span className="text-white/90">{story.expeditionDetails.hour}</span>
+                      </div>
+                      <div>
+                        <span className="block text-white/40 uppercase">Óptica</span>
+                        <span className="text-white/90">{story.expeditionDetails.lens}</span>
+                      </div>
+                    </div>
+
+                    <Link
+                      href={`/portafolio?proyecto=${story.projectSlug}`}
+                      className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full bg-[#59BFD6] hover:bg-white text-puelche-dark font-condensed uppercase tracking-wider text-xs font-bold transition-all shadow-md shrink-0 hover:scale-105"
+                    >
+                      <span>Ver obra en archivo</span>
+                      <ArrowUpRight className="w-4 h-4" />
+                    </Link>
+                  </div>
+                </article>
+              </div>
+            ))}
           </div>
 
-          <h2 className="font-condensed text-4xl sm:text-5xl md:text-6xl lg:text-7xl uppercase tracking-tight font-bold text-white leading-tight">
-            La Historia Detrás <br />
-            <span className="font-serif italic font-normal text-[#FAF8F5]/90 tracking-normal capitalize">
-              del Disparo de Autor
-            </span>
-          </h2>
+          {/* Barra de Progreso Austral en la Base */}
+          <footer className="absolute bottom-6 left-8 right-8 md:left-16 md:right-16 z-30 flex items-center justify-between text-xs font-mono text-white/80 bg-black/70 backdrop-blur-md px-6 py-3.5 rounded-full border border-white/15 shadow-2xl">
+            <div className="flex items-center gap-3">
+              <span className="text-[#59BFD6] font-bold tracking-wider">
+                [ {activeStory.num} / 04 ]
+              </span>
+              <span className="hidden sm:inline text-white/90 font-medium">
+                {activeStory.title}
+              </span>
+              <span className="text-white/30 hidden sm:inline">&bull;</span>
+              <span className="text-white/50 hidden md:inline">
+                {activeStory.location}
+              </span>
+            </div>
 
-          <p className="font-sans text-base sm:text-lg text-white/75 font-light leading-relaxed">
-            No creemos en la fotografía fría o distante. Cada imagen es el fruto de un encuentro humano: 
-            madrugadas con pescadores, charlas con maestros carpinteros de tejuela y tardes de paciencia 
-            esperando que la luz del sur revele la esencia de un lugar.
+            {/* Track Fino de Progreso en Cyan */}
+            <div className="flex items-center gap-4">
+              <div className="w-36 sm:w-56 h-1.5 bg-white/15 rounded-full overflow-hidden">
+                <div
+                  className="h-full bg-[#59BFD6] rounded-full transition-all duration-150 shadow-[0_0_8px_#59BFD6]"
+                  style={{
+                    width: `${Math.max(8, scrollProgress * 100)}%`,
+                  }}
+                />
+              </div>
+              <span className="text-[10px] uppercase tracking-widest text-[#59BFD6] hidden lg:inline font-bold">
+                SCROLL HORIZONTAL &darr;
+              </span>
+            </div>
+          </footer>
+        </div>
+      </div>
+
+      {/* 
+        ======================================================================
+        VERSIÓN MÓVIL (SMARTPHONES): DESLIZAMIENTO TÁCTIL HORIZONTAL (SWIPE)
+        Desplazamiento horizontal nativo con snap, fluido con el pulgar.
+        ======================================================================
+      */}
+      <div className="block md:hidden py-16 px-4">
+        {/* Encabezado Móvil */}
+        <div className="px-2 mb-8 space-y-3">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/[0.04] border border-white/10 text-[#59BFD6] font-mono text-xs uppercase tracking-[0.2em]">
+            <Feather className="w-3 h-3 text-[#59BFD6]" />
+            <span>CRÓNICAS DEL PUELCHE</span>
+          </div>
+          <h2 className="font-condensed text-3xl uppercase font-bold text-white tracking-tight">
+            La Historia Detrás del Disparo
+          </h2>
+          <p className="font-sans text-xs text-white/70">
+            Desliza hacia los lados para conocer los relatos vivos de cada expedición.
           </p>
         </div>
 
-        {/* Lista de Relatos Vivos Expansivos (Siluetas de Canto Rodado) */}
-        <div className="space-y-6">
-          {STORIES.map((story) => {
-            const isExpanded = expandedStoryId === story.id;
-            return (
-              <article
-                key={story.id}
-                className={`group relative rounded-[28px] sm:rounded-[36px] transition-all duration-700 overflow-hidden border ${
-                  isExpanded
-                    ? 'bg-[#18191E] border-white/20 shadow-[0_30px_70px_rgba(0,0,0,0.6)] ring-1 ring-[#59BFD6]/30'
-                    : 'bg-[#151619] hover:bg-[#18191E] border-white/10 hover:border-white/20'
-                }`}
-              >
-                {/* Botón de Activación & Resumen del Relato */}
-                <button
-                  type="button"
-                  onClick={() => toggleStory(story.id)}
-                  aria-expanded={isExpanded}
-                  className="w-full p-6 sm:p-8 md:p-10 text-left flex flex-col md:flex-row md:items-center justify-between gap-6 cursor-pointer focus:outline-none"
-                >
-                  <div className="flex items-start sm:items-center gap-5 sm:gap-8">
-                    {/* Número de Bitácora */}
-                    <span className="font-mono text-sm sm:text-base text-[#59BFD6] font-semibold shrink-0 pt-1 sm:pt-0">
-                      [ {story.num} ]
-                    </span>
+        {/* Carrusel Swipe Nativo */}
+        <div className="flex overflow-x-auto snap-x snap-mandatory scrollbar-none gap-4 pb-4 -mx-4 px-4">
+          {STORIES.map((story) => (
+            <article
+              key={story.id}
+              className="w-[88vw] shrink-0 snap-center rounded-[28px] overflow-hidden relative min-h-[580px] flex flex-col justify-end p-6 border border-white/15 shadow-2xl bg-black"
+            >
+              {/* Fotografía de Fondo */}
+              <div className="absolute inset-0 z-0">
+                <Image
+                  src={story.image}
+                  alt={story.alt}
+                  fill
+                  className="object-cover object-center"
+                  sizes="88vw"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent" />
+              </div>
 
-                    <div className="space-y-1.5">
-                      <div className="flex flex-wrap items-center gap-3 text-xs font-mono text-white/50 uppercase tracking-wider">
-                        <span className="text-[#C29B63] font-medium">{story.role}</span>
-                        <span>&bull;</span>
-                        <span className="flex items-center gap-1 text-white/70">
-                          <MapPin className="w-3 h-3 text-[#59BFD6]" />
-                          {story.location}
-                        </span>
-                      </div>
+              {/* Contenido Flotante al Pie */}
+              <div className="relative z-10 space-y-4">
+                <div className="space-y-1">
+                  <span className="font-mono text-xs text-[#59BFD6] font-bold block">
+                    [ {story.num} / 04 ] &bull; {story.role}
+                  </span>
+                  <h3 className="font-condensed text-2xl uppercase font-bold text-white leading-tight">
+                    {story.title}
+                  </h3>
+                  <span className="font-mono text-[11px] text-white/60 block">
+                    {story.location}
+                  </span>
+                </div>
 
-                      <h3 className="font-condensed text-2xl sm:text-3xl md:text-4xl uppercase tracking-wide font-bold text-white group-hover:text-[#59BFD6] transition-colors">
-                        {story.title}
-                      </h3>
+                <div className="p-3.5 rounded-xl bg-black/60 backdrop-blur-md border-l-2 border-[#C29B63]">
+                  <p className="font-serif italic text-xs text-white/90">
+                    &ldquo;{story.curatorQuote}&rdquo;
+                  </p>
+                </div>
 
-                      <p className="font-serif italic text-sm sm:text-base text-white/70 max-w-2xl line-clamp-1">
-                        &ldquo;{story.fieldNote}&rdquo;
-                      </p>
-                    </div>
-                  </div>
+                <p className="font-sans text-xs text-white/80 line-clamp-3">
+                  {story.chronicle}
+                </p>
 
-                  {/* Icono de Expansión Fluida */}
-                  <div className="flex items-center gap-4 shrink-0 self-end md:self-center">
-                    <span className="font-mono text-xs uppercase tracking-widest text-white/40 group-hover:text-white transition-colors hidden sm:inline">
-                      {isExpanded ? 'Plegar relato' : 'Expandir relato'}
-                    </span>
-                    <div
-                      className={`w-12 h-12 rounded-full border flex items-center justify-center transition-all duration-500 ${
-                        isExpanded
-                          ? 'bg-[#59BFD6] border-[#59BFD6] text-puelche-dark rotate-180 shadow-[0_0_20px_rgba(89,191,214,0.4)]'
-                          : 'bg-white/[0.04] border-white/15 text-white group-hover:bg-white/10 group-hover:border-white/30'
-                      }`}
-                    >
-                      <ChevronDown className="w-5 h-5 transition-transform duration-500" />
-                    </div>
-                  </div>
-                </button>
-
-                {/* Contenido Expansivo Orgánico (Crónica, Cita y Apuntes) */}
-                {isExpanded && (
-                  <div className="px-6 pb-8 sm:px-10 sm:pb-12 md:px-12 md:pb-14 pt-2 border-t border-white/10 animate-in fade-in slide-in-from-top-4 duration-500">
-                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-stretch pt-6">
-                      {/* Fotografía de Autor en Marco Suave de Canto Rodado */}
-                      <div className="lg:col-span-5 relative min-h-[300px] sm:min-h-[400px] rounded-[24px] overflow-hidden bg-black/40 border border-white/10 shadow-2xl">
-                        <Image
-                          src={story.image}
-                          alt={story.alt}
-                          fill
-                          className="object-cover transition-transform duration-700 hover:scale-105"
-                          sizes="(max-width: 1024px) 100vw, 40vw"
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent pointer-events-none" />
-
-                        {/* Pie de foto documental */}
-                        <div className="absolute bottom-4 left-4 right-4 text-xs font-mono text-white/90 bg-black/60 backdrop-blur-md p-3 rounded-xl border border-white/10">
-                          <span className="text-[#59BFD6] block font-medium mb-0.5">REGISTRO DE CAMPO</span>
-                          <span className="text-white/80">{story.protagonist}</span>
-                        </div>
-                      </div>
-
-                      {/* Crónica Editorial & Apuntes Humanos */}
-                      <div className="lg:col-span-7 flex flex-col justify-between space-y-6">
-                        <div className="space-y-6">
-                          {/* Cita Editorial en Serif Cursiva */}
-                          <div className="p-6 rounded-2xl bg-white/[0.03] border-l-2 border-[#C29B63] space-y-3">
-                            <Quote className="w-5 h-5 text-[#C29B63]/60" />
-                            <p className="font-serif italic text-lg sm:text-xl text-white/95 leading-relaxed font-light">
-                              &ldquo;{story.curatorQuote}&rdquo;
-                            </p>
-                            <span className="font-mono text-xs uppercase tracking-widest text-[#C29B63] block">
-                              &mdash; {story.quoteAuthor}
-                            </span>
-                          </div>
-
-                          {/* Relato Documental */}
-                          <div className="space-y-3">
-                            <h4 className="font-condensed text-xs uppercase tracking-[0.25em] text-[#59BFD6] font-bold">
-                              Crónica de la Expedición
-                            </h4>
-                            <p className="font-sans text-sm sm:text-base text-white/85 font-light leading-relaxed">
-                              {story.chronicle}
-                            </p>
-                          </div>
-                        </div>
-
-                        {/* Apuntes Técnicos & Enlace */}
-                        <div className="pt-6 border-t border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 font-mono text-[11px] text-white/60">
-                            <div>
-                              <span className="block text-white/40 uppercase">Momento Solar</span>
-                              <span className="text-white/90">{story.expeditionDetails.hour}</span>
-                            </div>
-                            <div>
-                              <span className="block text-white/40 uppercase">Clima</span>
-                              <span className="text-white/90">{story.expeditionDetails.atmosphere}</span>
-                            </div>
-                            <div className="col-span-2 sm:col-span-1">
-                              <span className="block text-white/40 uppercase">Óptica</span>
-                              <span className="text-white/90">{story.expeditionDetails.lens}</span>
-                            </div>
-                          </div>
-
-                          <Link
-                            href={`/portafolio?proyecto=${story.projectSlug}`}
-                            className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full bg-white/10 hover:bg-[#59BFD6] text-white hover:text-puelche-dark font-condensed uppercase tracking-wider text-xs font-bold transition-all shadow-md shrink-0 hover:scale-105"
-                          >
-                            <span>Ver obra en archivo</span>
-                            <ArrowUpRight className="w-4 h-4" />
-                          </Link>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                )}
-              </article>
-            );
-          })}
+                <div className="pt-2 flex items-center justify-between gap-2 border-t border-white/10">
+                  <span className="font-mono text-[10px] text-white/50">
+                    {story.expeditionDetails.hour}
+                  </span>
+                  <Link
+                    href={`/portafolio?proyecto=${story.projectSlug}`}
+                    className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-[#59BFD6] text-puelche-dark font-condensed uppercase tracking-wider text-[11px] font-bold"
+                  >
+                    <span>Ver obra</span>
+                    <ArrowUpRight className="w-3.5 h-3.5" />
+                  </Link>
+                </div>
+              </div>
+            </article>
+          ))}
         </div>
       </div>
     </section>
