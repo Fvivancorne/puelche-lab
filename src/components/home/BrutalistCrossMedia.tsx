@@ -276,9 +276,9 @@ export function BrutalistCrossMedia() {
           </p>
         </div>
 
-        {/* Manifiesto Editorial: 2 Columnas Cálidas */}
+        {/* Manifiesto Editorial: 2 Columnas Cálidas con Curvas Orgánicas */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-16 pt-4 border-t border-white/15 font-sans text-base sm:text-lg text-white/90 leading-relaxed font-light">
-          <div ref={manifestoLeftRef} className="space-y-4 bg-black/30 backdrop-blur-sm p-6 rounded-2xl border border-white/10">
+          <div ref={manifestoLeftRef} className="space-y-4 bg-black/35 backdrop-blur-md p-7 sm:p-8 rounded-[28px] border border-white/10 shadow-xl">
             <p className="text-white font-medium text-lg sm:text-xl drop-shadow-md">
               Somos un Estudio de Diseño Cross Media y Fotografía en Puerto Varas.
             </p>
@@ -286,7 +286,7 @@ export function BrutalistCrossMedia() {
               Pero, <span className="italic font-serif text-white font-normal">¿Qué es Cross Media?</span> Nos referimos a que creamos piezas visuales para todos los medios, ya sean digitales, impresos y/o audiovisuales.
             </p>
           </div>
-          <div ref={manifestoRightRef} className="space-y-4 bg-black/30 backdrop-blur-sm p-6 rounded-2xl border border-white/10">
+          <div ref={manifestoRightRef} className="space-y-4 bg-black/35 backdrop-blur-md p-7 sm:p-8 rounded-[28px] border border-white/10 shadow-xl">
             <p className="drop-shadow-sm font-light text-white/85">
               Contamos con un estudio de fotografía y grabación muy bien equipado, iluminación profesional y equipos de alta gama, tanto en tierra firme como desde el aire con dron 4K, haciendo resaltar tu producto o servicio para que pase al frente en la vitrina del mercado.
             </p>
@@ -321,7 +321,7 @@ export function BrutalistCrossMedia() {
                   key={cap.id}
                   onMouseEnter={() => setActiveIdx(i)}
                   onClick={() => setActiveIdx(i)}
-                  className={`group relative p-5 sm:p-6 rounded-2xl border transition-all duration-300 cursor-pointer flex flex-col justify-between overflow-hidden backdrop-blur-md ${
+                  className={`group relative p-6 sm:p-7 rounded-[28px] border transition-all duration-300 cursor-pointer flex flex-col justify-between overflow-hidden backdrop-blur-md ${
                     isSelected
                       ? 'bg-[#1D2024]/95 border-puelche-cyan/70 shadow-[0_20px_50px_rgba(0,0,0,0.6)] -translate-y-2'
                       : 'bg-[#1D2024]/70 border-white/10 hover:border-white/30 hover:bg-[#1D2024]/85'

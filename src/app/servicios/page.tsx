@@ -77,7 +77,7 @@ export default function ServiciosPage() {
             return (
               <div
                 key={serv.title}
-                className="p-8 sm:p-10 bg-white/[0.03] hover:bg-white/[0.06] border border-white/10 hover:border-[#59BFD6]/40 rounded-xl transition-all duration-500 flex flex-col justify-between group hover:-translate-y-1.5 hover:shadow-[0_20px_50px_rgba(0,0,0,0.8)]"
+                className="p-8 sm:p-10 bg-white/[0.03] hover:bg-white/[0.06] border border-white/10 hover:border-[#59BFD6]/40 rounded-[28px] sm:rounded-[36px] transition-all duration-500 flex flex-col justify-between group hover:-translate-y-1.5 hover:shadow-[0_25px_60px_rgba(0,0,0,0.7)]"
               >
                 <div>
                   <div className="flex items-center justify-between mb-8">

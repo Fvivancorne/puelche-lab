@@ -208,8 +208,8 @@ export function BeforeAfterSlider({ initialCaseId = 'doosan', className = '' }: 
         </div>
       </div>
 
-      {/* Main Interactive Stage */}
-      <div className="relative rounded-2xl overflow-hidden border border-white/15 bg-[#141518] shadow-2xl">
+      {/* Main Interactive Stage — Silueta Orgánica de Canto Rodado (rounded-[36px]) */}
+      <div className="relative rounded-[28px] sm:rounded-[36px] overflow-hidden border border-white/10 bg-[#121316] shadow-[0_30px_70px_rgba(0,0,0,0.7)]">
         <div
           ref={containerRef}
           role="slider"

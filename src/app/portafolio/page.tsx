@@ -208,15 +208,15 @@ function PortfolioContent() {
         </div>
       </div>
 
-      {/* Projects Grid */}
-      <div className="max-w-7xl mx-auto w-full px-6 pb-24 grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-10">
+      {/* Projects Grid — Siluetas Orgánicas de Canto Rodado (rounded-[32px]) */}
+      <div className="max-w-7xl mx-auto w-full px-6 pb-24 grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
         {filteredProjects.map((project) => (
           <article
             key={project.id}
             data-cursor="explore"
             data-cursor-text="VER OBRA"
             onClick={() => setActiveModalProject(project)}
-            className="group cursor-pointer bg-white/5 border border-white/10 rounded-xl overflow-hidden hover:border-[#59BFD6]/60 transition-all duration-500 flex flex-col justify-between"
+            className="group cursor-pointer bg-[#141519]/90 border border-white/10 rounded-[28px] sm:rounded-[36px] overflow-hidden hover:border-[#59BFD6]/60 hover:shadow-[0_25px_60px_rgba(0,0,0,0.65)] transition-all duration-500 flex flex-col justify-between hover:-translate-y-1.5"
           >
             <div>
               <div className="relative aspect-[16/10] w-full overflow-hidden bg-black/40">
@@ -226,13 +226,13 @@ function PortfolioContent() {
                   fill
                   className="object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#1D2024] via-transparent to-transparent opacity-80" />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#141519] via-transparent to-transparent opacity-80" />
                 <div className="absolute top-4 left-4">
-                  <span className="px-3 py-1 rounded bg-[#59BFD6] text-puelche-dark font-condensed font-bold text-xs uppercase tracking-wider shadow-md">
+                  <span className="px-3.5 py-1.5 rounded-full bg-[#59BFD6] text-puelche-dark font-condensed font-bold text-xs uppercase tracking-wider shadow-md">
                     {project.category}
                   </span>
                 </div>
-                <div className="absolute top-4 right-4 w-9 h-9 rounded-full bg-black/60 border border-white/20 flex items-center justify-center text-white group-hover:bg-[#59BFD6] group-hover:text-puelche-dark transition-colors duration-300">
+                <div className="absolute top-4 right-4 w-10 h-10 rounded-full bg-black/60 border border-white/20 flex items-center justify-center text-white group-hover:bg-[#59BFD6] group-hover:text-puelche-dark transition-colors duration-300 backdrop-blur-md">
                   <ArrowUpRight className="w-4 h-4" />
                 </div>
                 <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between text-xs font-mono text-white/90">
@@ -247,23 +247,23 @@ function PortfolioContent() {
                 </div>
               </div>
 
-              <div className="p-6">
-                <div className="text-xs font-mono text-[#59BFD6] uppercase tracking-wider mb-2">
+              <div className="p-7 sm:p-8 space-y-3">
+                <div className="text-xs font-mono text-[#59BFD6] uppercase tracking-wider">
                   Cliente: {project.client}
                 </div>
-                <h3 className="font-condensed text-2xl sm:text-3xl font-bold uppercase tracking-wide text-white group-hover:text-[#59BFD6] transition-colors mb-3">
+                <h3 className="font-condensed text-2xl sm:text-3xl font-bold uppercase tracking-wide text-white group-hover:text-[#59BFD6] transition-colors">
                   {project.title}
                 </h3>
-                <p className="text-sm text-white/70 font-sans font-light leading-relaxed mb-4 line-clamp-2">
+                <p className="text-sm text-white/70 font-sans font-light leading-relaxed line-clamp-2">
                   {project.description}
                 </p>
               </div>
             </div>
 
-            <div className="px-6 pb-6 pt-2 border-t border-white/5 flex flex-wrap items-center justify-between gap-3">
+            <div className="px-7 sm:px-8 pb-7 pt-2 border-t border-white/5 flex flex-wrap items-center justify-between gap-3">
               <div className="flex flex-wrap gap-1.5">
                 {project.deliverables.slice(0, 3).map((d) => (
-                  <span key={d} className="text-[11px] font-mono text-white/50 bg-white/5 px-2 py-1 rounded">
+                  <span key={d} className="text-[11px] font-mono text-white/50 bg-white/5 px-2.5 py-1 rounded-full border border-white/5">
                     {d}
                   </span>
                 ))}
@@ -276,7 +276,7 @@ function PortfolioContent() {
                     e.stopPropagation();
                     setActiveModalProject(project);
                   }}
-                  className="w-full sm:w-auto px-5 py-2.5 rounded-md bg-[#59BFD6] border border-white text-white font-condensed font-bold text-xs uppercase tracking-wider hover:bg-white hover:text-[#59BFD6] transition-all duration-300 shadow-md flex items-center justify-center"
+                  className="w-full sm:w-auto px-6 py-2.5 rounded-full bg-[#59BFD6] border border-white text-white font-condensed font-bold text-xs uppercase tracking-wider hover:bg-white hover:text-[#59BFD6] transition-all duration-300 shadow-md flex items-center justify-center"
                 >
                   VER FOTOGRAFÍAS
                 </button>
