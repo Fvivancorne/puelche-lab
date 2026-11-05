@@ -178,7 +178,7 @@ export default function RedesSocialesPage() {
   }, [activeModalProject, activeInstagramPost, instagramPostIndex, currentImageIndex]);
 
   return (
-    <div className="w-full flex flex-col -mt-20 bg-white selection:bg-puelche-cyan selection:text-white">
+    <div className="w-full flex flex-col -mt-20 bg-[#0d0e12] text-white selection:bg-[#59BFD6] selection:text-[#0d0e12]">
       {/* ── 1. AUTHENTIC HERO BANNER (MacBook Pro BlueSeal shot) ── */}
       <section className="relative w-full h-screen min-h-[640px] overflow-hidden bg-black">
         <Image
@@ -188,22 +188,27 @@ export default function RedesSocialesPage() {
           priority
           className="object-cover object-center scale-105 transition-transform duration-1000"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/15 to-black/35" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#0d0e12] via-black/30 to-black/45" />
 
-        {/* Floating Cyan Pill: REDES SOCIALES */}
-        <div className="absolute bottom-12 left-0 sm:left-4 md:left-6 z-20">
-          <div className="bg-puelche-cyan text-white pl-6 pr-8 sm:pl-8 sm:pr-12 py-3.5 sm:py-5 rounded-r-2xl sm:rounded-r-3xl shadow-[0_10px_35px_rgba(89,191,214,0.4)] flex items-center gap-3 backdrop-blur-sm transition-transform duration-300 hover:translate-x-1">
-            <h1 className="font-condensed text-3xl sm:text-5xl md:text-6xl uppercase tracking-wider font-extrabold leading-none">
-              REDES SOCIALES
-            </h1>
+        {/* Editorial Title Block */}
+        <div className="absolute top-1/2 -translate-y-1/2 left-6 sm:left-12 md:left-16 z-20 max-w-2xl space-y-3">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 border border-white/15 text-[#59BFD6] font-mono text-xs uppercase tracking-[0.25em] backdrop-blur-md">
+            <Sparkles className="w-3.5 h-3.5 text-[#59BFD6]" />
+            <span>DISCIPLINA DE AUTOR &bull; ESTRATEGIA & COMUNIDADES</span>
           </div>
+          <h1 className="font-condensed text-5xl sm:text-7xl md:text-8xl uppercase tracking-tight font-black text-white leading-none drop-shadow-2xl">
+            Redes Sociales
+          </h1>
+          <p className="font-condensed uppercase tracking-wider text-sm sm:text-base md:text-lg text-white/80 font-medium pt-1 drop-shadow-md">
+            Estrategia de contenidos, segmentación publicitaria y fotografía genuina en terreno.
+          </p>
         </div>
 
         {/* Bottom Right Cue */}
         <div className="absolute bottom-12 right-6 sm:right-12 z-20 hidden sm:flex items-center gap-3 text-white">
           <a
             href="#feed-instagram"
-            className="px-5 py-2.5 rounded-full bg-black/60 hover:bg-puelche-cyan text-white text-xs font-mono uppercase tracking-wider backdrop-blur-md border border-white/20 transition-all flex items-center gap-2 hover:scale-105"
+            className="px-5 py-2.5 rounded-full bg-black/60 hover:bg-[#59BFD6] hover:text-[#0d0e12] text-white text-xs font-mono uppercase tracking-wider backdrop-blur-md border border-white/20 transition-all flex items-center gap-2 hover:scale-105"
           >
             <Instagram className="w-4 h-4" />
             <span>Ver Feed @puelche_lab</span>
@@ -213,7 +218,7 @@ export default function RedesSocialesPage() {
             className="p-2.5 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors"
             aria-label="Ir a estrategia"
           >
-            <ArrowDown className="w-4 h-4 animate-bounce text-puelche-cyan" />
+            <ArrowDown className="w-4 h-4 animate-bounce text-[#59BFD6]" />
           </a>
         </div>
       </section>
@@ -375,21 +380,27 @@ export default function RedesSocialesPage() {
       </section>
 
       {/* ── 4. BOTTOM CTA ── */}
-      <section className="bg-white py-20 px-6 text-center border-t border-gray-100">
+      <section className="bg-[#141519] py-20 px-6 border-t border-white/10 text-center">
         <div className="max-w-2xl mx-auto space-y-6">
-          <span className="font-condensed uppercase tracking-widest text-xs font-bold text-puelche-cyan">
+          <span className="font-condensed uppercase tracking-widest text-xs font-bold text-[#59BFD6]">
             ESTRATEGIA & GESTIÓN DIGITAL
           </span>
-          <h3 className="font-condensed text-3xl sm:text-4xl uppercase tracking-wider font-bold text-puelche-dark">
+          <h3 className="font-condensed text-3xl sm:text-4xl uppercase tracking-wider font-bold text-white">
             ¿Listo para llevar tus redes a un nivel profesional?
           </h3>
-          <p className="font-sans text-sm sm:text-base text-puelche-gray font-light leading-relaxed">
+          <p className="font-sans text-sm sm:text-base text-white/70 font-light leading-relaxed">
             Conversemos sobre tu marca y diseñemos una pauta de contenidos auténtica, con fotografía real en Puerto Varas y la Patagonia.
           </p>
-          <div>
+          <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-4">
             <Link
-              href="/contacto?servicio=redes-sociales"
-              className="inline-flex items-center gap-3 px-8 py-4 bg-puelche-cyan text-white font-condensed uppercase tracking-widest text-sm font-bold rounded-sm hover:bg-puelche-cyan-dark transition-colors shadow-lg hover:scale-105 duration-200"
+              href="/servicios#redes-sociales"
+              className="px-6 py-3.5 rounded-full border border-white/20 hover:border-white text-xs font-condensed uppercase tracking-wider text-white font-bold transition-all"
+            >
+              Ver en One-Page de Servicios
+            </Link>
+            <Link
+              href="/contacto?servicio=Redes%20Sociales"
+              className="inline-flex items-center gap-2.5 px-8 py-3.5 bg-[#59BFD6] text-puelche-dark font-condensed uppercase tracking-widest text-xs font-bold rounded-full hover:bg-white transition-all shadow-lg hover:scale-105"
             >
               <span>Cotizar Redes Sociales</span>
               <ArrowRight className="w-4 h-4" />

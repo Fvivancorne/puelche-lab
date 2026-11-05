@@ -322,7 +322,7 @@ export default function FotografiaPage() {
   const currentExpedition = FEATURED_EXPEDITIONS[activeExpeditionIdx];
 
   return (
-    <div className="w-full flex flex-col -mt-20 bg-white selection:bg-puelche-cyan selection:text-white">
+    <div className="w-full flex flex-col -mt-20 bg-[#0d0e12] text-white selection:bg-[#59BFD6] selection:text-[#0d0e12]">
       {/* ── 1. AUTHENTIC FULL-BLEED 100VH HERO ── */}
       <section className="relative w-full h-screen min-h-[640px] overflow-hidden bg-black">
         {/* Full Viewport Background Image: Estancia Rilán pavilion at night with starry sky */}
@@ -335,21 +335,26 @@ export default function FotografiaPage() {
         />
 
         {/* Cinematic ambient optical vignette */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-black/40" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#0d0e12] via-black/30 to-black/50" />
 
-        {/* Floating Cyan Pill: FOTOGRAFÍA (Left-anchored) */}
-        <div className="absolute top-1/2 -translate-y-1/2 left-0 sm:left-4 md:left-6 z-20">
-          <div className="bg-puelche-cyan text-white pl-6 pr-8 sm:pl-8 sm:pr-12 py-3.5 sm:py-5 rounded-r-2xl sm:rounded-r-3xl shadow-[0_10px_35px_rgba(89,191,214,0.4)] flex items-center gap-3 backdrop-blur-sm transition-transform duration-300 hover:translate-x-1">
-            <h1 className="font-condensed text-3xl sm:text-5xl md:text-6xl uppercase tracking-wider font-extrabold leading-none">
-              FOTOGRAFÍA
-            </h1>
+        {/* Editorial Title Block */}
+        <div className="absolute top-1/2 -translate-y-1/2 left-6 sm:left-12 md:left-16 z-20 max-w-2xl space-y-3">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 border border-white/15 text-[#59BFD6] font-mono text-xs uppercase tracking-[0.25em] backdrop-blur-md">
+            <Sparkles className="w-3.5 h-3.5 text-[#59BFD6]" />
+            <span>DISCIPLINA DE AUTOR &bull; EXPEDICIONES & ÓPTICA AUSTRAL</span>
           </div>
+          <h1 className="font-condensed text-5xl sm:text-7xl md:text-8xl uppercase tracking-tight font-black text-white leading-none drop-shadow-2xl">
+            Fotografía
+          </h1>
+          <p className="font-condensed uppercase tracking-wider text-sm sm:text-base md:text-lg text-white/80 font-medium pt-1 drop-shadow-md">
+            Registro visual para hotelería, arquitectura vernácula, faena marítima e industria en la Patagonia.
+          </p>
         </div>
 
         {/* Bottom Editorial Caption & Scroll Indicator */}
         <div className="absolute bottom-10 left-6 sm:left-12 right-6 sm:right-12 z-20 flex flex-col sm:flex-row items-start sm:items-end justify-between gap-4 text-white">
           <div className="max-w-xl">
-            <span className="font-mono text-xs uppercase tracking-widest text-puelche-cyan block mb-1">
+            <span className="font-mono text-xs uppercase tracking-widest text-[#59BFD6] block mb-1">
               ESTUDIO PUELCHE LAB • PUERTO VARAS
             </span>
             <p className="font-sans text-sm sm:text-base text-white/90 font-light leading-relaxed">
@@ -359,10 +364,10 @@ export default function FotografiaPage() {
 
           <a
             href="#carrusel-expediciones"
-            className="inline-flex items-center gap-2 text-xs font-mono tracking-widest uppercase text-white/70 hover:text-puelche-cyan transition-colors"
+            className="inline-flex items-center gap-2 text-xs font-mono tracking-widest uppercase text-white/70 hover:text-[#59BFD6] transition-colors"
           >
             <span>Ver expediciones en terreno</span>
-            <ArrowDown className="w-4 h-4 animate-bounce text-puelche-cyan" />
+            <ArrowDown className="w-4 h-4 animate-bounce text-[#59BFD6]" />
           </a>
         </div>
       </section>
@@ -555,37 +560,64 @@ export default function FotografiaPage() {
             {/* Ambient Shadow Overlay */}
             <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-black/30 group-hover:from-black/80 transition-colors duration-500" />
 
-            {/* Signature Puelche Cyan Overlay Card on Bottom Left */}
-            <div className="absolute bottom-8 left-4 sm:left-8 md:left-12 max-w-md bg-puelche-cyan text-white p-6 sm:p-7 shadow-2xl rounded-sm transition-all duration-300 group-hover:-translate-y-2 group-hover:shadow-[0_15px_40px_rgba(89,191,214,0.35)]">
-              <span className="text-[10px] font-mono uppercase tracking-widest text-white/75 block mb-1">
+            {/* Luxury Obsidian Card on Bottom Left */}
+            <div className="absolute bottom-8 left-4 sm:left-8 md:left-12 max-w-md bg-[#0d0e12]/85 backdrop-blur-md border border-white/15 text-white p-6 sm:p-7 shadow-2xl rounded-sm transition-all duration-300 group-hover:-translate-y-1 group-hover:border-[#59BFD6]/50">
+              <span className="text-[10px] font-mono uppercase tracking-widest text-[#59BFD6] block mb-1">
                 Expedición {idx + 1} de {REAL_PHOTO_PROJECTS.length}
               </span>
-              <h2 className="font-condensed uppercase tracking-wider text-xl sm:text-2xl font-bold leading-snug">
+              <h2 className="font-condensed uppercase tracking-wider text-xl sm:text-2xl font-bold leading-snug text-white">
                 CLIENTE: {proj.client.toUpperCase()}
               </h2>
-              <p className="font-sans text-xs sm:text-sm text-white/90 mt-1 font-light">
+              <p className="font-sans text-xs sm:text-sm text-white/80 mt-1 font-light">
                 {proj.location}
               </p>
-              <p className="font-sans text-xs text-white/80 font-light">
+              <p className="font-sans text-xs text-white/60 font-light">
                 {proj.specialty}
               </p>
 
               {/* Interactive View CTA Button */}
-              <div className="mt-4 pt-3 border-t border-white/30 flex items-center justify-between">
+              <div className="mt-4 pt-3 border-t border-white/15 flex items-center justify-between">
                 <button
                   onClick={() => openModal(proj)}
-                  className="inline-flex items-center gap-2 text-xs sm:text-sm font-condensed uppercase tracking-wider font-bold text-white hover:text-white/80 transition-colors"
+                  className="inline-flex items-center gap-2 text-xs sm:text-sm font-condensed uppercase tracking-wider font-bold text-[#59BFD6] hover:text-white transition-colors"
                 >
                   <span>VER FOTOGRAFÍAS</span>
                   <ChevronRight className="w-4 h-4" />
                 </button>
-                <span className="text-[11px] text-white/70 font-mono">
+                <span className="text-[11px] text-white/60 font-mono">
                   {idx + 1} / {REAL_PHOTO_PROJECTS.length}
                 </span>
               </div>
             </div>
           </div>
         ))}
+      </section>
+
+      {/* ── 4. BOTTOM CTA ── */}
+      <section className="bg-[#141519] py-20 px-6 border-t border-white/10 text-center">
+        <div className="max-w-2xl mx-auto space-y-6">
+          <h3 className="font-condensed text-3xl sm:text-4xl uppercase tracking-wider font-bold text-white">
+            ¿Planeando una producción fotográfica en el sur?
+          </h3>
+          <p className="font-sans text-sm sm:text-base text-white/70 font-light">
+            Equipo técnico para condiciones extremas, ópticas luminosas fijas y registro en dron 4K para proyectos en toda la Patagonia.
+          </p>
+          <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-4">
+            <Link
+              href="/servicios#fotografia"
+              className="px-6 py-3.5 rounded-full border border-white/20 hover:border-white text-xs font-condensed uppercase tracking-wider text-white font-bold transition-all"
+            >
+              Ver en One-Page de Servicios
+            </Link>
+            <Link
+              href="/contacto?servicio=Fotograf%C3%ADa"
+              className="inline-flex items-center gap-2.5 px-8 py-3.5 bg-[#59BFD6] text-puelche-dark font-condensed uppercase tracking-widest text-xs font-bold rounded-full hover:bg-white transition-all shadow-lg hover:scale-105"
+            >
+              <span>Cotizar Producción</span>
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+          </div>
+        </div>
       </section>
 
       {/* ── 4. LIGHTBOX MODAL WITH REAL GALLERY AND LENIS PAUSE ── */}

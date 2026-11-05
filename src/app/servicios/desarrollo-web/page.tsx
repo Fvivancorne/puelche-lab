@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Monitor, Smartphone, Globe, ArrowRight, X, ChevronRight, ChevronLeft, Eye, Zap, ShieldCheck } from 'lucide-react';
+import { Monitor, Smartphone, Globe, ArrowRight, X, ChevronRight, ChevronLeft, Eye, Zap, ShieldCheck, Sparkles } from 'lucide-react';
 
 interface WebProject {
   id: string;
@@ -142,7 +142,7 @@ export default function DesarrolloWebPage() {
   }, [activeModalProject, currentImageIndex]);
 
   return (
-    <div className="w-full flex flex-col -mt-20 bg-white selection:bg-puelche-cyan selection:text-white">
+    <div className="w-full flex flex-col -mt-20 bg-[#0d0e12] text-white selection:bg-[#59BFD6] selection:text-[#0d0e12]">
       {/* ── 1. AUTHENTIC FULL-BLEED 100VH HERO ── */}
       <section className="relative w-full h-screen min-h-[640px] overflow-hidden bg-black">
         <Image
@@ -152,21 +152,26 @@ export default function DesarrolloWebPage() {
           priority
           className="object-cover object-center scale-105 transition-transform duration-1000"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-black/40" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#0d0e12] via-black/40 to-black/50" />
 
-        {/* Floating Cyan Pill: DESARROLLO WEB */}
-        <div className="absolute top-1/2 -translate-y-1/2 left-0 sm:left-4 md:left-6 z-20">
-          <div className="bg-puelche-cyan text-white pl-6 pr-8 sm:pl-8 sm:pr-12 py-3.5 sm:py-5 rounded-r-2xl sm:rounded-r-3xl shadow-[0_10px_35px_rgba(89,191,214,0.4)] flex items-center gap-3 backdrop-blur-sm transition-transform duration-300 hover:translate-x-1">
-            <h1 className="font-condensed text-3xl sm:text-5xl md:text-6xl uppercase tracking-wider font-extrabold leading-none">
-              DESARROLLO WEB
-            </h1>
+        {/* Editorial Title Block */}
+        <div className="absolute top-1/2 -translate-y-1/2 left-6 sm:left-12 md:left-16 z-20 max-w-2xl space-y-3">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 border border-white/15 text-[#59BFD6] font-mono text-xs uppercase tracking-[0.25em] backdrop-blur-md">
+            <Sparkles className="w-3.5 h-3.5 text-[#59BFD6]" />
+            <span>DISCIPLINA DE AUTOR &bull; ARQUITECTURA NEXT.JS & AWWWARDS</span>
           </div>
+          <h1 className="font-condensed text-5xl sm:text-7xl md:text-8xl uppercase tracking-tight font-black text-white leading-none drop-shadow-2xl">
+            Desarrollo Web
+          </h1>
+          <p className="font-condensed uppercase tracking-wider text-sm sm:text-base md:text-lg text-white/80 font-medium pt-1 drop-shadow-md">
+            Sitios de alta velocidad, tipografía fluida y experiencia interactiva sin plantillas genéricas.
+          </p>
         </div>
 
         {/* Bottom Caption & Manifesto */}
         <div className="absolute bottom-10 left-6 sm:left-12 right-6 sm:right-12 z-20 flex flex-col sm:flex-row items-start sm:items-end justify-between gap-4 text-white">
           <div className="max-w-2xl">
-            <span className="font-mono text-xs uppercase tracking-widest text-puelche-cyan block mb-1">
+            <span className="font-mono text-xs uppercase tracking-widest text-[#59BFD6] block mb-1">
               ESTUDIO PUELCHE LAB • INGENIERÍA DIGITAL
             </span>
             <p className="font-sans text-sm sm:text-base text-white/95 font-light leading-relaxed italic">
@@ -176,49 +181,49 @@ export default function DesarrolloWebPage() {
 
           <a
             href="#obras"
-            className="inline-flex items-center gap-2 text-xs font-mono tracking-widest uppercase text-white/70 hover:text-puelche-cyan transition-colors"
+            className="inline-flex items-center gap-2 text-xs font-mono tracking-widest uppercase text-white/70 hover:text-[#59BFD6] transition-colors"
           >
             <span>Explorar plataformas web</span>
-            <ChevronRight className="w-4 h-4 animate-bounce text-puelche-cyan" />
+            <ChevronRight className="w-4 h-4 animate-bounce text-[#59BFD6]" />
           </a>
         </div>
       </section>
 
       {/* ── 2. WEB PILLARS ── */}
-      <section className="bg-[#F8FAFB] py-14 px-6 sm:px-8 border-b border-gray-200">
+      <section className="bg-[#0e1014] py-16 px-6 sm:px-8 border-b border-white/10">
         <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div className="p-6 bg-white border border-gray-200/80 rounded-sm space-y-3 shadow-sm">
-            <div className="w-10 h-10 rounded-full bg-puelche-cyan/15 flex items-center justify-center text-puelche-cyan">
+          <div className="p-6 bg-[#141519] border border-white/10 rounded-sm space-y-3 shadow-lg hover:border-[#59BFD6]/40 transition-colors">
+            <div className="w-10 h-10 rounded-full bg-[#59BFD6]/15 flex items-center justify-center text-[#59BFD6]">
               <Monitor className="w-5 h-5" />
             </div>
-            <h3 className="font-condensed text-xl uppercase tracking-wide font-bold text-puelche-dark">
+            <h3 className="font-condensed text-xl uppercase tracking-wide font-bold text-white">
               Diseño a Medida
             </h3>
-            <p className="font-sans text-xs sm:text-sm text-puelche-gray leading-relaxed font-light">
+            <p className="font-sans text-xs sm:text-sm text-white/70 leading-relaxed font-light">
               Diseñamos interfaces web personalizadas que respetan y potencian la identidad corporativa de tu empresa, sin plantillas genéricas.
             </p>
           </div>
 
-          <div className="p-6 bg-white border border-gray-200/80 rounded-sm space-y-3 shadow-sm">
-            <div className="w-10 h-10 rounded-full bg-puelche-cyan/15 flex items-center justify-center text-puelche-cyan">
+          <div className="p-6 bg-[#141519] border border-white/10 rounded-sm space-y-3 shadow-lg hover:border-[#59BFD6]/40 transition-colors">
+            <div className="w-10 h-10 rounded-full bg-[#59BFD6]/15 flex items-center justify-center text-[#59BFD6]">
               <Smartphone className="w-5 h-5" />
             </div>
-            <h3 className="font-condensed text-xl uppercase tracking-wide font-bold text-puelche-dark">
+            <h3 className="font-condensed text-xl uppercase tracking-wide font-bold text-white">
               100% Responsive
             </h3>
-            <p className="font-sans text-xs sm:text-sm text-puelche-gray leading-relaxed font-light">
+            <p className="font-sans text-xs sm:text-sm text-white/70 leading-relaxed font-light">
               Navegación fluida y óptima en smartphones, tablets y pantallas de escritorio de gran resolución con velocidad de carga inmediata.
             </p>
           </div>
 
-          <div className="p-6 bg-white border border-gray-200/80 rounded-sm space-y-3 shadow-sm">
-            <div className="w-10 h-10 rounded-full bg-puelche-cyan/15 flex items-center justify-center text-puelche-cyan">
+          <div className="p-6 bg-[#141519] border border-white/10 rounded-sm space-y-3 shadow-lg hover:border-[#59BFD6]/40 transition-colors">
+            <div className="w-10 h-10 rounded-full bg-[#59BFD6]/15 flex items-center justify-center text-[#59BFD6]">
               <Globe className="w-5 h-5" />
             </div>
-            <h3 className="font-condensed text-xl uppercase tracking-wide font-bold text-puelche-dark">
+            <h3 className="font-condensed text-xl uppercase tracking-wide font-bold text-white">
               Integración Cross-Media
             </h3>
-            <p className="font-sans text-xs sm:text-sm text-puelche-gray leading-relaxed font-light">
+            <p className="font-sans text-xs sm:text-sm text-white/70 leading-relaxed font-light">
               Sincronizamos tu plataforma web con WhatsApp, redes sociales y campañas de pauta para maximizar la captación de clientes.
             </p>
           </div>
@@ -244,26 +249,26 @@ export default function DesarrolloWebPage() {
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-black/30 group-hover:from-black/80 transition-colors duration-500" />
 
-            <div className="absolute bottom-8 left-4 sm:left-8 md:left-12 max-w-md bg-puelche-cyan text-white p-6 sm:p-7 shadow-2xl rounded-sm transition-transform duration-300 group-hover:-translate-y-1">
-              <span className="text-[10px] font-mono uppercase tracking-widest text-white/75 block">
+            <div className="absolute bottom-8 left-4 sm:left-8 md:left-12 max-w-md bg-[#0d0e12]/85 backdrop-blur-md border border-white/15 text-white p-6 sm:p-7 shadow-2xl rounded-sm transition-all duration-300 group-hover:-translate-y-1 group-hover:border-[#59BFD6]/50">
+              <span className="text-[10px] font-mono uppercase tracking-widest text-[#59BFD6] block">
                 {proj.category}
               </span>
-              <h2 className="font-condensed uppercase tracking-wider text-lg sm:text-2xl font-bold leading-snug mt-0.5">
+              <h2 className="font-condensed uppercase tracking-wider text-lg sm:text-2xl font-bold leading-snug mt-0.5 text-white">
                 Cliente: {proj.client}
               </h2>
-              <p className="font-sans text-xs sm:text-sm text-white/95 mt-1 font-light">
+              <p className="font-sans text-xs sm:text-sm text-white/80 mt-1 font-light">
                 {proj.service}
               </p>
 
-              <div className="mt-4 pt-3 border-t border-white/30 flex items-center justify-between">
+              <div className="mt-4 pt-3 border-t border-white/15 flex items-center justify-between">
                 <button
                   onClick={() => openModal(proj)}
-                  className="inline-flex items-center gap-2 text-xs sm:text-sm font-condensed uppercase tracking-wider font-bold text-white hover:text-white/80 transition-colors"
+                  className="inline-flex items-center gap-2 text-xs sm:text-sm font-condensed uppercase tracking-wider font-bold text-[#59BFD6] hover:text-white transition-colors"
                 >
                   <Eye className="w-4 h-4" />
                   <span>Ver Plataforma Web</span>
                 </button>
-                <span className="text-[11px] text-white/70 font-mono">
+                <span className="text-[11px] text-white/60 font-mono">
                   {idx + 1} / {REAL_WEB_PROJECTS.length}
                 </span>
               </div>
@@ -273,18 +278,24 @@ export default function DesarrolloWebPage() {
       </section>
 
       {/* ── 4. BOTTOM CTA ── */}
-      <section className="bg-white py-16 px-6 text-center">
+      <section className="bg-[#141519] py-20 px-6 border-t border-white/10 text-center">
         <div className="max-w-2xl mx-auto space-y-6">
-          <h3 className="font-condensed text-2xl sm:text-3xl uppercase tracking-wider font-bold text-puelche-dark">
+          <h3 className="font-condensed text-3xl sm:text-4xl uppercase tracking-wider font-bold text-white">
             ¿Necesitas una plataforma web de alto estándar?
           </h3>
-          <p className="font-sans text-sm text-puelche-gray font-light">
+          <p className="font-sans text-sm sm:text-base text-white/70 font-light">
             Creamos sitios web de alta velocidad, fotografía genuina y arquitectura Next.js preparados para posicionar en Google.
           </p>
-          <div>
+          <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-4">
             <Link
-              href="/contacto"
-              className="inline-flex items-center gap-3 px-8 py-4 bg-puelche-cyan text-white font-condensed uppercase tracking-widest text-sm font-bold rounded-sm hover:bg-puelche-cyan-dark transition-colors shadow-md"
+              href="/servicios#desarrollo-web"
+              className="px-6 py-3.5 rounded-full border border-white/20 hover:border-white text-xs font-condensed uppercase tracking-wider text-white font-bold transition-all"
+            >
+              Ver en One-Page de Servicios
+            </Link>
+            <Link
+              href="/contacto?servicio=Desarrollo%20Web%20Next.js"
+              className="inline-flex items-center gap-2.5 px-8 py-3.5 bg-[#59BFD6] text-puelche-dark font-condensed uppercase tracking-widest text-xs font-bold rounded-full hover:bg-white transition-all shadow-lg hover:scale-105"
             >
               <span>Cotizar Sitio Web</span>
               <ArrowRight className="w-4 h-4" />
