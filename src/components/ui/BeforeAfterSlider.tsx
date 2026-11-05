@@ -105,7 +105,35 @@ export function BeforeAfterSlider({ initialCaseId = 'doosan', className = '' }: 
     setSliderPosition(percentage);
   }, []);
 
+  const handlePointerDown = useCallback((e: React.PointerEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    try {
+      e.currentTarget.setPointerCapture(e.pointerId);
+    } catch {
+      // Fallback
+    }
+    setIsDragging(true);
+    updatePosition(e.clientX);
+  }, [updatePosition]);
+
+  const handlePointerMove = useCallback((e: React.PointerEvent<HTMLDivElement>) => {
+    if (isDragging) {
+      e.preventDefault();
+      updatePosition(e.clientX);
+    }
+  }, [isDragging, updatePosition]);
+
+  const handlePointerUp = useCallback((e: React.PointerEvent<HTMLDivElement>) => {
+    setIsDragging(false);
+    try {
+      e.currentTarget.releasePointerCapture(e.pointerId);
+    } catch {
+      // Fallback
+    }
+  }, []);
+
   const handleMouseDown = useCallback((e: React.MouseEvent) => {
+    e.preventDefault();
     setIsDragging(true);
     updatePosition(e.clientX);
   }, [updatePosition]);
@@ -219,19 +247,24 @@ export function BeforeAfterSlider({ initialCaseId = 'doosan', className = '' }: 
           aria-valuemax={100}
           tabIndex={0}
           onKeyDown={handleKeyDown}
+          onPointerDown={handlePointerDown}
+          onPointerMove={handlePointerMove}
+          onPointerUp={handlePointerUp}
+          onPointerCancel={handlePointerUp}
           onMouseDown={handleMouseDown}
           onTouchStart={handleTouchStart}
           data-cursor="ARRASTRAR"
-          className="relative w-full aspect-[16/9] sm:aspect-[21/10] md:aspect-[16/8] select-none cursor-ew-resize overflow-hidden outline-none focus:ring-2 focus:ring-[#C29B63]"
+          className="relative w-full aspect-[16/9] sm:aspect-[21/10] md:aspect-[16/8] select-none cursor-ew-resize overflow-hidden outline-none focus:ring-2 focus:ring-[#C29B63] touch-none"
         >
           {/* Layer 1: Master Retouched Image (Full background) */}
-          <div className="absolute inset-0 w-full h-full">
+          <div className="absolute inset-0 w-full h-full pointer-events-none select-none">
             <Image
               src={activeCase.masterImage}
               alt={`${activeCase.title} — Retoque Final Puelche`}
               fill
               priority
-              className="object-cover"
+              draggable={false}
+              className="object-cover pointer-events-none select-none"
               sizes="(max-width: 1280px) 100vw, 1280px"
             />
             {/* Tag Master (Right side) */}
@@ -245,7 +278,7 @@ export function BeforeAfterSlider({ initialCaseId = 'doosan', className = '' }: 
 
           {/* Layer 2: RAW Original Image (Clipped from left by sliderPosition) */}
           <div
-            className="absolute inset-0 w-full h-full overflow-hidden will-change-[clip-path]"
+            className="absolute inset-0 w-full h-full overflow-hidden will-change-[clip-path] pointer-events-none select-none"
             style={{
               clipPath: `polygon(0% 0%, ${sliderPosition}% 0%, ${sliderPosition}% 100%, 0% 100%)`,
             }}
@@ -255,7 +288,8 @@ export function BeforeAfterSlider({ initialCaseId = 'doosan', className = '' }: 
               alt={`${activeCase.title} — Captura RAW Original`}
               fill
               priority
-              className="object-cover"
+              draggable={false}
+              className="object-cover pointer-events-none select-none"
               sizes="(max-width: 1280px) 100vw, 1280px"
             />
             {/* Tag RAW (Left side) */}

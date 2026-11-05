@@ -22,24 +22,21 @@ export function AwwwardsCursor() {
     const yTo = gsap.quickTo(cursor, 'y', { duration: 0.15, ease: 'power3.out' });
 
     let isVisible = false;
+    let lastX = -100;
+    let lastY = -100;
 
-    const onMouseMove = (e: MouseEvent) => {
-      if (!isVisible) {
-        gsap.to(cursor, { opacity: 1, duration: 0.2 });
-        isVisible = true;
+    const evaluateTarget = (target: HTMLElement | null) => {
+      if (!target) {
+        setCursorState('default');
+        setCursorText('');
+        return;
       }
-      xTo(e.clientX);
-      yTo(e.clientY);
-
-      // Check element under cursor to set state
-      const target = e.target as HTMLElement | null;
-      if (!target) return;
 
       const dragTarget = target.closest('[data-cursor="ARRASTRAR"], .cursor-ew-resize');
-      const exploreTarget = target.closest('[data-cursor="explore"], .group, article, .cursor-explore');
+      const exploreTarget = target.closest('[data-cursor="explore"], .cursor-explore');
       const buttonTarget = target.closest('button, a, input, select, textarea, [role="button"]');
 
-      if (dragTarget) {
+      if (dragTarget && !buttonTarget) {
         setCursorState('drag');
         setCursorText('ARRASTRAR');
       } else if (exploreTarget && !buttonTarget) {
@@ -55,9 +52,32 @@ export function AwwwardsCursor() {
       }
     };
 
+    const onMouseMove = (e: MouseEvent) => {
+      lastX = e.clientX;
+      lastY = e.clientY;
+
+      if (!isVisible) {
+        gsap.to(cursor, { opacity: 1, duration: 0.2 });
+        isVisible = true;
+      }
+      xTo(e.clientX);
+      yTo(e.clientY);
+
+      evaluateTarget(e.target as HTMLElement | null);
+    };
+
+    const onScroll = () => {
+      if (lastX >= 0 && lastY >= 0) {
+        const el = document.elementFromPoint(lastX, lastY) as HTMLElement | null;
+        evaluateTarget(el);
+      }
+    };
+
     const onMouseLeave = () => {
       gsap.to(cursor, { opacity: 0, duration: 0.2 });
       isVisible = false;
+      setCursorState('default');
+      setCursorText('');
     };
 
     const onMouseEnter = () => {
@@ -66,11 +86,15 @@ export function AwwwardsCursor() {
     };
 
     window.addEventListener('mousemove', onMouseMove);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('blur', onMouseLeave);
     document.addEventListener('mouseleave', onMouseLeave);
     document.addEventListener('mouseenter', onMouseEnter);
 
     return () => {
       window.removeEventListener('mousemove', onMouseMove);
+      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('blur', onMouseLeave);
       document.removeEventListener('mouseleave', onMouseLeave);
       document.removeEventListener('mouseenter', onMouseEnter);
     };
@@ -79,27 +103,27 @@ export function AwwwardsCursor() {
   return (
     <div
       ref={cursorRef}
-      className="fixed top-0 left-0 pointer-events-none z-[9999] opacity-0 -translate-x-1/2 -translate-y-1/2 will-change-transform mix-blend-difference hidden md:block"
+      className="fixed top-0 left-0 pointer-events-none z-[9999] opacity-0 will-change-transform hidden md:block"
       style={{ left: 0, top: 0 }}
       aria-hidden="true"
     >
-      {/* Default State: Small precision optic point */}
+      {/* Default State: Small precision optic point with mix-blend-difference */}
       {cursorState === 'default' && (
-        <div className="w-4 h-4 rounded-full border border-white/80 bg-white/20 flex items-center justify-center transition-all duration-300 ease-out">
+        <div className="w-4 h-4 -translate-x-1/2 -translate-y-1/2 rounded-full border border-white/80 bg-white/20 flex items-center justify-center transition-all duration-300 ease-out mix-blend-difference">
           <div className="w-1 h-1 rounded-full bg-white" />
         </div>
       )}
 
       {/* Button Hover State: Magnetic subtle ring */}
       {cursorState === 'button' && (
-        <div className="w-10 h-10 rounded-full border border-white/90 bg-white/10 scale-110 flex items-center justify-center transition-all duration-300 ease-out shadow-[0_0_15px_rgba(255,255,255,0.4)]">
+        <div className="w-10 h-10 -translate-x-1/2 -translate-y-1/2 rounded-full border border-white/90 bg-white/10 scale-110 flex items-center justify-center transition-all duration-300 ease-out shadow-[0_0_15px_rgba(255,255,255,0.4)] mix-blend-difference">
           <div className="w-1.5 h-1.5 rounded-full bg-white" />
         </div>
       )}
 
-      {/* Drag State: Tactile horizontal pill for Before/After slider */}
+      {/* Drag State: Tactile horizontal badge floating above pointer tip (no blend inversion) */}
       {cursorState === 'drag' && (
-        <div className="relative px-3.5 py-1.5 rounded-full border border-[#C29B63] bg-[#18191B]/90 backdrop-blur-md flex items-center gap-1.5 transition-all duration-300 ease-out shadow-[0_0_20px_rgba(194,155,99,0.5)] scale-105">
+        <div className="relative -translate-x-1/2 -translate-y-10 px-3.5 py-1 rounded-full border border-[#C29B63] bg-[#141518]/95 backdrop-blur-md flex items-center gap-1.5 transition-all duration-200 ease-out shadow-[0_4px_20px_rgba(0,0,0,0.8),0_0_15px_rgba(194,155,99,0.4)]">
           <span className="text-[#C29B63] text-xs">‹</span>
           <span className="font-condensed font-bold uppercase tracking-widest text-[10px] text-white select-none">
             {cursorText || 'ARRASTRAR'}
@@ -110,7 +134,7 @@ export function AwwwardsCursor() {
 
       {/* Explore / Photo State: High-End Optical Lens Viewfinder */}
       {cursorState === 'explore' && (
-        <div className="relative w-20 h-20 rounded-full border border-white/80 bg-black/40 backdrop-blur-[2px] flex items-center justify-center transition-all duration-300 ease-out shadow-2xl">
+        <div className="relative -translate-x-1/2 -translate-y-1/2 w-20 h-20 rounded-full border border-white/80 bg-black/50 backdrop-blur-[2px] flex items-center justify-center transition-all duration-300 ease-out shadow-2xl">
           {/* Viewfinder crosshairs */}
           <div className="absolute top-1 left-1/2 -translate-x-1/2 w-[1px] h-2 bg-white/80" />
           <div className="absolute bottom-1 left-1/2 -translate-x-1/2 w-[1px] h-2 bg-white/80" />
