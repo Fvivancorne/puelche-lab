@@ -6,14 +6,14 @@ import Link from 'next/link';
 import { PORTFOLIO_PROJECTS } from '@/data/portfolio';
 import { ArrowUpRight, MapPin, Calendar, Compass, ChevronLeft, ChevronRight, Sparkles } from 'lucide-react';
 
-// 6 proyectos emblemáticos de autor con fotografía genuina de alto impacto
+// 6 proyectos emblemáticos con fotografía genuina y diversidad territorial
 const CURATED_PROJECT_IDS = [
   'estancia-rilan',
-  'turistour-expediciones',
-  'cala-meli',
   'hotel-costaustralis',
-  'hotel-cabo-de-hornos',
   'aquachile',
+  'cala-meli',
+  'muebles-yunge',
+  'turistour-expediciones',
 ];
 
 const CURATED_PROJECTS = CURATED_PROJECT_IDS.map((id) =>
@@ -26,6 +26,8 @@ export function BrutalistProjectList() {
   const [canScrollRight, setCanScrollRight] = useState(true);
   const [activeIndex, setActiveIndex] = useState(0);
   const [scrollProgress, setScrollProgress] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
+  const autoPlayTimerRef = useRef<NodeJS.Timeout | null>(null);
 
   // Mouse drag state
   const isDraggingRef = useRef(false);
@@ -50,6 +52,31 @@ export function BrutalistProjectList() {
     const currentIdx = Math.round(scrollLeft / (cardWidth + 24));
     setActiveIndex(Math.min(CURATED_PROJECTS.length - 1, Math.max(0, currentIdx)));
   }, []);
+
+  // Auto-avance continuo horizontal con loop infinito ("que se vayan mostrando solas")
+  useEffect(() => {
+    if (isPaused) return;
+
+    autoPlayTimerRef.current = setInterval(() => {
+      const el = trackRef.current;
+      if (!el || isDraggingRef.current) return;
+
+      const { scrollLeft, scrollWidth, clientWidth } = el;
+      const isAtEnd = scrollLeft >= scrollWidth - clientWidth - 25;
+
+      if (isAtEnd) {
+        el.scrollTo({ left: 0, behavior: 'smooth' });
+      } else {
+        const card = el.querySelector('article');
+        const scrollAmount = card ? card.clientWidth + 32 : clientWidth * 0.52;
+        el.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+      }
+    }, 4500);
+
+    return () => {
+      if (autoPlayTimerRef.current) clearInterval(autoPlayTimerRef.current);
+    };
+  }, [isPaused]);
 
   useEffect(() => {
     const el = trackRef.current;
@@ -87,6 +114,7 @@ export function BrutalistProjectList() {
     hasMovedRef.current = false;
     startXRef.current = e.pageX - el.offsetLeft;
     scrollLeftRef.current = el.scrollLeft;
+    setIsPaused(true);
   };
 
   const handleMouseMove = (e: React.MouseEvent) => {
@@ -106,6 +134,7 @@ export function BrutalistProjectList() {
 
   const handleMouseUpOrLeave = () => {
     isDraggingRef.current = false;
+    setIsPaused(false);
   };
 
   const handleCardClick = (e: React.MouseEvent) => {
@@ -134,7 +163,7 @@ export function BrutalistProjectList() {
             </h2>
 
             <p className="font-sans text-base sm:text-lg text-white/70 font-light leading-relaxed">
-              Fotografía de autor, plataformas digitales y diseño territorial desarrollados para clientes en Puerto Varas, Chiloé y la Patagonia.
+              Arquitectura vernácula, interiorismo contemporáneo, ebanistería y registros industriales documentados en la Patagonia austral.
             </p>
           </div>
 
@@ -186,10 +215,13 @@ export function BrutalistProjectList() {
       <div className="relative w-full">
         <div
           ref={trackRef}
+          onMouseEnter={() => setIsPaused(true)}
           onMouseDown={handleMouseDown}
           onMouseMove={handleMouseMove}
           onMouseUp={handleMouseUpOrLeave}
           onMouseLeave={handleMouseUpOrLeave}
+          onTouchStart={() => setIsPaused(true)}
+          onTouchEnd={() => setIsPaused(false)}
           className="flex gap-6 sm:gap-8 overflow-x-auto no-scrollbar scroll-smooth snap-x snap-mandatory py-4 px-6 md:px-12 lg:px-16 cursor-grab active:cursor-grabbing select-none"
           style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
         >
@@ -214,7 +246,7 @@ export function BrutalistProjectList() {
                       className="object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out select-none pointer-events-none"
                       sizes="(max-width: 768px) 85vw, (max-width: 1024px) 65vw, 48vw"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#141518] via-transparent to-black/30 opacity-70 group-hover:opacity-50 transition-opacity pointer-events-none" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#141518]/90 via-transparent to-transparent opacity-40 group-hover:opacity-20 transition-opacity pointer-events-none" />
 
                     {/* Badge de Categoría */}
                     <div className="absolute top-4 left-4 z-10">
@@ -295,12 +327,6 @@ export function BrutalistProjectList() {
               style={{ width: `${Math.max(16, scrollProgress)}%` }}
             />
           </div>
-        </div>
-
-        {/* Indicador de Gesto */}
-        <div className="flex items-center gap-2 font-mono text-[11px] uppercase tracking-widest text-white/40">
-          <Sparkles className="w-3 h-3 text-[#59BFD6]" />
-          <span>Arrastra lateralmente o usa las flechas</span>
         </div>
       </div>
 

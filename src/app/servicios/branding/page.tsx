@@ -321,7 +321,7 @@ export default function BrandingPage() {
   const currentFeatured = FEATURED_BRAND_SHOWCASE[activeShowcaseIdx];
 
   return (
-    <div className="w-full flex flex-col -mt-20 bg-white selection:bg-puelche-cyan selection:text-white">
+    <div className="w-full flex flex-col -mt-20 bg-[#0d0e12] text-white selection:bg-[#59BFD6] selection:text-[#0d0e12]">
       {/* ── 1. AUTHENTIC FULL-BLEED 100VH HERO ── */}
       <section className="relative w-full h-screen min-h-[640px] overflow-hidden bg-black">
         <Image
@@ -331,21 +331,26 @@ export default function BrandingPage() {
           priority
           className="object-cover object-center scale-105 transition-transform duration-1000"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-black/40" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#0d0e12] via-transparent to-black/25 pointer-events-none" />
 
-        {/* Floating Cyan Pill: DISEÑO DE MARCA */}
-        <div className="absolute top-1/2 -translate-y-1/2 left-0 sm:left-4 md:left-6 z-20">
-          <div className="bg-puelche-cyan text-white pl-6 pr-8 sm:pl-8 sm:pr-12 py-3.5 sm:py-5 rounded-r-2xl sm:rounded-r-3xl shadow-[0_10px_35px_rgba(89,191,214,0.4)] flex items-center gap-3 backdrop-blur-sm transition-transform duration-300 hover:translate-x-1">
-            <h1 className="font-condensed text-3xl sm:text-5xl md:text-6xl uppercase tracking-wider font-extrabold leading-none">
-              DISEÑO DE MARCA
-            </h1>
+        {/* Editorial Title Block */}
+        <div className="absolute top-1/2 -translate-y-1/2 left-6 sm:left-12 md:left-16 z-20 max-w-2xl space-y-3">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 border border-white/15 text-[#59BFD6] font-mono text-xs uppercase tracking-[0.25em] backdrop-blur-md">
+            <Sparkles className="w-3.5 h-3.5 text-[#59BFD6]" />
+            <span>DISCIPLINA DE AUTOR &bull; SISTEMAS VISUALES & IDENTIDAD</span>
           </div>
+          <h1 className="font-condensed text-5xl sm:text-7xl md:text-8xl uppercase tracking-tight font-black text-white leading-none drop-shadow-2xl">
+            Diseño de Marca
+          </h1>
+          <p className="font-condensed uppercase tracking-wider text-sm sm:text-base md:text-lg text-white/80 font-medium pt-1 drop-shadow-md">
+            Identidades corporativas con arraigo territorial austral y proyección internacional.
+          </p>
         </div>
 
         {/* Bottom Caption & Manifesto */}
         <div className="absolute bottom-10 left-6 sm:left-12 right-6 sm:right-12 z-20 flex flex-col sm:flex-row items-start sm:items-end justify-between gap-4 text-white">
           <div className="max-w-2xl">
-            <span className="font-mono text-xs uppercase tracking-widest text-puelche-cyan block mb-1">
+            <span className="font-mono text-xs uppercase tracking-widest text-[#59BFD6] block mb-1">
               ESTUDIO PUELCHE LAB • FILOSOFÍA VISUAL
             </span>
             <p className="font-sans text-sm sm:text-base text-white/95 font-light leading-relaxed italic">

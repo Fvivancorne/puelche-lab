@@ -1119,11 +1119,10 @@ registerTest('T6.6', 'Awwwards Showstopper: Home page integrates WindParticleCan
   assertContains(home, 'REVELADO PUELCHE', 'Home page missing kinetic watermark typography');
 });
 
-registerTest('T6.7', 'Awwwards Showstopper: AwwwardsCursor recognizes drag state with tactile ARRASTRAR badge', 6, 'Awwwards-Cursor', () => {
+registerTest('T6.7', 'Awwwards Showstopper: AwwwardsCursor recognizes drag state with tactile optic dial', 6, 'Awwwards-Cursor', () => {
   const cursor = readFile('src/components/ui/AwwwardsCursor.tsx');
   assertContains(cursor, '\'drag\'', 'Cursor missing drag state');
-  assertContains(cursor, 'ARRASTRAR', 'Cursor missing ARRASTRAR label');
-  assertContains(cursor, 'data-cursor="ARRASTRAR"', 'Cursor missing ARRASTRAR selector');
+  assertContains(cursor, 'data-cursor="drag"', 'Cursor missing drag selector');
 });
 
 // ============================================================================

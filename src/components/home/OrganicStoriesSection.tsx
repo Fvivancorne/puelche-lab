@@ -28,96 +28,96 @@ interface OrganicStory {
 
 const STORIES: OrganicStory[] = [
   {
-    id: 'estancia-rilan',
+    id: 'tagua-tagua',
     num: '01',
-    title: 'El Silencio de las Tejuelas',
-    protagonist: 'Maestros Carpinteros de Rilán',
-    role: 'Oficio Tradicional Chilote',
-    location: 'Península de Rilán, Chiloé',
-    image: '/images/real/bg-portafolios-fotografia-a-min.jpg',
-    alt: 'Estancia Rilán en Chiloé — Arquitectura de tejuela y niebla matinal',
+    title: 'El Cruce del Río Puelo',
+    protagonist: 'Guías & Navegantes Fluviales',
+    role: 'Expedición Cordillerana',
+    location: 'Río Puelo & Cochamó, Los Lagos',
+    image: '/images/real/bg-portafolios-fotografia-f-min.jpg',
+    alt: 'Tagua Tagua Lodge — Navegación fluvial y cordillera en Río Puelo',
     fieldNote:
-      'Llegamos antes del alba. La humedad del mar interior envolvía la estructura de alerce. No buscamos iluminar el espacio con artificios: dejamos que la penumbra hablara del oficio de cortar la madera con hacha.',
+      'El silencio del río solo se interrumpe por el sonido del agua contra el casco. Llegar a este rincón de la cordillera exige navegar dos horas sin señal de teléfono.',
     curatorQuote:
-      'La arquitectura en el sur no compite con el paisaje; se rinde ante él para resistir el invierno.',
-    quoteAuthor: 'Paula Valdivieso • Dirección de Arte',
+      'En la Patagonia profunda, la distancia no es un obstáculo: es el filtro natural que preserva la pureza del territorio.',
+    quoteAuthor: 'Paula Valdivieso • Bitácora de Expedición',
     chronicle:
-      'En Chiloé la madera respira y tiene memoria. Para registrar Estancia Rilán esperamos tres días hasta que el viento sur despejó la bruma marina durante apenas cuarenta minutos. Ese instante de luz rasante doró cada tejuela de alerce cortada a mano, revelando las hendiduras que sólo el ojo paciente sabe encontrar.',
+      'Para documentar Tagua Tagua Lodge nos internamos en la cuenca del Puelo en otoño temprano. Esperamos la salida del sol sobre los farellones de granito para captar la barcaza cruzando las aguas color esmeralda, registrando la comunión entre el aislamiento geográfico y la hospitalidad de alta montaña.',
     expeditionDetails: {
-      hour: '06:45 AM • Luz Rasante',
-      atmosphere: 'Bruma marina & 8°C',
-      lens: '35mm Fine Art Prime',
+      hour: '07:20 AM • Luz de Cordillera',
+      atmosphere: 'Bruma fluvial & 6°C',
+      lens: '24-70mm f/2.8 Pro',
     },
-    projectSlug: 'estancia-rilan-chile',
-  },
-  {
-    id: 'arrebol-patagonia',
-    num: '02',
-    title: 'El Refugio Entre los Coigües',
-    protagonist: 'Familia Fundadora & Arquitectos',
-    role: 'Hospitalidad de Autor',
-    location: 'Cerros de Puerto Varas',
-    image: '/images/real/instagram/ig-DNRhZyEOL7E.webp',
-    alt: 'Hotel Arrebol Patagonia — Arquitectura de maderas nobles en Puerto Varas',
-    fieldNote:
-      'El olor a leña y ciprés de las guaitecas te recibe antes de cruzar la puerta. Retratar un hogar austral exige bajar el ritmo, escuchar el crepitar del fuego y captar la calidez que abriga al viajero.',
-    curatorQuote:
-      'Un buen retrato de interiores no muestra cómo es una habitación: transmite cómo se siente descansar en ella.',
-    quoteAuthor: 'Crónica de Expedición Puelche Lab',
-    chronicle:
-      'Emplazado en una loma con vista panorámica al lago Llanquihue, Hotel Arrebol fue concebido como un refugio donde la veta de la madera nativa dialoga con los ventanales hacia los volcanes. Nuestro encargo fue capturar la experiencia íntima del hospedaje: la textura táctil de los telares de lana, el vapor de una taza de café recién hecha y el atardecer tiñendo de carmín las vigas de roble.',
-    expeditionDetails: {
-      hour: '18:15 PM • Golden Hour Austral',
-      atmosphere: 'Luz cálida de atardecer',
-      lens: '50mm f/1.4 Natural Light',
-    },
-    projectSlug: 'hotel-arrebol-patagonia',
+    projectSlug: 'tagua-tagua-lodge',
   },
   {
     id: 'nazca-oceanografia',
-    num: '03',
+    num: '02',
     title: 'Ojos en las Profundidades',
     protagonist: 'Tripulación de Robótica Submarina',
     role: 'Oceanografía & Buceo Técnico',
     location: 'Seno de Reloncaví & Océano Pacífico',
-    image: '/images/real/instagram/ig-DU38TZDDgR0.webp',
+    image: '/images/real/facebook/fb-nazca-1.jpg',
     alt: 'Nazca Oceanografía — Robótica submarina y equipo técnico en faena marítima',
     fieldNote:
-      'En la cubierta de un barco de investigación a merced del oleaje, cada segundo cuenta. Buscamos el rostro concentrado del piloto del ROV mientras desciende a doscientos metros bajo el mar.',
+      'En la cubierta de un barco de investigación a merced del oleaje, cada segundo cuenta. Buscamos el pulso de concentración del equipo mientras operan en el Pacífico sur.',
     curatorQuote:
-      'La técnica más sofisticada carece de sentido si detrás no se siente el pulso humano de quienes desafían el mar.',
-    quoteAuthor: 'Bitácora Marina Puelche Lab',
+      'La técnica más sofisticada carece de sentido si detrás no se siente la templanza humana de quienes desafían el mar.',
+    quoteAuthor: 'Dirección de Fotografía Puelche Lab',
     chronicle:
-      'Navegamos junto al equipo de Nazca en jornadas de frío polar para documentar la inspección submarina de cables y fondos marinos. Combinamos sobrevuelos de dron a baja cota sobre el canal Tenglo con fotografía documental en el puente de mando, capturando la camaradería y la precisión milimétrica de hombres que operan tecnología de punta en aguas australes.',
+      'Acompañamos las faenas de Nazca Oceanografía para documentar la operación del robot submarino DEFENDER. Combinamos vuelos de dron a baja cota sobre el canal con registro documental a pulso en el puente de mando, capturando la precisión técnica de hombres que trabajan donde la luz del sol ya no llega.',
     expeditionDetails: {
-      hour: '11:20 AM • Luz Cenital Nubosa',
-      atmosphere: 'Viento Puelche 22 nudos',
-      lens: '24-70mm f/2.8 Weather Sealed',
+      hour: '11:45 AM • Faena en Altamar',
+      atmosphere: 'Oleaje Pacífico & 11°C',
+      lens: '35mm f/1.4 Weather-Sealed',
     },
     projectSlug: 'nazca-oceanografia-puertomontt',
   },
   {
-    id: 'residencia-frutillar',
-    num: '04',
+    id: 'cohosting-chile',
+    num: '03',
     title: 'La Casa del Lago y el Silencio',
-    protagonist: 'Estudio de Arquitectura Bioclimática',
-    role: 'Residencia en el Lago',
-    location: 'Frutillar, Cuenca Llanquihue',
-    image: '/images/real/instagram/ig-DNRk49ptN7H.webp',
-    alt: 'Residencia en Frutillar — Arquitectura de madera reflejada en el agua',
+    protagonist: 'Interiorismo Austral Contemporáneo',
+    role: 'Arquitectura & Luz Natural',
+    location: 'Puerto Varas & Lago Llanquihue',
+    image: '/images/real/facebook/fb-cohosting-1.jpg',
+    alt: 'CoHosting Chile — Interiorismo contemporáneo y vistas abiertas en Puerto Varas',
     fieldNote:
-      'Esperamos el momento exacto en que la brisa del lago se calmó por completo. El agua de la piscina se convirtió en un espejo absoluto que duplicó la calidez de las maderas y el cielo azul.',
+      'Esperamos el momento exacto en que la brisa del lago se calmó por completo. La luz exterior inundó los espacios de doble altura revelando la riqueza de las maderas nativas.',
     curatorQuote:
-      'Fotografiar arquitectura es aprender a dialogar con la geometría y esperar a que el sol complete la obra.',
+      'Un buen retrato de interiores no muestra cómo es un espacio: transmite cómo se respira y se descansa en él.',
     quoteAuthor: 'Dirección de Arte Puelche Lab',
     chronicle:
-      'Encargada por CoHosting Chile, esta imponente residencia en Frutillar requería una mirada que equilibrara la modernidad de sus líneas con la nobleza de su emplazamiento rural. Cada encuadre fue compuesto honrando la relación entre el interior calefaccionado y la inmensidad del paisaje exterior.',
+      'Para CoHosting Chile, documentamos residencias contemporáneas donde el diseño nórdico dialoga con el paisaje austral. Registramos la fluidez entre el interior y la inmensidad del lago Llanquihue, utilizando exclusivamente luz natural indirecta para preservar el balance cromático original de las vigas y pavimentos.',
     expeditionDetails: {
-      hour: '16:40 PM • Cielo Despejado',
-      atmosphere: 'Silencio absoluto & 19°C',
-      lens: '16-35mm Architectural Tilt-Shift',
+      hour: '16:15 PM • Luz Natural Indirecta',
+      atmosphere: 'Atmósfera serena & 17°C',
+      lens: '16-35mm Architectural Prime',
     },
-    projectSlug: 'turistour-expediciones',
+    projectSlug: 'cohosting-chile',
+  },
+  {
+    id: 'cabo-de-hornos',
+    num: '04',
+    title: 'El Viento del Estrecho',
+    protagonist: 'Punta Arenas & Última Frontera',
+    role: 'Arquitectura Antártica',
+    location: 'Punta Arenas, Estrecho de Magallanes',
+    image: '/images/real/bg-portafolios-fotografia-d-min.jpg',
+    alt: 'Hotel Cabo de Hornos — Arquitectura histórica frente al Estrecho de Magallanes',
+    fieldNote:
+      'El viento en Magallanes no amaina. Para registrar los interiores del hotel esperamos la hora azul, cuando las luces cálidas del salón contrastan con la penumbra del estrecho.',
+    curatorQuote:
+      'En el extremo sur, un refugio no es un lujo decorativo: es la diferencia entre resistir a la intemperie o ser vencido por ella.',
+    quoteAuthor: 'Crónica Austral Puelche Lab',
+    chronicle:
+      'Ubicado en la plaza Muñoz Gamero de Punta Arenas, Hotel Cabo de Hornos es el punto de partida hacia el territorio antártico. Nuestro encargo documentó la sobriedad señorial de sus espacios, la madera labrada y la luz de sus ventanales, ofreciendo un testimonio visual de la hospitalidad más austral del planeta.',
+    expeditionDetails: {
+      hour: '19:40 PM • Hora Azul Austral',
+      atmosphere: 'Viento 35 nudos & 4°C',
+      lens: '50mm f/1.4 Fine Art Prime',
+    },
+    projectSlug: 'hotel-cabo-de-hornos',
   },
 ];
 
@@ -198,7 +198,7 @@ export function OrganicStoriesSection() {
                 key={story.id}
                 className="w-screen h-full shrink-0 relative flex items-center justify-end px-8 md:px-16 lg:px-24 py-16"
               >
-                {/* Fotografía Monumental de Fondo Completo (100% Pantalla) */}
+                {/* Fotografía Monumental de Fondo Completo (100% Pantalla, Luminosa y de Autor) */}
                 <div className="absolute inset-0 z-0">
                   <Image
                     src={story.image}
@@ -208,9 +208,9 @@ export function OrganicStoriesSection() {
                     className="object-cover object-center scale-105 transition-transform duration-1000"
                     sizes="100vw"
                   />
-                  {/* Gradiente cinemático de alto contraste para garantizar 100% legibilidad */}
-                  <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/50 to-black/90 pointer-events-none" />
-                  <div className="absolute inset-0 bg-black/20 pointer-events-none" />
+                  {/* Gradiente sutil y luminoso: respeta la luz natural y rango dinámico de la fotografía */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-black/20 pointer-events-none" />
+                  <div className="absolute inset-0 bg-gradient-to-r from-black/30 via-transparent to-black/50 pointer-events-none" />
                 </div>
 
                 {/* Tarjeta Flotante de Cristal Oscuro con el Relato */}
@@ -346,7 +346,7 @@ export function OrganicStoriesSection() {
                   className="object-cover object-center"
                   sizes="88vw"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/25 to-transparent pointer-events-none" />
               </div>
 
               {/* Contenido Flotante al Pie */}

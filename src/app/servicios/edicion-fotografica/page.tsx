@@ -163,7 +163,7 @@ export default function EdicionFotograficaPage() {
           priority
           className="object-cover object-center scale-105 transition-transform duration-1000"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#0d0e12] via-black/40 to-black/50" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#0d0e12] via-transparent to-black/25 pointer-events-none" />
 
         {/* Editorial Title Block */}
         <div className="absolute top-1/2 -translate-y-1/2 left-6 sm:left-12 md:left-16 z-20 max-w-2xl space-y-3">
@@ -214,7 +214,7 @@ export default function EdicionFotograficaPage() {
               priority={idx < 2}
               className="object-cover object-center transition-transform duration-1000 ease-out group-hover:scale-105 will-change-transform"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-black/30 group-hover:from-black/80 transition-colors duration-500" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-black/15 group-hover:from-black/60 transition-colors duration-500 pointer-events-none" />
 
             <div className="absolute bottom-8 left-4 sm:left-8 md:left-12 max-w-md bg-[#0d0e12]/85 backdrop-blur-md border border-white/15 text-white p-6 sm:p-7 shadow-2xl rounded-sm transition-all duration-300 group-hover:-translate-y-1 group-hover:border-[#59BFD6]/50">
               <span className="text-[10px] font-mono uppercase tracking-widest text-[#59BFD6] block mb-1">

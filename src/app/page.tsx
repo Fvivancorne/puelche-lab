@@ -61,7 +61,7 @@ export default function Home() {
             priority
             className="object-cover pointer-events-none scale-105 transition-transform duration-1000 ease-out"
           />
-          <div className="absolute inset-0 bg-[#1D2024]/40 backdrop-brightness-90" />
+          <div className="absolute inset-0 bg-[#1D2024]/25 backdrop-brightness-100" />
         </div>
 
         {/* Kinetic Puelche Wind Particle Physics */}

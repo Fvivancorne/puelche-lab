@@ -32,13 +32,13 @@ export function AwwwardsCursor() {
         return;
       }
 
-      const dragTarget = target.closest('[data-cursor="ARRASTRAR"], .cursor-ew-resize');
+      const dragTarget = target.closest('[data-cursor="drag"], [data-cursor="ARRASTRAR"], .cursor-ew-resize');
       const exploreTarget = target.closest('[data-cursor="explore"], .cursor-explore');
       const buttonTarget = target.closest('button, a, input, select, textarea, [role="button"]');
 
       if (dragTarget && !buttonTarget) {
         setCursorState('drag');
-        setCursorText('ARRASTRAR');
+        setCursorText('');
       } else if (exploreTarget && !buttonTarget) {
         setCursorState('explore');
         const customText = (exploreTarget as HTMLElement).getAttribute('data-cursor-text') || 'VER';
@@ -121,14 +121,11 @@ export function AwwwardsCursor() {
         </div>
       )}
 
-      {/* Drag State: Tactile horizontal badge floating above pointer tip (no blend inversion) */}
+      {/* Drag State: Minimal optic dial with dual lateral chevrons (zero text) */}
       {cursorState === 'drag' && (
-        <div className="relative -translate-x-1/2 -translate-y-10 px-3.5 py-1 rounded-full border border-[#C29B63] bg-[#141518]/95 backdrop-blur-md flex items-center gap-1.5 transition-all duration-200 ease-out shadow-[0_4px_20px_rgba(0,0,0,0.8),0_0_15px_rgba(194,155,99,0.4)]">
-          <span className="text-[#C29B63] text-xs">‹</span>
-          <span className="font-condensed font-bold uppercase tracking-widest text-[10px] text-white select-none">
-            {cursorText || 'ARRASTRAR'}
-          </span>
-          <span className="text-[#C29B63] text-xs">›</span>
+        <div className="w-8 h-8 -translate-x-1/2 -translate-y-1/2 rounded-full border border-[#C29B63]/80 bg-[#141518]/90 backdrop-blur-md flex items-center justify-center gap-0.5 transition-all duration-200 ease-out shadow-[0_4px_20px_rgba(0,0,0,0.8),0_0_12px_rgba(194,155,99,0.3)]">
+          <span className="text-[#C29B63] text-xs font-mono select-none">‹</span>
+          <span className="text-[#C29B63] text-xs font-mono select-none">›</span>
         </div>
       )}
 

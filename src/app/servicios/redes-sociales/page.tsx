@@ -188,7 +188,7 @@ export default function RedesSocialesPage() {
           priority
           className="object-cover object-center scale-105 transition-transform duration-1000"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#0d0e12] via-black/30 to-black/45" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#0d0e12] via-transparent to-black/25 pointer-events-none" />
 
         {/* Editorial Title Block */}
         <div className="absolute top-1/2 -translate-y-1/2 left-6 sm:left-12 md:left-16 z-20 max-w-2xl space-y-3">
@@ -220,7 +220,7 @@ export default function RedesSocialesPage() {
         />
 
         {/* Subtle, soft ambient vignette */}
-        <div className="absolute inset-0 bg-black/35 backdrop-blur-[1px]" />
+        <div className="absolute inset-0 bg-black/20 pointer-events-none" />
 
         {/* Centered Organic Poetic Copy */}
         <div className="relative z-10 max-w-4xl mx-auto text-center space-y-6 sm:space-y-8">

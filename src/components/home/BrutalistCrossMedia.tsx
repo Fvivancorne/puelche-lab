@@ -219,15 +219,15 @@ export function BrutalistCrossMedia() {
           </div>
         ))}
 
-        {/* Velo Dinámico de Alto Contraste: Ligero para que la foto brille */}
+        {/* Velo Dinámico de Alto Contraste: Ligero y luminoso para que la foto brille con luz natural */}
         <div
           className={`absolute inset-0 transition-colors duration-500 ${
             activeIdx !== null
-              ? 'bg-gradient-to-b from-[#1D2024]/65 via-[#1D2024]/30 to-[#1D2024]/80 backdrop-brightness-95'
-              : 'bg-gradient-to-b from-[#1D2024]/60 via-[#1D2024]/45 to-[#1D2024]/75 backdrop-brightness-90'
+              ? 'bg-gradient-to-b from-[#1D2024]/50 via-transparent to-[#1D2024]/70 backdrop-brightness-105'
+              : 'bg-gradient-to-b from-[#1D2024]/40 via-transparent to-[#1D2024]/65 backdrop-brightness-100'
           }`}
         />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_20%,rgba(29,32,36,0.65)_100%)] pointer-events-none" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_40%,rgba(29,32,36,0.45)_100%)] pointer-events-none" />
       </div>
 
       {/* Contenido Superior / Encabezado de Sección */}
