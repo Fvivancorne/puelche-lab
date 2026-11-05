@@ -352,14 +352,6 @@ export default function BrandingPage() {
               &ldquo;La Identidad Corporativa es mucho más que el logotipo: es el reflejo de la filosofía de la empresa, su manera de trabajar. Nuestro trabajo consiste en plasmar visualmente todos esos conceptos y hacer que sean perceptibles por las personas.&rdquo;
             </p>
           </div>
-
-          <a
-            href="#carrusel-casos"
-            className="inline-flex items-center gap-2 text-xs font-mono tracking-widest uppercase text-white/70 hover:text-puelche-cyan transition-colors"
-          >
-            <span>Ver casos insignia</span>
-            <ChevronRight className="w-4 h-4 animate-bounce text-puelche-cyan" />
-          </a>
         </div>
       </section>
 

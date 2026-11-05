@@ -308,7 +308,6 @@ export function BrutalistCrossMedia() {
               <span className="w-1.5 h-1.5 rounded-full bg-puelche-cyan" />
               <span className="font-bold text-white tracking-widest">CUATRO DIMENSIONES DE NUESTRO OFICIO</span>
             </span>
-            <span className="hidden sm:inline font-serif italic text-puelche-cyan lowercase tracking-normal">posa el cursor para recorrer la atmósfera visual</span>
           </div>
 
           <div ref={cardsContainerRef} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">

@@ -204,14 +204,6 @@ export default function EditorialPage() {
               &ldquo;Diseñamos y creamos publicaciones como revistas, periódicos, libros, catálogos y memorias corporativas con el más riguroso estándar tipográfico y de pre-prensa.&rdquo;
             </p>
           </div>
-
-          <a
-            href="#obras"
-            className="inline-flex items-center gap-2 text-xs font-mono tracking-widest uppercase text-white/70 hover:text-[#59BFD6] transition-colors"
-          >
-            <span>Explorar pliegos editoriales</span>
-            <ChevronRight className="w-4 h-4 animate-bounce text-[#59BFD6]" />
-          </a>
         </div>
       </section>
 

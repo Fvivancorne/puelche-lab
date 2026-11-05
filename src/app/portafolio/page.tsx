@@ -147,7 +147,7 @@ function PortfolioContent() {
             PORTAFOLIO
           </h1>
           <p className="font-condensed uppercase tracking-wider text-sm sm:text-base md:text-lg text-white font-medium max-w-md leading-relaxed drop-shadow-md">
-            Deslízate hacia abajo y mira lo que este viento a dejado en cada uno de los servicios que tenemos.
+            Fotografía de autor, plataformas web e identidades visuales con arraigo territorial austral.
           </p>
         </div>
       </section>
@@ -157,7 +157,7 @@ function PortfolioContent() {
         <div className="border-b border-white/10 pb-8 mb-8">
           <div className="flex flex-wrap items-center gap-2 text-xs tracking-widest uppercase font-condensed text-[#59BFD6] mb-3">
             <span className="w-2 h-2 rounded-full bg-[#59BFD6]"></span>
-            <span>Archivo de Obras & Expediciones</span>
+            <span>Colección Austral</span>
             <span className="text-white/30">/</span>
             <span>2020 — 2026</span>
           </div>

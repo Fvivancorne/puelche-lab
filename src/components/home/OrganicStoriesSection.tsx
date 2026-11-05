@@ -181,7 +181,7 @@ export function OrganicStoriesSection() {
           <header className="absolute top-6 left-8 md:left-16 z-30 pointer-events-none">
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-black/60 backdrop-blur-md border border-white/10 text-[#59BFD6] font-mono text-xs uppercase tracking-[0.25em]">
               <Feather className="w-3.5 h-3.5 text-[#59BFD6]" />
-              <span>CRÓNICAS DEL PUELCHE &bull; RELATOS DE CAMPO</span>
+              <span>CRÓNICAS DEL PUELCHE</span>
             </div>
           </header>
 
@@ -304,9 +304,6 @@ export function OrganicStoriesSection() {
                   }}
                 />
               </div>
-              <span className="text-[10px] uppercase tracking-widest text-[#59BFD6] hidden lg:inline font-bold">
-                SCROLL HORIZONTAL &darr;
-              </span>
             </div>
           </footer>
         </div>
@@ -329,7 +326,7 @@ export function OrganicStoriesSection() {
             La Historia Detrás del Disparo
           </h2>
           <p className="font-sans text-xs text-white/70">
-            Desliza hacia los lados para conocer los relatos vivos de cada expedición.
+            Relatos de expedición y registro de campo en el territorio austral.
           </p>
         </div>
 

@@ -123,11 +123,10 @@ export default function Home() {
         <div className="relative z-10 max-w-7xl mx-auto w-full flex items-center justify-center pt-4">
           <a
             href="#cross-media"
-            className="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-white/85 hover:text-[#59BFD6] transition-colors scroll-indicator"
-            data-cursor="BAJAR"
+            className="p-3 rounded-full bg-white/5 hover:bg-[#59BFD6] text-white hover:text-puelche-dark border border-white/10 hover:border-[#59BFD6] transition-all scroll-indicator hover:scale-110"
+            aria-label="Continuar"
           >
-            <ArrowDown className="w-4 h-4 animate-bounce text-[#59BFD6] text-puelche-cyan" />
-            <span>Desliza para conocer la fuerza del Puelche</span>
+            <ArrowDown className="w-4 h-4 animate-bounce" />
           </a>
         </div>
       </section>

@@ -189,14 +189,6 @@ export default function EdicionFotograficaPage() {
               Retoque digital de precisión, revelado digital de archivos RAW y color grading para fotografía publicitaria, industrial y de arquitectura.
             </p>
           </div>
-
-          <a
-            href="#mesa-de-retoque"
-            className="inline-flex items-center gap-2 text-xs font-mono tracking-widest uppercase text-white/70 hover:text-[#59BFD6] transition-colors"
-          >
-            <span>Deslizar para mesa de revelado</span>
-            <ArrowDown className="w-4 h-4 animate-bounce text-[#59BFD6]" />
-          </a>
         </div>
       </section>
 

@@ -129,11 +129,6 @@ export function BrutalistProjectList() {
       <div className="max-w-7xl mx-auto w-full mb-10 md:mb-14 px-6 md:px-12 lg:px-16">
         <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 border-b border-white/10 pb-8">
           <div className="space-y-3 max-w-2xl">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/[0.04] border border-white/10 text-[#59BFD6] font-mono text-xs uppercase tracking-[0.25em]">
-              <Compass className="w-3.5 h-3.5 text-[#59BFD6]" />
-              <span>ARCHIVO DE AUTOR &bull; PASARELA DE OBRAS</span>
-            </div>
-
             <h2 className="font-condensed text-4xl sm:text-5xl md:text-6xl uppercase tracking-tight font-bold text-white leading-tight">
               Obras que Hablan por Sí Mismas
             </h2>

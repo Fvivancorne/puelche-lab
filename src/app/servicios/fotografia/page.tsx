@@ -361,14 +361,6 @@ export default function FotografiaPage() {
               Registro visual para hotelería, interiorismo, arquitectura, Industria & Procesos en el sur de Chile y Patagonia.
             </p>
           </div>
-
-          <a
-            href="#carrusel-expediciones"
-            className="inline-flex items-center gap-2 text-xs font-mono tracking-widest uppercase text-white/70 hover:text-[#59BFD6] transition-colors"
-          >
-            <span>Ver expediciones en terreno</span>
-            <ArrowDown className="w-4 h-4 animate-bounce text-[#59BFD6]" />
-          </a>
         </div>
       </section>
 

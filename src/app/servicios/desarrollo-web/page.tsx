@@ -178,14 +178,6 @@ export default function DesarrolloWebPage() {
               &ldquo;Diseñamos, construimos y mantenemos sitios web; diseño impecable, funcionamiento rápido y desempeño optimizado para permitir la mejor experiencia de usuario.&rdquo;
             </p>
           </div>
-
-          <a
-            href="#obras"
-            className="inline-flex items-center gap-2 text-xs font-mono tracking-widest uppercase text-white/70 hover:text-[#59BFD6] transition-colors"
-          >
-            <span>Explorar plataformas web</span>
-            <ChevronRight className="w-4 h-4 animate-bounce text-[#59BFD6]" />
-          </a>
         </div>
       </section>
 

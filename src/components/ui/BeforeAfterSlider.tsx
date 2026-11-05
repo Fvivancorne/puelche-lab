@@ -204,8 +204,8 @@ export function BeforeAfterSlider({ initialCaseId = 'doosan', className = '' }: 
           <h2 className="font-condensed text-3xl sm:text-4xl md:text-5xl font-bold uppercase tracking-wider text-[#F9F9F6]">
             Antes & Después de Autor
           </h2>
-          <p className="font-sans text-sm sm:text-base text-white/70 max-w-xl mt-2">
-            Arrastra el dial interactivo para comprobar el esculpido tonal, balance térmico y microtexturas que diferencian un archivo RAW de una obra terminada.
+          <p className="font-sans text-sm sm:text-base text-white/70 max-w-xl mt-2 font-light">
+            Esculpido tonal, balance térmico y microtexturas que diferencian una captura directa sin procesar de una gradación cinemática terminada.
           </p>
         </div>
 
@@ -317,7 +317,7 @@ export function BeforeAfterSlider({ initialCaseId = 'doosan', className = '' }: 
 
           {/* Bottom Micro-hint */}
           <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 pointer-events-none px-4 py-1 rounded-full bg-black/60 backdrop-blur-md border border-white/10 text-white/80 font-mono text-[10px] sm:text-xs uppercase tracking-wider">
-            <span>Arrastra para revelar ({Math.round(sliderPosition)}%)</span>
+            <span>Revelado ({Math.round(sliderPosition)}%)</span>
           </div>
         </div>
 

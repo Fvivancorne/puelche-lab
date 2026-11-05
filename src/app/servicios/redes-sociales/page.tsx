@@ -203,24 +203,6 @@ export default function RedesSocialesPage() {
             Estrategia de contenidos, segmentación publicitaria y fotografía genuina en terreno.
           </p>
         </div>
-
-        {/* Bottom Right Cue */}
-        <div className="absolute bottom-12 right-6 sm:right-12 z-20 hidden sm:flex items-center gap-3 text-white">
-          <a
-            href="#feed-instagram"
-            className="px-5 py-2.5 rounded-full bg-black/60 hover:bg-[#59BFD6] hover:text-[#0d0e12] text-white text-xs font-mono uppercase tracking-wider backdrop-blur-md border border-white/20 transition-all flex items-center gap-2 hover:scale-105"
-          >
-            <Instagram className="w-4 h-4" />
-            <span>Ver Feed @puelche_lab</span>
-          </a>
-          <a
-            href="#estrategia"
-            className="p-2.5 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors"
-            aria-label="Ir a estrategia"
-          >
-            <ArrowDown className="w-4 h-4 animate-bounce text-[#59BFD6]" />
-          </a>
-        </div>
       </section>
 
       {/* ── 2. SECTION 2: ORGANIC EDITORIAL TYPOGRAPHY ON LANDSCAPE ── */}
@@ -264,9 +246,6 @@ export default function RedesSocialesPage() {
               <Instagram className="w-8 h-8 sm:w-9 sm:h-9 transition-transform duration-300 group-hover/btn:scale-110" />
               <div className="absolute inset-0 rounded-full animate-ping bg-puelche-cyan opacity-25 pointer-events-none" />
             </a>
-            <span className="font-mono text-xs sm:text-sm text-white/90 drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)] tracking-wider">
-              Haz click en el ícono para conocer nuestro trabajo y feed en terreno.
-            </span>
           </div>
         </div>
       </section>
