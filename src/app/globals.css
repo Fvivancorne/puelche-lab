@@ -55,12 +55,47 @@ html.lenis, html.lenis body {
 
 /* ===== AWWWARDS: Reduced Motion Fallback ===== */
 @media (prefers-reduced-motion: reduce) {
-  * {
+  *,
+  *::before,
+  *::after {
     cursor: auto !important;
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
   .split-char {
     opacity: 1 !important;
     transform: none !important;
+  }
+  .puelche-marquee {
+    animation: none !important;
+  }
+  .stories-desktop-runway {
+    height: auto !important;
+  }
+  .stories-desktop-sticky {
+    position: relative !important;
+    top: auto !important;
+    height: auto !important;
+    min-height: 0 !important;
+    overflow: visible !important;
+  }
+  .stories-desktop-track {
+    width: 100% !important;
+    height: auto !important;
+    flex-direction: column !important;
+    transform: none !important;
+    transition: none !important;
+    will-change: auto !important;
+  }
+  .stories-desktop-slide {
+    width: 100% !important;
+    height: auto !important;
+    min-height: 75vh;
+  }
+  .stories-desktop-progress {
+    display: none !important;
   }
 }
 

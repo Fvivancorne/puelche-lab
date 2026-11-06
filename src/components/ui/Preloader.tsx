@@ -24,10 +24,15 @@ export function Preloader() {
   const hudBottomRef = useRef<HTMLDivElement>(null);
   const introPhaseRef = useRef<HTMLDivElement>(null);
   const lockPillRef = useRef<HTMLDivElement>(null);
+  const skipTimelineRef = useRef<(() => void) | null>(null);
 
   useEffect(() => {
-    // Skip if already viewed in this browser tab session
-    if (typeof window !== 'undefined' && sessionStorage.getItem('puelche-loaded')) {
+    // Skip if already viewed in this tab or if the user requests reduced motion.
+    if (
+      typeof window !== 'undefined' &&
+      (sessionStorage.getItem('puelche-loaded') ||
+        window.matchMedia('(prefers-reduced-motion: reduce)').matches)
+    ) {
       setDone(true);
       return;
     }
@@ -251,6 +256,14 @@ export function Preloader() {
 
     animationFrameId = requestAnimationFrame(render);
 
+    const stopCanvasLoop = () => {
+      if (isCleanedUp) return;
+      isCleanedUp = true;
+      cancelAnimationFrame(animationFrameId);
+      window.removeEventListener('resize', resizeCanvas);
+    };
+    let handleKeyDown: ((event: KeyboardEvent) => void) | null = null;
+
     // Initial GSAP setup
     gsap.set([shutterTopRef.current, shutterBottomRef.current], { yPercent: 0 });
     gsap.set(lensDiaphragmRef.current, { opacity: 0, scale: 0.85, rotation: -25 });
@@ -263,6 +276,9 @@ export function Preloader() {
     // Master Cinematic Opening Timeline (~3.6s total poetic flow)
     const tl = gsap.timeline({
       onComplete: () => {
+        stopCanvasLoop();
+        if (handleKeyDown) window.removeEventListener('keydown', handleKeyDown);
+        skipTimelineRef.current = null;
         setDone(true);
         sessionStorage.setItem('puelche-loaded', '1');
         const lenisRef = (window as any).lenisInstance;
@@ -426,17 +442,17 @@ export function Preloader() {
       tl.progress(1);
     };
 
-    const handleKeyDown = (e: KeyboardEvent) => {
+    handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') handleSkip();
     };
 
     window.addEventListener('keydown', handleKeyDown);
+    skipTimelineRef.current = handleSkip;
 
     return () => {
-      isCleanedUp = true;
-      cancelAnimationFrame(animationFrameId);
-      window.removeEventListener('resize', resizeCanvas);
-      window.removeEventListener('keydown', handleKeyDown);
+      stopCanvasLoop();
+      if (handleKeyDown) window.removeEventListener('keydown', handleKeyDown);
+      skipTimelineRef.current = null;
       tl.kill();
     };
   }, []);
@@ -448,12 +464,7 @@ export function Preloader() {
       ref={containerRef}
       className="fixed inset-0 z-[9999] flex select-none overflow-hidden cursor-pointer"
       aria-label="Apertura fotográfica Puelche Lab"
-      onClick={() => {
-        setDone(true);
-        sessionStorage.setItem('puelche-loaded', '1');
-        const lenisRef = (window as any).lenisInstance;
-        if (lenisRef) lenisRef.start();
-      }}
+      onClick={() => skipTimelineRef.current?.()}
     >
       {/* Cortinilla Superior de Obturador */}
       <div

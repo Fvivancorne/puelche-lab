@@ -4,6 +4,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowUpRight, MapPin, Feather, Quote, Compass } from 'lucide-react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 interface OrganicStory {
   id: string;
@@ -123,38 +125,49 @@ const STORIES: OrganicStory[] = [
 
 export function OrganicStoriesSection() {
   const sectionRef = useRef<HTMLDivElement>(null);
-  const [scrollProgress, setScrollProgress] = useState(0);
+  const trackRef = useRef<HTMLDivElement>(null);
+  const progressFillRef = useRef<HTMLDivElement>(null);
   const [activeStoryIdx, setActiveStoryIdx] = useState(0);
 
   useEffect(() => {
-    let ticking = false;
+    const runway = sectionRef.current;
+    const track = trackRef.current;
+    if (!runway || !track) return;
 
-    const handleScroll = () => {
-      if (!ticking) {
-        window.requestAnimationFrame(() => {
-          if (!sectionRef.current) return;
-          const rect = sectionRef.current.getBoundingClientRect();
-          const totalScrollable = rect.height - window.innerHeight;
-          if (totalScrollable <= 0) return;
+    gsap.registerPlugin(ScrollTrigger);
+    const media = gsap.matchMedia();
 
-          // Progress va de 0 a 1 mientras la sección cruza la pantalla
-          const currentProgress = Math.max(0, Math.min(1, -rect.top / totalScrollable));
-          setScrollProgress(currentProgress);
+    media.add('(prefers-reduced-motion: no-preference)', () => {
+      const context = gsap.context(() => {
+        gsap.to(track, {
+          x: () => -window.innerWidth * (STORIES.length - 1),
+          ease: 'none',
+          scrollTrigger: {
+            trigger: runway,
+            start: 'top top',
+            end: 'bottom bottom',
+            scrub: 0.65,
+            invalidateOnRefresh: true,
+            onUpdate: (self) => {
+              if (progressFillRef.current) {
+                gsap.set(progressFillRef.current, { scaleX: self.progress });
+              }
 
-          const storyIndex = Math.min(
-            STORIES.length - 1,
-            Math.floor(currentProgress * STORIES.length)
-          );
-          setActiveStoryIdx(storyIndex);
-          ticking = false;
+              // React solo recibe cambios discretos de historia, no cada frame del scroll.
+              const nextIndex = Math.min(
+                STORIES.length - 1,
+                Math.round(self.progress * (STORIES.length - 1))
+              );
+              setActiveStoryIdx((current) => (current === nextIndex ? current : nextIndex));
+            },
+          },
         });
-        ticking = true;
-      }
-    };
+      }, runway);
 
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    handleScroll();
-    return () => window.removeEventListener('scroll', handleScroll);
+      return () => context.revert();
+    });
+
+    return () => media.revert();
   }, []);
 
   const activeStory = STORIES[activeStoryIdx] || STORIES[0];
@@ -174,9 +187,9 @@ export function OrganicStoriesSection() {
       */}
       <div
         ref={sectionRef}
-        className="hidden md:block relative w-full h-[350vh]"
+        className="stories-desktop-runway hidden md:block relative w-full h-[350vh]"
       >
-        <div className="sticky top-0 w-full h-screen min-h-screen overflow-hidden flex flex-col justify-between">
+        <div className="stories-desktop-sticky sticky top-0 w-full h-screen min-h-screen overflow-hidden flex flex-col justify-between">
           {/* Cabecera Flotante Discreta */}
           <header className="absolute top-6 left-8 md:left-16 z-30 pointer-events-none">
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-black/60 backdrop-blur-md border border-white/10 text-[#59BFD6] font-mono text-xs uppercase tracking-[0.25em]">
@@ -187,16 +200,16 @@ export function OrganicStoriesSection() {
 
           {/* Track Horizontal de Obras */}
           <div
-            className="flex h-full will-change-transform transition-transform ease-out duration-100"
+            ref={trackRef}
+            className="stories-desktop-track flex h-full will-change-transform"
             style={{
               width: `${STORIES.length * 100}vw`,
-              transform: `translate3d(-${scrollProgress * (STORIES.length - 1) * 100}vw, 0, 0)`,
             }}
           >
             {STORIES.map((story, idx) => (
               <div
                 key={story.id}
-                className="w-screen h-full shrink-0 relative flex items-center justify-end px-8 md:px-16 lg:px-24 py-16"
+                className="stories-desktop-slide w-screen h-full shrink-0 relative flex items-center justify-end px-8 md:px-16 lg:px-24 py-16"
               >
                 {/* Fotografía Monumental de Fondo Completo (100% Pantalla, Luminosa y de Autor) */}
                 <div className="absolute inset-0 z-0">
@@ -280,7 +293,7 @@ export function OrganicStoriesSection() {
           </div>
 
           {/* Barra de Progreso Austral en la Base */}
-          <footer className="absolute bottom-6 left-8 right-8 md:left-16 md:right-16 z-30 flex items-center justify-between text-xs font-mono text-white/80 bg-black/70 backdrop-blur-md px-6 py-3.5 rounded-full border border-white/15 shadow-2xl">
+          <footer className="stories-desktop-progress absolute bottom-6 left-8 right-8 md:left-16 md:right-16 z-30 flex items-center justify-between text-xs font-mono text-white/80 bg-black/70 backdrop-blur-md px-6 py-3.5 rounded-full border border-white/15 shadow-2xl">
             <div className="flex items-center gap-3">
               <span className="text-[#59BFD6] font-bold tracking-wider">
                 [ {activeStory.num} / 04 ]
@@ -298,9 +311,12 @@ export function OrganicStoriesSection() {
             <div className="flex items-center gap-4">
               <div className="w-36 sm:w-56 h-1.5 bg-white/15 rounded-full overflow-hidden">
                 <div
+                  ref={progressFillRef}
                   className="h-full bg-[#59BFD6] rounded-full transition-all duration-150 shadow-[0_0_8px_#59BFD6]"
                   style={{
-                    width: `${Math.max(8, scrollProgress * 100)}%`,
+                    width: '100%',
+                    transform: 'scaleX(0)',
+                    transformOrigin: 'left center',
                   }}
                 />
               </div>

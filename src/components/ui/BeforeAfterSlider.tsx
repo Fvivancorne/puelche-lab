@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useRef, useCallback, useEffect } from 'react';
+import React, { useState, useRef, useCallback } from 'react';
 import Image from 'next/image';
 import { Sliders, Sparkles, Eye, ArrowLeftRight, CheckCircle2, ChevronRight } from 'lucide-react';
 
@@ -94,6 +94,8 @@ export function BeforeAfterSlider({ initialCaseId = 'doosan', className = '' }: 
   const [sliderPosition, setSliderPosition] = useState<number>(50); // percentage 0-100
   const [isDragging, setIsDragging] = useState<boolean>(false);
   const containerRef = useRef<HTMLDivElement>(null);
+  const pendingClientXRef = useRef<number | null>(null);
+  const positionFrameRef = useRef<number | null>(null);
 
   const activeCase = BEFORE_AFTER_CASES.find((c) => c.id === activeCaseId) || BEFORE_AFTER_CASES[0];
 
@@ -119,61 +121,34 @@ export function BeforeAfterSlider({ initialCaseId = 'doosan', className = '' }: 
   const handlePointerMove = useCallback((e: React.PointerEvent<HTMLDivElement>) => {
     if (isDragging) {
       e.preventDefault();
-      updatePosition(e.clientX);
+      pendingClientXRef.current = e.clientX;
+      if (positionFrameRef.current === null) {
+        positionFrameRef.current = window.requestAnimationFrame(() => {
+          positionFrameRef.current = null;
+          if (pendingClientXRef.current !== null) {
+            updatePosition(pendingClientXRef.current);
+          }
+        });
+      }
     }
   }, [isDragging, updatePosition]);
 
   const handlePointerUp = useCallback((e: React.PointerEvent<HTMLDivElement>) => {
     setIsDragging(false);
+    if (positionFrameRef.current !== null) {
+      window.cancelAnimationFrame(positionFrameRef.current);
+      positionFrameRef.current = null;
+    }
+    if (pendingClientXRef.current !== null) {
+      updatePosition(pendingClientXRef.current);
+      pendingClientXRef.current = null;
+    }
     try {
       e.currentTarget.releasePointerCapture(e.pointerId);
     } catch {
       // Fallback
     }
-  }, []);
-
-  const handleMouseDown = useCallback((e: React.MouseEvent) => {
-    e.preventDefault();
-    setIsDragging(true);
-    updatePosition(e.clientX);
   }, [updatePosition]);
-
-  const handleTouchStart = useCallback((e: React.TouchEvent) => {
-    setIsDragging(true);
-    if (e.touches[0]) {
-      updatePosition(e.touches[0].clientX);
-    }
-  }, [updatePosition]);
-
-  useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      if (isDragging) {
-        updatePosition(e.clientX);
-      }
-    };
-    const handleTouchMove = (e: TouchEvent) => {
-      if (isDragging && e.touches[0]) {
-        updatePosition(e.touches[0].clientX);
-      }
-    };
-    const handleMouseUp = () => {
-      if (isDragging) setIsDragging(false);
-    };
-
-    if (isDragging) {
-      window.addEventListener('mousemove', handleMouseMove);
-      window.addEventListener('touchmove', handleTouchMove);
-      window.addEventListener('mouseup', handleMouseUp);
-      window.addEventListener('touchend', handleMouseUp);
-    }
-
-    return () => {
-      window.removeEventListener('mousemove', handleMouseMove);
-      window.removeEventListener('touchmove', handleTouchMove);
-      window.removeEventListener('mouseup', handleMouseUp);
-      window.removeEventListener('touchend', handleMouseUp);
-    };
-  }, [isDragging, updatePosition]);
 
   // Keyboard accessibility
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -251,8 +226,6 @@ export function BeforeAfterSlider({ initialCaseId = 'doosan', className = '' }: 
           onPointerMove={handlePointerMove}
           onPointerUp={handlePointerUp}
           onPointerCancel={handlePointerUp}
-          onMouseDown={handleMouseDown}
-          onTouchStart={handleTouchStart}
           data-cursor="ARRASTRAR"
           className="relative w-full aspect-[16/9] sm:aspect-[21/10] md:aspect-[16/8] select-none cursor-ew-resize overflow-hidden outline-none focus:ring-2 focus:ring-[#C29B63] touch-none"
         >

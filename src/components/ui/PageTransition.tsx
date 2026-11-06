@@ -23,12 +23,21 @@ export function PageTransition() {
     const el = curtainRef.current;
     if (!el) return;
 
-    // Curtain cian: slide down → pause → slide up
-    const tl = gsap.timeline();
-    tl.set(el, { yPercent: -100, display: 'block' })
-      .to(el, { yPercent: 0, duration: 0.3, ease: 'power2.in' })
-      .to(el, { yPercent: 100, duration: 0.3, ease: 'power2.out', delay: 0.08 })
-      .set(el, { display: 'none' });
+    const media = gsap.matchMedia();
+    media.add('(prefers-reduced-motion: no-preference)', () => {
+      const context = gsap.context(() => {
+        // Curtain cian: slide down → pause → slide up
+        gsap.timeline()
+          .set(el, { yPercent: -100, display: 'block' })
+          .to(el, { yPercent: 0, duration: 0.3, ease: 'power2.in' })
+          .to(el, { yPercent: 100, duration: 0.3, ease: 'power2.out', delay: 0.08 })
+          .set(el, { display: 'none' });
+      }, el);
+
+      return () => context.revert();
+    });
+
+    return () => media.revert();
   }, [pathname]);
 
   return (

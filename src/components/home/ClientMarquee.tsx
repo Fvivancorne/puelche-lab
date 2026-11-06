@@ -53,7 +53,7 @@ function MarqueeRow({
   return (
     <div className="relative w-full overflow-hidden py-6 md:py-8">
       <div
-        className="flex items-center gap-12 md:gap-16 w-max"
+        className="puelche-marquee flex items-center gap-12 md:gap-16 w-max"
         style={{
           animation: `${direction === 'left' ? 'marquee-left' : 'marquee-right'} ${speed}s linear infinite`,
         }}

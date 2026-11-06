@@ -22,11 +22,14 @@ const CURATED_PROJECTS = CURATED_PROJECT_IDS.map((id) =>
 
 export function BrutalistProjectList() {
   const trackRef = useRef<HTMLDivElement>(null);
+  const progressFillRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
   const [activeIndex, setActiveIndex] = useState(0);
-  const [scrollProgress, setScrollProgress] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
+  const [isInViewport, setIsInViewport] = useState(false);
+  const [isDocumentVisible, setIsDocumentVisible] = useState(true);
   const autoPlayTimerRef = useRef<NodeJS.Timeout | null>(null);
 
   // Mouse drag state
@@ -40,22 +43,57 @@ export function BrutalistProjectList() {
     if (!el) return;
 
     const { scrollLeft, scrollWidth, clientWidth } = el;
-    setCanScrollLeft(scrollLeft > 20);
-    setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 20);
+    const canGoLeft = scrollLeft > 20;
+    const canGoRight = scrollLeft < scrollWidth - clientWidth - 20;
+    setCanScrollLeft((current) => (current === canGoLeft ? current : canGoLeft));
+    setCanScrollRight((current) => (current === canGoRight ? current : canGoRight));
 
     const maxScroll = scrollWidth - clientWidth;
     const progress = maxScroll > 0 ? (scrollLeft / maxScroll) * 100 : 0;
-    setScrollProgress(Math.min(100, Math.max(0, progress)));
+    if (progressFillRef.current) {
+      const scale = Math.max(0.16, Math.min(100, Math.max(0, progress)) / 100);
+      progressFillRef.current.style.transform = `scaleX(${scale})`;
+    }
 
     // Calculate which card is currently centered
     const cardWidth = el.querySelector('article')?.clientWidth || clientWidth * 0.48;
     const currentIdx = Math.round(scrollLeft / (cardWidth + 24));
-    setActiveIndex(Math.min(CURATED_PROJECTS.length - 1, Math.max(0, currentIdx)));
+    const nextIndex = Math.min(CURATED_PROJECTS.length - 1, Math.max(0, currentIdx));
+    setActiveIndex((current) => (current === nextIndex ? current : nextIndex));
   }, []);
 
-  // Auto-avance continuo horizontal con loop infinito ("que se vayan mostrando solas")
+  // Evitar autoplay fuera de pantalla, en pestañas ocultas o con movimiento reducido.
   useEffect(() => {
-    if (isPaused) return;
+    const motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const syncMotionPreference = () => setPrefersReducedMotion(motionQuery.matches);
+    const syncDocumentVisibility = () => setIsDocumentVisible(!document.hidden);
+
+    syncMotionPreference();
+    syncDocumentVisibility();
+    motionQuery.addEventListener('change', syncMotionPreference);
+    document.addEventListener('visibilitychange', syncDocumentVisibility);
+
+    const track = trackRef.current;
+    let observer: IntersectionObserver | null = null;
+    if (track && typeof IntersectionObserver !== 'undefined') {
+      observer = new IntersectionObserver(([entry]) => {
+        setIsInViewport(entry.isIntersecting);
+      }, { threshold: 0.1 });
+      observer.observe(track);
+    } else {
+      setIsInViewport(true);
+    }
+
+    return () => {
+      motionQuery.removeEventListener('change', syncMotionPreference);
+      document.removeEventListener('visibilitychange', syncDocumentVisibility);
+      observer?.disconnect();
+    };
+  }, []);
+
+  // Auto-avance horizontal con loop infinito, sólo mientras la galería está activa.
+  useEffect(() => {
+    if (isPaused || prefersReducedMotion || !isInViewport || !isDocumentVisible) return;
 
     autoPlayTimerRef.current = setInterval(() => {
       const el = trackRef.current;
@@ -76,7 +114,7 @@ export function BrutalistProjectList() {
     return () => {
       if (autoPlayTimerRef.current) clearInterval(autoPlayTimerRef.current);
     };
-  }, [isPaused]);
+  }, [isPaused, prefersReducedMotion, isInViewport, isDocumentVisible]);
 
   useEffect(() => {
     const el = trackRef.current;
@@ -101,7 +139,7 @@ export function BrutalistProjectList() {
 
     el.scrollBy({
       left: direction === 'left' ? -scrollAmount : scrollAmount,
-      behavior: 'smooth',
+      behavior: prefersReducedMotion ? 'auto' : 'smooth',
     });
   };
 
@@ -324,7 +362,8 @@ export function BrutalistProjectList() {
           <div className="relative flex-1 h-[2px] bg-white/10 rounded-full overflow-hidden">
             <div
               className="absolute top-0 left-0 h-full bg-gradient-to-r from-[#59BFD6] to-[#C29B63] transition-all duration-150 ease-out"
-              style={{ width: `${Math.max(16, scrollProgress)}%` }}
+              ref={progressFillRef}
+              style={{ width: '100%', transform: 'scaleX(0.16)', transformOrigin: 'left center' }}
             />
           </div>
         </div>

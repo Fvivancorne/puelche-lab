@@ -7,33 +7,51 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 export function SmoothScrollProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
-    if (typeof window === 'undefined') return;
-
     gsap.registerPlugin(ScrollTrigger);
 
-    const lenis = new Lenis({
-      lerp: 0.08,
-      smoothWheel: true,
-      wheelMultiplier: 1.0,
-      touchMultiplier: 1.5,
-    });
+    const motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    let lenis: Lenis | null = null;
 
-    (window as any).lenisInstance = lenis;
-
-    // Connect Lenis to GSAP ScrollTrigger
-    lenis.on('scroll', ScrollTrigger.update);
-
+    // Usar un único reloj para Lenis y GSAP evita dos loops de animación compitiendo.
     const updateTicker = (time: number) => {
-      lenis.raf(time * 1000);
+      lenis?.raf(time * 1000);
     };
 
-    gsap.ticker.add(updateTicker);
-    gsap.ticker.lagSmoothing(0);
+    const syncMotionPreference = () => {
+      if (motionQuery.matches) {
+        if (!lenis) return;
+
+        gsap.ticker.remove(updateTicker);
+        lenis.destroy();
+        lenis = null;
+        delete (window as Window & { lenisInstance?: Lenis }).lenisInstance;
+        ScrollTrigger.update();
+        return;
+      }
+
+      if (lenis) return;
+
+      lenis = new Lenis({
+        lerp: 0.08,
+        smoothWheel: true,
+        wheelMultiplier: 1,
+        touchMultiplier: 1.5,
+      });
+
+      (window as Window & { lenisInstance?: Lenis }).lenisInstance = lenis;
+      lenis.on('scroll', ScrollTrigger.update);
+      gsap.ticker.add(updateTicker);
+    };
+
+    syncMotionPreference();
+    motionQuery.addEventListener('change', syncMotionPreference);
 
     return () => {
-      lenis.destroy();
+      motionQuery.removeEventListener('change', syncMotionPreference);
       gsap.ticker.remove(updateTicker);
-      delete (window as any).lenisInstance;
+      lenis?.destroy();
+      lenis = null;
+      delete (window as Window & { lenisInstance?: Lenis }).lenisInstance;
     };
   }, []);
 

@@ -19,22 +19,34 @@ export default function Home() {
 
   useEffect(() => {
     const wipeTarget = heroWipeRef.current;
-    if (wipeTarget) {
-      gsap.set(wipeTarget, { '--wipe-lead': 0, '--wipe-trail': 0 });
-      const wipeState = { progress: 0 };
-      gsap.to(wipeState, {
-        progress: 1,
-        duration: 1.2,
-        delay: 0.2,
-        ease: 'power2.out',
-        onUpdate: () => {
-          gsap.set(wipeTarget, {
-            '--wipe-lead': Math.min(1, 2 * wipeState.progress),
-            '--wipe-trail': Math.max(0, 2 * wipeState.progress - 1),
-          });
-        },
-      });
-    }
+    if (!wipeTarget) return;
+
+    const media = gsap.matchMedia();
+    media.add('(prefers-reduced-motion: reduce)', () => {
+      gsap.set(wipeTarget, { '--wipe-lead': 1, '--wipe-trail': 1 });
+    });
+    media.add('(prefers-reduced-motion: no-preference)', () => {
+      const context = gsap.context(() => {
+        gsap.set(wipeTarget, { '--wipe-lead': 0, '--wipe-trail': 0 });
+        const wipeState = { progress: 0 };
+        gsap.to(wipeState, {
+          progress: 1,
+          duration: 1.2,
+          delay: 0.2,
+          ease: 'power2.out',
+          onUpdate: () => {
+            gsap.set(wipeTarget, {
+              '--wipe-lead': Math.min(1, 2 * wipeState.progress),
+              '--wipe-trail': Math.max(0, 2 * wipeState.progress - 1),
+            });
+          },
+        });
+      }, wipeTarget);
+
+      return () => context.revert();
+    });
+
+    return () => media.revert();
   }, []);
 
   return (
