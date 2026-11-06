@@ -62,7 +62,7 @@ export default function Home() {
       <section
         id="hero"
         aria-label="Puelche Lab Portada"
-        className="relative w-full h-screen min-h-screen flex flex-col justify-between items-center px-6 md:px-12 lg:px-16 pt-24 pb-12 overflow-hidden text-center"
+        className="relative w-full min-h-[100svh] min-h-screen flex flex-col justify-between items-center px-6 md:px-12 lg:px-16 pt-20 sm:pt-24 pb-6 overflow-hidden text-center"
       >
         {/* Backdrop: bg-agencia.jpg (Bosque patagónico con niebla) */}
         <div className="absolute inset-0 z-0 pointer-events-none">
@@ -80,7 +80,7 @@ export default function Home() {
         <WindParticleCanvas className="z-[5]" />
 
         {/* Top Geo Badge & Technical Coordinates */}
-        <div className="relative z-10 max-w-7xl mx-auto w-full flex items-center justify-between font-mono text-[11px] sm:text-xs uppercase tracking-[0.25em] text-white/70 border-b border-white/10 pb-5">
+        <div className="relative z-10 max-w-7xl mx-auto w-full flex items-center justify-between font-mono text-[11px] sm:text-xs uppercase tracking-[0.25em] text-white/70 border-b border-white/10 pb-3 sm:pb-4">
           <div className="inline-flex items-center gap-2.5 text-white">
             <span className="w-1.5 h-1.5 rounded-full bg-[#59BFD6] bg-puelche-cyan animate-pulse shadow-[0_0_8px_#59BFD6]" />
             <span>41°19&apos;S 72°59&apos;W &bull; PUERTO VARAS &bull; REGION DE LOS LAGOS</span>
@@ -91,9 +91,9 @@ export default function Home() {
         </div>
 
         {/* Center: Asimetría Editorial Suiza — Espacio Negativo Monumental */}
-        <div className="relative z-10 max-w-5xl mx-auto w-full my-auto flex flex-col items-center justify-center py-12 md:py-16 space-y-8">
+        <div className="relative z-10 max-w-5xl mx-auto w-full my-auto flex flex-col items-center justify-center py-2 sm:py-4 md:py-6 space-y-3 sm:space-y-4 md:space-y-5">
           {/* Subtle Studio Mark / Monogram */}
-          <div className="relative w-40 sm:w-52 md:w-64 aspect-[412/282] drop-shadow-2xl opacity-90 transition-transform duration-700 hover:scale-105">
+          <div className="relative w-28 sm:w-36 md:w-44 lg:w-48 aspect-[412/282] drop-shadow-2xl opacity-90 transition-transform duration-700 hover:scale-105">
             <Image
               src="/images/real/logo-puelche.png"
               alt="Puelche Lab — Viento Creativo"
@@ -106,7 +106,7 @@ export default function Home() {
           <div
             ref={heroWipeRef}
             data-wipe-title="true"
-            className="flex flex-col items-center justify-center space-y-4 max-w-4xl text-center"
+            className="flex flex-col items-center justify-center space-y-2 sm:space-y-3 max-w-4xl text-center"
           >
             {/* Editorial Category Tag */}
             <span className="font-mono text-[11px] sm:text-xs uppercase tracking-[0.35em] text-[#59BFD6] font-medium">
@@ -118,27 +118,27 @@ export default function Home() {
               text="VIENTO CREATIVO"
               as="h1"
               animation="scatter"
-              className="font-condensed text-5xl sm:text-7xl md:text-8xl lg:text-9xl uppercase tracking-[0.06em] font-bold text-white drop-shadow-2xl leading-none"
+              className="font-condensed text-4xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl uppercase tracking-[0.06em] font-bold text-white drop-shadow-2xl leading-[0.95]"
             />
 
-            <h2 className="font-condensed text-lg sm:text-2xl md:text-3xl uppercase tracking-[0.2em] font-light text-white/90 pt-1">
+            <h2 className="font-condensed text-sm sm:text-lg md:text-xl lg:text-2xl uppercase tracking-[0.2em] font-light text-white/90 pt-0.5">
               Diseño Cross Media &bull; Fotografía de Autor
             </h2>
           </div>
 
-          <p className="font-sans text-base sm:text-lg md:text-xl font-light text-white/80 max-w-2xl mx-auto tracking-wide leading-relaxed drop-shadow-md">
+          <p className="font-sans text-xs sm:text-sm md:text-base lg:text-lg font-light text-white/85 max-w-2xl mx-auto tracking-wide leading-relaxed drop-shadow-md px-2">
             Un Estudio de Diseño Cross Media y Fotografía de Puerto Varas. Obra visual esculpida bajo el rigor y la luz de la Patagonia austral.
           </p>
         </div>
 
         {/* Bottom Scroll Indicator */}
-        <div className="relative z-10 max-w-7xl mx-auto w-full flex items-center justify-center pt-4">
+        <div className="relative z-10 max-w-7xl mx-auto w-full flex items-center justify-center pt-1 sm:pt-2 pb-1">
           <a
             href="#cross-media"
-            className="p-3 rounded-full bg-white/5 hover:bg-[#59BFD6] text-white hover:text-puelche-dark border border-white/10 hover:border-[#59BFD6] transition-all scroll-indicator hover:scale-110"
+            className="p-2.5 sm:p-3 rounded-full bg-white/5 hover:bg-[#59BFD6] text-white hover:text-puelche-dark border border-white/10 hover:border-[#59BFD6] transition-all scroll-indicator hover:scale-110"
             aria-label="Continuar"
           >
-            <ArrowDown className="w-4 h-4 animate-bounce" />
+            <ArrowDown className="w-3.5 h-3.5 sm:w-4 sm:h-4 animate-bounce" />
           </a>
         </div>
       </section>
