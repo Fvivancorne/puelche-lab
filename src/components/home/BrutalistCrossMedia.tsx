@@ -93,83 +93,87 @@ export function BrutalistCrossMedia() {
 
   // Coreografía Direccional del Viento con Scrub en Tiempo Real
   useEffect(() => {
-    if (typeof window === 'undefined') return;
     gsap.registerPlugin(ScrollTrigger);
 
     const section = sectionRef.current;
     if (!section) return;
 
-    const ctx = gsap.context(() => {
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: section,
-          start: 'top 85%',
-          end: 'top 15%',
-          scrub: 1, // Inercia líquida al scrollear
-        },
-      });
+    const media = gsap.matchMedia();
+    media.add('(prefers-reduced-motion: no-preference)', () => {
+      const ctx = gsap.context(() => {
+        const tl = gsap.timeline({
+          scrollTrigger: {
+            trigger: section,
+            start: 'top 85%',
+            end: 'top 15%',
+            scrub: 0.7,
+          },
+        });
 
-      // 1. Titular entra deslizándose desde la izquierda
-      if (headlineRef.current) {
-        tl.fromTo(
-          headlineRef.current,
-          { x: -120, opacity: 0.15 },
-          { x: 0, opacity: 1, ease: 'none' },
-          0
-        );
-      }
+        // 1. Titular entra deslizándose desde la izquierda
+        if (headlineRef.current) {
+          tl.fromTo(
+            headlineRef.current,
+            { x: -120, opacity: 0.15 },
+            { x: 0, opacity: 1, ease: 'none' },
+            0
+          );
+        }
 
-      // 2. Subtítulo en Serif Itálica entra desde la derecha
-      if (subheadRef.current) {
-        tl.fromTo(
-          subheadRef.current,
-          { x: 100, opacity: 0.15 },
-          { x: 0, opacity: 1, ease: 'none' },
-          0.04
-        );
-      }
+        // 2. Subtítulo en Serif Itálica entra desde la derecha
+        if (subheadRef.current) {
+          tl.fromTo(
+            subheadRef.current,
+            { x: 100, opacity: 0.15 },
+            { x: 0, opacity: 1, ease: 'none' },
+            0.04
+          );
+        }
 
-      // 3. Manifiesto: Columnas convergen desde lados opuestos
-      if (manifestoLeftRef.current) {
-        tl.fromTo(
-          manifestoLeftRef.current,
-          { x: -80, opacity: 0.2 },
-          { x: 0, opacity: 1, ease: 'none' },
-          0.08
-        );
-      }
-      if (manifestoRightRef.current) {
-        tl.fromTo(
-          manifestoRightRef.current,
-          { x: 80, opacity: 0.2 },
-          { x: 0, opacity: 1, ease: 'none' },
-          0.08
-        );
-      }
+        // 3. Manifiesto: Columnas convergen desde lados opuestos
+        if (manifestoLeftRef.current) {
+          tl.fromTo(
+            manifestoLeftRef.current,
+            { x: -80, opacity: 0.2 },
+            { x: 0, opacity: 1, ease: 'none' },
+            0.08
+          );
+        }
+        if (manifestoRightRef.current) {
+          tl.fromTo(
+            manifestoRightRef.current,
+            { x: 80, opacity: 0.2 },
+            { x: 0, opacity: 1, ease: 'none' },
+            0.08
+          );
+        }
 
-      // 4. Las 4 tarjetas de capacidad emergen desde abajo escalonadas
-      if (cardsContainerRef.current) {
-        const cards = cardsContainerRef.current.children;
-        tl.fromTo(
-          cards,
-          { y: 110, opacity: 0.2 },
-          { y: 0, opacity: 1, stagger: 0.08, ease: 'none' },
-          0.12
-        );
-      }
+        // 4. Las tarjetas emergen escalonadas
+        if (cardsContainerRef.current) {
+          const cards = cardsContainerRef.current.children;
+          tl.fromTo(
+            cards,
+            { y: 110, opacity: 0.2 },
+            { y: 0, opacity: 1, stagger: 0.08, ease: 'none' },
+            0.12
+          );
+        }
 
-      // 5. Parallax fotográfico en el fondo
-      if (bgWrapperRef.current) {
-        tl.fromTo(
-          bgWrapperRef.current,
-          { yPercent: -10 },
-          { yPercent: 10, ease: 'none' },
-          0
-        );
-      }
-    }, section);
+        // 5. Parallax fotográfico en el fondo
+        if (bgWrapperRef.current) {
+          tl.fromTo(
+            bgWrapperRef.current,
+            { yPercent: -10 },
+            { yPercent: 10, ease: 'none' },
+            0
+          );
+        }
+      }, section);
 
-    return () => ctx.revert();
+      return () => ctx.revert();
+    });
+
+    return () => media.revert();
   }, []);
 
   return (

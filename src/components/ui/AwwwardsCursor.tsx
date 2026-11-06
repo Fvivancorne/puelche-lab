@@ -10,94 +10,96 @@ export function AwwwardsCursor() {
   const [cursorText, setCursorText] = useState<string>('');
 
   useEffect(() => {
-    // Disable custom cursor on touch devices or screens without fine pointer
-    if (typeof window === 'undefined') return;
-    if (window.matchMedia('(pointer: coarse)').matches) return;
-
     const cursor = cursorRef.current;
     if (!cursor) return;
 
-    // Use GSAP quickTo for 60fps performance
-    const xTo = gsap.quickTo(cursor, 'x', { duration: 0.15, ease: 'power3.out' });
-    const yTo = gsap.quickTo(cursor, 'y', { duration: 0.15, ease: 'power3.out' });
+    const media = gsap.matchMedia();
+    media.add('(pointer: fine) and (prefers-reduced-motion: no-preference)', () => {
+      const context = gsap.context(() => {
+        // quickTo reuses tweens rather than allocating one on every pointer event.
+        const xTo = gsap.quickTo(cursor, 'x', { duration: 0.15, ease: 'power3.out' });
+        const yTo = gsap.quickTo(cursor, 'y', { duration: 0.15, ease: 'power3.out' });
 
-    let isVisible = false;
-    let lastX = -100;
-    let lastY = -100;
+        let isVisible = false;
+        let lastX = -100;
+        let lastY = -100;
 
-    const evaluateTarget = (target: HTMLElement | null) => {
-      if (!target) {
-        setCursorState('default');
-        setCursorText('');
-        return;
-      }
+        const evaluateTarget = (target: HTMLElement | null) => {
+          if (!target) {
+            setCursorState('default');
+            setCursorText('');
+            return;
+          }
 
-      const dragTarget = target.closest('[data-cursor="drag"], [data-cursor="ARRASTRAR"], .cursor-ew-resize');
-      const exploreTarget = target.closest('[data-cursor="explore"], .cursor-explore');
-      const buttonTarget = target.closest('button, a, input, select, textarea, [role="button"]');
+          const dragTarget = target.closest('[data-cursor="drag"], [data-cursor="ARRASTRAR"], .cursor-ew-resize');
+          const exploreTarget = target.closest('[data-cursor="explore"], .cursor-explore');
+          const buttonTarget = target.closest('button, a, input, select, textarea, [role="button"]');
 
-      if (dragTarget && !buttonTarget) {
-        setCursorState('drag');
-        setCursorText('');
-      } else if (exploreTarget && !buttonTarget) {
-        setCursorState('explore');
-        const customText = (exploreTarget as HTMLElement).getAttribute('data-cursor-text') || 'VER';
-        setCursorText(customText);
-      } else if (buttonTarget) {
-        setCursorState('button');
-        setCursorText('');
-      } else {
-        setCursorState('default');
-        setCursorText('');
-      }
-    };
+          if (dragTarget && !buttonTarget) {
+            setCursorState('drag');
+            setCursorText('');
+          } else if (exploreTarget && !buttonTarget) {
+            setCursorState('explore');
+            const customText = (exploreTarget as HTMLElement).getAttribute('data-cursor-text') || 'VER';
+            setCursorText(customText);
+          } else if (buttonTarget) {
+            setCursorState('button');
+            setCursorText('');
+          } else {
+            setCursorState('default');
+            setCursorText('');
+          }
+        };
 
-    const onMouseMove = (e: MouseEvent) => {
-      lastX = e.clientX;
-      lastY = e.clientY;
+        const onMouseMove = (e: MouseEvent) => {
+          lastX = e.clientX;
+          lastY = e.clientY;
+          if (!isVisible) {
+            gsap.to(cursor, { opacity: 1, duration: 0.2 });
+            isVisible = true;
+          }
+          xTo(e.clientX);
+          yTo(e.clientY);
+          evaluateTarget(e.target as HTMLElement | null);
+        };
 
-      if (!isVisible) {
-        gsap.to(cursor, { opacity: 1, duration: 0.2 });
-        isVisible = true;
-      }
-      xTo(e.clientX);
-      yTo(e.clientY);
+        const onScroll = () => {
+          if (lastX >= 0 && lastY >= 0) {
+            evaluateTarget(document.elementFromPoint(lastX, lastY) as HTMLElement | null);
+          }
+        };
 
-      evaluateTarget(e.target as HTMLElement | null);
-    };
+        const onMouseLeave = () => {
+          gsap.to(cursor, { opacity: 0, duration: 0.2 });
+          isVisible = false;
+          setCursorState('default');
+          setCursorText('');
+        };
 
-    const onScroll = () => {
-      if (lastX >= 0 && lastY >= 0) {
-        const el = document.elementFromPoint(lastX, lastY) as HTMLElement | null;
-        evaluateTarget(el);
-      }
-    };
+        const onMouseEnter = () => {
+          gsap.to(cursor, { opacity: 1, duration: 0.2 });
+          isVisible = true;
+        };
 
-    const onMouseLeave = () => {
-      gsap.to(cursor, { opacity: 0, duration: 0.2 });
-      isVisible = false;
-      setCursorState('default');
-      setCursorText('');
-    };
+        window.addEventListener('mousemove', onMouseMove, { passive: true });
+        window.addEventListener('scroll', onScroll, { passive: true });
+        window.addEventListener('blur', onMouseLeave);
+        document.addEventListener('mouseleave', onMouseLeave);
+        document.addEventListener('mouseenter', onMouseEnter);
 
-    const onMouseEnter = () => {
-      gsap.to(cursor, { opacity: 1, duration: 0.2 });
-      isVisible = true;
-    };
+        return () => {
+          window.removeEventListener('mousemove', onMouseMove);
+          window.removeEventListener('scroll', onScroll);
+          window.removeEventListener('blur', onMouseLeave);
+          document.removeEventListener('mouseleave', onMouseLeave);
+          document.removeEventListener('mouseenter', onMouseEnter);
+        };
+      }, cursor);
 
-    window.addEventListener('mousemove', onMouseMove);
-    window.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('blur', onMouseLeave);
-    document.addEventListener('mouseleave', onMouseLeave);
-    document.addEventListener('mouseenter', onMouseEnter);
+      return () => context.revert();
+    });
 
-    return () => {
-      window.removeEventListener('mousemove', onMouseMove);
-      window.removeEventListener('scroll', onScroll);
-      window.removeEventListener('blur', onMouseLeave);
-      document.removeEventListener('mouseleave', onMouseLeave);
-      document.removeEventListener('mouseenter', onMouseEnter);
-    };
+    return () => media.revert();
   }, []);
 
   return (

@@ -30,5 +30,16 @@
 - **Activos Oficiales Descargados:** Todos los activos residen en `public/images/real/` y se cargan localmente (sin CDNs externas de stock).
 - **Logotipo Oficial:** `Puelche Lab — VIENTO CREATIVO` en Navbar (`logo-top.png`) y Footer (`logo-puelche.png`).
 - **Directora Creativa & Contacto:** Paula Valdivieso (`paula.valdivieso@puelchelab.cl`, `+56 9 6617 7500`).
-- **Pruebas Automatizadas:** **128 de 128 tests aprobados al 100%** en `tests/e2e/runner.ts`.
-- **Compilación de Producción:** Exit code 0 en 147 ms en Turbopack con 11/11 rutas prerenderizadas.
+- **Pruebas Automatizadas:** **140 de 140 tests aprobados al 100%** en `tests/e2e/runner.ts` (validado el 5 de noviembre de 2026).
+- **Compilación de Producción:** `npm run build` finaliza con exit code 0; Next.js genera 17 rutas, con `/api/contact` dinámica y las demás estáticas.
+
+---
+
+## 3. Optimización de Animaciones y Scroll (5 de noviembre de 2026)
+
+- **Lenis + GSAP:** comparten el ticker de GSAP; Lenis se desactiva con `prefers-reduced-motion` y se destruye de forma simétrica al desmontar.
+- **Canvas del viento y preloader:** el RAF se cancela fuera de viewport, con pestaña oculta, al terminar/saltar la intro y en movimiento reducido. El canvas limita DPR a 2 y restablece la transformación con `setTransform` al redimensionar.
+- **Crónicas horizontales:** GSAP ScrollTrigger aplica el desplazamiento directamente al track; React sólo recibe cambios discretos de historia, no actualizaciones por cada frame. En movimiento reducido, las historias pasan a una disposición vertical estática.
+- **Componentes GSAP:** `ScrollReveal`, `SplitText`, manifiesto, cursor y transición de página usan contextos/media queries con cleanup reversible.
+- **Carrusel y comparador:** autoplay pausado fuera de pantalla, con pestaña oculta o movimiento reducido; progreso visual del carrusel actualizado por transform, y comparador limitado a Pointer Events con actualización por frame.
+- **Verificación:** `npm run build` OK; `npx tsx tests/e2e/runner.ts` OK (**140/140**); `git diff --check` sin errores. Se realizaron capturas locales de portada y crónicas en escritorio; no se atribuye una puntuación Lighthouse/FPS no medida.
