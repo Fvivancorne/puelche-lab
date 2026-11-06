@@ -273,7 +273,7 @@ export function Preloader() {
     gsap.set(introPhaseRef.current, { opacity: 0, y: 12 });
     gsap.set(lockPillRef.current, { opacity: 0, y: 12 });
 
-    // Master Cinematic Opening Timeline (~3.6s total poetic flow)
+    // Master Cinematic Opening Timeline (~1.7s total poetic & agile flow)
     const tl = gsap.timeline({
       onComplete: () => {
         stopCanvasLoop();
@@ -286,50 +286,50 @@ export function Preloader() {
       },
     });
 
-    // ── FASE 1: Búsqueda de Foco y Calibración Óptica (0.0s - 1.0s) ──
+    // ── FASE 1: Búsqueda de Foco y Calibración Óptica (0.0s - 0.4s) ──
     tl.to([hudTopRef.current, hudBottomRef.current], {
       opacity: 1,
       y: 0,
-      duration: 0.5,
+      duration: 0.3,
       ease: 'power2.out',
     })
       .to(introPhaseRef.current, {
         opacity: 1,
         y: 0,
-        duration: 0.6,
+        duration: 0.35,
         ease: 'power3.out',
-      }, '-=0.2')
+      }, '-=0.15')
       .to(lensDiaphragmRef.current, {
         opacity: 1,
         scale: 1,
         rotation: 0,
-        duration: 1.2,
+        duration: 0.5,
         ease: 'power2.out',
-      }, '-=0.4')
+      }, '-=0.25')
       .to(lensInnerRingRef.current, {
         opacity: 0.7,
         scale: 1,
-        duration: 1.0,
+        duration: 0.4,
         ease: 'power2.out',
-      }, '<+=0.1')
+      }, '<+=0.05')
 
       // La poesía de entrada se retira con suavidad antes del ensamble
       .to(introPhaseRef.current, {
         opacity: 0,
-        y: -15,
-        duration: 0.4,
+        y: -12,
+        duration: 0.25,
         ease: 'power2.in',
-      }, '+=0.1');
+      }, '+=0.05');
 
-    // ── FASE 2: Ráfaga del Puelche, Enfoque Manual y Condensación (1.1s - 2.2s) ──
+    // ── FASE 2: Ráfaga del Puelche, Enfoque Manual y Condensación (0.4s - 0.9s) ──
     tl.to(
       state,
       {
         opacity: 1,
         assemble: 1,
-        lensFocus: 0, // El foco pasa de bokeh analógico a nitidez absoluta
+        lensFocus: 0,
         cyanGlow: 0.8,
-        duration: 1.1,
+        duration: 0.5,
         ease: 'expo.out',
       },
       '-=0.1'
@@ -339,10 +339,10 @@ export function Preloader() {
         state,
         {
           solidCrossfade: 1,
-          duration: 0.3,
+          duration: 0.2,
           ease: 'power2.out',
         },
-        '-=0.3'
+        '-=0.15'
       )
       // Rotación precisa del anillo de apertura (Ajuste de diafragma f/2.8)
       .to(
@@ -350,19 +350,18 @@ export function Preloader() {
         {
           rotation: 15,
           scale: 1.02,
-          duration: 0.4,
+          duration: 0.25,
           ease: 'power1.inOut',
         },
         '<'
       );
 
-    // ── FASE 3: El Disparo de Obturador & Destello de Exposición (2.2s - 2.6s) ──
-    // Momento en que la cámara registra la imagen: micro-compresión y flash estroboscópico
+    // ── FASE 3: El Disparo de Obturador & Destello (0.9s - 1.2s) ──
     tl.to(
       flashOverlayRef.current,
       {
         opacity: 0.85,
-        duration: 0.08,
+        duration: 0.06,
         ease: 'power4.in',
       },
       '-=0.05'
@@ -371,7 +370,7 @@ export function Preloader() {
         flashOverlayRef.current,
         {
           opacity: 0,
-          duration: 0.35,
+          duration: 0.2,
           ease: 'power2.out',
         }
       )
@@ -381,48 +380,40 @@ export function Preloader() {
         {
           opacity: 1,
           y: 0,
-          duration: 0.5,
+          duration: 0.3,
           ease: 'power3.out',
         },
-        '-=0.2'
+        '-=0.15'
       );
 
-    // ── FASE 4: Respiración de Estudio (2.6s - 3.2s) ──
-    tl.to(state, {
-      breathe: 1.02,
-      duration: 0.4,
-      yoyo: true,
-      repeat: 1,
-      ease: 'sine.inOut',
-    });
-
-    // ── FASE 5: Descompresión y Desvanecimiento de Elementos Centrales (3.2s - 3.5s) ──
+    // ── FASE 4: Descompresión Inmediata y Desvanecimiento Central (1.2s - 1.4s) ──
     tl.to(
       [lensDiaphragmRef.current, lockPillRef.current, hudTopRef.current, hudBottomRef.current],
       {
         opacity: 0,
         scale: 0.95,
-        duration: 0.35,
+        duration: 0.2,
         ease: 'power2.in',
-      }
+      },
+      '+=0.05'
     )
       .to(
         state,
         {
           opacity: 0,
-          duration: 0.3,
+          duration: 0.18,
           ease: 'power2.in',
         },
         '<'
       );
 
-    // ── FASE 6: Apertura de Cortinillas de Obturador Dual (3.4s - 4.2s) ──
+    // ── FASE 5: Apertura Rápida de Cortinillas de Obturador Dual (1.3s - 1.8s) ──
     // Cortina superior sube, cortina inferior baja
     tl.to(
       shutterTopRef.current,
       {
         yPercent: -100,
-        duration: 0.8,
+        duration: 0.55,
         ease: 'power4.inOut',
       },
       '-=0.1'
@@ -431,7 +422,7 @@ export function Preloader() {
         shutterBottomRef.current,
         {
           yPercent: 100,
-          duration: 0.8,
+          duration: 0.55,
           ease: 'power4.inOut',
         },
         '<'

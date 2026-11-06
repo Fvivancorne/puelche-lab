@@ -73,7 +73,8 @@ export default function Home() {
             priority
             className="object-cover pointer-events-none scale-105 transition-transform duration-1000 ease-out"
           />
-          <div className="absolute inset-0 bg-[#1D2024]/25 backdrop-brightness-100" />
+          <div className="absolute inset-0 bg-gradient-to-b from-[#111215]/25 via-[#111215]/40 to-[#111215] pointer-events-none" />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_35%,rgba(17,18,21,0.55)_100%)] pointer-events-none" />
         </div>
 
         {/* Kinetic Puelche Wind Particle Physics */}
@@ -127,7 +128,7 @@ export default function Home() {
           </div>
 
           <p className="font-sans text-xs sm:text-sm md:text-base lg:text-lg font-light text-white/85 max-w-2xl mx-auto tracking-wide leading-relaxed drop-shadow-md px-2">
-            Un Estudio de Diseño Cross Media y Fotografía de Puerto Varas. Obra visual esculpida bajo el rigor y la luz de la Patagonia austral.
+            Marcas del sur con presencia sin fronteras. Estudio de diseño cross media y fotografía de autor esculpido bajo el rigor y la luz de la Patagonia austral.
           </p>
         </div>
 

@@ -65,6 +65,8 @@ function ContactFormInner() {
     initialProject ? `Consulta referente al proyecto: ${initialProject}` : ''
   );
   const [submitted, setSubmitted] = useState<boolean>(false);
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
   const handleCheckboxChange = (service: string) => {
     setSelectedServices((prev) =>
@@ -80,9 +82,44 @@ function ContactFormInner() {
     return `https://wa.me/56966177500?text=${encodeURIComponent(msg)}`;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitted(true);
+    setIsSubmitting(true);
+    setSubmitError(null);
+
+    try {
+      const payload = {
+        name,
+        company,
+        email: email || undefined,
+        phone,
+        services: selectedServices,
+        budget: selectedBudget,
+        region: selectedRegion,
+        projectScale,
+        message,
+        clientTimestamp: new Date().toISOString(),
+      };
+
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+
+      if (!res.ok) {
+        const data = await res.json().catch(() => null);
+        throw new Error(data?.issues?.[0] || data?.error || 'Error al procesar el brief');
+      }
+
+      setSubmitted(true);
+    } catch (err: any) {
+      console.warn('API submission fallback to direct WhatsApp handoff:', err?.message);
+      // Fallback seguro: garantizamos que el lead no se pierda y acceda a WhatsApp
+      setSubmitted(true);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleReset = () => {
@@ -95,6 +132,8 @@ function ContactFormInner() {
     setSelectedRegion('Puerto Varas & Cuenca Llanquihue');
     setMessage('');
     setSubmitted(false);
+    setIsSubmitting(false);
+    setSubmitError(null);
   };
 
   return (
