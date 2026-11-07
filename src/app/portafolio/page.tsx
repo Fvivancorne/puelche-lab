@@ -253,82 +253,126 @@ function PortfolioContent() {
         </div>
       </div>
 
-      {/* Projects Grid — Siluetas Orgánicas de Canto Rodado (rounded-[32px]) */}
-      <div className={`max-w-7xl mx-auto w-full px-6 pb-24 grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12 ${viewMode === 'latitud' ? 'hidden' : ''}`}>
-        {filteredProjects.map((project) => (
-          <article
-            key={project.id}
-            data-cursor="explore"
-            data-cursor-text="VER OBRA"
-            onClick={() => setActiveModalProject(project)}
-            className="group cursor-pointer bg-[#141519]/90 border border-white/10 rounded-[28px] sm:rounded-[36px] overflow-hidden hover:border-[#59BFD6]/60 hover:shadow-[0_25px_60px_rgba(0,0,0,0.65)] transition-all duration-500 flex flex-col justify-between hover:-translate-y-1.5"
-          >
-            <div>
-              <div className="relative aspect-[16/10] w-full overflow-hidden bg-black/40">
-                <Image
-                  src={project.image}
-                  alt={project.title}
-                  fill
-                  className="object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#141519] via-transparent to-transparent opacity-80" />
-                <div className="absolute top-4 left-4">
-                  <span className="px-3.5 py-1.5 rounded-full bg-[#59BFD6] text-puelche-dark font-condensed font-bold text-xs uppercase tracking-wider shadow-md">
-                    {project.category}
-                  </span>
-                </div>
-                <div className="absolute top-4 right-4 w-10 h-10 rounded-full bg-black/60 border border-white/20 flex items-center justify-center text-white group-hover:bg-[#59BFD6] group-hover:text-puelche-dark transition-colors duration-300 backdrop-blur-md">
-                  <ArrowUpRight className="w-4 h-4" />
-                </div>
-                <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between text-xs font-mono text-white/90">
-                  <span className="flex items-center gap-1.5">
-                    <MapPin className="w-3.5 h-3.5 text-[#59BFD6]" />
-                    {project.location}
-                  </span>
-                  <span className="flex items-center gap-1.5">
-                    <Calendar className="w-3.5 h-3.5 text-[#59BFD6]" />
-                    {project.year}
-                  </span>
-                </div>
-              </div>
+      {/* ── RÍO VISUAL CINÉTICO & FLUJO EDITORIAL DE AUTOR (AWWWARDS SOTD / NEUROESTÉTICA) ── */}
+      <div className={`max-w-7xl mx-auto w-full px-6 pb-32 grid grid-cols-1 md:grid-cols-12 gap-8 lg:gap-14 ${viewMode === 'latitud' ? 'hidden' : ''}`}>
+        {filteredProjects.map((project, idx) => {
+          // Asimetría rítmica neuroestética: alternamos pliegos panorámicos monumentales (12 cols)
+          // con duos desfasados verticalmente (7 cols vs 5 cols) para que las fotos "bailen" con el scroll
+          const isMonumental = idx % 3 === 0;
+          const isLeftStagger = idx % 3 === 1;
+          const isRightStagger = idx % 3 === 2;
 
-              <div className="p-7 sm:p-8 space-y-3">
-                <div className="text-xs font-mono text-[#59BFD6] uppercase tracking-wider">
-                  Cliente: {project.client}
-                </div>
-                <h3 className="font-condensed text-2xl sm:text-3xl font-bold uppercase tracking-wide text-white group-hover:text-[#59BFD6] transition-colors">
-                  {project.title}
-                </h3>
-                <p className="text-sm text-white/70 font-sans font-light leading-relaxed line-clamp-2">
-                  {project.description}
-                </p>
-              </div>
-            </div>
+          const colSpanClass = isMonumental
+            ? 'md:col-span-12'
+            : isLeftStagger
+            ? 'md:col-span-7'
+            : 'md:col-span-5 md:pt-16 lg:pt-28';
 
-            <div className="px-7 sm:px-8 pb-7 pt-2 border-t border-white/5 flex flex-wrap items-center justify-between gap-3">
-              <div className="flex flex-wrap gap-1.5">
-                {project.deliverables.slice(0, 3).map((d) => (
-                  <span key={d} className="text-[11px] font-mono text-white/50 bg-white/5 px-2.5 py-1 rounded-full border border-white/5">
-                    {d}
-                  </span>
-                ))}
-              </div>
-
-              <div className="shrink-0 w-full sm:w-auto">
-                <button
-                  type="button"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setActiveModalProject(project);
-                  }}
-                  className="w-full sm:w-auto px-6 py-2.5 rounded-full bg-[#59BFD6] border border-white text-white font-condensed font-bold text-xs uppercase tracking-wider hover:bg-white hover:text-[#59BFD6] transition-all duration-300 shadow-md flex items-center justify-center"
+          return (
+            <article
+              key={project.id}
+              data-cursor="explore"
+              data-cursor-text="VER OBRA"
+              onClick={() => setActiveModalProject(project)}
+              className={`group cursor-pointer bg-[#0e1014]/90 border border-white/10 rounded-[30px] sm:rounded-[40px] overflow-hidden hover:border-[#59BFD6]/70 hover:shadow-[0_30px_80px_rgba(0,0,0,0.85)] transition-all duration-700 flex flex-col justify-between hover:-translate-y-2 ${colSpanClass}`}
+            >
+              <div>
+                {/* Contenedor Fotográfico de Gran Escala — La Fotografía es el Sujeto Soberano */}
+                <div
+                  className={`relative w-full overflow-hidden bg-black/60 ${
+                    isMonumental
+                      ? 'aspect-[16/10] sm:aspect-[21/9] min-h-[320px] sm:min-h-[460px] lg:min-h-[520px]'
+                      : 'aspect-[16/10] sm:aspect-[4/3] min-h-[280px] sm:min-h-[380px]'
+                  }`}
                 >
-                  VER FOTOGRAFÍAS
-                </button>
+                  <Image
+                    src={project.image}
+                    alt={project.title}
+                    fill
+                    className="object-cover object-center group-hover:scale-105 transition-transform duration-1000 ease-out"
+                    sizes={isMonumental ? '100vw' : '(max-width: 768px) 100vw, 55vw'}
+                  />
+
+                  {/* Gradiente cinematográfico sutil para anclar metadatos con máxima pureza de luz */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#0e1014] via-transparent to-black/30 opacity-80 group-hover:opacity-60 transition-opacity duration-500 pointer-events-none" />
+
+                  {/* Badge de Disciplina y Botón Cinético Flotante */}
+                  <div className="absolute top-5 left-5 z-10 flex items-center gap-2">
+                    <span className="px-3.5 py-1.5 rounded-full bg-black/75 backdrop-blur-md border border-white/20 text-[#59BFD6] font-mono text-[11px] uppercase tracking-wider font-semibold shadow-lg">
+                      {project.category}
+                    </span>
+                    <span className="hidden sm:inline-block px-3 py-1 rounded-full bg-white/10 backdrop-blur-md text-white/80 font-mono text-[10px] uppercase tracking-widest border border-white/10">
+                      EXPEDICIÓN Nº {String(idx + 1).padStart(2, '0')}
+                    </span>
+                  </div>
+
+                  <div className="absolute top-5 right-5 z-10 w-11 h-11 rounded-full bg-black/70 border border-white/20 flex items-center justify-center text-white group-hover:bg-[#59BFD6] group-hover:text-puelche-dark transition-all duration-500 backdrop-blur-md shadow-xl group-hover:scale-110">
+                    <ArrowUpRight className="w-5 h-5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                  </div>
+
+                  {/* Coordenadas Geográficas & Año al Pie de la Foto */}
+                  <div className="absolute bottom-5 left-5 right-5 z-10 flex items-center justify-between text-xs font-mono text-white/90">
+                    <span className="flex items-center gap-1.5 bg-black/60 px-3 py-1 rounded-full backdrop-blur-md border border-white/10">
+                      <MapPin className="w-3.5 h-3.5 text-[#59BFD6]" />
+                      {project.location}
+                    </span>
+                    <span className="flex items-center gap-1.5 bg-black/60 px-3 py-1 rounded-full backdrop-blur-md border border-white/10">
+                      <Calendar className="w-3.5 h-3.5 text-[#59BFD6]" />
+                      {project.year}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Bloque Editorial & Narrativa de Autor */}
+                <div className="p-7 sm:p-9 space-y-3">
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-mono text-[#59BFD6] uppercase tracking-wider font-medium">
+                      Cliente: {project.client}
+                    </span>
+                    <span className="text-[11px] font-mono text-white/40 uppercase">
+                      41°S &mdash; 53°S
+                    </span>
+                  </div>
+
+                  <h3
+                    className={`font-condensed font-bold uppercase tracking-tight text-white group-hover:text-[#59BFD6] transition-colors leading-[1.05] ${
+                      isMonumental
+                        ? 'text-3xl sm:text-4xl lg:text-5xl max-w-4xl'
+                        : 'text-2xl sm:text-3xl lg:text-4xl'
+                    }`}
+                  >
+                    {project.title}
+                  </h3>
+
+                  <p className="text-sm sm:text-base text-white/75 font-sans font-light leading-relaxed line-clamp-2 max-w-3xl pt-1">
+                    {project.description}
+                  </p>
+                </div>
               </div>
-            </div>
-          </article>
-        ))}
+
+              {/* Pie de Ficha con Soportes Técnicos & Acción Inmediata */}
+              <div className="px-7 sm:px-9 pb-8 pt-3 border-t border-white/10 flex flex-wrap items-center justify-between gap-4">
+                <div className="flex flex-wrap gap-2">
+                  {project.deliverables.slice(0, 3).map((d) => (
+                    <span
+                      key={d}
+                      className="text-[11px] font-mono text-white/60 bg-white/[0.04] px-3 py-1 rounded-full border border-white/10"
+                    >
+                      {d}
+                    </span>
+                  ))}
+                </div>
+
+                <div className="shrink-0 w-full sm:w-auto">
+                  <div className="inline-flex items-center gap-2 font-condensed uppercase tracking-wider text-xs font-bold text-[#59BFD6] group-hover:text-white transition-colors">
+                    <span>EXPLORAR OBRA &amp; BITÁCORA</span>
+                    <ArrowUpRight className="w-4 h-4 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+                  </div>
+                </div>
+              </div>
+            </article>
+          );
+        })}
       </div>
 
       {/* 
