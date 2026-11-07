@@ -266,45 +266,48 @@ export function BrutalistProjectList() {
           {CURATED_PROJECTS.map((project, idx) => (
             <article
               key={project.id}
-              className="w-[85vw] sm:w-[65vw] lg:w-[48vw] shrink-0 snap-start"
+              className="w-[88vw] sm:w-[72vw] lg:w-[54vw] xl:w-[48vw] shrink-0 snap-start"
             >
               <Link
                 href={`/portafolio?proyecto=${project.slug}`}
                 onClick={handleCardClick}
-                className="group block h-full bg-[#141518]/90 hover:bg-[#18191E] border border-white/10 hover:border-[#59BFD6]/60 rounded-[28px] sm:rounded-[36px] overflow-hidden transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_30px_70px_rgba(0,0,0,0.7)] flex flex-col justify-between"
+                className="group block h-full bg-[#111215]/95 hover:bg-[#16171B] border border-white/10 hover:border-[#59BFD6] rounded-[28px] sm:rounded-[36px] overflow-hidden transition-all duration-700 hover:-translate-y-2 hover:shadow-[0_30px_80px_rgba(0,0,0,0.85)] flex flex-col justify-between"
               >
                 <div>
-                  {/* Escenario Fotográfico en Gran Formato */}
-                  <div className="relative aspect-[16/10] w-full overflow-hidden bg-black/60">
+                  {/* Escenario Fotográfico en Gran Formato Panorámico */}
+                  <div className="relative aspect-[16/10] sm:aspect-[21/9] w-full overflow-hidden bg-black/80">
                     <Image
                       src={project.image}
                       alt={project.title}
                       fill
                       draggable={false}
-                      className="object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out select-none pointer-events-none"
-                      sizes="(max-width: 768px) 85vw, (max-width: 1024px) 65vw, 48vw"
+                      className="object-cover object-center scale-105 group-hover:scale-110 transition-transform duration-1000 ease-out select-none pointer-events-none"
+                      sizes="(max-width: 768px) 88vw, (max-width: 1024px) 72vw, 48vw"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#141518]/90 via-transparent to-transparent opacity-40 group-hover:opacity-20 transition-opacity pointer-events-none" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#111215] via-transparent to-black/30 opacity-75 group-hover:opacity-40 transition-opacity duration-500 pointer-events-none" />
 
-                    {/* Badge de Categoría */}
-                    <div className="absolute top-4 left-4 z-10">
-                      <span className="px-3.5 py-1.5 rounded-full bg-[#59BFD6] text-puelche-dark font-condensed font-bold text-xs uppercase tracking-wider shadow-md">
+                    {/* Badge de Categoría & Sello de Fotograma */}
+                    <div className="absolute top-4 sm:top-5 left-4 sm:left-5 z-10 flex items-center gap-2">
+                      <span className="px-3.5 py-1.5 rounded-full bg-black/75 backdrop-blur-md border border-white/20 text-[#59BFD6] font-mono font-semibold text-xs uppercase tracking-wider shadow-md">
                         {project.category}
+                      </span>
+                      <span className="hidden sm:inline-block px-3 py-1 rounded-full bg-white/10 backdrop-blur-md text-white/80 font-mono text-[10px] uppercase tracking-widest border border-white/10">
+                        FILM 0{idx + 1}A
                       </span>
                     </div>
 
                     {/* Botón Circular Flotante */}
-                    <div className="absolute top-4 right-4 z-10 w-11 h-11 rounded-full bg-black/60 border border-white/20 flex items-center justify-center text-white group-hover:bg-[#59BFD6] group-hover:text-puelche-dark transition-colors duration-300 backdrop-blur-md shadow-lg">
-                      <ArrowUpRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                    <div className="absolute top-4 sm:top-5 right-4 sm:right-5 z-10 w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-black/70 border border-white/20 flex items-center justify-center text-white group-hover:bg-[#59BFD6] group-hover:text-puelche-dark transition-all duration-500 backdrop-blur-md shadow-xl group-hover:scale-110">
+                      <ArrowUpRight className="w-5 h-5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                     </div>
 
                     {/* Micro-datos al pie de la foto */}
-                    <div className="absolute bottom-4 left-4 right-4 z-10 flex items-center justify-between text-xs font-mono text-white/90">
-                      <span className="flex items-center gap-1.5 drop-shadow-md">
+                    <div className="absolute bottom-4 left-4 right-4 sm:left-6 sm:right-6 z-10 flex items-center justify-between text-xs font-mono text-white/90">
+                      <span className="flex items-center gap-1.5 bg-black/60 px-3 py-1 rounded-full backdrop-blur-md border border-white/10">
                         <MapPin className="w-3.5 h-3.5 text-[#59BFD6]" />
                         {project.location}
                       </span>
-                      <span className="flex items-center gap-1.5 drop-shadow-md">
+                      <span className="flex items-center gap-1.5 bg-black/60 px-3 py-1 rounded-full backdrop-blur-md border border-white/10">
                         <Calendar className="w-3.5 h-3.5 text-[#59BFD6]" />
                         {project.year}
                       </span>
@@ -312,37 +315,37 @@ export function BrutalistProjectList() {
                   </div>
 
                   {/* Contenido Editorial de la Tarjeta */}
-                  <div className="p-7 sm:p-8 space-y-3">
-                    <div className="flex items-center justify-between text-xs font-mono text-[#59BFD6] uppercase tracking-wider">
+                  <div className="p-6 sm:p-8 space-y-2.5">
+                    <div className="flex items-center justify-between text-xs font-mono text-[#59BFD6] uppercase tracking-wider font-medium">
                       <span>Cliente: {project.client}</span>
                       <span className="text-white/40">[ 0{idx + 1} / 0{CURATED_PROJECTS.length} ]</span>
                     </div>
 
-                    <h3 className="font-condensed text-2xl sm:text-3xl font-bold uppercase tracking-wide text-white group-hover:text-[#59BFD6] transition-colors leading-snug">
+                    <h3 className="font-condensed text-2xl sm:text-3xl lg:text-4xl font-bold uppercase tracking-tight text-white group-hover:text-[#59BFD6] transition-colors leading-[1.05]">
                       {project.title}
                     </h3>
 
-                    <p className="text-sm text-white/70 font-sans font-light leading-relaxed line-clamp-2">
+                    <p className="text-sm text-white/70 font-sans font-light leading-relaxed line-clamp-2 max-w-xl">
                       {project.description}
                     </p>
                   </div>
                 </div>
 
                 {/* Footer de Tarjeta con Entregables */}
-                <div className="px-7 sm:px-8 pb-7 pt-3 border-t border-white/5 flex flex-wrap items-center justify-between gap-3">
+                <div className="px-6 sm:px-8 pb-6 sm:pb-7 pt-3 border-t border-white/10 flex flex-wrap items-center justify-between gap-3">
                   <div className="flex flex-wrap gap-1.5">
                     {project.deliverables.slice(0, 3).map((d) => (
                       <span
                         key={d}
-                        className="text-[11px] font-mono text-white/60 bg-white/5 px-2.5 py-1 rounded-full border border-white/5"
+                        className="text-[11px] font-mono text-white/60 bg-white/5 px-2.5 py-1 rounded-full border border-white/10"
                       >
                         {d}
                       </span>
                     ))}
                   </div>
 
-                  <span className="font-mono text-xs uppercase tracking-wider text-[#59BFD6] font-medium group-hover:underline flex items-center gap-1">
-                    <span>Ver caso</span>
+                  <span className="font-condensed uppercase tracking-wider text-xs text-[#59BFD6] font-bold group-hover:underline flex items-center gap-1">
+                    <span>EXPLORAR OBRA</span>
                     <ArrowUpRight className="w-3.5 h-3.5" />
                   </span>
                 </div>
