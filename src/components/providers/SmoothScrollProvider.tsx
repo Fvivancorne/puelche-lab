@@ -10,6 +10,7 @@ export function SmoothScrollProvider({ children }: { children: React.ReactNode }
   useEffect(() => {
     startEnergy();
     gsap.registerPlugin(ScrollTrigger);
+    gsap.ticker.lagSmoothing(0);
 
     const motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
     let lenis: Lenis | null = null;
