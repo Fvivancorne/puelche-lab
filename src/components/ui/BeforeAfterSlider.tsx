@@ -274,10 +274,10 @@ export function BeforeAfterSlider({ initialCaseId = 'doosan', className = '' }: 
             </div>
           </div>
 
-          {/* Divider Line & Tactile Handle */}
+          {/* Divider Line & Tactile Handle (GPU Composited) */}
           <div
-            className="absolute top-0 bottom-0 z-30 pointer-events-none flex items-center justify-center -translate-x-1/2 will-change-[left]"
-            style={{ left: `${sliderPosition}%` }}
+            className="absolute top-0 bottom-0 left-0 z-30 pointer-events-none flex items-center justify-center will-change-transform"
+            style={{ transform: `translate3d(${sliderPosition}%, 0, 0) translateX(-50%)` }}
           >
             {/* Vertical Line in warm gold/cyan */}
             <div className="w-[2px] h-full bg-gradient-to-b from-[#C29B63] via-white to-[#59BFD6] shadow-[0_0_12px_rgba(194,155,99,0.8)]" />

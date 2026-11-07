@@ -10,7 +10,7 @@ import React from 'react';
 export function FilmGrain() {
   return (
     <svg
-      className="hidden pointer-events-none"
+      className="absolute w-0 h-0 overflow-hidden pointer-events-none opacity-0"
       xmlns="http://www.w3.org/2000/svg"
       aria-hidden="true"
     >

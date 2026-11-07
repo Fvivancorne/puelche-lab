@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { Plus_Jakarta_Sans, Oswald, JetBrains_Mono } from 'next/font/google';
+import { Plus_Jakarta_Sans, Oswald, JetBrains_Mono, Newsreader } from 'next/font/google';
 import './globals.css';
 import { SmoothScrollProvider } from '@/components/providers/SmoothScrollProvider';
 import { Navbar } from '@/components/layout/Navbar';
@@ -27,6 +27,13 @@ const monoFont = JetBrains_Mono({
   subsets: ['latin'],
   variable: '--font-mono',
   display: 'swap',
+});
+
+const serifFont = Newsreader({
+  subsets: ['latin'],
+  variable: '--font-serif',
+  display: 'swap',
+  style: ['normal', 'italic'],
 });
 
 export const metadata: Metadata = {
@@ -198,7 +205,7 @@ export default function RootLayout({
   return (
     <html
       lang="es"
-      className={`${sansFont.variable} ${condensedFont.variable} ${monoFont.variable}`}
+      className={`${sansFont.variable} ${condensedFont.variable} ${monoFont.variable} ${serifFont.variable}`}
     >
       <head>
         <script

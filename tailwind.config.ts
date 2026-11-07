@@ -41,6 +41,7 @@ const config: Config = {
         sans: ['var(--font-sans)', 'sans-serif'],
         condensed: ['var(--font-condensed)', 'sans-serif'],
         mono: ['var(--font-mono)', 'monospace'],
+        serif: ['var(--font-serif)', 'serif'],
       },
       letterSpacing: {
         tighter: '-0.04em',
