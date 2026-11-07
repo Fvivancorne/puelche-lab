@@ -5,17 +5,26 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { PORTFOLIO_PROJECTS, ProjectItem } from '@/data/portfolio';
-import { MapPin, Calendar, CheckCircle2, X, ArrowUpRight, ChevronLeft, ChevronRight, ChevronUp, ChevronDown } from 'lucide-react';
+import { MapPin, Calendar, CheckCircle2, X, ArrowUpRight, ChevronLeft, ChevronRight, ChevronUp, ChevronDown, Compass, LayoutGrid } from 'lucide-react';
+import { LatitudeWorksRail } from '@/components/portfolio/LatitudeWorksRail';
 
 const CATEGORIES = ['Todos', 'Fotografía', 'Edición Fotográfica', 'Branding', 'Desarrollo Web', 'Editorial'] as const;
 
 function PortfolioContent() {
   const searchParams = useSearchParams();
   const projectParam = searchParams.get('proyecto');
+  const modoParam = searchParams.get('modo');
 
   const [selectedCategory, setSelectedCategory] = useState<string>('Todos');
   const [activeModalProject, setActiveModalProject] = useState<ProjectItem | null>(null);
   const [currentImageIndex, setCurrentImageIndex] = useState<number>(0);
+  const [viewMode, setViewMode] = useState<'grid' | 'latitud'>('grid');
+
+  useEffect(() => {
+    if (modoParam === 'latitud') {
+      setViewMode('latitud');
+    }
+  }, [modoParam]);
 
   const filteredProjects = selectedCategory === 'Todos'
     ? PORTFOLIO_PROJECTS
@@ -170,8 +179,52 @@ function PortfolioContent() {
           </p>
         </div>
 
-        {/* Category Filters */}
-        <div className="flex flex-wrap items-center gap-2 pb-4">
+        {/* Selector de Modo de Visualización (Archivo vs Regla de Latitud Austral) */}
+        <div className="flex flex-wrap items-center justify-between gap-4 pb-6 mb-6 border-b border-white/10">
+          <div className="inline-flex p-1 rounded-full bg-white/[0.04] border border-white/10 backdrop-blur-md">
+            <button
+              type="button"
+              onClick={() => setViewMode('grid')}
+              className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-condensed uppercase tracking-wider transition-all duration-300 ${
+                viewMode === 'grid'
+                  ? 'bg-[#59BFD6] text-puelche-dark font-bold shadow-md'
+                  : 'text-white/70 hover:text-white'
+              }`}
+            >
+              <LayoutGrid className="w-3.5 h-3.5" />
+              <span>Archivo General ({PORTFOLIO_PROJECTS.length})</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => setViewMode('latitud')}
+              className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-condensed uppercase tracking-wider transition-all duration-300 ${
+                viewMode === 'latitud'
+                  ? 'bg-[#59BFD6] text-puelche-dark font-bold shadow-md'
+                  : 'text-white/70 hover:text-white'
+              }`}
+            >
+              <Compass className="w-3.5 h-3.5" />
+              <span>Regla de Latitud Austral (41°S — 53°S)</span>
+            </button>
+          </div>
+
+          <span className="font-mono text-xs text-white/50">
+            {viewMode === 'latitud' ? '6 estaciones territoriales' : `${filteredProjects.length} obras documentadas`}
+          </span>
+        </div>
+
+        {/* Regla de Latitud Austral — Recorrido Territorial de 41°S a 53°S */}
+        {viewMode === 'latitud' && (
+          <LatitudeWorksRail
+            onSelectProject={(slug) => {
+              const matched = PORTFOLIO_PROJECTS.find((p) => p.slug === slug || p.id === slug);
+              if (matched) handleOpenProject(matched);
+            }}
+          />
+        )}
+
+        {/* Category Filters (Activos en Modo Grilla) */}
+        <div className={`flex flex-wrap items-center gap-2 pb-4 ${viewMode === 'latitud' ? 'hidden' : ''}`}>
           {CATEGORIES.map((category) => {
             const count = category === 'Todos'
               ? PORTFOLIO_PROJECTS.length
@@ -201,7 +254,7 @@ function PortfolioContent() {
       </div>
 
       {/* Projects Grid — Siluetas Orgánicas de Canto Rodado (rounded-[32px]) */}
-      <div className="max-w-7xl mx-auto w-full px-6 pb-24 grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
+      <div className={`max-w-7xl mx-auto w-full px-6 pb-24 grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12 ${viewMode === 'latitud' ? 'hidden' : ''}`}>
         {filteredProjects.map((project) => (
           <article
             key={project.id}

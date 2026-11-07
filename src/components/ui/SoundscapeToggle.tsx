@@ -240,6 +240,20 @@ class ProceduralPatagonianWind {
       // safe fallback
     }
   }
+
+  /**
+   * Modula la intensidad del viento con la energía del scroll (ráfagas reactivas)
+   */
+  public setGust(gust: number) {
+    if (!this.ctx || !this.filterNode || this.ctx.state !== 'running') return;
+    try {
+      const t = this.ctx.currentTime;
+      const targetFreq = 280 + Math.min(1, Math.max(0, gust)) * 480;
+      this.filterNode.frequency.linearRampToValueAtTime(targetFreq, t + 0.08);
+    } catch {
+      // Safe fallback
+    }
+  }
 }
 
 export function SoundscapeToggle({ className = '' }: { className?: string }) {
@@ -253,6 +267,22 @@ export function SoundscapeToggle({ className = '' }: { className?: string }) {
       soundEngineRef.current?.stop();
     };
   }, []);
+
+  // Modulación reactiva al scroll mientras el audio está encendido
+  useEffect(() => {
+    if (!isPlaying) return;
+    let animId: number;
+    const pollEnergy = () => {
+      if (typeof window !== 'undefined') {
+        const energyModule = (window as any).__puelche_energy;
+        const currentGust = energyModule ? energyModule.gust : 0;
+        soundEngineRef.current?.setGust(currentGust);
+      }
+      animId = requestAnimationFrame(pollEnergy);
+    };
+    animId = requestAnimationFrame(pollEnergy);
+    return () => cancelAnimationFrame(animId);
+  }, [isPlaying]);
 
   const toggleSound = useCallback(() => {
     if (!soundEngineRef.current) return;

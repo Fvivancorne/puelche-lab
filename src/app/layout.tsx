@@ -198,7 +198,7 @@ export default function RootLayout({
   return (
     <html
       lang="es"
-      className={`${sansFont.variable} ${condensedFont.variable} ${monoFont.variable} scroll-smooth`}
+      className={`${sansFont.variable} ${condensedFont.variable} ${monoFont.variable}`}
     >
       <head>
         <script

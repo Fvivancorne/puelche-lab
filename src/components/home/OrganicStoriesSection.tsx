@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { ArrowUpRight, MapPin, Feather, Quote, Compass } from 'lucide-react';
+import { ArrowUpRight, MapPin, Feather, Quote } from 'lucide-react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
@@ -36,7 +36,7 @@ const STORIES: OrganicStory[] = [
     protagonist: 'Guías & Navegantes Fluviales',
     role: 'Expedición Cordillerana',
     location: 'Río Puelo & Cochamó, Los Lagos',
-    image: '/images/real/bg-portafolios-fotografia-f-min.jpg',
+    image: '/images/real/bg-home-2.jpg',
     alt: 'Tagua Tagua Lodge — Navegación fluvial y cordillera en Río Puelo',
     fieldNote:
       'El silencio del río solo se interrumpe por el sonido del agua contra el casco. Llegar a este rincón de la cordillera exige navegar dos horas sin señal de teléfono.',
@@ -221,32 +221,26 @@ export function OrganicStoriesSection() {
                     className="object-cover object-center scale-105 transition-transform duration-1000"
                     sizes="100vw"
                   />
-                  {/* Gradiente sutil y luminoso: respeta la luz natural y rango dinámico de la fotografía */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-black/20 pointer-events-none" />
-                  <div className="absolute inset-0 bg-gradient-to-r from-black/30 via-transparent to-black/50 pointer-events-none" />
+                  {/* Gradiente sutil localizado exclusivamente tras el bloque editorial para preservar 80%+ de luz diáfana */}
+                  <div className="absolute inset-y-0 right-0 w-full md:w-3/5 bg-gradient-to-l from-black/55 via-black/20 to-transparent pointer-events-none" />
                 </div>
 
-                {/* Tarjeta Flotante de Cristal Oscuro con el Relato */}
-                <article className="relative z-10 max-w-xl w-full bg-[#111215]/85 backdrop-blur-md rounded-[28px] sm:rounded-[36px] border border-white/15 p-8 sm:p-10 shadow-[0_30px_90px_rgba(0,0,0,0.85)] space-y-6">
+                {/* Tarjeta Flotante Aireada y Luminosa con el Relato */}
+                <article className="relative z-10 max-w-lg w-full bg-black/40 backdrop-blur-md rounded-3xl border border-white/20 p-7 sm:p-9 shadow-[0_25px_60px_rgba(0,0,0,0.6)] space-y-5">
                   {/* Metadata de Cabecera */}
                   <div className="space-y-2">
-                    <div className="flex items-center justify-between font-mono text-xs text-[#59BFD6]">
-                      <span className="font-bold tracking-wider">[ {story.num} / 04 ]</span>
-                      <span className="text-[#C29B63] uppercase tracking-wider">{story.role}</span>
+                    <div className="flex items-center gap-1.5 text-xs font-mono text-[#59BFD6]">
+                      <MapPin className="w-3.5 h-3.5 text-[#59BFD6]" />
+                      <span className="uppercase tracking-wider">{story.location}</span>
                     </div>
 
-                    <h3 className="font-condensed text-3xl sm:text-4xl lg:text-5xl uppercase tracking-tight font-bold text-white leading-tight">
+                    <h3 className="font-condensed text-3xl sm:text-4xl uppercase tracking-tight font-bold text-white leading-tight">
                       {story.title}
                     </h3>
-
-                    <div className="flex items-center gap-1.5 text-xs font-mono text-white/60">
-                      <MapPin className="w-3.5 h-3.5 text-[#59BFD6]" />
-                      <span>{story.location}</span>
-                    </div>
                   </div>
 
                   {/* Cita Editorial en Serif Cursiva */}
-                  <div className="p-5 rounded-2xl bg-white/[0.04] border-l-2 border-[#C29B63] space-y-2">
+                  <div className="p-4 sm:p-5 rounded-2xl bg-white/[0.05] border-l-2 border-[#C29B63] space-y-2">
                     <Quote className="w-4 h-4 text-[#C29B63]/70" />
                     <p className="font-serif italic text-base sm:text-lg text-white/95 leading-relaxed font-light">
                       &ldquo;{story.curatorQuote}&rdquo;
@@ -257,31 +251,19 @@ export function OrganicStoriesSection() {
                   </div>
 
                   {/* Crónica de Campo */}
-                  <div className="space-y-2">
-                    <span className="font-condensed text-xs uppercase tracking-[0.25em] text-[#59BFD6] font-bold block">
-                      Crónica de Expedición
-                    </span>
-                    <p className="font-sans text-sm sm:text-base text-white/85 font-light leading-relaxed line-clamp-4">
-                      {story.chronicle}
-                    </p>
-                  </div>
+                  <p className="font-sans text-sm sm:text-base text-white/85 font-light leading-relaxed line-clamp-4">
+                    {story.chronicle}
+                  </p>
 
-                  {/* Bitácora Técnica & CTA */}
-                  <div className="pt-4 border-t border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                    <div className="grid grid-cols-2 gap-3 font-mono text-[10px] text-white/60">
-                      <div>
-                        <span className="block text-white/40 uppercase">Momento Solar</span>
-                        <span className="text-white/90">{story.expeditionDetails.hour}</span>
-                      </div>
-                      <div>
-                        <span className="block text-white/40 uppercase">Óptica</span>
-                        <span className="text-white/90">{story.expeditionDetails.lens}</span>
-                      </div>
-                    </div>
+                  {/* CTA Directo a la Obra */}
+                  <div className="pt-3 border-t border-white/10 flex items-center justify-between">
+                    <span className="font-mono text-xs text-[#59BFD6] font-medium tracking-wide">
+                      [ {story.num} / 04 ] &bull; {story.role}
+                    </span>
 
                     <Link
                       href={`/portafolio?proyecto=${story.projectSlug}`}
-                      className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full bg-[#59BFD6] hover:bg-white text-puelche-dark font-condensed uppercase tracking-wider text-xs font-bold transition-all shadow-md shrink-0 hover:scale-105"
+                      className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-full bg-[#59BFD6] hover:bg-white text-puelche-dark font-condensed uppercase tracking-wider text-xs font-bold transition-all shadow-md shrink-0 hover:scale-105"
                     >
                       <span>Ver obra en archivo</span>
                       <ArrowUpRight className="w-4 h-4" />
@@ -353,7 +335,7 @@ export function OrganicStoriesSection() {
               key={story.id}
               className="w-[88vw] shrink-0 snap-center rounded-[28px] overflow-hidden relative min-h-[580px] flex flex-col justify-end p-6 border border-white/15 shadow-2xl bg-black"
             >
-              {/* Fotografía de Fondo */}
+              {/* Fotografía de Fondo con Máxima Luminosidad Austral */}
               <div className="absolute inset-0 z-0">
                 <Image
                   src={story.image}
@@ -362,25 +344,23 @@ export function OrganicStoriesSection() {
                   className="object-cover object-center"
                   sizes="88vw"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/25 to-transparent pointer-events-none" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-black/10 to-transparent pointer-events-none" />
               </div>
 
               {/* Contenido Flotante al Pie */}
-              <div className="relative z-10 space-y-4">
+              <div className="relative z-10 space-y-3">
                 <div className="space-y-1">
-                  <span className="font-mono text-xs text-[#59BFD6] font-bold block">
-                    [ {story.num} / 04 ] &bull; {story.role}
-                  </span>
+                  <div className="flex items-center gap-1.5 text-xs font-mono text-[#59BFD6]">
+                    <MapPin className="w-3 h-3 text-[#59BFD6]" />
+                    <span className="uppercase tracking-wider">{story.location}</span>
+                  </div>
                   <h3 className="font-condensed text-2xl uppercase font-bold text-white leading-tight">
                     {story.title}
                   </h3>
-                  <span className="font-mono text-[11px] text-white/60 block">
-                    {story.location}
-                  </span>
                 </div>
 
-                <div className="p-3.5 rounded-xl bg-black/60 backdrop-blur-md border-l-2 border-[#C29B63]">
-                  <p className="font-serif italic text-xs text-white/90">
+                <div className="p-3 rounded-xl bg-black/40 backdrop-blur-md border-l-2 border-[#C29B63]">
+                  <p className="font-serif italic text-xs text-white/95">
                     &ldquo;{story.curatorQuote}&rdquo;
                   </p>
                 </div>
@@ -390,8 +370,8 @@ export function OrganicStoriesSection() {
                 </p>
 
                 <div className="pt-2 flex items-center justify-between gap-2 border-t border-white/10">
-                  <span className="font-mono text-[10px] text-white/50">
-                    {story.expeditionDetails.hour}
+                  <span className="font-mono text-[10px] text-white/60">
+                    [ {story.num} / 04 ] &bull; {story.role}
                   </span>
                   <Link
                     href={`/portafolio?proyecto=${story.projectSlug}`}
