@@ -226,47 +226,54 @@ export const TESTIMONIALS = [
 
 export default function ClientesPage() {
   return (
-    <div className="w-full flex-1 bg-puelche-cyan text-white min-h-screen">
-      {/* Top Banner on Cyan */}
-      <section className="pt-24 pb-12 md:pt-28 md:pb-16 px-6 text-center">
-        <div className="max-w-4xl mx-auto space-y-4">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/15 border border-white/20 text-[11px] font-mono tracking-widest uppercase text-white shadow-sm">
-            <Sparkles className="w-3.5 h-3.5 text-white" />
-            <span>Confianza & Trayectoria en el Territorio</span>
+    <div className="w-full flex-1 bg-[#0D0E12] text-white min-h-screen">
+      {/* ── CABECERA EDITORIAL AWWWARDS SOTD (FONDO OBSIDIANA AUSTRAL & ACENTOS QUIRÚRGICOS) ── */}
+      <section className="relative pt-24 pb-14 md:pt-32 md:pb-20 px-6 sm:px-8 lg:px-12 text-center overflow-hidden border-b border-white/10">
+        {/* Glow atmosférico suave de fondo */}
+        <div className="absolute inset-0 pointer-events-none overflow-hidden">
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[350px] bg-[#59BFD6]/10 blur-[120px] rounded-full" />
+        </div>
+
+        <div className="relative z-10 max-w-4xl mx-auto space-y-4">
+          <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-white/[0.04] border border-white/10 text-[11px] font-mono tracking-[0.25em] uppercase text-[#59BFD6] shadow-sm">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#59BFD6] animate-pulse shadow-[0_0_8px_#59BFD6]" />
+            <span>41°S &mdash; 53°S &bull; ARCHIVO TERRITORIAL DE MARCAS</span>
           </div>
-          <h1 className="font-condensed text-5xl sm:text-6xl md:text-7xl uppercase tracking-wider text-white font-bold">
-            CLIENTES
+
+          <h1 className="font-condensed text-5xl sm:text-7xl md:text-8xl uppercase tracking-tight text-white font-bold drop-shadow-2xl leading-[0.95]">
+            ALIANZAS DEL TERRITORIO
           </h1>
-          <p className="font-sans text-base sm:text-lg text-white/95 max-w-2xl mx-auto font-light leading-relaxed">
-            Empresas, hoteles, industrias y marcas que han confiado su imagen, estrategia y comunicación al viento creativo de Puelche Lab.
+
+          <p className="font-sans text-sm sm:text-base md:text-lg text-white/80 max-w-2xl mx-auto font-light leading-relaxed pt-2">
+            20 empresas, industrias, hoteles e instituciones que han encomendado su imagen, relatos y plataformas digitales al rigor visual y la luz austral de Puelche Lab.
           </p>
 
-          {/* Interactive Navigation Anchor Strip — Invitación a Navegar y Scrolear */}
+          {/* Interactive Navigation Anchor Strip */}
           <div className="flex flex-wrap items-center justify-center gap-2.5 sm:gap-3 pt-6">
             <a
               href="#marcas"
-              className="px-4 py-2 rounded-full bg-black/25 hover:bg-black/40 border border-white/20 text-[11px] sm:text-xs font-mono tracking-wider uppercase text-white transition-all flex items-center gap-2 backdrop-blur-md hover:scale-105 shadow-sm"
+              className="px-4 py-2 rounded-full bg-white/[0.04] hover:bg-[#59BFD6] hover:text-puelche-dark border border-white/15 text-[11px] sm:text-xs font-mono tracking-wider uppercase text-white transition-all flex items-center gap-2 backdrop-blur-md hover:scale-105 shadow-sm"
             >
               <span className="w-1.5 h-1.5 rounded-full bg-[#59BFD6]"></span>
               <span>20 Marcas</span>
             </a>
             <a
               href="#territorio"
-              className="px-4 py-2 rounded-full bg-black/25 hover:bg-black/40 border border-white/20 text-[11px] sm:text-xs font-mono tracking-wider uppercase text-white transition-all flex items-center gap-2 backdrop-blur-md hover:scale-105 shadow-sm"
+              className="px-4 py-2 rounded-full bg-white/[0.04] hover:bg-[#59BFD6] hover:text-puelche-dark border border-white/15 text-[11px] sm:text-xs font-mono tracking-wider uppercase text-white transition-all flex items-center gap-2 backdrop-blur-md hover:scale-105 shadow-sm"
             >
               <span className="w-1.5 h-1.5 rounded-full bg-white/40"></span>
               <span>Radio Territorial</span>
             </a>
             <a
               href="#testimonios"
-              className="px-4 py-2 rounded-full bg-black/25 hover:bg-black/40 border border-white/20 text-[11px] sm:text-xs font-mono tracking-wider uppercase text-white transition-all flex items-center gap-2 backdrop-blur-md hover:scale-105 shadow-sm"
+              className="px-4 py-2 rounded-full bg-white/[0.04] hover:bg-[#59BFD6] hover:text-puelche-dark border border-white/15 text-[11px] sm:text-xs font-mono tracking-wider uppercase text-white transition-all flex items-center gap-2 backdrop-blur-md hover:scale-105 shadow-sm"
             >
               <span className="w-1.5 h-1.5 rounded-full bg-white/40"></span>
               <span>Testimonios</span>
             </a>
             <a
               href="#directorio"
-              className="px-4 py-2 rounded-full bg-black/25 hover:bg-black/40 border border-white/20 text-[11px] sm:text-xs font-mono tracking-wider uppercase text-white transition-all flex items-center gap-2 backdrop-blur-md hover:scale-105 shadow-sm"
+              className="px-4 py-2 rounded-full bg-white/[0.04] hover:bg-[#59BFD6] hover:text-puelche-dark border border-white/15 text-[11px] sm:text-xs font-mono tracking-wider uppercase text-white transition-all flex items-center gap-2 backdrop-blur-md hover:scale-105 shadow-sm"
             >
               <span className="w-1.5 h-1.5 rounded-full bg-white/40"></span>
               <span>Directorio</span>
@@ -275,14 +282,14 @@ export default function ClientesPage() {
         </div>
       </section>
 
-      {/* 20 White Logos Grid — Diseño Orgánico & Curatorial (Sin números de casilla) */}
-      <section id="marcas" className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 pb-20">
+      {/* ── 20 LOGOS OFICIALES: PROOF WALL SOBRIO EN OBSIDIANA ── */}
+      <section id="marcas" className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-20">
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 sm:gap-7 items-stretch justify-center">
           {CLIENT_LOGOS.map((client) => (
             <div
               key={client.id}
               data-cursor="CLIENTE"
-              className="relative h-48 sm:h-52 rounded-2xl bg-[#14171B]/90 border border-white/10 backdrop-blur-md flex flex-col items-center justify-center overflow-hidden transition-all duration-300 hover:bg-[#14171B] hover:border-[#59BFD6]/60 hover:shadow-[0_20px_50px_rgba(0,0,0,0.45)] hover:-translate-y-1.5 group"
+              className="relative h-48 sm:h-52 rounded-2xl bg-[#121418]/90 border border-white/10 backdrop-blur-md flex flex-col items-center justify-center overflow-hidden transition-all duration-300 hover:bg-[#16191f] hover:border-[#59BFD6]/60 hover:shadow-[0_20px_50px_rgba(0,0,0,0.7)] hover:-translate-y-1.5 group"
             >
               {/* Logo Centrado con amplitud y respiración */}
               <div className="relative w-full h-full flex items-center justify-center p-6 transition-all duration-300 group-hover:scale-90 group-hover:-translate-y-4">
@@ -296,7 +303,7 @@ export default function ClientesPage() {
                 />
               </div>
 
-              {/* Sutil pie de identificación en reposo (limpio, sin números de casilla) */}
+              {/* Sutil pie de identificación en reposo */}
               <div className="absolute bottom-3 inset-x-4 flex items-center justify-between text-white/50 group-hover:opacity-0 transition-opacity duration-200 pointer-events-none">
                 <span className="font-condensed text-xs uppercase tracking-wider text-white/80 font-semibold truncate">
                   {client.name}

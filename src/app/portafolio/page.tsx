@@ -422,172 +422,189 @@ function PortfolioContent() {
             </button>
           </div>
 
-          {/* ── CAJA CENTRAL DEL MODAL (FORMATO DE GRAN ESCALA: 68% FOTO GIGANTE / 32% TEXTO) ── */}
+          {/* ── CAJA CENTRAL DEL MODAL: PLIEGO DE LABORATORIO FOTOGRÁFICO & HOJA DE CONTACTOS ── */}
           <div
-            className="bg-[#141518] text-white rounded-[24px] sm:rounded-[32px] max-w-7xl w-[96vw] max-h-[90vh] overflow-hidden border border-white/15 shadow-[0_30px_90px_rgba(0,0,0,0.95)] relative flex flex-col lg:flex-row z-10 animate-in zoom-in-95 duration-200"
+            className="bg-[#0c0d10] text-white rounded-[24px] sm:rounded-[32px] max-w-7xl w-[96vw] max-h-[90vh] overflow-hidden border border-white/15 shadow-[0_35px_100px_rgba(0,0,0,0.98)] relative flex flex-col lg:flex-row z-10 animate-in zoom-in-95 duration-200"
             onClick={(e) => e.stopPropagation()}
             data-lenis-prevent="true"
           >
             {/* Botón Cerrar Flotante */}
             <button
               onClick={() => setActiveModalProject(null)}
-              className="absolute top-4 right-4 z-20 w-10 h-10 rounded-full bg-[#2B2D32]/90 hover:bg-[#59BFD6] text-white hover:text-puelche-dark flex items-center justify-center transition-all shadow-xl border border-white/15 backdrop-blur-md"
+              className="absolute top-4 right-4 z-20 w-10 h-10 rounded-full bg-black/80 hover:bg-[#59BFD6] text-white hover:text-puelche-dark flex items-center justify-center transition-all shadow-xl border border-white/20 backdrop-blur-md"
               aria-label="Cerrar modal"
             >
               <X className="w-5 h-5" />
             </button>
 
-            {/* Columna Izquierda: Fotografía de Gran Formato (68% del ancho en Desktop, sin recortes) */}
-            <div className="relative w-full lg:w-[68%] min-h-[380px] sm:min-h-[500px] lg:min-h-[700px] bg-[#090a0d] shrink-0 flex items-center justify-center p-4 sm:p-8 overflow-hidden">
-              {/* Ambient blur glow */}
+            {/* Columna Izquierda: Visor de Gran Formato con Estética de Cuarto Oscuro & Hoja de Contactos */}
+            <div className="relative w-full lg:w-[68%] min-h-[380px] sm:min-h-[500px] lg:min-h-[720px] bg-[#07080a] shrink-0 flex flex-col justify-between p-4 sm:p-7 overflow-hidden border-b lg:border-b-0 lg:border-r border-white/10">
+              {/* Cabecera Técnica de Pliego Fotográfico */}
+              <div className="relative z-20 flex items-center justify-between text-[11px] font-mono uppercase tracking-[0.2em] text-white/60 pb-3 border-b border-white/10">
+                <div className="flex items-center gap-2 text-[#59BFD6]">
+                  <span className="w-2 h-2 rounded-full bg-[#59BFD6] animate-pulse" />
+                  <span>PLIEGO DE LABORATORIO Nº {String(activeProjectIndex + 1).padStart(2, '0')}</span>
+                </div>
+                <div className="hidden sm:flex items-center gap-3 text-white/50">
+                  <span>FORMATO DE AUTOR</span>
+                  <span>&bull;</span>
+                  <span>PUERTO VARAS 41°S</span>
+                </div>
+              </div>
+
+              {/* Ambient blur glow de fondo */}
               <div className="absolute inset-0 overflow-hidden pointer-events-none">
                 <Image
                   src={activeGallery[currentImageIndex] || activeModalProject.image}
                   alt=""
                   fill
-                  className="object-cover blur-3xl opacity-35 scale-125 transition-all duration-700"
+                  className="object-cover blur-3xl opacity-25 scale-125 transition-all duration-700"
                   aria-hidden="true"
                 />
-                <div className="absolute inset-0 bg-black/40" />
+                <div className="absolute inset-0 bg-black/50" />
               </div>
 
-              {/* Main Artwork Centered (Anti-Cropping & Gran Escala) */}
-              <div className="relative w-full h-full min-h-[340px] sm:min-h-[460px] lg:min-h-[660px] flex items-center justify-center z-10">
+              {/* Main Artwork Centered con Guías Ópticas de Visor de Cámara */}
+              <div className="relative w-full flex-1 min-h-[300px] sm:min-h-[440px] lg:min-h-[540px] flex items-center justify-center my-3 z-10">
+                {/* Guías ópticas en esquinas (Viewfinder frame ticks) */}
+                <div className="absolute top-2 left-2 w-4 h-4 border-t-2 border-l-2 border-white/25 pointer-events-none z-20" />
+                <div className="absolute top-2 right-2 w-4 h-4 border-t-2 border-r-2 border-white/25 pointer-events-none z-20" />
+                <div className="absolute bottom-2 left-2 w-4 h-4 border-b-2 border-l-2 border-white/25 pointer-events-none z-20" />
+                <div className="absolute bottom-2 right-2 w-4 h-4 border-b-2 border-r-2 border-white/25 pointer-events-none z-20" />
+
                 <Image
                   src={activeGallery[currentImageIndex] || activeModalProject.image}
-                  alt={`${activeModalProject.title} — Pieza ${currentImageIndex + 1}`}
+                  alt={`${activeModalProject.title} — Toma ${currentImageIndex + 1}`}
                   fill
                   priority
-                  className="object-contain object-center drop-shadow-[0_25px_60px_rgba(0,0,0,0.95)] transition-all duration-500"
+                  className="object-contain object-center drop-shadow-[0_25px_60px_rgba(0,0,0,0.95)] transition-all duration-500 p-2 sm:p-4"
                 />
-              </div>
 
-              {/* Controles de Navegación de Piezas de Galería < y > */}
-              {activeGallery.length > 1 && (
-                <>
-                  <button
-                    type="button"
-                    onClick={prevImage}
-                    className="absolute left-4 top-1/2 -translate-y-1/2 z-30 w-11 h-11 rounded-full bg-black/75 hover:bg-[#59BFD6] hover:text-puelche-dark text-white flex items-center justify-center transition-all border border-white/20 shadow-2xl backdrop-blur-md hover:scale-105 active:scale-95"
-                    aria-label="Pieza anterior"
-                  >
-                    <ChevronLeft className="w-6 h-6" />
-                  </button>
-                  <button
-                    type="button"
-                    onClick={nextImage}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 z-30 w-11 h-11 rounded-full bg-black/75 hover:bg-[#59BFD6] hover:text-puelche-dark text-white flex items-center justify-center transition-all border border-white/20 shadow-2xl backdrop-blur-md hover:scale-105 active:scale-95"
-                    aria-label="Siguiente pieza"
-                  >
-                    <ChevronRight className="w-6 h-6" />
-                  </button>
-                </>
-              )}
-
-              {/* Badge de Categoría y Contador de Piezas */}
-              <div className="absolute top-4 left-4 z-20 flex items-center gap-2">
-                <span className="px-4 py-1.5 rounded-full bg-[#59BFD6] text-puelche-dark text-xs uppercase font-bold tracking-wider shadow-lg">
-                  {activeModalProject.category}
-                </span>
+                {/* Flechas de navegación rápida */}
                 {activeGallery.length > 1 && (
-                  <span className="px-3.5 py-1.5 rounded-full bg-black/70 backdrop-blur-md border border-white/10 text-white/90 font-mono text-[11px] uppercase tracking-wider">
-                    Pieza {currentImageIndex + 1} de {activeGallery.length}
-                  </span>
+                  <>
+                    <button
+                      type="button"
+                      onClick={prevImage}
+                      className="absolute left-2 top-1/2 -translate-y-1/2 z-30 w-10 h-10 rounded-full bg-black/80 hover:bg-[#59BFD6] hover:text-puelche-dark text-white flex items-center justify-center transition-all border border-white/20 shadow-2xl backdrop-blur-md"
+                      aria-label="Toma anterior"
+                    >
+                      <ChevronLeft className="w-5 h-5" />
+                    </button>
+                    <button
+                      type="button"
+                      onClick={nextImage}
+                      className="absolute right-2 top-1/2 -translate-y-1/2 z-30 w-10 h-10 rounded-full bg-black/80 hover:bg-[#59BFD6] hover:text-puelche-dark text-white flex items-center justify-center transition-all border border-white/20 shadow-2xl backdrop-blur-md"
+                      aria-label="Siguiente toma"
+                    >
+                      <ChevronRight className="w-5 h-5" />
+                    </button>
+                  </>
                 )}
               </div>
 
-              {/* Miniaturas de selección rápida de fotos */}
-              {activeGallery.length > 1 && (
-                <div className="absolute bottom-16 md:bottom-20 z-20 flex items-center gap-2 px-3 py-1.5 rounded-full bg-black/70 backdrop-blur-md border border-white/15">
+              {/* Tira de Hoja de Contactos Fotográfica (Proof Contact Sheet Strip) */}
+              <div className="relative z-20 pt-3 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-3">
+                <div className="flex items-center gap-2 overflow-x-auto max-w-full pb-1">
+                  <span className="font-mono text-[10px] uppercase tracking-widest text-[#59BFD6] mr-1 hidden sm:inline">
+                    CONTACT SHEET:
+                  </span>
                   {activeGallery.map((img, idx) => (
                     <button
                       key={img + idx}
                       type="button"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setCurrentImageIndex(idx);
-                      }}
-                      className={`w-2.5 h-2.5 rounded-full transition-all duration-300 ${
+                      onClick={() => setCurrentImageIndex(idx)}
+                      className={`relative w-12 sm:w-14 h-9 sm:h-10 rounded-md overflow-hidden border transition-all duration-300 shrink-0 ${
                         currentImageIndex === idx
-                          ? 'bg-[#59BFD6] scale-125 shadow-[0_0_8px_#59BFD6]'
-                          : 'bg-white/30 hover:bg-white/70'
+                          ? 'border-[#59BFD6] shadow-[0_0_12px_rgba(89,191,214,0.6)] scale-105'
+                          : 'border-white/20 opacity-50 hover:opacity-100'
                       }`}
-                      aria-label={`Ver pieza ${idx + 1}`}
-                    />
+                      aria-label={`Ver fotograma ${idx + 1}`}
+                    >
+                      <Image
+                        src={img}
+                        alt=""
+                        fill
+                        className="object-cover"
+                        sizes="60px"
+                      />
+                      <span className="absolute bottom-0 right-0 bg-black/80 px-1 font-mono text-[8px] text-white">
+                        {String(idx + 1).padStart(2, '0')}A
+                      </span>
+                    </button>
                   ))}
                 </div>
-              )}
 
-              {/* Micro-datos cliente y expedición en la base de la imagen */}
-              <div className="absolute bottom-4 left-4 right-4 z-10 hidden md:block font-mono text-xs text-white/90 bg-black/75 backdrop-blur-md p-3.5 rounded-2xl border border-white/10">
-                <div className="flex items-center justify-between">
-                  <span className="text-white/60">CLIENTE</span>
-                  <span className="text-[#59BFD6] font-medium">{activeModalProject.client}</span>
-                </div>
-                <div className="flex items-center justify-between mt-1 pt-1 border-t border-white/10">
-                  <span className="text-white/60">AÑO & EXPEDICIÓN</span>
-                  <span>Año {activeModalProject.year} &bull; {activeModalProject.location}</span>
+                {/* Metadata de Toma */}
+                <div className="text-right font-mono text-[10px] text-white/60">
+                  <span className="text-white/80 font-medium">{activeModalProject.client}</span> &bull; {activeModalProject.year}
                 </div>
               </div>
             </div>
 
-            {/* Columna Derecha: Información Editorial con Scroll Nativo */}
+            {/* Columna Derecha: Información Editorial & Cuaderno de Bitácora */}
             <div
-              className="w-full lg:w-[32%] p-6 sm:p-8 lg:p-9 flex flex-col justify-between overflow-y-auto max-h-[50vh] lg:max-h-[92vh] space-y-6 bg-[#141518]"
+              className="w-full lg:w-[32%] p-6 sm:p-8 flex flex-col justify-between overflow-y-auto max-h-[50vh] lg:max-h-[92vh] space-y-6 bg-[#0c0d10]"
               data-lenis-prevent="true"
             >
               <div className="space-y-6">
-                {/* Header Editorial del Modal */}
+                {/* Cabecera Editorial */}
                 <div>
-                  <div className="flex items-center justify-between gap-2 mb-2 pr-12">
-                    <div className="flex items-center gap-2 text-xs font-mono text-[#59BFD6] uppercase tracking-wider">
-                      <span className="w-1.5 h-1.5 rounded-full bg-[#59BFD6] animate-pulse" />
-                      <span>EXPEDICIÓN PUELCHE LAB</span>
-                    </div>
-                    {/* Contador de Obra */}
-                    <span className="font-mono text-[11px] text-white/50 bg-white/5 px-2.5 py-0.5 rounded-full border border-white/10">
-                      {String(activeProjectIndex + 1).padStart(2, '0')} / {String(activeProjectList.length).padStart(2, '0')}
+                  <div className="flex items-center justify-between gap-2 mb-2 pr-10">
+                    <span className="px-3 py-1 rounded-full bg-[#59BFD6]/15 border border-[#59BFD6]/30 text-[#59BFD6] font-mono text-[10px] uppercase tracking-wider font-semibold">
+                      {activeModalProject.category}
+                    </span>
+                    <span className="font-mono text-xs text-white/50">
+                      [ {String(activeProjectIndex + 1).padStart(2, '0')} / {String(activeProjectList.length).padStart(2, '0')} ]
                     </span>
                   </div>
 
-                  <h2 className="text-2xl sm:text-3xl font-condensed font-bold uppercase tracking-wide leading-tight text-white">
+                  <h2 className="text-2xl sm:text-3xl font-condensed font-bold uppercase tracking-tight leading-tight text-white mt-3">
                     {activeModalProject.title}
                   </h2>
 
-                  <div className="flex flex-wrap items-center gap-3 text-xs text-white/70 mt-3 font-mono border-b border-white/10 pb-4">
-                    <span className="flex items-center gap-1">
-                      <MapPin className="w-3.5 h-3.5 text-[#59BFD6]" />
-                      {activeModalProject.location}
-                    </span>
-                    <span className="flex items-center gap-1">
-                      <Calendar className="w-3.5 h-3.5 text-[#59BFD6]" />
-                      Año {activeModalProject.year}
-                    </span>
-                    <span className="md:hidden">Cliente: {activeModalProject.client}</span>
+                  <div className="grid grid-cols-2 gap-2 text-xs text-white/70 mt-4 font-mono border-t border-b border-white/10 py-3">
+                    <div>
+                      <span className="text-white/40 block text-[10px] uppercase">TERRITORIO</span>
+                      <span className="text-white/90 flex items-center gap-1 mt-0.5">
+                        <MapPin className="w-3 h-3 text-[#59BFD6]" />
+                        {activeModalProject.location}
+                      </span>
+                    </div>
+                    <div>
+                      <span className="text-white/40 block text-[10px] uppercase">EXPEDICIÓN</span>
+                      <span className="text-white/90 flex items-center gap-1 mt-0.5">
+                        <Calendar className="w-3 h-3 text-[#59BFD6]" />
+                        Año {activeModalProject.year}
+                      </span>
+                    </div>
                   </div>
                 </div>
 
-                {/* Desafío & Dirección */}
-                <div>
-                  <div className="inline-block px-2.5 py-1 rounded bg-[#59BFD6]/15 border border-[#59BFD6]/30 mb-2">
-                    <h4 className="font-condensed text-xs uppercase tracking-widest text-[#59BFD6] font-bold">
-                      Desafío & Dirección
-                    </h4>
-                  </div>
-                  <p className="text-sm sm:text-base text-white/85 leading-relaxed font-light">
+                {/* Bitácora de Campo & Dirección Visual */}
+                <div className="space-y-2">
+                  <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-[#C29B63] block">
+                    BITÁCORA DE CAMPO
+                  </span>
+                  {activeModalProject.summary && (
+                    <p className="font-serif italic text-sm text-[#F9F9F6]/95 leading-relaxed bg-white/[0.03] p-3 rounded-xl border-l-2 border-[#C29B63]">
+                      &ldquo;{activeModalProject.summary}&rdquo;
+                    </p>
+                  )}
+                  <p className="text-xs sm:text-sm text-white/80 leading-relaxed font-light pt-1">
                     {activeModalProject.description}
                   </p>
                 </div>
 
-                {/* Entregables & Soportes Técnicos */}
-                <div className="bg-[#22242A]/80 p-5 rounded-2xl border border-white/10">
-                  <h4 className="font-condensed text-xs uppercase tracking-widest text-white font-bold mb-3">
-                    Entregables & Soportes Técnicos
-                  </h4>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                {/* Soportes Técnicos & Registros Entregados */}
+                <div className="bg-white/[0.03] p-4 rounded-xl border border-white/10 space-y-2.5">
+                  <span className="font-mono text-[10px] uppercase tracking-widest text-white/50 block">
+                    SOPORTES TÉCNICOS & REGISTROS
+                  </span>
+                  <div className="grid grid-cols-1 gap-2">
                     {activeModalProject.deliverables.map((item) => (
-                      <div key={item} className="flex items-center gap-2 text-xs sm:text-sm text-white/85">
-                        <CheckCircle2 className="w-4 h-4 text-[#59BFD6] shrink-0" />
+                      <div key={item} className="flex items-center gap-2 text-xs text-white/85">
+                        <span className="w-1.5 h-1.5 rounded-full bg-[#59BFD6] shrink-0" />
                         <span>{item}</span>
                       </div>
                     ))}
@@ -595,41 +612,19 @@ function PortfolioContent() {
                 </div>
               </div>
 
-              {/* Botón de Conversión CTA y Navegación Móvil */}
-              <div className="pt-4 border-t border-white/10 space-y-4">
-                {/* Atajo de navegación móvil entre proyectos */}
-                <div className="flex xl:hidden items-center justify-between text-xs font-mono text-white/60 bg-white/5 p-2 rounded-xl border border-white/10">
-                  <button
-                    type="button"
-                    onClick={prevProject}
-                    className="flex items-center gap-1 hover:text-[#59BFD6] transition-colors px-2 py-1"
-                  >
-                    <ChevronLeft className="w-4 h-4" />
-                    <span>Anterior</span>
-                  </button>
-                  <span className="text-[#59BFD6] font-bold">
-                    {activeProjectIndex + 1} / {activeProjectList.length}
-                  </span>
-                  <button
-                    type="button"
-                    onClick={nextProject}
-                    className="flex items-center gap-1 hover:text-[#59BFD6] transition-colors px-2 py-1"
-                  >
-                    <span>Siguiente</span>
-                    <ChevronRight className="w-4 h-4" />
-                  </button>
-                </div>
+              {/* Botón de Acción Discreto & Conversión */}
+              <div className="pt-4 border-t border-white/10 space-y-3">
+                <Link
+                  href={`/contacto?proyecto=${encodeURIComponent(activeModalProject.title)}`}
+                  className="w-full inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full bg-[#59BFD6] hover:bg-white text-puelche-dark font-condensed uppercase tracking-wider text-xs font-bold transition-all shadow-[0_0_20px_rgba(89,191,214,0.3)] hover:scale-[1.01]"
+                >
+                  <span>Solicitar expedición similar</span>
+                  <ArrowUpRight className="w-4 h-4" />
+                </Link>
 
-                <div className="space-y-2">
-                  <span className="text-xs text-white/60 block">
-                    ¿Tienes una iniciativa similar en la Región de Los Lagos o Patagonia?
-                  </span>
-                  <Link
-                    href={`/contacto?proyecto=${encodeURIComponent(activeModalProject.title)}`}
-                    className="w-full text-center px-6 py-3.5 rounded-full bg-[#59BFD6] text-puelche-dark text-xs font-condensed uppercase tracking-wider font-bold hover:bg-white transition-all shadow-[0_0_20px_rgba(89,191,214,0.3)] hover:scale-[1.01] block"
-                  >
-                    Cotizar propuesta similar
-                  </Link>
+                <div className="flex items-center justify-between text-[11px] font-mono text-white/40 pt-1">
+                  <span>REGISTRO TERRITORIAL</span>
+                  <span>PUERTO VARAS &bull; PATAGONIA</span>
                 </div>
               </div>
             </div>

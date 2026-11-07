@@ -85,6 +85,11 @@ export function WindParticleCanvas({ className = '', particleCount = 130 }: Wind
       const influenceRadius = 140;
       const influenceRadiusSquared = influenceRadius * influenceRadius;
 
+      // Conexión con el sistema de energía unificado del Puelche
+      const energyModule = typeof window !== 'undefined' ? (window as any).__puelche_energy : null;
+      const gust = energyModule ? Math.min(1, Math.max(0, energyModule.gust)) : 0;
+      const gustMultiplier = 1 + gust * 2.2;
+
       for (const particle of particles) {
         if (animate) {
           particle.pulsePhase += 0.02 * delta;
@@ -104,7 +109,9 @@ export function WindParticleCanvas({ className = '', particleCount = 130 }: Wind
             }
           }
 
-          particle.vx += (particle.baseVx - particle.vx) * 0.04 * delta;
+          // Aceleración reactiva al viento Puelche (de este a oeste)
+          const targetVx = particle.baseVx * gustMultiplier;
+          particle.vx += (targetVx - particle.vx) * 0.05 * delta;
           particle.vy += (particle.baseVy + undulation - particle.vy) * 0.04 * delta;
           particle.x += particle.vx * delta;
           particle.y += particle.vy * delta;

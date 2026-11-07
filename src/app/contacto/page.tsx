@@ -138,30 +138,38 @@ function ContactFormInner() {
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
-      {/* Left Column: Formulario */}
-      <div className="lg:col-span-7 space-y-6">
-        <h1 className="font-condensed text-4xl sm:text-5xl font-bold uppercase tracking-wider text-puelche-cyan">
-          Contacto
-        </h1>
-        <p className="font-sans text-sm sm:text-base text-puelche-gray font-light">
-          Para solicitar cotizaciones o información sobre nuestros servicios, por favor completa el formulario:
-        </p>
+      {/* Left Column: Formulario de Solicitud de Expedición */}
+      <div className="lg:col-span-7 space-y-8">
+        <div className="space-y-3">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/[0.04] border border-white/10 text-[11px] font-mono tracking-[0.25em] uppercase text-[#59BFD6]">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#59BFD6] animate-pulse shadow-[0_0_8px_#59BFD6]" />
+            <span>41°19′S 72°59′W &bull; PUERTO VARAS &bull; MESA DE DESPACHO</span>
+          </div>
+
+          <h1 className="font-condensed text-5xl sm:text-6xl lg:text-7xl font-bold uppercase tracking-tight text-white leading-[0.95] drop-shadow-2xl">
+            SOLICITUD DE EXPEDICIÓN
+          </h1>
+
+          <p className="font-sans text-sm sm:text-base text-white/75 font-light leading-relaxed pt-1">
+            Inicia el brief para tu próximo encargo de fotografía territorial, desarrollo web Next.js o diseño de marca. Respondemos en menos de 24 horas hábiles desde Puerto Varas.
+          </p>
+        </div>
 
         {submitted ? (
-          <div className="bg-puelche-cyan/10 border border-puelche-cyan/30 rounded-lg p-8 text-center space-y-4">
-            <CheckCircle2 className="w-12 h-12 text-puelche-cyan mx-auto" />
-            <h3 className="font-condensed text-2xl font-bold uppercase text-puelche-dark">
+          <div className="bg-[#121418] border border-[#59BFD6]/40 rounded-3xl p-8 sm:p-10 text-center space-y-4 shadow-2xl">
+            <CheckCircle2 className="w-14 h-14 text-[#59BFD6] mx-auto animate-bounce" />
+            <h3 className="font-condensed text-3xl font-bold uppercase text-white tracking-wide">
               Brief Recibido con Éxito
             </h3>
-            <p className="font-sans text-sm text-puelche-gray">
-              Gracias por escribirnos. Paula Valdivieso o nuestro equipo se pondrá en contacto contigo a la brevedad.
+            <p className="font-sans text-sm text-white/80 max-w-md mx-auto font-light leading-relaxed">
+              Gracias por escribirnos. Paula Valdivieso o nuestro equipo de dirección revisará tu solicitud y te contactará a la brevedad.
             </p>
             <div className="pt-4 flex flex-wrap items-center justify-center gap-3">
               <a
                 href={generateWhatsAppLink()}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-6 py-3 bg-puelche-cyan text-white hover:bg-puelche-cyan-dark font-condensed uppercase tracking-wider text-xs font-bold rounded-sm transition-colors shadow"
+                className="inline-flex items-center gap-2 px-6 py-3.5 bg-[#59BFD6] hover:bg-white text-puelche-dark font-condensed uppercase tracking-wider text-xs font-bold rounded-full transition-all shadow-lg hover:scale-105"
               >
                 <MessageCircle className="w-4 h-4" />
                 <span>Continuar por WhatsApp</span>
@@ -169,7 +177,7 @@ function ContactFormInner() {
               <button
                 type="button"
                 onClick={handleReset}
-                className="inline-flex items-center gap-2 px-6 py-3 bg-puelche-slate text-white hover:bg-puelche-cyan font-condensed uppercase tracking-wider text-xs font-bold rounded-sm transition-colors"
+                className="inline-flex items-center gap-2 px-6 py-3.5 bg-white/10 hover:bg-white/20 text-white font-condensed uppercase tracking-wider text-xs font-bold rounded-full transition-all border border-white/15"
               >
                 <RotateCcw className="w-3.5 h-3.5" />
                 <span>Enviar otro requerimiento</span>
@@ -177,11 +185,11 @@ function ContactFormInner() {
             </div>
           </div>
         ) : (
-          <form onSubmit={handleSubmit} className="space-y-5">
+          <form onSubmit={handleSubmit} className="space-y-6">
             <div>
               <label
                 htmlFor="nombre"
-                className="block font-condensed uppercase tracking-wider text-xs font-bold text-puelche-slate mb-1"
+                className="block font-mono uppercase tracking-widest text-[11px] text-white/70 mb-2"
               >
                 Nombre y Apellido *
               </label>
@@ -192,7 +200,7 @@ function ContactFormInner() {
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 placeholder="Tu nombre completo"
-                className="w-full px-4 py-3 bg-[#F4F8FA] border border-gray-200 rounded-sm text-sm text-puelche-dark focus:outline-none focus:border-puelche-cyan focus:bg-white transition-colors"
+                className="w-full px-5 py-3.5 bg-white/[0.04] border border-white/15 rounded-xl text-sm text-white placeholder-white/35 focus:outline-none focus:border-[#59BFD6] focus:bg-white/[0.07] transition-all"
               />
             </div>
 
@@ -200,7 +208,7 @@ function ContactFormInner() {
               <div>
                 <label
                   htmlFor="telefono"
-                  className="block font-condensed uppercase tracking-wider text-xs font-bold text-puelche-slate mb-1"
+                  className="block font-mono uppercase tracking-widest text-[11px] text-white/70 mb-2"
                 >
                   Teléfono de Contacto *
                 </label>
@@ -211,14 +219,14 @@ function ContactFormInner() {
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
                   placeholder="+56 9 1234 5678"
-                  className="w-full px-4 py-3 bg-[#F4F8FA] border border-gray-200 rounded-sm text-sm text-puelche-dark focus:outline-none focus:border-puelche-cyan focus:bg-white transition-colors"
+                  className="w-full px-5 py-3.5 bg-white/[0.04] border border-white/15 rounded-xl text-sm text-white placeholder-white/35 focus:outline-none focus:border-[#59BFD6] focus:bg-white/[0.07] transition-all"
                 />
               </div>
 
               <div>
                 <label
                   htmlFor="correo"
-                  className="block font-condensed uppercase tracking-wider text-xs font-bold text-puelche-slate mb-1"
+                  className="block font-mono uppercase tracking-widest text-[11px] text-white/70 mb-2"
                 >
                   Correo Electrónico *
                 </label>
@@ -229,50 +237,50 @@ function ContactFormInner() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="nombre@empresa.cl"
-                  className="w-full px-4 py-3 bg-[#F4F8FA] border border-gray-200 rounded-sm text-sm text-puelche-dark focus:outline-none focus:border-puelche-cyan focus:bg-white transition-colors"
+                  className="w-full px-5 py-3.5 bg-white/[0.04] border border-white/15 rounded-xl text-sm text-white placeholder-white/35 focus:outline-none focus:border-[#59BFD6] focus:bg-white/[0.07] transition-all"
                 />
               </div>
             </div>
 
-            {/* Solicitud Checkboxes (Genuine Puelche Lab Fields) */}
-            <div>
-              <span className="block font-condensed uppercase tracking-wider text-xs font-bold text-puelche-slate mb-2">
-                Solicitud
+            {/* Solicitud Checkboxes */}
+            <div className="pt-1">
+              <span className="block font-mono uppercase tracking-widest text-[11px] text-[#59BFD6] mb-3">
+                Disciplinas de Interés *
               </span>
               <div className="grid grid-cols-2 gap-3">
                 {GENUINE_SERVICES.map((service) => (
                   <label
                     key={service}
-                    className="flex items-center space-x-2 text-sm text-puelche-dark cursor-pointer font-sans select-none"
+                    className="flex items-center space-x-2.5 text-xs text-white/85 cursor-pointer font-sans select-none p-3 rounded-xl bg-white/[0.03] border border-white/10 hover:border-white/20 transition-colors"
                   >
                     <input
                       type="checkbox"
                       checked={selectedServices.includes(service)}
                       onChange={() => handleCheckboxChange(service)}
-                      className="w-4 h-4 text-puelche-cyan focus:ring-puelche-cyan rounded border-gray-300"
+                      className="w-4 h-4 text-[#59BFD6] accent-[#59BFD6] rounded border-white/20"
                     />
-                    <span className="text-xs font-medium">{service}</span>
+                    <span className="font-medium">{service}</span>
                   </label>
                 ))}
               </div>
             </div>
 
             {/* Additional Specialization Categories */}
-            <div className="pt-2">
-              <span className="block font-condensed uppercase tracking-wider text-xs text-puelche-slate/80 mb-2">
-                Especialidad Adicional (Opcional)
+            <div className="pt-1">
+              <span className="block font-mono uppercase tracking-widest text-[10px] text-white/50 mb-2">
+                Especialidad de Expedición (Opcional)
               </span>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                 {DETAILED_SERVICES.map((service) => (
                   <label
                     key={service}
-                    className="flex items-center space-x-2 text-xs text-puelche-gray cursor-pointer font-sans select-none"
+                    className="flex items-center space-x-2 text-xs text-white/70 cursor-pointer font-sans select-none p-2 rounded-lg bg-white/[0.02] hover:bg-white/[0.04] transition-colors"
                   >
                     <input
                       type="checkbox"
                       checked={selectedServices.includes(service)}
                       onChange={() => handleCheckboxChange(service)}
-                      className="w-3.5 h-3.5 text-puelche-cyan focus:ring-puelche-cyan rounded border-gray-300"
+                      className="w-3.5 h-3.5 text-[#59BFD6] accent-[#59BFD6] rounded border-white/20"
                     />
                     <span>{service}</span>
                   </label>
@@ -281,11 +289,11 @@ function ContactFormInner() {
             </div>
 
             {/* Modalidad de Proyecto & Región */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-1">
               <div>
                 <label
                   htmlFor="projectScale"
-                  className="block font-condensed uppercase tracking-wider text-xs font-bold text-puelche-slate mb-1"
+                  className="block font-mono uppercase tracking-widest text-[11px] text-white/70 mb-2"
                 >
                   Modalidad de Proyecto
                 </label>
@@ -293,7 +301,7 @@ function ContactFormInner() {
                   id="projectScale"
                   value={projectScale}
                   onChange={(e) => setProjectScale(e.target.value)}
-                  className="w-full px-4 py-3 bg-[#F4F8FA] border border-gray-200 rounded-sm text-sm text-puelche-dark focus:outline-none focus:border-puelche-cyan"
+                  className="w-full px-4 py-3.5 bg-[#14161a] border border-white/15 rounded-xl text-xs text-white focus:outline-none focus:border-[#59BFD6]"
                 >
                   {PROJECT_SCALES.map((scale) => (
                     <option key={scale} value={scale}>{scale}</option>
@@ -304,7 +312,7 @@ function ContactFormInner() {
               <div>
                 <label
                   htmlFor="region"
-                  className="block font-condensed uppercase tracking-wider text-xs font-bold text-puelche-slate mb-1"
+                  className="block font-mono uppercase tracking-widest text-[11px] text-white/70 mb-2"
                 >
                   Ubicación Territorial
                 </label>
@@ -312,7 +320,7 @@ function ContactFormInner() {
                   id="region"
                   value={selectedRegion}
                   onChange={(e) => setSelectedRegion(e.target.value)}
-                  className="w-full px-4 py-3 bg-[#F4F8FA] border border-gray-200 rounded-sm text-sm text-puelche-dark focus:outline-none focus:border-puelche-cyan"
+                  className="w-full px-4 py-3.5 bg-[#14161a] border border-white/15 rounded-xl text-xs text-white focus:outline-none focus:border-[#59BFD6]"
                 >
                   {REGIONS.map((r) => (
                     <option key={r} value={r}>{r}</option>
@@ -324,101 +332,114 @@ function ContactFormInner() {
             <div>
               <label
                 htmlFor="mensaje"
-                className="block font-condensed uppercase tracking-wider text-xs font-bold text-puelche-slate mb-1"
+                className="block font-mono uppercase tracking-widest text-[11px] text-white/70 mb-2"
               >
-                Si tienes más detalles de tu solicitud, escríbelas aquí:
+                Detalles del Requerimiento o Territorio:
               </label>
               <textarea
                 id="mensaje"
                 rows={3}
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
-                placeholder="Cuéntanos sobre tu proyecto o lo que necesitas cotizar..."
-                className="w-full px-4 py-3 bg-[#F4F8FA] border border-gray-200 rounded-sm text-sm text-puelche-dark focus:outline-none focus:border-puelche-cyan focus:bg-white transition-colors resize-none"
+                placeholder="Cuéntanos sobre tu proyecto, fechas estimadas o lo que necesitas cotizar..."
+                className="w-full px-5 py-3.5 bg-white/[0.04] border border-white/15 rounded-xl text-sm text-white placeholder-white/35 focus:outline-none focus:border-[#59BFD6] focus:bg-white/[0.07] transition-all resize-none"
               />
             </div>
 
-            <div>
+            <div className="pt-2">
               <button
                 type="submit"
-                className="inline-flex items-center justify-center px-8 py-3.5 bg-puelche-cyan text-white font-condensed uppercase tracking-widest text-sm font-bold rounded-sm hover:bg-puelche-cyan-dark transition-all duration-200 shadow-md hover:scale-[1.02]"
+                disabled={isSubmitting}
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-10 py-4 bg-[#59BFD6] text-puelche-dark font-condensed uppercase tracking-widest text-sm font-bold rounded-full hover:bg-white transition-all shadow-[0_0_25px_rgba(89,191,214,0.35)] hover:scale-105 disabled:opacity-50"
               >
-                <Send className="w-4 h-4 mr-2" />
-                <span>ENVIAR</span>
+                <Send className="w-4 h-4" />
+                <span>{isSubmitting ? 'PROCESANDO...' : 'ENVIAR BRIEF DE EXPEDICIÓN'}</span>
               </button>
             </div>
           </form>
         )}
       </div>
 
-      {/* Right Column: Datos de Contacto */}
-      <div className="lg:col-span-5 bg-[#F8FAFB] p-8 sm:p-10 rounded-sm border border-gray-100 space-y-8">
+      {/* Right Column: Datos de Despacho & Equipo */}
+      <div className="lg:col-span-5 bg-[#121418] p-8 sm:p-10 rounded-3xl border border-white/10 space-y-8 shadow-2xl">
         <div>
-          <h2 className="font-condensed text-3xl font-bold uppercase tracking-wider text-puelche-cyan mb-4">
+          <span className="font-mono text-xs uppercase tracking-[0.25em] text-[#59BFD6] block mb-2">
+            MESA DE DIRECCIÓN
+          </span>
+          <h2 className="font-condensed text-3xl font-bold uppercase tracking-tight text-white mb-6">
             Datos de Contacto
           </h2>
-          <div className="space-y-4 font-sans text-sm text-puelche-dark">
-            <div className="p-3 bg-white rounded border border-gray-100 space-y-1.5 shadow-sm">
-              <p className="font-semibold text-base text-puelche-slate">Alejandro Lattes Corona</p>
-              <p className="text-xs text-puelche-gray uppercase font-condensed tracking-wider">Fundador &bull; Dirección Creativa & Fotografía</p>
-              <div className="flex items-center space-x-2 text-puelche-gray hover:text-puelche-cyan transition-colors pt-1">
-                <Mail className="w-3.5 h-3.5 text-puelche-cyan shrink-0" />
+
+          <div className="space-y-4 font-sans text-sm">
+            <div className="p-4 bg-white/[0.03] rounded-2xl border border-white/10 space-y-2">
+              <p className="font-condensed text-lg uppercase font-bold text-white tracking-wide">
+                Alejandro Lattes Corona
+              </p>
+              <p className="text-[11px] font-mono text-[#59BFD6] uppercase tracking-wider">
+                Fundador &bull; Dirección Creativa & Fotografía
+              </p>
+              <div className="flex items-center space-x-2 text-white/70 hover:text-[#59BFD6] transition-colors pt-1">
+                <Mail className="w-3.5 h-3.5 text-[#59BFD6] shrink-0" />
                 <a href="mailto:alejandro@puelchelab.cl">alejandro@puelchelab.cl</a>
               </div>
-              <div className="flex items-center space-x-2 text-puelche-gray hover:text-puelche-cyan transition-colors">
-                <Phone className="w-3.5 h-3.5 text-puelche-cyan shrink-0" />
+              <div className="flex items-center space-x-2 text-white/70 hover:text-[#59BFD6] transition-colors">
+                <Phone className="w-3.5 h-3.5 text-[#59BFD6] shrink-0" />
                 <a href="tel:+56999363705">+56 9 9936 3705</a>
               </div>
             </div>
 
-            <div className="p-3 bg-white rounded border border-gray-100 space-y-1.5 shadow-sm">
-              <p className="font-semibold text-base text-puelche-slate">Paula Valdivieso</p>
-              <p className="text-xs text-puelche-gray uppercase font-condensed tracking-wider">Socia &bull; Dirección Comercial & Cotizaciones</p>
-              <div className="flex items-center space-x-2 text-puelche-gray hover:text-puelche-cyan transition-colors pt-1">
-                <Mail className="w-3.5 h-3.5 text-puelche-cyan shrink-0" />
+            <div className="p-4 bg-white/[0.03] rounded-2xl border border-white/10 space-y-2">
+              <p className="font-condensed text-lg uppercase font-bold text-white tracking-wide">
+                Paula Valdivieso
+              </p>
+              <p className="text-[11px] font-mono text-[#59BFD6] uppercase tracking-wider">
+                Socia &bull; Dirección Comercial & Cotizaciones
+              </p>
+              <div className="flex items-center space-x-2 text-white/70 hover:text-[#59BFD6] transition-colors pt-1">
+                <Mail className="w-3.5 h-3.5 text-[#59BFD6] shrink-0" />
                 <a href="mailto:paula.valdivieso@puelchelab.cl">paula.valdivieso@puelchelab.cl</a>
               </div>
-              <div className="flex items-center space-x-2 text-puelche-gray hover:text-puelche-cyan transition-colors">
-                <Phone className="w-3.5 h-3.5 text-puelche-cyan shrink-0" />
+              <div className="flex items-center space-x-2 text-white/70 hover:text-[#59BFD6] transition-colors">
+                <Phone className="w-3.5 h-3.5 text-[#59BFD6] shrink-0" />
                 <a href="tel:+56966177500">+56 9 6617 7500</a>
               </div>
             </div>
 
-            <div className="pt-2 space-y-2">
-              <div className="flex items-center space-x-3 text-puelche-gray">
-                <MapPin className="w-4 h-4 text-puelche-cyan shrink-0" />
-                <span>Puerto Varas, Región de Los Lagos, Chile</span>
+            <div className="pt-2 space-y-2.5 text-xs text-white/70 font-mono">
+              <div className="flex items-center space-x-3">
+                <MapPin className="w-4 h-4 text-[#59BFD6] shrink-0" />
+                <span>Puerto Varas &bull; Región de Los Lagos &bull; Chile</span>
               </div>
-              <div className="flex items-center space-x-3 text-puelche-gray">
-                <Clock className="w-4 h-4 text-puelche-cyan shrink-0" />
+              <div className="flex items-center space-x-3">
+                <Clock className="w-4 h-4 text-[#59BFD6] shrink-0" />
                 <span>Lunes a Viernes de 09:00 a 19:00 hrs.</span>
               </div>
             </div>
           </div>
         </div>
 
-        <div className="pt-6 border-t border-gray-200">
-          <h3 className="font-condensed text-2xl font-bold uppercase tracking-wider text-puelche-cyan mb-4">
-            Redes Sociales
+        <div className="pt-6 border-t border-white/10">
+          <h3 className="font-mono text-xs uppercase tracking-widest text-[#59BFD6] mb-4">
+            Presencia & Redes
           </h3>
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-3">
             <a
               href="https://www.facebook.com/PuelcheLabPublicidad/"
               target="_blank"
               rel="noopener noreferrer"
-              className="w-10 h-10 rounded-full bg-puelche-slate text-white flex items-center justify-center hover:bg-puelche-cyan transition-colors"
+              className="w-10 h-10 rounded-full bg-white/[0.05] hover:bg-[#59BFD6] hover:text-puelche-dark text-white flex items-center justify-center transition-all border border-white/10"
               aria-label="Facebook Puelche Lab Oficial"
             >
-              <Facebook className="w-5 h-5 fill-current" />
+              <Facebook className="w-4 h-4 fill-current" />
             </a>
             <a
               href="https://www.instagram.com/puelche_lab/"
               target="_blank"
               rel="noopener noreferrer"
-              className="w-10 h-10 rounded-full bg-puelche-slate text-white flex items-center justify-center hover:bg-puelche-cyan transition-colors"
+              className="w-10 h-10 rounded-full bg-white/[0.05] hover:bg-[#59BFD6] hover:text-puelche-dark text-white flex items-center justify-center transition-all border border-white/10"
               aria-label="Instagram @puelche_lab"
             >
-              <Instagram className="w-5 h-5" />
+              <Instagram className="w-4 h-4" />
             </a>
           </div>
         </div>
@@ -429,9 +450,9 @@ function ContactFormInner() {
 
 export default function ContactoPage() {
   return (
-    <div className="w-full flex flex-col bg-white">
-      <section className="max-w-6xl mx-auto px-6 sm:px-8 lg:px-12 pt-28 pb-16 md:pt-32 md:pb-24 w-full">
-        <Suspense fallback={<div className="p-8 text-center font-condensed">Cargando formulario...</div>}>
+    <div className="w-full flex flex-col bg-[#0c0e12] text-white min-h-screen selection:bg-[#59BFD6] selection:text-[#0c0e12]">
+      <section className="max-w-6xl mx-auto px-6 sm:px-8 lg:px-12 pt-28 pb-16 md:pt-36 md:pb-24 w-full">
+        <Suspense fallback={<div className="p-8 text-center font-condensed text-white">Cargando mesa de despacho...</div>}>
           <ContactFormInner />
         </Suspense>
       </section>
