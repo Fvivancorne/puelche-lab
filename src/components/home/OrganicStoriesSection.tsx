@@ -206,12 +206,21 @@ export function OrganicStoriesSection() {
               width: `${STORIES.length * 100}vw`,
             }}
           >
-            {STORIES.map((story, idx) => (
+            {STORIES.map((story, idx) => {
+              // Historias impares (0, 2) → Inmersión a sangre: foto domina, texto superpuesto
+              // Historias pares (1, 3)  → Split: tarjeta flotante lateral
+              const isImmersive = idx % 2 === 0;
+
+              return (
               <div
                 key={story.id}
-                className="stories-desktop-slide w-screen h-full shrink-0 relative flex items-center justify-end px-8 md:px-16 lg:px-24 py-16"
+                className={`stories-desktop-slide w-screen h-full shrink-0 relative flex items-center py-16 ${
+                  isImmersive
+                    ? 'justify-center px-8 md:px-16'
+                    : 'justify-end px-8 md:px-16 lg:px-24'
+                }`}
               >
-                {/* Fotografía Monumental de Fondo Completo (100% Pantalla, Luminosa y de Autor) */}
+                {/* Fotografía Monumental de Fondo Completo */}
                 <div className="absolute inset-0 z-0">
                   <Image
                     src={story.image}
@@ -221,57 +230,88 @@ export function OrganicStoriesSection() {
                     className="object-cover object-center scale-105 transition-transform duration-1000"
                     sizes="100vw"
                   />
-                  {/* Gradiente sutil localizado exclusivamente tras el bloque editorial para preservar 80%+ de luz diáfana */}
-                  <div className="absolute inset-y-0 right-0 w-full md:w-3/5 bg-gradient-to-l from-black/55 via-black/20 to-transparent pointer-events-none" />
+                  {isImmersive ? (
+                    /* Inmersión: gradiente suave de abajo para texto legible */
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent pointer-events-none" />
+                  ) : (
+                    /* Split: gradiente lateral derecho para tarjeta */
+                    <div className="absolute inset-y-0 right-0 w-full md:w-3/5 bg-gradient-to-l from-black/55 via-black/20 to-transparent pointer-events-none" />
+                  )}
                 </div>
 
-                {/* Tarjeta Flotante Aireada y Luminosa con el Relato */}
-                <article className="relative z-10 max-w-lg w-full bg-black/40 backdrop-blur-md rounded-3xl border border-white/20 p-7 sm:p-9 shadow-[0_25px_60px_rgba(0,0,0,0.6)] space-y-5">
-                  {/* Metadata de Cabecera */}
-                  <div className="space-y-2">
+                {isImmersive ? (
+                  /* ═══ MODO INMERSIÓN A SANGRE ═══ */
+                  <article className="relative z-10 max-w-3xl w-full flex flex-col items-start justify-end h-full pb-24 space-y-4">
                     <div className="flex items-center gap-1.5 text-xs font-mono text-[#59BFD6]">
                       <MapPin className="w-3.5 h-3.5 text-[#59BFD6]" />
                       <span className="uppercase tracking-wider">{story.location}</span>
                     </div>
 
-                    <h3 className="font-condensed text-3xl sm:text-4xl uppercase tracking-tight font-bold text-white leading-tight">
+                    <h3 className="font-condensed text-5xl sm:text-6xl lg:text-7xl uppercase tracking-tight font-bold text-white leading-[0.95] drop-shadow-2xl">
                       {story.title}
                     </h3>
-                  </div>
 
-                  {/* Cita Editorial en Serif Cursiva */}
-                  <div className="p-4 sm:p-5 rounded-2xl bg-white/[0.05] border-l-2 border-[#C29B63] space-y-2">
-                    <Quote className="w-4 h-4 text-[#C29B63]/70" />
-                    <p className="font-serif italic text-base sm:text-lg text-white/95 leading-relaxed font-light">
+                    <p className="font-serif italic text-lg sm:text-xl text-white/90 leading-relaxed font-light max-w-xl drop-shadow-lg">
                       &ldquo;{story.curatorQuote}&rdquo;
                     </p>
-                    <span className="font-mono text-[11px] uppercase tracking-widest text-[#C29B63] block">
-                      &mdash; {story.quoteAuthor}
-                    </span>
-                  </div>
 
-                  {/* Crónica de Campo */}
-                  <p className="font-sans text-sm sm:text-base text-white/85 font-light leading-relaxed line-clamp-4">
-                    {story.chronicle}
-                  </p>
+                    <div className="pt-4 flex items-center gap-6">
+                      <span className="font-mono text-xs text-white/50 tracking-wide">
+                        [ {story.num} / 04 ]
+                      </span>
+                      <Link
+                        href={`/portafolio?proyecto=${story.projectSlug}`}
+                        className="group inline-flex items-center gap-2 font-condensed uppercase tracking-wider text-sm text-white/80 hover:text-[#59BFD6] transition-colors"
+                      >
+                        <span>Ver obra</span>
+                        <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                      </Link>
+                    </div>
+                  </article>
+                ) : (
+                  /* ═══ MODO SPLIT: TARJETA FLOTANTE LATERAL ═══ */
+                  <article className="relative z-10 max-w-lg w-full bg-black/40 backdrop-blur-md rounded-3xl border border-white/20 p-7 sm:p-9 shadow-[0_25px_60px_rgba(0,0,0,0.6)] space-y-5">
+                    <div className="space-y-2">
+                      <div className="flex items-center gap-1.5 text-xs font-mono text-[#59BFD6]">
+                        <MapPin className="w-3.5 h-3.5 text-[#59BFD6]" />
+                        <span className="uppercase tracking-wider">{story.location}</span>
+                      </div>
 
-                  {/* CTA Directo a la Obra */}
-                  <div className="pt-3 border-t border-white/10 flex items-center justify-between">
-                    <span className="font-mono text-xs text-[#59BFD6] font-medium tracking-wide">
-                      [ {story.num} / 04 ] &bull; {story.role}
-                    </span>
+                      <h3 className="font-condensed text-3xl sm:text-4xl uppercase tracking-tight font-bold text-white leading-tight">
+                        {story.title}
+                      </h3>
+                    </div>
 
-                    <Link
-                      href={`/portafolio?proyecto=${story.projectSlug}`}
-                      className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-full bg-[#59BFD6] hover:bg-white text-puelche-dark font-condensed uppercase tracking-wider text-xs font-bold transition-all shadow-md shrink-0 hover:scale-105"
-                    >
-                      <span>Ver obra en archivo</span>
-                      <ArrowUpRight className="w-4 h-4" />
-                    </Link>
-                  </div>
-                </article>
+                    {/* Cita Editorial en Serif Cursiva */}
+                    <div className="p-4 sm:p-5 rounded-2xl bg-white/[0.05] border-l-2 border-[#C29B63] space-y-2">
+                      <Quote className="w-4 h-4 text-[#C29B63]/70" />
+                      <p className="font-serif italic text-base sm:text-lg text-white/95 leading-relaxed font-light">
+                        &ldquo;{story.curatorQuote}&rdquo;
+                      </p>
+                      <span className="font-mono text-[11px] uppercase tracking-widest text-[#C29B63] block">
+                        &mdash; {story.quoteAuthor}
+                      </span>
+                    </div>
+
+                    {/* CTA Discreto — enlace con flecha, no botón sólido */}
+                    <div className="pt-3 border-t border-white/10 flex items-center justify-between">
+                      <span className="font-mono text-xs text-white/50 tracking-wide">
+                        [ {story.num} / 04 ] &bull; {story.role}
+                      </span>
+
+                      <Link
+                        href={`/portafolio?proyecto=${story.projectSlug}`}
+                        className="group inline-flex items-center gap-2 font-condensed uppercase tracking-wider text-xs text-white/70 hover:text-[#59BFD6] transition-colors"
+                      >
+                        <span>Ver obra</span>
+                        <ArrowUpRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                      </Link>
+                    </div>
+                  </article>
+                )}
               </div>
-            ))}
+              );
+            })}
           </div>
 
           {/* Barra de Progreso Austral en la Base */}
@@ -375,7 +415,7 @@ export function OrganicStoriesSection() {
                   </span>
                   <Link
                     href={`/portafolio?proyecto=${story.projectSlug}`}
-                    className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-[#59BFD6] text-puelche-dark font-condensed uppercase tracking-wider text-[11px] font-bold"
+                    className="inline-flex items-center gap-1.5 font-condensed uppercase tracking-wider text-[11px] text-white/70 hover:text-[#59BFD6] transition-colors"
                   >
                     <span>Ver obra</span>
                     <ArrowUpRight className="w-3.5 h-3.5" />
