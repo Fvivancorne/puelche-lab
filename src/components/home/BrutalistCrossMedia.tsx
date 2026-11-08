@@ -92,7 +92,7 @@ export function BrutalistCrossMedia() {
   const cardsContainerRef = useRef<HTMLDivElement>(null);
   const bgWrapperRef = useRef<HTMLDivElement>(null);
 
-  // Coreografía Direccional del Viento con Scrub en Tiempo Real
+  // Coreografía Direccional del Viento con Pinned Stage, Resistencia Física (1.4s) y Cortina Óptica
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
 
@@ -100,100 +100,160 @@ export function BrutalistCrossMedia() {
     if (!section) return;
 
     const media = gsap.matchMedia();
-    media.add('(prefers-reduced-motion: no-preference)', () => {
+
+    // ── DESKTOP (>= 1024px): Pinned Stage Awwwards con Resistencia Media-Alta (200% scroll, scrub: 1.4s) ──
+    media.add('(min-width: 1024px) and (prefers-reduced-motion: no-preference)', () => {
       const ctx = gsap.context(() => {
-        // 1. Titular "¿QUÉ ES CROSS MEDIA?": Entra y se arma de IZQUIERDA A DERECHA
+        const pinTl = gsap.timeline({
+          scrollTrigger: {
+            trigger: section,
+            start: 'top top',
+            end: '+=180%',
+            pin: true,
+            scrub: 1.4, // Resistencia noble y orgánica con damping físico
+            anticipatePin: 1,
+          },
+        });
+
+        // 1. Fotografía de fondo: Apertura óptica de diafragma y sutil zoom
+        if (bgWrapperRef.current) {
+          pinTl.fromTo(
+            bgWrapperRef.current,
+            { scale: 1.15, filter: 'brightness(0.75)' },
+            { scale: 1.04, filter: 'brightness(1)', ease: 'none', duration: 0.4 },
+            0
+          );
+        }
+
+        // 2. Titular "¿QUÉ ES CROSS MEDIA?": Ensamblado de izquierda a derecha con máscara óptica
+        if (headlineRef.current) {
+          pinTl.fromTo(
+            headlineRef.current,
+            { x: -160, opacity: 0, clipPath: 'inset(0% 100% 0% 0%)' },
+            { x: 0, opacity: 1, clipPath: 'inset(0% 0% 0% 0%)', ease: 'power2.out', duration: 0.35 },
+            0.04
+          );
+        }
+
+        if (subheadRef.current) {
+          pinTl.fromTo(
+            subheadRef.current,
+            { x: -100, opacity: 0, clipPath: 'inset(0% 100% 0% 0%)' },
+            { x: 0, opacity: 1, clipPath: 'inset(0% 0% 0% 0%)', ease: 'power2.out', duration: 0.35 },
+            0.08
+          );
+        }
+
+        // 3. Cortina Óptica del Manifiesto Asimétrico (Se va armando para ponerse con fricción):
+        // Tarjeta Izquierda (7 cols): Obturador que se corre de izquierda a derecha
+        if (manifestoLeftRef.current) {
+          pinTl.fromTo(
+            manifestoLeftRef.current,
+            { x: -120, opacity: 0, clipPath: 'inset(0% 100% 0% 0%)' },
+            { x: 0, opacity: 1, clipPath: 'inset(0% 0% 0% 0%)', ease: 'power2.out', duration: 0.45 },
+            0.12
+          );
+        }
+
+        // Tarjeta Derecha (5 cols descolgada): Obturador opuesto que se corre de derecha a izquierda
+        if (manifestoRightRef.current) {
+          pinTl.fromTo(
+            manifestoRightRef.current,
+            { x: 120, opacity: 0, clipPath: 'inset(0% 0% 0% 100%)' },
+            { x: 0, opacity: 1, clipPath: 'inset(0% 0% 0% 0%)', ease: 'power2.out', duration: 0.45 },
+            0.16
+          );
+        }
+
+        // 4. Fase 2: Al continuar el scroll con resistencia, el manifiesto se repliega suavemente
+        // y emergen las 4 dimensiones del oficio desde abajo
+        if (manifestoContainerRef.current) {
+          pinTl.to(
+            manifestoContainerRef.current,
+            { y: -30, opacity: 0.25, ease: 'power1.inOut', duration: 0.3 },
+            0.55
+          );
+        }
+
+        if (cardsContainerRef.current) {
+          const cards = cardsContainerRef.current.children;
+          pinTl.fromTo(
+            cards,
+            { y: 80, opacity: 0, clipPath: 'inset(100% 0% 0% 0%)' },
+            { y: 0, opacity: 1, clipPath: 'inset(0% 0% 0% 0%)', stagger: 0.05, ease: 'power2.out', duration: 0.35 },
+            0.6
+          );
+        }
+      }, section);
+
+      return () => ctx.revert();
+    });
+
+    // ── MÓVIL Y TABLET (< 1024px): Scroll natural con revelado de obturador sin Pin ──
+    media.add('(max-width: 1023px) and (prefers-reduced-motion: no-preference)', () => {
+      const ctx = gsap.context(() => {
         if (headlineRef.current) {
           gsap.fromTo(
             headlineRef.current,
-            {
-              x: -240,
-              opacity: 0,
-              clipPath: 'polygon(0% 0%, 0% 0%, 0% 100%, 0% 100%)',
-            },
+            { x: -60, opacity: 0, clipPath: 'inset(0% 100% 0% 0%)' },
             {
               x: 0,
               opacity: 1,
-              clipPath: 'polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)',
+              clipPath: 'inset(0% 0% 0% 0%)',
               ease: 'power2.out',
               scrollTrigger: {
                 trigger: headlineRef.current,
-                start: 'top 88%',
-                end: 'top 35%',
-                scrub: 0.8,
+                start: 'top 85%',
+                end: 'top 45%',
+                scrub: 1.0,
               },
             }
           );
         }
 
-        // 2. Subtítulo en Serif Itálica: Se despliega suavemente de izquierda a derecha
-        if (subheadRef.current) {
+        if (manifestoLeftRef.current) {
           gsap.fromTo(
-            subheadRef.current,
-            { x: -140, opacity: 0 },
+            manifestoLeftRef.current,
+            { x: -50, opacity: 0, clipPath: 'inset(0% 100% 0% 0%)' },
             {
               x: 0,
               opacity: 1,
+              clipPath: 'inset(0% 0% 0% 0%)',
               ease: 'power2.out',
               scrollTrigger: {
-                trigger: subheadRef.current,
-                start: 'top 90%',
-                end: 'top 40%',
-                scrub: 0.8,
+                trigger: manifestoLeftRef.current,
+                start: 'top 85%',
+                end: 'top 50%',
+                scrub: 1.0,
               },
             }
           );
         }
 
-        // 3. Manifiesto Tarjetas: Convergen horizontalmente (Izquierda a Derecha / Derecha a Izquierda)
-        if (manifestoContainerRef.current) {
-          const container = manifestoContainerRef.current;
-
-          // Tarjeta Izquierda ("Somos un Estudio..."): Llega de IZQUIERDA A DERECHA horizontal
-          if (manifestoLeftRef.current) {
-            gsap.fromTo(
-              manifestoLeftRef.current,
-              { x: -280, opacity: 0 },
-              {
-                x: 0,
-                opacity: 1,
-                ease: 'power2.out',
-                scrollTrigger: {
-                  trigger: container,
-                  start: 'top 90%',
-                  end: 'top 35%',
-                  scrub: 0.8,
-                },
-              }
-            );
-          }
-
-          // Tarjeta Derecha ("Contamos con un estudio..."): Aparece de DERECHA A IZQUIERDA horizontal
-          if (manifestoRightRef.current) {
-            gsap.fromTo(
-              manifestoRightRef.current,
-              { x: 280, opacity: 0 },
-              {
-                x: 0,
-                opacity: 1,
-                ease: 'power2.out',
-                scrollTrigger: {
-                  trigger: container,
-                  start: 'top 90%',
-                  end: 'top 35%',
-                  scrub: 0.8,
-                },
-              }
-            );
-          }
+        if (manifestoRightRef.current) {
+          gsap.fromTo(
+            manifestoRightRef.current,
+            { x: 50, opacity: 0, clipPath: 'inset(0% 0% 0% 100%)' },
+            {
+              x: 0,
+              opacity: 1,
+              clipPath: 'inset(0% 0% 0% 0%)',
+              ease: 'power2.out',
+              scrollTrigger: {
+                trigger: manifestoRightRef.current,
+                start: 'top 85%',
+                end: 'top 50%',
+                scrub: 1.0,
+              },
+            }
+          );
         }
 
-        // 4. Las 4 tarjetas de oficio emergen escalonadas
         if (cardsContainerRef.current) {
           const cards = cardsContainerRef.current.children;
           gsap.fromTo(
             cards,
-            { y: 100, opacity: 0 },
+            { y: 50, opacity: 0 },
             {
               y: 0,
               opacity: 1,
@@ -201,27 +261,9 @@ export function BrutalistCrossMedia() {
               ease: 'power2.out',
               scrollTrigger: {
                 trigger: cardsContainerRef.current,
-                start: 'top 92%',
-                end: 'top 45%',
-                scrub: 0.8,
-              },
-            }
-          );
-        }
-
-        // 5. Parallax fotográfico en el fondo
-        if (bgWrapperRef.current) {
-          gsap.fromTo(
-            bgWrapperRef.current,
-            { yPercent: -10 },
-            {
-              yPercent: 10,
-              ease: 'none',
-              scrollTrigger: {
-                trigger: section,
-                start: 'top bottom',
-                end: 'bottom top',
-                scrub: 0.8,
+                start: 'top 90%',
+                end: 'top 55%',
+                scrub: 1.0,
               },
             }
           );
@@ -338,23 +380,60 @@ export function BrutalistCrossMedia() {
           </p>
         </div>
 
-        {/* Manifiesto Editorial: 2 Columnas Cálidas con Curvas Orgánicas */}
-        <div ref={manifestoContainerRef} className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-16 pt-4 border-t border-white/15 font-sans text-base sm:text-lg text-white/90 leading-relaxed font-light overflow-hidden">
-          <div ref={manifestoLeftRef} className="space-y-4 bg-black/35 backdrop-blur-md p-7 sm:p-8 rounded-[28px] border border-white/10 shadow-xl">
-            <p className="text-white font-medium text-lg sm:text-xl drop-shadow-md">
-              Somos un Estudio de Diseño Cross Media y Fotografía en Puerto Varas.
-            </p>
-            <p className="drop-shadow-sm font-light text-white/85">
+        {/* Manifiesto Editorial Suizo: Asimetría 7/5 con Cortina Óptica y Aire Territorial */}
+        <div
+          ref={manifestoContainerRef}
+          className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 pt-6 border-t border-white/15 font-sans overflow-hidden will-change-transform"
+        >
+          {/* Columna Izquierda (7 Cols): Declaración Monumental de Gran Formato */}
+          <div
+            ref={manifestoLeftRef}
+            className="lg:col-span-7 flex flex-col justify-between space-y-6 bg-[#0e0f13]/85 backdrop-blur-xl p-8 sm:p-10 lg:p-12 rounded-[32px] sm:rounded-[36px] border border-white/15 shadow-[0_25px_70px_rgba(0,0,0,0.85)] relative overflow-hidden group will-change-transform"
+          >
+            {/* Velo de Iluminación Suave en Hover */}
+            <div className="absolute top-0 right-0 w-80 h-80 bg-[#59BFD6]/[0.06] rounded-full blur-3xl pointer-events-none group-hover:bg-[#59BFD6]/[0.12] transition-colors duration-700" />
+
+            <div className="space-y-4 relative z-10">
+              <div className="inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.25em] text-[#59BFD6]">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#59BFD6] animate-pulse" />
+                <span>ESTUDIO DE AUTOR &bull; PUERTO VARAS</span>
+              </div>
+
+              <p className="text-white font-medium text-2xl sm:text-3xl lg:text-4xl font-condensed uppercase tracking-tight leading-tight drop-shadow-md">
+                Somos un Estudio de Diseño Cross Media y Fotografía en Puerto Varas.
+              </p>
+            </div>
+
+            <p className="text-white/80 font-light text-base sm:text-lg leading-relaxed relative z-10 max-w-2xl border-l-2 border-[#59BFD6]/40 pl-4 sm:pl-5">
               Pero, <span className="italic font-serif text-white font-normal">¿Qué es Cross Media?</span> Nos referimos a que creamos piezas visuales para todos los medios, ya sean digitales, impresos y/o audiovisuales.
             </p>
           </div>
-          <div ref={manifestoRightRef} className="space-y-4 bg-black/35 backdrop-blur-md p-7 sm:p-8 rounded-[28px] border border-white/10 shadow-xl">
-            <p className="drop-shadow-sm font-light text-white/85">
-              Contamos con un estudio de fotografía y grabación muy bien equipado, iluminación profesional y equipos de alta gama, tanto en tierra firme como desde el aire con dron 4K, haciendo resaltar tu producto o servicio para que pase al frente en la vitrina del mercado.
-            </p>
-            <div className="flex items-center gap-3 font-serif italic text-sm text-puelche-cyan pt-2">
-              <span className="w-1.5 h-1.5 rounded-full bg-puelche-cyan" />
-              <span>Fotografía de autor &bull; Set propio &bull; Territorio austral</span>
+
+          {/* Columna Derecha (5 Cols, Asimétrica Descolgada): Laboratorio Técnico & Equipo */}
+          <div
+            ref={manifestoRightRef}
+            className="lg:col-span-5 lg:translate-y-8 xl:translate-y-12 flex flex-col justify-between space-y-6 bg-[#14151a]/75 backdrop-blur-xl p-7 sm:p-9 rounded-[32px] sm:rounded-[36px] border border-white/15 shadow-[0_25px_70px_rgba(0,0,0,0.9)] relative overflow-hidden group will-change-transform"
+          >
+            <div className="space-y-3 relative z-10">
+              <span className="font-mono text-[10px] sm:text-[11px] uppercase tracking-[0.3em] text-white/50">
+                INFRAESTRUCTURA &bull; EXPEDICIÓN
+              </span>
+              <p className="font-light text-white/85 text-sm sm:text-base lg:text-lg leading-relaxed">
+                Contamos con un estudio de fotografía y grabación muy bien equipado, iluminación profesional y equipos de alta gama, tanto en tierra firme como desde el aire con dron 4K, haciendo resaltar tu producto o servicio para que pase al frente en la vitrina del mercado.
+              </p>
+            </div>
+
+            {/* Píldoras Táctiles con Acabado de Cuarto Oscuro */}
+            <div className="flex flex-wrap items-center gap-2 pt-4 border-t border-white/10 font-mono text-[11px] text-white/80 relative z-10">
+              <span className="px-3 py-1.5 rounded-full bg-white/5 border border-white/10 text-white/90">
+                Fotografía de autor
+              </span>
+              <span className="px-3 py-1.5 rounded-full bg-white/5 border border-white/10 text-white/90">
+                Set propio
+              </span>
+              <span className="px-3 py-1.5 rounded-full bg-[#59BFD6]/15 text-[#59BFD6] border border-[#59BFD6]/30 font-medium">
+                Territorio austral
+              </span>
             </div>
           </div>
         </div>
