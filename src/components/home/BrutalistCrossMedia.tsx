@@ -105,55 +105,66 @@ export function BrutalistCrossMedia() {
           scrollTrigger: {
             trigger: section,
             start: 'top 85%',
-            end: 'top 15%',
-            scrub: 0.7,
+            end: 'top 20%',
+            scrub: 0.8,
           },
         });
 
-        // 1. Titular entra deslizándose desde la izquierda
+        // 1. Titular "¿QUÉ ES CROSS MEDIA?": Entra y se arma de IZQUIERDA A DERECHA
         if (headlineRef.current) {
           tl.fromTo(
             headlineRef.current,
-            { x: -120, opacity: 0.15 },
-            { x: 0, opacity: 1, ease: 'none' },
+            {
+              x: -180,
+              opacity: 0,
+              clipPath: 'polygon(0% 0%, 0% 0%, 0% 100%, 0% 100%)',
+            },
+            {
+              x: 0,
+              opacity: 1,
+              clipPath: 'polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)',
+              ease: 'none',
+            },
             0
           );
         }
 
-        // 2. Subtítulo en Serif Itálica entra desde la derecha
+        // 2. Subtítulo en Serif Itálica: Se despliega suavemente de izquierda a derecha
         if (subheadRef.current) {
           tl.fromTo(
             subheadRef.current,
-            { x: 100, opacity: 0.15 },
+            { x: -100, opacity: 0 },
             { x: 0, opacity: 1, ease: 'none' },
-            0.04
+            0.03
           );
         }
 
-        // 3. Manifiesto: Columnas convergen desde lados opuestos
+        // 3. Manifiesto Tarjeta Izquierda ("Somos un Estudio..."): Llega de IZQUIERDA A DERECHA horizontal
         if (manifestoLeftRef.current) {
           tl.fromTo(
             manifestoLeftRef.current,
-            { x: -80, opacity: 0.2 },
+            { x: -160, opacity: 0 },
             { x: 0, opacity: 1, ease: 'none' },
-            0.08
-          );
-        }
-        if (manifestoRightRef.current) {
-          tl.fromTo(
-            manifestoRightRef.current,
-            { x: 80, opacity: 0.2 },
-            { x: 0, opacity: 1, ease: 'none' },
-            0.08
+            0.06
           );
         }
 
-        // 4. Las tarjetas emergen escalonadas
+        // 4. Manifiesto Tarjeta Derecha ("Contamos con un estudio..."): Aparece de DERECHA A IZQUIERDA horizontal
+        if (manifestoRightRef.current) {
+          tl.fromTo(
+            manifestoRightRef.current,
+            { x: 160, opacity: 0 },
+            { x: 0, opacity: 1, ease: 'none' },
+            0.06
+          );
+        }
+
+        // 5. Las 4 tarjetas de oficio emergen escalonadas
         if (cardsContainerRef.current) {
           const cards = cardsContainerRef.current.children;
           tl.fromTo(
             cards,
-            { y: 110, opacity: 0.2 },
+            { y: 120, opacity: 0 },
             { y: 0, opacity: 1, stagger: 0.08, ease: 'none' },
             0.12
           );

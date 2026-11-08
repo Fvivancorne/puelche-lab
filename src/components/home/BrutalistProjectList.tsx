@@ -37,6 +37,30 @@ export function BrutalistProjectList() {
   const startXRef = useRef(0);
   const scrollLeftRef = useRef(0);
   const hasMovedRef = useRef(false);
+  const pointerStartRef = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
+  const lastScrollTimeRef = useRef<number>(0);
+
+  // Escuchar eventos de scroll/wheel para anular clics accidentales mientras se navega con el trackpad
+  useEffect(() => {
+    const onScrollOrWheel = () => {
+      lastScrollTimeRef.current = performance.now();
+    };
+    const el = trackRef.current;
+    if (el) {
+      el.addEventListener('scroll', onScrollOrWheel, { passive: true });
+      el.addEventListener('wheel', onScrollOrWheel, { passive: true });
+    }
+    window.addEventListener('wheel', onScrollOrWheel, { passive: true });
+    window.addEventListener('scroll', onScrollOrWheel, { passive: true });
+    return () => {
+      if (el) {
+        el.removeEventListener('scroll', onScrollOrWheel);
+        el.removeEventListener('wheel', onScrollOrWheel);
+      }
+      window.removeEventListener('wheel', onScrollOrWheel);
+      window.removeEventListener('scroll', onScrollOrWheel);
+    };
+  }, []);
 
   const updateScrollState = useCallback(() => {
     const el = trackRef.current;
@@ -175,9 +199,18 @@ export function BrutalistProjectList() {
     setIsPaused(false);
   };
 
+  const handlePointerDown = (e: React.PointerEvent) => {
+    pointerStartRef.current = { x: e.clientX, y: e.clientY };
+  };
+
   const handleCardClick = (e: React.MouseEvent) => {
-    // Prevent accidental clicks if the user was dragging
-    if (hasMovedRef.current) {
+    const now = performance.now();
+    const dist = Math.hypot(
+      e.clientX - pointerStartRef.current.x,
+      e.clientY - pointerStartRef.current.y
+    );
+    // Anular apertura si el usuario estaba scrolleando (últimos 250ms) o si hubo arrastre > 6px
+    if (hasMovedRef.current || now - lastScrollTimeRef.current < 250 || dist > 6) {
       e.preventDefault();
       e.stopPropagation();
     }
@@ -270,6 +303,7 @@ export function BrutalistProjectList() {
             >
               <Link
                 href={`/portafolio?proyecto=${project.slug}`}
+                onPointerDown={handlePointerDown}
                 onClick={handleCardClick}
                 className="group block h-full bg-[#111215]/95 hover:bg-[#16171B] border border-white/10 hover:border-[#59BFD6] rounded-[28px] sm:rounded-[36px] overflow-hidden transition-all duration-700 hover:-translate-y-2 hover:shadow-[0_30px_80px_rgba(0,0,0,0.85)] flex flex-col justify-between"
               >

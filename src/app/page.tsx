@@ -41,6 +41,71 @@ export default function Home() {
             });
           },
         });
+
+        // ── KINETIC HERO EXIT PARALLAX: Las piezas y letras se van con el viento austral al scrollear ──
+        gsap.to('#hero-monogram', {
+          y: -120,
+          opacity: 0,
+          scale: 0.88,
+          filter: 'blur(6px)',
+          ease: 'power1.inOut',
+          scrollTrigger: {
+            trigger: '#hero',
+            start: 'top top',
+            end: 'bottom 40%',
+            scrub: 0.8,
+          },
+        });
+
+        gsap.to('#hero-subtitles', {
+          y: -80,
+          opacity: 0,
+          filter: 'blur(4px)',
+          ease: 'power1.inOut',
+          scrollTrigger: {
+            trigger: '#hero',
+            start: 'top top',
+            end: 'bottom 45%',
+            scrub: 0.8,
+          },
+        });
+
+        gsap.to('#hero-description', {
+          y: -60,
+          opacity: 0,
+          filter: 'blur(3px)',
+          ease: 'power1.inOut',
+          scrollTrigger: {
+            trigger: '#hero',
+            start: 'top top',
+            end: 'bottom 50%',
+            scrub: 0.8,
+          },
+        });
+
+        gsap.to(['#hero-geo-badge', '#hero-scroll-btn'], {
+          opacity: 0,
+          y: -30,
+          ease: 'power1.out',
+          scrollTrigger: {
+            trigger: '#hero',
+            start: 'top top',
+            end: '180px top',
+            scrub: 0.5,
+          },
+        });
+
+        gsap.to('#hero-bg-wrapper', {
+          scale: 1.15,
+          yPercent: 12,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: '#hero',
+            start: 'top top',
+            end: 'bottom top',
+            scrub: 0.8,
+          },
+        });
       }, wipeTarget);
 
       return () => context.revert();
@@ -65,7 +130,7 @@ export default function Home() {
         className="relative w-full min-h-[100svh] min-h-screen flex flex-col justify-between items-center px-6 md:px-12 lg:px-16 pt-20 sm:pt-24 pb-6 overflow-hidden text-center"
       >
         {/* Backdrop: bg-agencia.jpg (Bosque patagónico con niebla) */}
-        <div className="absolute inset-0 z-0 pointer-events-none">
+        <div id="hero-bg-wrapper" className="absolute inset-0 z-0 pointer-events-none will-change-transform">
           <Image
             src="/images/real/bg-agencia.jpg"
             alt="Puelche Lab — Bosque Patagónico con Niebla"
@@ -81,7 +146,7 @@ export default function Home() {
         <WindParticleCanvas className="z-[5]" />
 
         {/* Top Geo Badge & Technical Coordinates */}
-        <div className="relative z-10 max-w-7xl mx-auto w-full flex items-center justify-between font-mono text-[11px] sm:text-xs uppercase tracking-[0.25em] text-white/70 border-b border-white/10 pb-3 sm:pb-4">
+        <div id="hero-geo-badge" className="relative z-10 max-w-7xl mx-auto w-full flex items-center justify-between font-mono text-[11px] sm:text-xs uppercase tracking-[0.25em] text-white/70 border-b border-white/10 pb-3 sm:pb-4 will-change-transform">
           <div className="inline-flex items-center gap-2.5 text-white">
             <span className="w-1.5 h-1.5 rounded-full bg-[#59BFD6] bg-puelche-cyan animate-pulse shadow-[0_0_8px_#59BFD6]" />
             <span>41°19&apos;S 72°59&apos;W &bull; PUERTO VARAS &bull; REGION DE LOS LAGOS</span>
@@ -94,7 +159,7 @@ export default function Home() {
         {/* Center: Asimetría Editorial Suiza — Espacio Negativo Monumental */}
         <div className="relative z-10 max-w-5xl mx-auto w-full my-auto flex flex-col items-center justify-center py-2 sm:py-4 md:py-6 space-y-3 sm:space-y-4 md:space-y-5">
           {/* Subtle Studio Mark / Monogram */}
-          <div className="relative w-28 sm:w-36 md:w-44 lg:w-48 aspect-[412/282] drop-shadow-2xl opacity-90 transition-transform duration-700 hover:scale-105">
+          <div id="hero-monogram" className="relative w-28 sm:w-36 md:w-44 lg:w-48 aspect-[412/282] drop-shadow-2xl opacity-90 transition-transform duration-700 hover:scale-105 will-change-transform">
             <Image
               src="/images/real/logo-puelche.png"
               alt="Puelche Lab — Viento Creativo"
@@ -110,7 +175,7 @@ export default function Home() {
             className="flex flex-col items-center justify-center space-y-2 sm:space-y-3 max-w-4xl text-center"
           >
             {/* Editorial Category Tag */}
-            <span className="font-mono text-[11px] sm:text-xs uppercase tracking-[0.35em] text-[#59BFD6] font-medium">
+            <span id="hero-subtitles" className="font-mono text-[11px] sm:text-xs uppercase tracking-[0.35em] text-[#59BFD6] font-medium will-change-transform">
               ESTUDIO DE AUTOR &bull; EXPEDICIONES VISUALES
             </span>
 
@@ -127,13 +192,13 @@ export default function Home() {
             </h2>
           </div>
 
-          <p className="font-sans text-xs sm:text-sm md:text-base lg:text-lg font-light text-white/85 max-w-2xl mx-auto tracking-wide leading-relaxed drop-shadow-md px-2">
+          <p id="hero-description" className="font-sans text-xs sm:text-sm md:text-base lg:text-lg font-light text-white/85 max-w-2xl mx-auto tracking-wide leading-relaxed drop-shadow-md px-2 will-change-transform">
             Marcas del sur con presencia sin fronteras. Estudio de diseño cross media y fotografía de autor esculpido bajo el rigor y la luz de la Patagonia austral.
           </p>
         </div>
 
         {/* Bottom Scroll Indicator */}
-        <div className="relative z-10 max-w-7xl mx-auto w-full flex items-center justify-center pt-1 sm:pt-2 pb-1">
+        <div id="hero-scroll-btn" className="relative z-10 max-w-7xl mx-auto w-full flex items-center justify-center pt-1 sm:pt-2 pb-1 will-change-transform">
           <a
             href="#cross-media"
             className="p-2.5 sm:p-3 rounded-full bg-white/5 hover:bg-[#59BFD6] text-white hover:text-puelche-dark border border-white/10 hover:border-[#59BFD6] transition-all scroll-indicator hover:scale-110"
@@ -147,13 +212,12 @@ export default function Home() {
       {/* 
         ======================================================================
         SECCIÓN 2: NARRATIVA DE MARCA — ¿QUÉ ES CROSS MEDIA?
-        Experiencia Inmersiva Brutalista Awwwards con Morphing de Fondos Reales
-        Envuelta con ScrollReveal (clip-path expand)
+        Experiencia Inmersiva Brutalista Awwwards con Convergencia Direccional
         ======================================================================
       */}
-      <ScrollReveal variant="clip" inset={6}>
+      <div id="cross-media-container" className="w-full overflow-hidden">
         <BrutalistCrossMedia />
-      </ScrollReveal>
+      </div>
 
       {/* 
         ======================================================================

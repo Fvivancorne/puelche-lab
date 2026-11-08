@@ -51,6 +51,47 @@ function PortfolioContent() {
         : [activeModalProject.image])
     : [];
 
+  // ── FILTRO DE ARRASTRE Y COOLDOWN DE SCROLL (250ms) PARA EVITAR APERTURA ACCIDENTAL CON TRACKPAD ──
+  const pointerStartRef = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
+  const lastScrollTimeRef = useRef<number>(0);
+
+  useEffect(() => {
+    const onScrollOrWheel = () => {
+      lastScrollTimeRef.current = performance.now();
+    };
+    window.addEventListener('wheel', onScrollOrWheel, { passive: true });
+    window.addEventListener('scroll', onScrollOrWheel, { passive: true });
+    return () => {
+      window.removeEventListener('wheel', onScrollOrWheel);
+      window.removeEventListener('scroll', onScrollOrWheel);
+    };
+  }, []);
+
+  const handleCardPointerDown = (e: React.PointerEvent) => {
+    pointerStartRef.current = { x: e.clientX, y: e.clientY };
+  };
+
+  const handleCardClick = (e: React.MouseEvent, project: ProjectItem) => {
+    const now = performance.now();
+    // 1. Si hubo scroll o swipe en los últimos 250ms, cancelar apertura accidental
+    if (now - lastScrollTimeRef.current < 250) {
+      e.preventDefault();
+      e.stopPropagation();
+      return;
+    }
+    // 2. Si el puntero se movió más de 6px entre pointerdown y click, fue un arrastre/swipe y NO un click deliberado
+    const dist = Math.hypot(
+      e.clientX - pointerStartRef.current.x,
+      e.clientY - pointerStartRef.current.y
+    );
+    if (dist > 6) {
+      e.preventDefault();
+      e.stopPropagation();
+      return;
+    }
+    handleOpenProject(project);
+  };
+
   const handleOpenProject = (project: ProjectItem) => {
     setNavDirection('idle');
     setActiveModalProject(project);
@@ -556,7 +597,8 @@ function PortfolioContent() {
                       key={project.id}
                       data-cursor="explore"
                       data-cursor-text="ABRIR OBRA"
-                      onClick={() => setActiveModalProject(project)}
+                      onPointerDown={handleCardPointerDown}
+                      onClick={(e) => handleCardClick(e, project)}
                       className="group shrink-0 cursor-pointer w-[85vw] sm:w-[68vw] md:w-[54vw] lg:w-[46vw] xl:w-[42vw] select-none flex flex-col justify-between transition-all duration-700"
                     >
                       {/* Ventana Fotográfica Panorámica en Gran Formato (16:10 para máxima inmersión) */}
@@ -690,7 +732,8 @@ function PortfolioContent() {
               key={project.id}
               data-cursor="explore"
               data-cursor-text="VER OBRA"
-              onClick={() => setActiveModalProject(project)}
+              onPointerDown={handleCardPointerDown}
+              onClick={(e) => handleCardClick(e, project)}
               className={`group cursor-pointer bg-[#0e1014]/90 border border-white/10 rounded-[30px] sm:rounded-[40px] overflow-hidden hover:border-[#59BFD6]/70 hover:shadow-[0_30px_80px_rgba(0,0,0,0.85)] transition-all duration-700 flex flex-col justify-between hover:-translate-y-2 ${colSpanClass}`}
             >
               <div>
