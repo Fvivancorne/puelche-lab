@@ -20,6 +20,7 @@ function PortfolioContent() {
   const [selectedCategory, setSelectedCategory] = useState<string>('Todos');
   const [activeModalProject, setActiveModalProject] = useState<ProjectItem | null>(null);
   const [currentImageIndex, setCurrentImageIndex] = useState<number>(0);
+  const [navDirection, setNavDirection] = useState<'next' | 'prev' | 'idle'>('idle');
   const [viewMode, setViewMode] = useState<'river' | 'grid' | 'latitud'>('river');
 
   // GSAP ScrollTrigger Refs para el Río Cinético Austral (Horizontal Pinned Stream)
@@ -51,6 +52,7 @@ function PortfolioContent() {
     : [];
 
   const handleOpenProject = (project: ProjectItem) => {
+    setNavDirection('idle');
     setActiveModalProject(project);
     setCurrentImageIndex(0);
   };
@@ -60,6 +62,7 @@ function PortfolioContent() {
     const list = filteredProjects.length > 0 ? filteredProjects : PORTFOLIO_PROJECTS;
     const currIdx = activeModalProject ? list.findIndex((p) => p.id === activeModalProject.id) : 0;
     const nextIdx = (currIdx + 1) % list.length;
+    setNavDirection('next');
     setActiveModalProject(list[nextIdx]);
     setCurrentImageIndex(0);
   }, [activeModalProject, filteredProjects]);
@@ -69,6 +72,7 @@ function PortfolioContent() {
     const list = filteredProjects.length > 0 ? filteredProjects : PORTFOLIO_PROJECTS;
     const currIdx = activeModalProject ? list.findIndex((p) => p.id === activeModalProject.id) : 0;
     const prevIdx = (currIdx - 1 + list.length) % list.length;
+    setNavDirection('prev');
     setActiveModalProject(list[prevIdx]);
     setCurrentImageIndex(0);
   }, [activeModalProject, filteredProjects]);
@@ -147,6 +151,152 @@ function PortfolioContent() {
       document.body.style.overflow = '';
     };
   }, [activeModalProject]);
+
+  // ── NAVEGACIÓN CON SCROLL DE MOUSE, PAD MOUSE (TRACKPAD) Y GESTOS TÁCTILES EN EL MODAL ──
+  useEffect(() => {
+    if (!activeModalProject) return;
+
+    let accumulatorX = 0;
+    let accumulatorY = 0;
+    let lastNavTime = 0;
+    const NAV_COOLDOWN_MS = 300; // Cooldown para control preciso de 1 obra a la vez
+    const HORIZONTAL_THRESHOLD = 26; // Sensibilidad de pad mouse / trackpad horizontal
+    const VERTICAL_THRESHOLD = 34; // Sensibilidad de rueda vertical de mouse
+
+    const handleModalWheel = (e: WheelEvent) => {
+      const now = performance.now();
+      const isHorizontal = Math.abs(e.deltaX) > Math.abs(e.deltaY);
+
+      // Si es un gesto horizontal en trackpad (pad mouse), prevenir historial de Safari/Chrome
+      if (isHorizontal) {
+        e.preventDefault();
+      }
+
+      if (now - lastNavTime < NAV_COOLDOWN_MS) {
+        return;
+      }
+
+      // Si el cursor está sobre la columna de texto editorial y ésta tiene scroll vertical pendiente
+      const target = e.target as HTMLElement | null;
+      const scrollableEditorial = target?.closest('.modal-editorial-scroll') as HTMLElement | null;
+
+      if (!isHorizontal && scrollableEditorial) {
+        const atTop = scrollableEditorial.scrollTop <= 0;
+        const atBottom =
+          scrollableEditorial.scrollTop + scrollableEditorial.clientHeight >=
+          scrollableEditorial.scrollHeight - 4;
+        // Permitir lectura normal de texto vertical a menos que ya esté en el tope o en el fondo
+        if ((e.deltaY < 0 && !atTop) || (e.deltaY > 0 && !atBottom)) {
+          return;
+        }
+      }
+
+      if (isHorizontal) {
+        accumulatorX += e.deltaX;
+        if (Math.abs(accumulatorX) >= HORIZONTAL_THRESHOLD) {
+          if (accumulatorX > 0) {
+            nextProject();
+          } else {
+            prevProject();
+          }
+          lastNavTime = performance.now();
+          accumulatorX = 0;
+          accumulatorY = 0;
+        }
+      } else {
+        // Vertical mouse wheel: scroll abajo/adelante = siguiente obra; scroll arriba/atrás = obra anterior
+        accumulatorY += e.deltaY;
+        if (Math.abs(accumulatorY) >= VERTICAL_THRESHOLD) {
+          if (accumulatorY > 0) {
+            nextProject();
+          } else {
+            prevProject();
+          }
+          lastNavTime = performance.now();
+          accumulatorX = 0;
+          accumulatorY = 0;
+        }
+      }
+    };
+
+    // Soporte para gestos táctiles (iPad, Magic Trackpad, mobile)
+    let touchStartX = 0;
+    let touchStartY = 0;
+
+    const handleTouchStart = (e: TouchEvent) => {
+      if (e.touches.length === 1) {
+        touchStartX = e.touches[0].clientX;
+        touchStartY = e.touches[0].clientY;
+      }
+    };
+
+    const handleTouchEnd = (e: TouchEvent) => {
+      if (e.changedTouches.length === 1) {
+        const deltaX = e.changedTouches[0].clientX - touchStartX;
+        const deltaY = e.changedTouches[0].clientY - touchStartY;
+        if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 40) {
+          if (deltaX < 0) {
+            nextProject();
+          } else {
+            prevProject();
+          }
+        }
+      }
+    };
+
+    window.addEventListener('wheel', handleModalWheel, { passive: false });
+    window.addEventListener('touchstart', handleTouchStart, { passive: true });
+    window.addEventListener('touchend', handleTouchEnd, { passive: true });
+
+    return () => {
+      window.removeEventListener('wheel', handleModalWheel);
+      window.removeEventListener('touchstart', handleTouchStart);
+      window.removeEventListener('touchend', handleTouchEnd);
+    };
+  }, [activeModalProject, nextProject, prevProject]);
+
+  // ── DESPLAZAMIENTO HORIZONTAL DEL RÍO CINÉTICO MEDIANTE PAD MOUSE Y FLECHAS ──
+  useEffect(() => {
+    if (viewMode !== 'river' || activeModalProject) return;
+
+    const runway = riverRunwayRef.current;
+    if (!runway) return;
+
+    const handleRiverWheel = (e: WheelEvent) => {
+      // Si el usuario desliza horizontalmente con 2 dedos en trackpad (pad mouse) o Shift+Wheel
+      if (Math.abs(e.deltaX) > Math.abs(e.deltaY) && Math.abs(e.deltaX) > 1.2) {
+        e.preventDefault(); // Detener rebote o retroceso de página del navegador
+        const lenis = (window as any).lenisInstance;
+        const step = e.deltaX * 1.5;
+        if (lenis) {
+          lenis.scrollTo(lenis.scroll + step, { immediate: true });
+        } else {
+          window.scrollBy({ top: step, behavior: 'auto' });
+        }
+      }
+    };
+
+    const handleRiverKeyDown = (e: KeyboardEvent) => {
+      // Flechas laterales para navegar de forma continua por el Río
+      if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+        const lenis = (window as any).lenisInstance;
+        const step = (window.innerHeight * 0.85) * (e.key === 'ArrowRight' ? 1 : -1);
+        if (lenis) {
+          lenis.scrollTo(lenis.scroll + step, { duration: 0.8 });
+        } else {
+          window.scrollBy({ top: step, behavior: 'smooth' });
+        }
+      }
+    };
+
+    runway.addEventListener('wheel', handleRiverWheel, { passive: false });
+    window.addEventListener('keydown', handleRiverKeyDown);
+
+    return () => {
+      runway.removeEventListener('wheel', handleRiverWheel);
+      window.removeEventListener('keydown', handleRiverKeyDown);
+    };
+  }, [viewMode, activeModalProject]);
 
   // ── GSAP ScrollTrigger: Sincronización del Río Cinético Austral (Horizontal Pinned Stream) ──
   useEffect(() => {
@@ -367,6 +517,37 @@ function PortfolioContent() {
 
             {/* Pista Horizontal de Fotografías Monumentales (Track Pinned al Scroll) */}
             <div className="relative w-full flex-1 flex items-center overflow-hidden">
+              {/* Botones Flotantes de Navegación Lateral en el Río Austral */}
+              <button
+                type="button"
+                onClick={() => {
+                  const lenis = (window as any).lenisInstance;
+                  const step = -window.innerHeight * 0.85;
+                  if (lenis) lenis.scrollTo(lenis.scroll + step, { duration: 0.8 });
+                  else window.scrollBy({ top: step, behavior: 'smooth' });
+                }}
+                className="hidden sm:flex fixed left-4 top-1/2 -translate-y-1/2 z-30 w-11 h-11 rounded-full bg-black/70 hover:bg-[#59BFD6] text-white hover:text-puelche-dark border border-white/20 hover:border-[#59BFD6] backdrop-blur-md shadow-xl transition-all duration-300 items-center justify-center group"
+                aria-label="Deslizar río hacia la izquierda"
+                title="Deslizar obras anteriores (← o Pad)"
+              >
+                <ChevronLeft className="w-5 h-5 group-hover:-translate-x-0.5 transition-transform" />
+              </button>
+
+              <button
+                type="button"
+                onClick={() => {
+                  const lenis = (window as any).lenisInstance;
+                  const step = window.innerHeight * 0.85;
+                  if (lenis) lenis.scrollTo(lenis.scroll + step, { duration: 0.8 });
+                  else window.scrollBy({ top: step, behavior: 'smooth' });
+                }}
+                className="hidden sm:flex fixed right-4 top-1/2 -translate-y-1/2 z-30 w-11 h-11 rounded-full bg-black/70 hover:bg-[#59BFD6] text-white hover:text-puelche-dark border border-white/20 hover:border-[#59BFD6] backdrop-blur-md shadow-xl transition-all duration-300 items-center justify-center group"
+                aria-label="Deslizar río hacia la derecha"
+                title="Deslizar siguientes obras (→ o Pad)"
+              >
+                <ChevronRight className="w-5 h-5 group-hover:translate-x-0.5 transition-transform" />
+              </button>
+
               <div
                 ref={riverTrackRef}
                 className="flex items-center gap-8 sm:gap-12 lg:gap-16 px-6 md:px-16 w-max will-change-transform py-4"
@@ -468,7 +649,7 @@ function PortfolioContent() {
             <div className="max-w-7xl mx-auto w-full px-6 md:px-12 flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-white/10 pt-4 z-20">
               <div className="flex items-center gap-3 w-full sm:w-auto text-xs font-mono text-white/50">
                 <Waves className="w-4 h-4 text-[#59BFD6] animate-pulse" />
-                <span>DESLIZA EL SCROLL PARA BAILAR CON LAS FOTOGRAFÍAS &bull; CLICK PARA VER DETALLE</span>
+                <span>DESLIZA CON MOUSE / PAD [↔] PARA BAILAR CON LAS FOTOGRAFÍAS &bull; CLICK PARA VER DETALLE</span>
               </div>
 
               {/* Scrubber Lineal Fino */}
@@ -635,9 +816,9 @@ function PortfolioContent() {
           <button
             type="button"
             onClick={prevProject}
-            className="hidden xl:flex fixed left-4 2xl:left-8 top-1/2 -translate-y-1/2 z-[110] w-12 h-12 rounded-full bg-[#16171B]/95 hover:bg-[#59BFD6] text-white hover:text-puelche-dark border border-white/20 hover:border-[#59BFD6] shadow-[0_0_30px_rgba(0,0,0,0.85)] backdrop-blur-md transition-all duration-300 hover:scale-110 active:scale-95 items-center justify-center group"
+            className="hidden md:flex fixed left-3 lg:left-6 2xl:left-8 top-1/2 -translate-y-1/2 z-[110] w-12 h-12 rounded-full bg-[#16171B]/95 hover:bg-[#59BFD6] text-white hover:text-puelche-dark border border-white/20 hover:border-[#59BFD6] shadow-[0_0_30px_rgba(0,0,0,0.85)] backdrop-blur-md transition-all duration-300 hover:scale-110 active:scale-95 items-center justify-center group"
             aria-label="Proyecto anterior"
-            title={`Anterior: ${prevProjectItem?.title || ''} (Tecla ← o A)`}
+            title={`Anterior: ${prevProjectItem?.title || ''} (Tecla ←, A, Scroll o Pad hacia la derecha)`}
           >
             <ChevronLeft className="w-6 h-6 group-hover:-translate-x-0.5 transition-transform" />
           </button>
@@ -645,9 +826,9 @@ function PortfolioContent() {
           <button
             type="button"
             onClick={nextProject}
-            className="hidden xl:flex fixed right-4 2xl:right-8 top-1/2 -translate-y-1/2 z-[110] w-12 h-12 rounded-full bg-[#16171B]/95 hover:bg-[#59BFD6] text-white hover:text-puelche-dark border border-white/20 hover:border-[#59BFD6] shadow-[0_0_30px_rgba(0,0,0,0.85)] backdrop-blur-md transition-all duration-300 hover:scale-110 active:scale-95 items-center justify-center group"
+            className="hidden md:flex fixed right-3 lg:right-6 2xl:right-8 top-1/2 -translate-y-1/2 z-[110] w-12 h-12 rounded-full bg-[#16171B]/95 hover:bg-[#59BFD6] text-white hover:text-puelche-dark border border-white/20 hover:border-[#59BFD6] shadow-[0_0_30px_rgba(0,0,0,0.85)] backdrop-blur-md transition-all duration-300 hover:scale-110 active:scale-95 items-center justify-center group"
             aria-label="Siguiente proyecto"
-            title={`Siguiente: ${nextProjectItem?.title || ''} (Tecla → o D)`}
+            title={`Siguiente: ${nextProjectItem?.title || ''} (Tecla →, D, Scroll o Pad hacia la izquierda)`}
           >
             <ChevronRight className="w-6 h-6 group-hover:translate-x-0.5 transition-transform" />
           </button>
@@ -712,16 +893,25 @@ function PortfolioContent() {
             {/* Cuerpo del Modal: Split Editorial 2 Columnas */}
             <div className="flex-1 overflow-y-auto no-scrollbar grid grid-cols-1 lg:grid-cols-12 divide-y lg:divide-y-0 lg:divide-x divide-white/10">
               {/* Columna Izquierda (7 cols): Visor Fotográfico & Galería Multi-Pieza */}
-              <div className="lg:col-span-7 p-6 sm:p-8 flex flex-col justify-between space-y-6 bg-black/40">
+              <div className="lg:col-span-7 p-6 sm:p-8 flex flex-col justify-between space-y-6 bg-black/40 modal-photo-area">
                 <div className="space-y-4">
-                  {/* Visor Principal con Proporción 16:10 y Controles de Galería */}
-                  <div className="relative aspect-[16/10] w-full rounded-2xl overflow-hidden bg-black/80 border border-white/10 group">
+                  {/* Visor Principal con Proporción 16:10, Desplazamiento Suave y Controles de Galería */}
+                  <div
+                    key={activeModalProject.id + '-' + currentImageIndex}
+                    className={`relative aspect-[16/10] w-full rounded-2xl overflow-hidden bg-black/80 border border-white/10 group transition-all duration-300 ${
+                      navDirection === 'next'
+                        ? 'animate-in fade-in slide-in-from-right-5 duration-300'
+                        : navDirection === 'prev'
+                        ? 'animate-in fade-in slide-in-from-left-5 duration-300'
+                        : 'animate-in fade-in duration-200'
+                    }`}
+                  >
                     <Image
                       src={activeGallery[currentImageIndex] || activeModalProject.image}
                       alt={activeModalProject.title}
                       fill
                       priority
-                      className="object-cover object-center transition-all duration-500"
+                      className="object-cover object-center transition-all duration-500 select-none"
                       sizes="(max-width: 1024px) 100vw, 60vw"
                     />
 
@@ -811,7 +1001,7 @@ function PortfolioContent() {
               </div>
 
               {/* Columna Derecha (5 cols): Ficha Curatorial, Metadatos y Conversión */}
-              <div className="lg:col-span-5 p-6 sm:p-8 flex flex-col justify-between space-y-6 bg-[#131418]">
+              <div className="lg:col-span-5 p-6 sm:p-8 flex flex-col justify-between space-y-6 bg-[#131418] modal-editorial-scroll overflow-y-auto max-h-[80vh] sm:max-h-none no-scrollbar">
                 <div className="space-y-5">
                   {/* Badge & Categoría */}
                   <div className="flex items-center justify-between">
@@ -886,8 +1076,11 @@ function PortfolioContent() {
                     <ArrowUpRight className="w-4 h-4" />
                   </Link>
 
-                  <div className="flex items-center justify-between text-[11px] font-mono text-white/40 pt-1">
-                    <span>Navega con flechas [← / →]</span>
+                  <div className="flex items-center justify-between text-[11px] font-mono text-white/50 pt-1">
+                    <span className="flex items-center gap-1.5 text-[#59BFD6]/90">
+                      <span className="inline-block px-1.5 py-0.5 rounded bg-white/10 text-[10px] text-white">Scroll / Pad ↔</span>
+                      <span>o Flechas [← / →]</span>
+                    </span>
                     <span>Cerrar con [ESC]</span>
                   </div>
                 </div>
