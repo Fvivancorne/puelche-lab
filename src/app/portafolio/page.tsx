@@ -263,11 +263,23 @@ function PortfolioContent() {
     if (!runway) return;
 
     const handleRiverWheel = (e: WheelEvent) => {
+      // Si el modal está abierto, el modal maneja su propio wheel
+      if (activeModalProject) return;
+
+      // Verificar que el usuario está dentro de la sección del río
+      const runwayTop = runway.offsetTop - 150;
+      const runwayBottom = runway.offsetTop + runway.offsetHeight;
+      const currentScroll = window.scrollY;
+
+      if (currentScroll < runwayTop || currentScroll > runwayBottom) {
+        return;
+      }
+
       // Si el usuario desliza horizontalmente con 2 dedos en trackpad (pad mouse) o Shift+Wheel
       if (Math.abs(e.deltaX) > Math.abs(e.deltaY) && Math.abs(e.deltaX) > 1.2) {
         e.preventDefault(); // Detener rebote o retroceso de página del navegador
         const lenis = (window as any).lenisInstance;
-        const step = e.deltaX * 1.5;
+        const step = e.deltaX * 2.0;
         if (lenis) {
           lenis.scrollTo(lenis.scroll + step, { immediate: true });
         } else {
@@ -277,6 +289,7 @@ function PortfolioContent() {
     };
 
     const handleRiverKeyDown = (e: KeyboardEvent) => {
+      if (activeModalProject) return;
       // Flechas laterales para navegar de forma continua por el Río
       if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
         const lenis = (window as any).lenisInstance;
@@ -289,11 +302,11 @@ function PortfolioContent() {
       }
     };
 
-    runway.addEventListener('wheel', handleRiverWheel, { passive: false });
+    window.addEventListener('wheel', handleRiverWheel, { passive: false });
     window.addEventListener('keydown', handleRiverKeyDown);
 
     return () => {
-      runway.removeEventListener('wheel', handleRiverWheel);
+      window.removeEventListener('wheel', handleRiverWheel);
       window.removeEventListener('keydown', handleRiverKeyDown);
     };
   }, [viewMode, activeModalProject]);
