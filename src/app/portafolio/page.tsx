@@ -152,70 +152,54 @@ function PortfolioContent() {
     };
   }, [activeModalProject]);
 
-  // ── NAVEGACIÓN CON SCROLL DE MOUSE, PAD MOUSE (TRACKPAD) Y GESTOS TÁCTILES EN EL MODAL ──
+  // ── NAVEGACIÓN EN EL MODAL: SEPARACIÓN ESTRICTA DE EJES & 1 OBRA POR SWIPE ──
   useEffect(() => {
     if (!activeModalProject) return;
 
     let accumulatorX = 0;
-    let accumulatorY = 0;
-    let lastNavTime = 0;
-    const NAV_COOLDOWN_MS = 300; // Cooldown para control preciso de 1 obra a la vez
-    const HORIZONTAL_THRESHOLD = 26; // Sensibilidad de pad mouse / trackpad horizontal
-    const VERTICAL_THRESHOLD = 34; // Sensibilidad de rueda vertical de mouse
+    let isMomentumLocked = false;
+    let unlockTimer: NodeJS.Timeout | null = null;
+    const HORIZONTAL_THRESHOLD = 85; // Umbral deliberado y ponderado para evitar disparos accidentales
 
     const handleModalWheel = (e: WheelEvent) => {
-      const now = performance.now();
-      const isHorizontal = Math.abs(e.deltaX) > Math.abs(e.deltaY);
+      const isHorizontal = Math.abs(e.deltaX) > Math.abs(e.deltaY) && Math.abs(e.deltaX) > 3;
 
-      // Si es un gesto horizontal en trackpad (pad mouse), prevenir historial de Safari/Chrome
-      if (isHorizontal) {
-        e.preventDefault();
-      }
-
-      if (now - lastNavTime < NAV_COOLDOWN_MS) {
+      // EL EJE VERTICAL ESTÁ 100% LIBRE: Permite leer y scrollear todo el contenido interno sin interferencias
+      if (!isHorizontal) {
         return;
       }
 
-      // Si el cursor está sobre la columna de texto editorial y ésta tiene scroll vertical pendiente
-      const target = e.target as HTMLElement | null;
-      const scrollableEditorial = target?.closest('.modal-editorial-scroll') as HTMLElement | null;
+      // Detener navegación de historial de Safari/Chrome en gestos horizontales
+      e.preventDefault();
 
-      if (!isHorizontal && scrollableEditorial) {
-        const atTop = scrollableEditorial.scrollTop <= 0;
-        const atBottom =
-          scrollableEditorial.scrollTop + scrollableEditorial.clientHeight >=
-          scrollableEditorial.scrollHeight - 4;
-        // Permitir lectura normal de texto vertical a menos que ya esté en el tope o en el fondo
-        if ((e.deltaY < 0 && !atTop) || (e.deltaY > 0 && !atBottom)) {
-          return;
-        }
+      // Si está en absorción de inercia del swipe anterior
+      if (isMomentumLocked) {
+        if (unlockTimer) clearTimeout(unlockTimer);
+        unlockTimer = setTimeout(() => {
+          isMomentumLocked = false;
+          accumulatorX = 0;
+        }, 150);
+        return;
       }
 
-      if (isHorizontal) {
-        accumulatorX += e.deltaX;
-        if (Math.abs(accumulatorX) >= HORIZONTAL_THRESHOLD) {
-          if (accumulatorX > 0) {
-            nextProject();
-          } else {
-            prevProject();
-          }
-          lastNavTime = performance.now();
-          accumulatorX = 0;
-          accumulatorY = 0;
+      accumulatorX += e.deltaX;
+
+      if (Math.abs(accumulatorX) >= HORIZONTAL_THRESHOLD) {
+        isMomentumLocked = true; // Bloqueo de momentum para garantizar exactamente 1 obra por swipe
+
+        if (accumulatorX > 0) {
+          nextProject();
+        } else {
+          prevProject();
         }
-      } else {
-        // Vertical mouse wheel: scroll abajo/adelante = siguiente obra; scroll arriba/atrás = obra anterior
-        accumulatorY += e.deltaY;
-        if (Math.abs(accumulatorY) >= VERTICAL_THRESHOLD) {
-          if (accumulatorY > 0) {
-            nextProject();
-          } else {
-            prevProject();
-          }
-          lastNavTime = performance.now();
+        accumulatorX = 0;
+
+        // Desbloquear cuando los dedos se detengan o tras 600ms como seguro
+        if (unlockTimer) clearTimeout(unlockTimer);
+        unlockTimer = setTimeout(() => {
+          isMomentumLocked = false;
           accumulatorX = 0;
-          accumulatorY = 0;
-        }
+        }, 600);
       }
     };
 
@@ -234,7 +218,8 @@ function PortfolioContent() {
       if (e.changedTouches.length === 1) {
         const deltaX = e.changedTouches[0].clientX - touchStartX;
         const deltaY = e.changedTouches[0].clientY - touchStartY;
-        if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 40) {
+        // Solo swipe horizontal claro y deliberado (>65px)
+        if (Math.abs(deltaX) > Math.abs(deltaY) * 1.5 && Math.abs(deltaX) > 65) {
           if (deltaX < 0) {
             nextProject();
           } else {
@@ -249,13 +234,14 @@ function PortfolioContent() {
     window.addEventListener('touchend', handleTouchEnd, { passive: true });
 
     return () => {
+      if (unlockTimer) clearTimeout(unlockTimer);
       window.removeEventListener('wheel', handleModalWheel);
       window.removeEventListener('touchstart', handleTouchStart);
       window.removeEventListener('touchend', handleTouchEnd);
     };
   }, [activeModalProject, nextProject, prevProject]);
 
-  // ── DESPLAZAMIENTO HORIZONTAL DEL RÍO CINÉTICO MEDIANTE PAD MOUSE Y FLECHAS ──
+  // ── DESPLAZAMIENTO HORIZONTAL DEL RÍO CINÉTICO: AMORTIGUACIÓN SUAVE (1.1x) & FLECHAS ──
   useEffect(() => {
     if (viewMode !== 'river' || activeModalProject) return;
 
@@ -263,15 +249,11 @@ function PortfolioContent() {
     if (!runway) return;
 
     const handleRiverWheel = (e: WheelEvent) => {
-      // Si el modal está abierto, el modal maneja su propio wheel
       if (activeModalProject) return;
 
       // Verificar que el usuario está dentro de la sección del río
-      const runwayTop = runway.offsetTop - 150;
-      const runwayBottom = runway.offsetTop + runway.offsetHeight;
-      const currentScroll = window.scrollY;
-
-      if (currentScroll < runwayTop || currentScroll > runwayBottom) {
+      const rect = runway.getBoundingClientRect();
+      if (rect.top > 120 || rect.bottom < 120) {
         return;
       }
 
@@ -279,7 +261,8 @@ function PortfolioContent() {
       if (Math.abs(e.deltaX) > Math.abs(e.deltaY) && Math.abs(e.deltaX) > 1.2) {
         e.preventDefault(); // Detener rebote o retroceso de página del navegador
         const lenis = (window as any).lenisInstance;
-        const step = e.deltaX * 2.0;
+        // Amortiguación cinemática suave (1.1x) acordada para contemplar cada obra
+        const step = e.deltaX * 1.1;
         if (lenis) {
           lenis.scrollTo(lenis.scroll + step, { immediate: true });
         } else {
@@ -1089,12 +1072,13 @@ function PortfolioContent() {
                     <ArrowUpRight className="w-4 h-4" />
                   </Link>
 
-                  <div className="flex items-center justify-between text-[11px] font-mono text-white/50 pt-1">
-                    <span className="flex items-center gap-1.5 text-[#59BFD6]/90">
-                      <span className="inline-block px-1.5 py-0.5 rounded bg-white/10 text-[10px] text-white">Scroll / Pad ↔</span>
-                      <span>o Flechas [← / →]</span>
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between text-[11px] font-mono text-white/50 pt-1 gap-1">
+                    <span className="flex items-center gap-2">
+                      <span className="text-[#59BFD6] font-medium">Scroll vertical para leer</span>
+                      <span className="text-white/20 hidden sm:inline">&bull;</span>
+                      <span className="text-white/70">Swipe horizontal [↔] o flechas [← / →] para cambiar de obra</span>
                     </span>
-                    <span>Cerrar con [ESC]</span>
+                    <span className="shrink-0 text-white/40">Cerrar con [ESC]</span>
                   </div>
                 </div>
               </div>
