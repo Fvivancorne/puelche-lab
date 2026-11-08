@@ -44,48 +44,63 @@ export default function Home() {
 
         // ── KINETIC HERO EXIT PARALLAX: Las piezas y letras se van con el viento austral al scrollear ──
         gsap.to('#hero-monogram', {
-          y: -120,
+          y: -140,
           opacity: 0,
-          scale: 0.88,
-          filter: 'blur(6px)',
-          ease: 'power1.inOut',
+          scale: 0.82,
+          filter: 'blur(8px)',
+          ease: 'power2.in',
           scrollTrigger: {
             trigger: '#hero',
             start: 'top top',
-            end: 'bottom 40%',
-            scrub: 0.8,
+            end: '320px top',
+            scrub: 0.5,
           },
         });
 
         gsap.to('#hero-subtitles', {
-          y: -80,
+          y: -100,
+          x: -30,
           opacity: 0,
-          filter: 'blur(4px)',
-          ease: 'power1.inOut',
+          filter: 'blur(5px)',
+          ease: 'power2.in',
           scrollTrigger: {
             trigger: '#hero',
             start: 'top top',
-            end: 'bottom 45%',
-            scrub: 0.8,
+            end: '300px top',
+            scrub: 0.5,
+          },
+        });
+
+        gsap.to('#hero-discipline-title', {
+          y: -90,
+          x: 30,
+          opacity: 0,
+          filter: 'blur(5px)',
+          ease: 'power2.in',
+          scrollTrigger: {
+            trigger: '#hero',
+            start: 'top top',
+            end: '330px top',
+            scrub: 0.5,
           },
         });
 
         gsap.to('#hero-description', {
-          y: -60,
+          y: -80,
           opacity: 0,
-          filter: 'blur(3px)',
-          ease: 'power1.inOut',
+          filter: 'blur(4px)',
+          ease: 'power2.in',
           scrollTrigger: {
             trigger: '#hero',
             start: 'top top',
-            end: 'bottom 50%',
-            scrub: 0.8,
+            end: '360px top',
+            scrub: 0.5,
           },
         });
 
         gsap.to(['#hero-geo-badge', '#hero-scroll-btn'], {
           opacity: 0,
-          y: -30,
+          y: -40,
           ease: 'power1.out',
           scrollTrigger: {
             trigger: '#hero',
@@ -187,7 +202,7 @@ export default function Home() {
               className="font-condensed text-4xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl uppercase tracking-[0.06em] font-bold text-white drop-shadow-2xl leading-[0.95]"
             />
 
-            <h2 className="font-condensed text-sm sm:text-lg md:text-xl lg:text-2xl uppercase tracking-[0.2em] font-light text-white/90 pt-0.5">
+            <h2 id="hero-discipline-title" className="font-condensed text-sm sm:text-lg md:text-xl lg:text-2xl uppercase tracking-[0.2em] font-light text-white/90 pt-0.5 will-change-transform">
               Diseño Cross Media &bull; Fotografía de Autor
             </h2>
           </div>

@@ -35,28 +35,30 @@ export function SplitText({
       const context = gsap.context(() => {
         if (animation === 'scatter') {
           const triggerEl = container.closest('section') || container;
-          gsap.set(chars, { opacity: 1, y: 0, x: 0, rotateZ: 0, filter: 'blur(0px)' });
+          gsap.set(chars, { opacity: 1, y: 0, x: 0, rotateZ: 0, scale: 1, filter: 'blur(0px)' });
 
           chars.forEach((char, i) => {
             // Dispersión cinética del viento Puelche: cada letra toma su propio vuelo al descender el scroll
             const dir = (i % 2 === 0 ? 1 : -1);
-            const driftX = dir * (25 + (i * 7)) + ((i * 13) % 40) - 20;
-            const liftY = -90 - (i * 14) - ((i * 19) % 60);
-            const tilt = dir * (6 + ((i * 4) % 18));
-            const blurAmt = 3 + (i % 4);
+            const driftX = dir * (40 + (i * 9)) + ((i * 17) % 50) - 25;
+            const liftY = -120 - (i * 16) - ((i * 23) % 80);
+            const tilt = dir * (12 + ((i * 5) % 22));
+            const blurAmt = 4 + (i % 5);
+            const scaleEnd = 0.82 - ((i % 3) * 0.08);
 
             gsap.to(char, {
               y: liftY,
               x: driftX,
               rotation: tilt,
+              scale: scaleEnd,
               opacity: 0,
               filter: `blur(${blurAmt}px)`,
-              ease: 'power1.inOut',
+              ease: 'power2.in',
               scrollTrigger: {
                 trigger: triggerEl,
                 start: 'top top',
-                end: 'bottom 25%',
-                scrub: 0.8,
+                end: '360px top',
+                scrub: 0.5,
               },
             });
           });

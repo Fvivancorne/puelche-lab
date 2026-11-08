@@ -51,19 +51,27 @@ function PortfolioContent() {
         : [activeModalProject.image])
     : [];
 
-  // ── FILTRO DE ARRASTRE Y COOLDOWN DE SCROLL (250ms) PARA EVITAR APERTURA ACCIDENTAL CON TRACKPAD ──
+  // ── FILTRO DE ARRASTRE Y COOLDOWN DE SCROLL (400ms) PARA EVITAR APERTURA ACCIDENTAL CON TRACKPAD ──
   const pointerStartRef = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
   const lastScrollTimeRef = useRef<number>(0);
+  const isScrollingRef = useRef<boolean>(false);
+  const scrollTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     const onScrollOrWheel = () => {
       lastScrollTimeRef.current = performance.now();
+      isScrollingRef.current = true;
+      if (scrollTimeoutRef.current) clearTimeout(scrollTimeoutRef.current);
+      scrollTimeoutRef.current = setTimeout(() => {
+        isScrollingRef.current = false;
+      }, 400);
     };
     window.addEventListener('wheel', onScrollOrWheel, { passive: true });
     window.addEventListener('scroll', onScrollOrWheel, { passive: true });
     return () => {
       window.removeEventListener('wheel', onScrollOrWheel);
       window.removeEventListener('scroll', onScrollOrWheel);
+      if (scrollTimeoutRef.current) clearTimeout(scrollTimeoutRef.current);
     };
   }, []);
 
@@ -73,18 +81,18 @@ function PortfolioContent() {
 
   const handleCardClick = (e: React.MouseEvent, project: ProjectItem) => {
     const now = performance.now();
-    // 1. Si hubo scroll o swipe en los últimos 250ms, cancelar apertura accidental
-    if (now - lastScrollTimeRef.current < 250) {
+    // 1. Si hubo scroll o swipe en los últimos 400ms o está en curso, cancelar apertura accidental
+    if (isScrollingRef.current || now - lastScrollTimeRef.current < 400) {
       e.preventDefault();
       e.stopPropagation();
       return;
     }
-    // 2. Si el puntero se movió más de 6px entre pointerdown y click, fue un arrastre/swipe y NO un click deliberado
+    // 2. Si el puntero se movió más de 4px entre pointerdown y click, fue un arrastre/swipe y NO un click deliberado
     const dist = Math.hypot(
       e.clientX - pointerStartRef.current.x,
       e.clientY - pointerStartRef.current.y
     );
-    if (dist > 6) {
+    if (dist > 4) {
       e.preventDefault();
       e.stopPropagation();
       return;
@@ -96,16 +104,37 @@ function PortfolioContent() {
     setNavDirection('idle');
     setActiveModalProject(project);
     setCurrentImageIndex(0);
+    if (typeof window !== 'undefined') {
+      const url = new URL(window.location.href);
+      url.searchParams.set('proyecto', project.slug);
+      window.history.replaceState(null, '', url.pathname + (url.search ? url.search : ''));
+    }
   };
+
+  const handleCloseModal = useCallback(() => {
+    setActiveModalProject(null);
+    setCurrentImageIndex(0);
+    if (typeof window !== 'undefined') {
+      const url = new URL(window.location.href);
+      url.searchParams.delete('proyecto');
+      window.history.replaceState(null, '', url.pathname + (url.search ? url.search : ''));
+    }
+  }, []);
 
   const nextProject = useCallback((e?: React.MouseEvent) => {
     if (e) e.stopPropagation();
     const list = filteredProjects.length > 0 ? filteredProjects : PORTFOLIO_PROJECTS;
     const currIdx = activeModalProject ? list.findIndex((p) => p.id === activeModalProject.id) : 0;
     const nextIdx = (currIdx + 1) % list.length;
+    const nextItem = list[nextIdx];
     setNavDirection('next');
-    setActiveModalProject(list[nextIdx]);
+    setActiveModalProject(nextItem);
     setCurrentImageIndex(0);
+    if (typeof window !== 'undefined') {
+      const url = new URL(window.location.href);
+      url.searchParams.set('proyecto', nextItem.slug);
+      window.history.replaceState(null, '', url.pathname + (url.search ? url.search : ''));
+    }
   }, [activeModalProject, filteredProjects]);
 
   const prevProject = useCallback((e?: React.MouseEvent) => {
@@ -113,9 +142,15 @@ function PortfolioContent() {
     const list = filteredProjects.length > 0 ? filteredProjects : PORTFOLIO_PROJECTS;
     const currIdx = activeModalProject ? list.findIndex((p) => p.id === activeModalProject.id) : 0;
     const prevIdx = (currIdx - 1 + list.length) % list.length;
+    const prevItem = list[prevIdx];
     setNavDirection('prev');
-    setActiveModalProject(list[prevIdx]);
+    setActiveModalProject(prevItem);
     setCurrentImageIndex(0);
+    if (typeof window !== 'undefined') {
+      const url = new URL(window.location.href);
+      url.searchParams.set('proyecto', prevItem.slug);
+      window.history.replaceState(null, '', url.pathname + (url.search ? url.search : ''));
+    }
   }, [activeModalProject, filteredProjects]);
 
   const activeProjectList = filteredProjects.length > 0 ? filteredProjects : PORTFOLIO_PROJECTS;
@@ -143,7 +178,7 @@ function PortfolioContent() {
 
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
-        setActiveModalProject(null);
+        handleCloseModal();
       } else if (e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D') {
         nextProject();
       } else if (e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A') {
@@ -159,7 +194,7 @@ function PortfolioContent() {
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [activeModalProject, activeGallery.length, currentImageIndex, nextProject, prevProject]);
+  }, [activeModalProject, activeGallery.length, currentImageIndex, nextProject, prevProject, handleCloseModal]);
 
   // Auto-open project modal if ?proyecto= query param is provided
   useEffect(() => {
@@ -845,7 +880,7 @@ function PortfolioContent() {
       {activeModalProject && (
         <div
           className="fixed inset-0 z-[100] flex items-center justify-center p-3 sm:p-6 lg:p-10 bg-black/85 bg-black/70 backdrop-blur-sm backdrop-blur-md animate-in fade-in duration-200"
-          onClick={() => setActiveModalProject(null)}
+          onClick={handleCloseModal}
           data-lenis-prevent="true"
         >
           {/* Fondo oscuro sólido extra para garantizar 100% de legibilidad sin sangrado de fondo */}
@@ -920,7 +955,7 @@ function PortfolioContent() {
 
                 <button
                   type="button"
-                  onClick={() => setActiveModalProject(null)}
+                  onClick={handleCloseModal}
                   className="z-20 w-9 h-9 rounded-full bg-white/10 hover:bg-[#59BFD6] text-white hover:text-puelche-dark flex items-center justify-center transition-all duration-200 border border-white/10 hover:scale-105 ml-1"
                   aria-label="Cerrar modal"
                 >

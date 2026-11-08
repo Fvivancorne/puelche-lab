@@ -86,6 +86,7 @@ export function BrutalistCrossMedia() {
   const sectionRef = useRef<HTMLElement>(null);
   const headlineRef = useRef<HTMLHeadingElement>(null);
   const subheadRef = useRef<HTMLParagraphElement>(null);
+  const manifestoContainerRef = useRef<HTMLDivElement>(null);
   const manifestoLeftRef = useRef<HTMLDivElement>(null);
   const manifestoRightRef = useRef<HTMLDivElement>(null);
   const cardsContainerRef = useRef<HTMLDivElement>(null);
@@ -101,21 +102,12 @@ export function BrutalistCrossMedia() {
     const media = gsap.matchMedia();
     media.add('(prefers-reduced-motion: no-preference)', () => {
       const ctx = gsap.context(() => {
-        const tl = gsap.timeline({
-          scrollTrigger: {
-            trigger: section,
-            start: 'top 85%',
-            end: 'top 20%',
-            scrub: 0.8,
-          },
-        });
-
         // 1. Titular "¿QUÉ ES CROSS MEDIA?": Entra y se arma de IZQUIERDA A DERECHA
         if (headlineRef.current) {
-          tl.fromTo(
+          gsap.fromTo(
             headlineRef.current,
             {
-              x: -180,
+              x: -240,
               opacity: 0,
               clipPath: 'polygon(0% 0%, 0% 0%, 0% 100%, 0% 100%)',
             },
@@ -123,60 +115,115 @@ export function BrutalistCrossMedia() {
               x: 0,
               opacity: 1,
               clipPath: 'polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)',
-              ease: 'none',
-            },
-            0
+              ease: 'power2.out',
+              scrollTrigger: {
+                trigger: headlineRef.current,
+                start: 'top 88%',
+                end: 'top 35%',
+                scrub: 0.8,
+              },
+            }
           );
         }
 
         // 2. Subtítulo en Serif Itálica: Se despliega suavemente de izquierda a derecha
         if (subheadRef.current) {
-          tl.fromTo(
+          gsap.fromTo(
             subheadRef.current,
-            { x: -100, opacity: 0 },
-            { x: 0, opacity: 1, ease: 'none' },
-            0.03
+            { x: -140, opacity: 0 },
+            {
+              x: 0,
+              opacity: 1,
+              ease: 'power2.out',
+              scrollTrigger: {
+                trigger: subheadRef.current,
+                start: 'top 90%',
+                end: 'top 40%',
+                scrub: 0.8,
+              },
+            }
           );
         }
 
-        // 3. Manifiesto Tarjeta Izquierda ("Somos un Estudio..."): Llega de IZQUIERDA A DERECHA horizontal
-        if (manifestoLeftRef.current) {
-          tl.fromTo(
-            manifestoLeftRef.current,
-            { x: -160, opacity: 0 },
-            { x: 0, opacity: 1, ease: 'none' },
-            0.06
-          );
+        // 3. Manifiesto Tarjetas: Convergen horizontalmente (Izquierda a Derecha / Derecha a Izquierda)
+        if (manifestoContainerRef.current) {
+          const container = manifestoContainerRef.current;
+
+          // Tarjeta Izquierda ("Somos un Estudio..."): Llega de IZQUIERDA A DERECHA horizontal
+          if (manifestoLeftRef.current) {
+            gsap.fromTo(
+              manifestoLeftRef.current,
+              { x: -280, opacity: 0 },
+              {
+                x: 0,
+                opacity: 1,
+                ease: 'power2.out',
+                scrollTrigger: {
+                  trigger: container,
+                  start: 'top 90%',
+                  end: 'top 35%',
+                  scrub: 0.8,
+                },
+              }
+            );
+          }
+
+          // Tarjeta Derecha ("Contamos con un estudio..."): Aparece de DERECHA A IZQUIERDA horizontal
+          if (manifestoRightRef.current) {
+            gsap.fromTo(
+              manifestoRightRef.current,
+              { x: 280, opacity: 0 },
+              {
+                x: 0,
+                opacity: 1,
+                ease: 'power2.out',
+                scrollTrigger: {
+                  trigger: container,
+                  start: 'top 90%',
+                  end: 'top 35%',
+                  scrub: 0.8,
+                },
+              }
+            );
+          }
         }
 
-        // 4. Manifiesto Tarjeta Derecha ("Contamos con un estudio..."): Aparece de DERECHA A IZQUIERDA horizontal
-        if (manifestoRightRef.current) {
-          tl.fromTo(
-            manifestoRightRef.current,
-            { x: 160, opacity: 0 },
-            { x: 0, opacity: 1, ease: 'none' },
-            0.06
-          );
-        }
-
-        // 5. Las 4 tarjetas de oficio emergen escalonadas
+        // 4. Las 4 tarjetas de oficio emergen escalonadas
         if (cardsContainerRef.current) {
           const cards = cardsContainerRef.current.children;
-          tl.fromTo(
+          gsap.fromTo(
             cards,
-            { y: 120, opacity: 0 },
-            { y: 0, opacity: 1, stagger: 0.08, ease: 'none' },
-            0.12
+            { y: 100, opacity: 0 },
+            {
+              y: 0,
+              opacity: 1,
+              stagger: 0.08,
+              ease: 'power2.out',
+              scrollTrigger: {
+                trigger: cardsContainerRef.current,
+                start: 'top 92%',
+                end: 'top 45%',
+                scrub: 0.8,
+              },
+            }
           );
         }
 
         // 5. Parallax fotográfico en el fondo
         if (bgWrapperRef.current) {
-          tl.fromTo(
+          gsap.fromTo(
             bgWrapperRef.current,
             { yPercent: -10 },
-            { yPercent: 10, ease: 'none' },
-            0
+            {
+              yPercent: 10,
+              ease: 'none',
+              scrollTrigger: {
+                trigger: section,
+                start: 'top bottom',
+                end: 'bottom top',
+                scrub: 0.8,
+              },
+            }
           );
         }
       }, section);
@@ -292,7 +339,7 @@ export function BrutalistCrossMedia() {
         </div>
 
         {/* Manifiesto Editorial: 2 Columnas Cálidas con Curvas Orgánicas */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-16 pt-4 border-t border-white/15 font-sans text-base sm:text-lg text-white/90 leading-relaxed font-light">
+        <div ref={manifestoContainerRef} className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-16 pt-4 border-t border-white/15 font-sans text-base sm:text-lg text-white/90 leading-relaxed font-light overflow-hidden">
           <div ref={manifestoLeftRef} className="space-y-4 bg-black/35 backdrop-blur-md p-7 sm:p-8 rounded-[28px] border border-white/10 shadow-xl">
             <p className="text-white font-medium text-lg sm:text-xl drop-shadow-md">
               Somos un Estudio de Diseño Cross Media y Fotografía en Puerto Varas.

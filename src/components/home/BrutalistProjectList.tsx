@@ -39,11 +39,18 @@ export function BrutalistProjectList() {
   const hasMovedRef = useRef(false);
   const pointerStartRef = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
   const lastScrollTimeRef = useRef<number>(0);
+  const isScrollingRef = useRef<boolean>(false);
+  const scrollTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   // Escuchar eventos de scroll/wheel para anular clics accidentales mientras se navega con el trackpad
   useEffect(() => {
     const onScrollOrWheel = () => {
       lastScrollTimeRef.current = performance.now();
+      isScrollingRef.current = true;
+      if (scrollTimeoutRef.current) clearTimeout(scrollTimeoutRef.current);
+      scrollTimeoutRef.current = setTimeout(() => {
+        isScrollingRef.current = false;
+      }, 400);
     };
     const el = trackRef.current;
     if (el) {
@@ -59,6 +66,7 @@ export function BrutalistProjectList() {
       }
       window.removeEventListener('wheel', onScrollOrWheel);
       window.removeEventListener('scroll', onScrollOrWheel);
+      if (scrollTimeoutRef.current) clearTimeout(scrollTimeoutRef.current);
     };
   }, []);
 
@@ -209,8 +217,8 @@ export function BrutalistProjectList() {
       e.clientX - pointerStartRef.current.x,
       e.clientY - pointerStartRef.current.y
     );
-    // Anular apertura si el usuario estaba scrolleando (últimos 250ms) o si hubo arrastre > 6px
-    if (hasMovedRef.current || now - lastScrollTimeRef.current < 250 || dist > 6) {
+    // Anular apertura si el usuario estaba scrolleando (últimos 400ms o en curso) o si hubo arrastre > 4px
+    if (hasMovedRef.current || isScrollingRef.current || now - lastScrollTimeRef.current < 400 || dist > 4) {
       e.preventDefault();
       e.stopPropagation();
     }
