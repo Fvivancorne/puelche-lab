@@ -987,14 +987,14 @@ function PortfolioContent() {
               {/* Columna Izquierda (7 cols): Visor Fotográfico & Galería Multi-Pieza */}
               <div className="lg:col-span-7 p-6 sm:p-8 flex flex-col justify-between space-y-6 bg-black/40 modal-photo-area">
                 <div className="space-y-4">
-                  {/* Visor Principal con Proporción 16:10, Desplazamiento Suave y Controles de Galería */}
+                  {/* Visor Principal con Proporción 16:10, Slide Cinemático & Sombra de Arrastre */}
                   <div
                     key={activeModalProject.id + '-' + currentImageIndex}
-                    className={`relative aspect-[16/10] w-full rounded-2xl overflow-hidden bg-black/80 border border-white/10 group transition-all duration-300 ${
+                    className={`relative aspect-[16/10] w-full rounded-2xl overflow-hidden bg-black/80 border border-white/10 group ${
                       navDirection === 'next'
-                        ? 'animate-in fade-in slide-in-from-right-5 duration-300'
+                        ? 'animate-pliego-next'
                         : navDirection === 'prev'
-                        ? 'animate-in fade-in slide-in-from-left-5 duration-300'
+                        ? 'animate-pliego-prev'
                         : 'animate-in fade-in duration-200'
                     }`}
                   >

@@ -213,3 +213,40 @@ html.lenis, html.lenis body {
 .animate-soundwave-4 {
   animation: soundwave-4 0.8s ease-in-out infinite 0.1s;
 }
+
+/* ===== AWWWARDS: Cinematic Pliego Slide with Trailing Shadow ===== */
+@keyframes pliego-slide-next {
+  0% {
+    opacity: 0.75;
+    transform: translate3d(65px, 0, 0) scale(0.98);
+    filter: drop-shadow(-30px 12px 40px rgba(0, 0, 0, 0.95));
+  }
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+    filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.85));
+  }
+}
+
+@keyframes pliego-slide-prev {
+  0% {
+    opacity: 0.75;
+    transform: translate3d(-65px, 0, 0) scale(0.98);
+    filter: drop-shadow(30px 12px 40px rgba(0, 0, 0, 0.95));
+  }
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+    filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.85));
+  }
+}
+
+.animate-pliego-next {
+  animation: pliego-slide-next 0.38s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  will-change: transform, opacity, filter;
+}
+
+.animate-pliego-prev {
+  animation: pliego-slide-prev 0.38s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  will-change: transform, opacity, filter;
+}

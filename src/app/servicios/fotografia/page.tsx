@@ -237,11 +237,13 @@ const REAL_PHOTO_PROJECTS: PhotoProject[] = [
 export default function FotografiaPage() {
   const [activeModalProject, setActiveModalProject] = useState<PhotoProject | null>(null);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [navDirection, setNavDirection] = useState<'next' | 'prev'>('next');
   const [activeExpeditionIdx, setActiveExpeditionIdx] = useState(0);
 
   const openModal = (proj: PhotoProject) => {
     setActiveModalProject(proj);
     setCurrentImageIndex(0);
+    setNavDirection('next');
   };
 
   const closeModal = () => {
@@ -250,6 +252,7 @@ export default function FotografiaPage() {
 
   const nextProject = () => {
     if (!activeModalProject) return;
+    setNavDirection('next');
     const currIdx = REAL_PHOTO_PROJECTS.findIndex((p) => p.id === activeModalProject.id);
     const nextIdx = (currIdx + 1) % REAL_PHOTO_PROJECTS.length;
     setActiveModalProject(REAL_PHOTO_PROJECTS[nextIdx]);
@@ -258,6 +261,7 @@ export default function FotografiaPage() {
 
   const prevProject = () => {
     if (!activeModalProject) return;
+    setNavDirection('prev');
     const currIdx = REAL_PHOTO_PROJECTS.findIndex((p) => p.id === activeModalProject.id);
     const prevIdx = (currIdx - 1 + REAL_PHOTO_PROJECTS.length) % REAL_PHOTO_PROJECTS.length;
     setActiveModalProject(REAL_PHOTO_PROJECTS[prevIdx]);
@@ -266,6 +270,7 @@ export default function FotografiaPage() {
 
   const handleNext = () => {
     if (!activeModalProject) return;
+    setNavDirection('next');
     if (activeModalProject.gallery.length > 1 && currentImageIndex < activeModalProject.gallery.length - 1) {
       setCurrentImageIndex((prev) => prev + 1);
     } else {
@@ -275,6 +280,7 @@ export default function FotografiaPage() {
 
   const handlePrev = () => {
     if (!activeModalProject) return;
+    setNavDirection('prev');
     if (activeModalProject.gallery.length > 1 && currentImageIndex > 0) {
       setCurrentImageIndex((prev) => prev - 1);
     } else {
@@ -739,7 +745,12 @@ export default function FotografiaPage() {
               <div className="absolute inset-0 bg-black/60" />
             </div>
 
-            <div className="relative w-full h-full max-w-5xl max-h-[78vh] flex items-center justify-center z-10">
+            <div
+              key={`${activeModalProject.id}-${currentImageIndex}`}
+              className={`relative w-full h-full max-w-5xl max-h-[78vh] flex items-center justify-center z-10 ${
+                navDirection === 'next' ? 'animate-pliego-next' : 'animate-pliego-prev'
+              }`}
+            >
               <Image
                 src={activeModalProject.gallery[currentImageIndex]}
                 alt={`${activeModalProject.client} - Foto ${currentImageIndex + 1}`}

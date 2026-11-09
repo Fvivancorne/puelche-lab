@@ -58,6 +58,7 @@ export default function RedesSocialesPage() {
   const [activeInstagramPost, setActiveInstagramPost] = useState<InstagramPost | null>(null);
   const [instagramPostIndex, setInstagramPostIndex] = useState(0);
   const [selectedCategory, setSelectedCategory] = useState<string>('Todos');
+  const [navDirection, setNavDirection] = useState<'next' | 'prev'>('next');
 
   const filteredPosts =
     selectedCategory === 'Todos'
@@ -67,6 +68,7 @@ export default function RedesSocialesPage() {
   const openModal = (proj: SocialProject) => {
     setActiveModalProject(proj);
     setCurrentImageIndex(0);
+    setNavDirection('next');
   };
 
   const closeModal = () => {
@@ -75,6 +77,7 @@ export default function RedesSocialesPage() {
 
   const nextProject = () => {
     if (!activeModalProject) return;
+    setNavDirection('next');
     const currIdx = REAL_SOCIAL_PROJECTS.findIndex((p) => p.id === activeModalProject.id);
     const nextIdx = (currIdx + 1) % REAL_SOCIAL_PROJECTS.length;
     setActiveModalProject(REAL_SOCIAL_PROJECTS[nextIdx]);
@@ -83,6 +86,7 @@ export default function RedesSocialesPage() {
 
   const prevProject = () => {
     if (!activeModalProject) return;
+    setNavDirection('prev');
     const currIdx = REAL_SOCIAL_PROJECTS.findIndex((p) => p.id === activeModalProject.id);
     const prevIdx = (currIdx - 1 + REAL_SOCIAL_PROJECTS.length) % REAL_SOCIAL_PROJECTS.length;
     setActiveModalProject(REAL_SOCIAL_PROJECTS[prevIdx]);
@@ -91,6 +95,7 @@ export default function RedesSocialesPage() {
 
   const handleNext = () => {
     if (!activeModalProject) return;
+    setNavDirection('next');
     if (activeModalProject.gallery.length > 1 && currentImageIndex < activeModalProject.gallery.length - 1) {
       setCurrentImageIndex((prev) => prev + 1);
     } else {
@@ -100,6 +105,7 @@ export default function RedesSocialesPage() {
 
   const handlePrev = () => {
     if (!activeModalProject) return;
+    setNavDirection('prev');
     if (activeModalProject.gallery.length > 1 && currentImageIndex > 0) {
       setCurrentImageIndex((prev) => prev - 1);
     } else {
@@ -505,7 +511,12 @@ export default function RedesSocialesPage() {
 
           {/* Image Display */}
           <div className="relative flex-1 my-4 flex items-center justify-center overflow-hidden">
-            <div className="relative w-full h-full max-w-6xl max-h-[75vh]">
+            <div
+              key={`${activeModalProject.id}-${currentImageIndex}`}
+              className={`relative w-full h-full max-w-6xl max-h-[75vh] flex items-center justify-center ${
+                navDirection === 'next' ? 'animate-pliego-next' : 'animate-pliego-prev'
+              }`}
+            >
               <Image
                 src={activeModalProject.gallery[currentImageIndex]}
                 alt={`${activeModalProject.client} - Fotografía ${currentImageIndex + 1}`}
