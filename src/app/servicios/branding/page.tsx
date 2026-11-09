@@ -805,7 +805,7 @@ export default function BrandingPage() {
                 if (lenis) lenis.scrollTo(lenis.scroll + step, { duration: 0.8 });
                 else window.scrollBy({ top: step, behavior: 'smooth' });
               }}
-              className="hidden sm:flex fixed left-4 top-1/2 -translate-y-1/2 z-30 w-12 h-12 rounded-full bg-black/80 hover:bg-[#59BFD6] text-white hover:text-[#07080b] border border-white/20 hover:border-[#59BFD6] backdrop-blur-md shadow-2xl transition-all duration-300 items-center justify-center group"
+              className="hidden sm:flex absolute left-4 top-1/2 -translate-y-1/2 z-30 w-12 h-12 rounded-full bg-black/80 hover:bg-[#59BFD6] text-white hover:text-[#07080b] border border-white/20 hover:border-[#59BFD6] backdrop-blur-md shadow-2xl transition-all duration-300 items-center justify-center group"
               aria-label="Deslizar marcas hacia la izquierda"
               title="Anterior (← o Pad)"
             >
@@ -820,7 +820,7 @@ export default function BrandingPage() {
                 if (lenis) lenis.scrollTo(lenis.scroll + step, { duration: 0.8 });
                 else window.scrollBy({ top: step, behavior: 'smooth' });
               }}
-              className="hidden sm:flex fixed right-4 top-1/2 -translate-y-1/2 z-30 w-12 h-12 rounded-full bg-black/80 hover:bg-[#59BFD6] text-white hover:text-[#07080b] border border-white/20 hover:border-[#59BFD6] backdrop-blur-md shadow-2xl transition-all duration-300 items-center justify-center group"
+              className="hidden sm:flex absolute right-4 top-1/2 -translate-y-1/2 z-30 w-12 h-12 rounded-full bg-black/80 hover:bg-[#59BFD6] text-white hover:text-[#07080b] border border-white/20 hover:border-[#59BFD6] backdrop-blur-md shadow-2xl transition-all duration-300 items-center justify-center group"
               aria-label="Deslizar marcas hacia la derecha"
               title="Siguiente (→ o Pad)"
             >

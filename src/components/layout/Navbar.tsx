@@ -169,8 +169,29 @@ export function Navbar() {
             </Link>
 
             <div className="py-2 border-b border-white/10 space-y-2">
-              <span className="text-white/60 text-xs font-bold">PORTAFOLIO</span>
-              <div className="pl-3 space-y-2 text-sm">
+              <div className="flex items-center justify-between">
+                <Link
+                  href="/portafolio"
+                  onClick={() => setMobileOpen(false)}
+                  className={cn(
+                    'text-xs font-bold hover:text-puelche-cyan transition-colors',
+                    pathname === '/portafolio' ? 'text-puelche-cyan' : 'text-white'
+                  )}
+                >
+                  PORTAFOLIO COMPLETO &rarr;
+                </Link>
+                <Link
+                  href="/servicios"
+                  onClick={() => setMobileOpen(false)}
+                  className={cn(
+                    'text-[10px] uppercase tracking-wider text-white/50 hover:text-puelche-cyan',
+                    pathname === '/servicios' && 'text-puelche-cyan font-semibold'
+                  )}
+                >
+                  6 Oficios
+                </Link>
+              </div>
+              <div className="pl-3 space-y-2 text-sm pt-1">
                 {PORTFOLIO_DROPDOWN.map((item) => (
                   <Link
                     key={item.href}

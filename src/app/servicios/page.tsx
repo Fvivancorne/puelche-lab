@@ -108,7 +108,12 @@ export default function ServiciosPage() {
                     <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
                   </Link>
 
-                  <span className="w-1.5 h-1.5 rounded-full bg-white/20 group-hover:bg-[#59BFD6] transition-colors" />
+                  <Link
+                    href={`/contacto?servicio=${serv.href.replace('/servicios/', '')}`}
+                    className="text-[11px] font-mono uppercase tracking-wider text-white/50 hover:text-[#59BFD6] transition-colors"
+                  >
+                    <span>Cotizar</span> &rarr;
+                  </Link>
                 </div>
               </div>
             );

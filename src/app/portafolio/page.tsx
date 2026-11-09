@@ -615,7 +615,7 @@ function PortfolioContent() {
                   if (lenis) lenis.scrollTo(lenis.scroll + step, { duration: 0.8 });
                   else window.scrollBy({ top: step, behavior: 'smooth' });
                 }}
-                className="hidden sm:flex fixed left-4 top-1/2 -translate-y-1/2 z-30 w-11 h-11 rounded-full bg-black/70 hover:bg-[#59BFD6] text-white hover:text-puelche-dark border border-white/20 hover:border-[#59BFD6] backdrop-blur-md shadow-xl transition-all duration-300 items-center justify-center group"
+                className="hidden sm:flex absolute left-4 top-1/2 -translate-y-1/2 z-30 w-11 h-11 rounded-full bg-black/70 hover:bg-[#59BFD6] text-white hover:text-puelche-dark border border-white/20 hover:border-[#59BFD6] backdrop-blur-md shadow-xl transition-all duration-300 items-center justify-center group"
                 aria-label="Deslizar río hacia la izquierda"
                 title="Deslizar obras anteriores (← o Pad)"
               >
@@ -630,7 +630,7 @@ function PortfolioContent() {
                   if (lenis) lenis.scrollTo(lenis.scroll + step, { duration: 0.8 });
                   else window.scrollBy({ top: step, behavior: 'smooth' });
                 }}
-                className="hidden sm:flex fixed right-4 top-1/2 -translate-y-1/2 z-30 w-11 h-11 rounded-full bg-black/70 hover:bg-[#59BFD6] text-white hover:text-puelche-dark border border-white/20 hover:border-[#59BFD6] backdrop-blur-md shadow-xl transition-all duration-300 items-center justify-center group"
+                className="hidden sm:flex absolute right-4 top-1/2 -translate-y-1/2 z-30 w-11 h-11 rounded-full bg-black/70 hover:bg-[#59BFD6] text-white hover:text-puelche-dark border border-white/20 hover:border-[#59BFD6] backdrop-blur-md shadow-xl transition-all duration-300 items-center justify-center group"
                 aria-label="Deslizar río hacia la derecha"
                 title="Deslizar siguientes obras (→ o Pad)"
               >
