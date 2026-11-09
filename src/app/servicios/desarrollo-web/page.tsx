@@ -122,6 +122,53 @@ export default function DesarrolloWebPage() {
     if (activeModalProject) {
       if (lenis) lenis.stop();
       document.body.style.overflow = 'hidden';
+      document.body.style.overscrollBehaviorX = 'none';
+      document.documentElement.style.overscrollBehaviorX = 'none';
+
+      let accumulatorX = 0;
+      let isMomentumLocked = false;
+      let unlockTimer: NodeJS.Timeout | null = null;
+      const HORIZONTAL_THRESHOLD = 140;
+
+      const handleModalWheel = (e: WheelEvent) => {
+        if (Math.abs(e.deltaX) > 0) {
+          e.preventDefault();
+        }
+
+        const isHorizontal = Math.abs(e.deltaX) > Math.abs(e.deltaY) && Math.abs(e.deltaX) > 3;
+        if (!isHorizontal) return;
+
+        e.preventDefault();
+        e.stopPropagation();
+
+        if (isMomentumLocked) {
+          if (unlockTimer) clearTimeout(unlockTimer);
+          unlockTimer = setTimeout(() => {
+            isMomentumLocked = false;
+            accumulatorX = 0;
+          }, 250);
+          return;
+        }
+
+        accumulatorX += e.deltaX;
+
+        if (Math.abs(accumulatorX) >= HORIZONTAL_THRESHOLD) {
+          isMomentumLocked = true;
+          if (accumulatorX > 0) {
+            handleNext();
+          } else {
+            handlePrev();
+          }
+          accumulatorX = 0;
+
+          if (unlockTimer) clearTimeout(unlockTimer);
+          unlockTimer = setTimeout(() => {
+            isMomentumLocked = false;
+            accumulatorX = 0;
+          }, 700);
+        }
+      };
+
       const handleKeyDown = (e: KeyboardEvent) => {
         if (e.key === 'Escape') closeModal();
         if (e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D') handleNext();
@@ -129,15 +176,52 @@ export default function DesarrolloWebPage() {
         if (e.key === 'ArrowDown' || e.key === 'PageDown') nextProject();
         if (e.key === 'ArrowUp' || e.key === 'PageUp') prevProject();
       };
+
+      let touchStartX = 0;
+      let touchStartY = 0;
+
+      const handleTouchStart = (e: TouchEvent) => {
+        if (e.touches.length === 1) {
+          touchStartX = e.touches[0].clientX;
+          touchStartY = e.touches[0].clientY;
+        }
+      };
+
+      const handleTouchEnd = (e: TouchEvent) => {
+        if (e.changedTouches.length === 1) {
+          const deltaX = e.changedTouches[0].clientX - touchStartX;
+          const deltaY = e.changedTouches[0].clientY - touchStartY;
+          if (Math.abs(deltaX) > Math.abs(deltaY) * 1.5 && Math.abs(deltaX) > 60) {
+            if (deltaX < 0) {
+              handleNext();
+            } else {
+              handlePrev();
+            }
+          }
+        }
+      };
+
+      window.addEventListener('wheel', handleModalWheel, { passive: false });
       window.addEventListener('keydown', handleKeyDown);
+      window.addEventListener('touchstart', handleTouchStart, { passive: true });
+      window.addEventListener('touchend', handleTouchEnd, { passive: true });
+
       return () => {
+        if (unlockTimer) clearTimeout(unlockTimer);
         if (lenis) lenis.start();
         document.body.style.overflow = '';
+        document.body.style.overscrollBehaviorX = '';
+        document.documentElement.style.overscrollBehaviorX = '';
+        window.removeEventListener('wheel', handleModalWheel);
         window.removeEventListener('keydown', handleKeyDown);
+        window.removeEventListener('touchstart', handleTouchStart);
+        window.removeEventListener('touchend', handleTouchEnd);
       };
     } else {
       if (lenis) lenis.start();
       document.body.style.overflow = '';
+      document.body.style.overscrollBehaviorX = '';
+      document.documentElement.style.overscrollBehaviorX = '';
     }
   }, [activeModalProject, currentImageIndex]);
 

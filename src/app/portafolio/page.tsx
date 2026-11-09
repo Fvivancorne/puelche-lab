@@ -240,24 +240,22 @@ function PortfolioContent() {
     };
   }, [activeModalProject]);
 
-  // ── NAVEGACIÓN EN EL MODAL: SEPARACIÓN ESTRICTA DE EJES & 1 OBRA POR SWIPE ──
+  // ── NAVEGACIÓN EN EL MODAL: FRICCIÓN FIRME (160px) & BLOQUEO ESTRICTO DE INERCIA (750ms) ──
   useEffect(() => {
     if (!activeModalProject) return;
 
     let accumulatorX = 0;
     let isMomentumLocked = false;
     let unlockTimer: NodeJS.Timeout | null = null;
-    const HORIZONTAL_THRESHOLD = 55; // Umbral rápido y sensible para avanzar y retroceder sin fallas
+    const HORIZONTAL_THRESHOLD = 160; // Umbral de fricción firme: requiere un gesto deliberado
 
     const handleModalWheel = (e: WheelEvent) => {
       // PREVENCIÓN TOTAL DE NAVEGACIÓN DE HISTORIAL DE CHROME/SAFARI:
-      // Si el evento tiene cualquier componente horizontal, cancelar de inmediato
-      // el gesto nativo de navegación de historial de macOS para que no se salga de la muestra
       if (Math.abs(e.deltaX) > 0) {
         e.preventDefault();
       }
 
-      const isHorizontal = Math.abs(e.deltaX) > Math.abs(e.deltaY) && Math.abs(e.deltaX) > 2;
+      const isHorizontal = Math.abs(e.deltaX) > Math.abs(e.deltaY) && Math.abs(e.deltaX) > 4;
 
       // EL EJE VERTICAL ESTÁ 100% LIBRE: Permite leer y scrollear todo el contenido interno sin interferencias
       if (!isHorizontal) {
@@ -267,20 +265,20 @@ function PortfolioContent() {
       e.preventDefault();
       e.stopPropagation();
 
-      // Si está en absorción de inercia del swipe anterior
+      // Si está en absorción de inercia del swipe anterior, mantener bloqueado mientras siga llegando inercia
       if (isMomentumLocked) {
         if (unlockTimer) clearTimeout(unlockTimer);
         unlockTimer = setTimeout(() => {
           isMomentumLocked = false;
           accumulatorX = 0;
-        }, 150);
+        }, 300);
         return;
       }
 
       accumulatorX += e.deltaX;
 
       if (Math.abs(accumulatorX) >= HORIZONTAL_THRESHOLD) {
-        isMomentumLocked = true; // Bloqueo de momentum para garantizar exactamente 1 obra por swipe
+        isMomentumLocked = true; // Bloqueo de inercia: garantiza exactamente 1 obra por swipe deliberado
 
         if (accumulatorX > 0) {
           nextProject();
@@ -289,12 +287,12 @@ function PortfolioContent() {
         }
         accumulatorX = 0;
 
-        // Desbloquear cuando los dedos se detengan o tras 450ms como seguro
+        // Cooldown estricto de 750ms para absorber todo el momentum del trackpad de macOS
         if (unlockTimer) clearTimeout(unlockTimer);
         unlockTimer = setTimeout(() => {
           isMomentumLocked = false;
           accumulatorX = 0;
-        }, 450);
+        }, 750);
       }
     };
 
@@ -353,11 +351,11 @@ function PortfolioContent() {
       }
 
       // Si el usuario desliza horizontalmente con 2 dedos en trackpad (pad mouse) o Shift+Wheel
-      if (Math.abs(e.deltaX) > Math.abs(e.deltaY) && Math.abs(e.deltaX) > 1.2) {
+      if (Math.abs(e.deltaX) > Math.abs(e.deltaY) && Math.abs(e.deltaX) > 2) {
         e.preventDefault(); // Detener rebote o retroceso de página del navegador
         const lenis = (window as any).lenisInstance;
-        // Amortiguación cinemática suave (1.1x) acordada para contemplar cada obra
-        const step = e.deltaX * 1.1;
+        // Amortiguación y fricción táctil (0.65x) para un desplazamiento orgánico y controlado
+        const step = e.deltaX * 0.65;
         if (lenis) {
           lenis.scrollTo(lenis.scroll + step, { immediate: true });
         } else {
