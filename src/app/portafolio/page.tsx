@@ -212,19 +212,31 @@ function PortfolioContent() {
     }
   }, [projectParam]);
 
-  // Pause Lenis and lock body scroll when modal is active
+  // Pause Lenis, lock body scroll and block macOS swipe-history-navigation when modal is active
   useEffect(() => {
     const lenis = (window as any).lenisInstance;
     if (activeModalProject) {
       if (lenis) lenis.stop();
       document.body.style.overflow = 'hidden';
+      document.body.style.overscrollBehavior = 'none';
+      document.body.style.overscrollBehaviorX = 'none';
+      document.documentElement.style.overscrollBehavior = 'none';
+      document.documentElement.style.overscrollBehaviorX = 'none';
     } else {
       if (lenis) lenis.start();
       document.body.style.overflow = '';
+      document.body.style.overscrollBehavior = '';
+      document.body.style.overscrollBehaviorX = '';
+      document.documentElement.style.overscrollBehavior = '';
+      document.documentElement.style.overscrollBehaviorX = '';
     }
     return () => {
       if (lenis) lenis.start();
       document.body.style.overflow = '';
+      document.body.style.overscrollBehavior = '';
+      document.body.style.overscrollBehaviorX = '';
+      document.documentElement.style.overscrollBehavior = '';
+      document.documentElement.style.overscrollBehaviorX = '';
     };
   }, [activeModalProject]);
 
@@ -235,18 +247,25 @@ function PortfolioContent() {
     let accumulatorX = 0;
     let isMomentumLocked = false;
     let unlockTimer: NodeJS.Timeout | null = null;
-    const HORIZONTAL_THRESHOLD = 85; // Umbral deliberado y ponderado para evitar disparos accidentales
+    const HORIZONTAL_THRESHOLD = 55; // Umbral rápido y sensible para avanzar y retroceder sin fallas
 
     const handleModalWheel = (e: WheelEvent) => {
-      const isHorizontal = Math.abs(e.deltaX) > Math.abs(e.deltaY) && Math.abs(e.deltaX) > 3;
+      // PREVENCIÓN TOTAL DE NAVEGACIÓN DE HISTORIAL DE CHROME/SAFARI:
+      // Si el evento tiene cualquier componente horizontal, cancelar de inmediato
+      // el gesto nativo de navegación de historial de macOS para que no se salga de la muestra
+      if (Math.abs(e.deltaX) > 0) {
+        e.preventDefault();
+      }
+
+      const isHorizontal = Math.abs(e.deltaX) > Math.abs(e.deltaY) && Math.abs(e.deltaX) > 2;
 
       // EL EJE VERTICAL ESTÁ 100% LIBRE: Permite leer y scrollear todo el contenido interno sin interferencias
       if (!isHorizontal) {
         return;
       }
 
-      // Detener navegación de historial de Safari/Chrome en gestos horizontales
       e.preventDefault();
+      e.stopPropagation();
 
       // Si está en absorción de inercia del swipe anterior
       if (isMomentumLocked) {
@@ -270,12 +289,12 @@ function PortfolioContent() {
         }
         accumulatorX = 0;
 
-        // Desbloquear cuando los dedos se detengan o tras 600ms como seguro
+        // Desbloquear cuando los dedos se detengan o tras 450ms como seguro
         if (unlockTimer) clearTimeout(unlockTimer);
         unlockTimer = setTimeout(() => {
           isMomentumLocked = false;
           accumulatorX = 0;
-        }, 600);
+        }, 450);
       }
     };
 
@@ -879,9 +898,10 @@ function PortfolioContent() {
       */}
       {activeModalProject && (
         <div
-          className="fixed inset-0 z-[100] flex items-center justify-center p-3 sm:p-6 lg:p-10 bg-black/85 bg-black/70 backdrop-blur-sm backdrop-blur-md animate-in fade-in duration-200"
+          className="fixed inset-0 z-[100] flex items-center justify-center p-3 sm:p-6 lg:p-10 bg-black/85 bg-black/70 backdrop-blur-sm backdrop-blur-md animate-in fade-in duration-200 overscroll-none select-none"
           onClick={handleCloseModal}
           data-lenis-prevent="true"
+          style={{ overscrollBehavior: 'none', overscrollBehaviorX: 'none' }}
         >
           {/* Fondo oscuro sólido extra para garantizar 100% de legibilidad sin sangrado de fondo */}
           <div className="absolute inset-0 bg-[#090a0d]/95 pointer-events-none" />

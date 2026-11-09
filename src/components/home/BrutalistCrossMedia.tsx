@@ -165,22 +165,14 @@ export function BrutalistCrossMedia() {
           );
         }
 
-        // 4. Fase 2: Al continuar el scroll con resistencia, el manifiesto se repliega suavemente
-        // y emergen las 4 dimensiones del oficio desde abajo
-        if (manifestoContainerRef.current) {
-          pinTl.to(
-            manifestoContainerRef.current,
-            { y: -30, opacity: 0.25, ease: 'power1.inOut', duration: 0.3 },
-            0.55
-          );
-        }
-
+        // 4. MESETA DE LECTURA 100% ILUMINADA: Las tarjetas permanecen al 100% de opacidad y brillo
+        // ¡NUNCA se oscurecen ni se desvanecen! Permanecen legibles durante todo el anclaje.
         if (cardsContainerRef.current) {
           const cards = cardsContainerRef.current.children;
           pinTl.fromTo(
             cards,
-            { y: 80, opacity: 0, clipPath: 'inset(100% 0% 0% 0%)' },
-            { y: 0, opacity: 1, clipPath: 'inset(0% 0% 0% 0%)', stagger: 0.05, ease: 'power2.out', duration: 0.35 },
+            { y: 60, opacity: 0 },
+            { y: 0, opacity: 1, stagger: 0.05, ease: 'power2.out', duration: 0.35 },
             0.6
           );
         }
@@ -281,7 +273,7 @@ export function BrutalistCrossMedia() {
       ref={sectionRef}
       id="cross-media"
       aria-label="El Manifiesto del Puelche y Capacidades Cross Media"
-      className="relative w-full min-h-screen flex flex-col justify-between py-20 md:py-28 px-6 md:px-12 lg:px-16 overflow-hidden bg-puelche-dark text-white select-none"
+      className="relative w-full min-h-screen flex flex-col justify-between py-10 sm:py-12 md:py-14 px-6 md:px-12 lg:px-16 overflow-hidden bg-puelche-dark text-white select-none"
     >
       {/* 
         ======================================================================
@@ -335,9 +327,9 @@ export function BrutalistCrossMedia() {
       </div>
 
       {/* Contenido Superior / Encabezado de Sección */}
-      <div className="relative z-10 max-w-7xl mx-auto w-full space-y-10">
+      <div className="relative z-10 max-w-7xl mx-auto w-full space-y-6 sm:space-y-7">
         {/* Meta Bar Superior: Estilo Editorial */}
-        <div className="flex flex-wrap items-center justify-between gap-4 border-b border-white/15 pb-4 text-xs uppercase tracking-widest text-white/75 font-condensed">
+        <div className="flex flex-wrap items-center justify-between gap-4 border-b border-white/15 pb-3 text-xs uppercase tracking-widest text-white/75 font-condensed">
           <div className="flex items-center gap-3">
             <span className="w-2 h-2 rounded-full bg-puelche-cyan" />
             <span className="text-white font-bold tracking-[0.2em]">VIENTO CREATIVO &bull; MANIFIESTO DE AUTOR</span>
@@ -349,14 +341,14 @@ export function BrutalistCrossMedia() {
         </div>
 
         {/* Titular Monumental */}
-        <div className="space-y-6">
+        <div className="space-y-3 sm:space-y-4">
           <div className="flex flex-wrap items-center gap-3">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-black/40 backdrop-blur-md border border-white/15 text-puelche-cyan font-condensed text-xs uppercase tracking-wider">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-black/40 backdrop-blur-md border border-white/15 text-puelche-cyan font-condensed text-[11px] sm:text-xs uppercase tracking-wider">
               <span>ESTUDIO CROSS MEDIA &bull; PUERTO VARAS</span>
             </div>
 
             {/* Indicador Suave de Vista Activa */}
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-black/50 backdrop-blur-md border border-puelche-cyan/30 text-white/90 font-serif italic text-xs">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-black/50 backdrop-blur-md border border-puelche-cyan/30 text-white/90 font-serif italic text-[11px] sm:text-xs">
               <span className="w-1.5 h-1.5 rounded-full bg-puelche-cyan" />
               <span>{activeIdx !== null ? CAPABILITIES[activeIdx].title : 'Panorámica Austral'}</span>
             </div>
@@ -364,7 +356,7 @@ export function BrutalistCrossMedia() {
 
           <h2
             ref={headlineRef}
-            className="font-condensed text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-bold uppercase tracking-tighter text-white leading-[0.88] drop-shadow-[0_4px_30px_rgba(0,0,0,0.95)]"
+            className="font-condensed text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-bold uppercase tracking-tighter text-white leading-[0.88] drop-shadow-[0_4px_30px_rgba(0,0,0,0.95)]"
           >
             ¿QUÉ ES <br />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-white/95 to-puelche-cyan">
@@ -374,7 +366,7 @@ export function BrutalistCrossMedia() {
 
           <p
             ref={subheadRef}
-            className="font-serif italic text-xl sm:text-2xl md:text-3xl text-puelche-cyan font-normal max-w-3xl leading-snug drop-shadow-[0_2px_15px_rgba(0,0,0,0.9)]"
+            className="font-serif italic text-base sm:text-xl md:text-2xl text-puelche-cyan font-normal max-w-3xl leading-snug drop-shadow-[0_2px_15px_rgba(0,0,0,0.9)]"
           >
             El arte de concebir piezas gráficas y cinematográficas para todos los soportes.
           </p>
@@ -383,28 +375,28 @@ export function BrutalistCrossMedia() {
         {/* Manifiesto Editorial Suizo: Asimetría 7/5 con Cortina Óptica y Aire Territorial */}
         <div
           ref={manifestoContainerRef}
-          className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 pt-6 border-t border-white/15 font-sans overflow-hidden will-change-transform"
+          className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 pt-4 border-t border-white/15 font-sans overflow-hidden will-change-transform"
         >
           {/* Columna Izquierda (7 Cols): Declaración Monumental de Gran Formato */}
           <div
             ref={manifestoLeftRef}
-            className="lg:col-span-7 flex flex-col justify-between space-y-6 bg-[#0e0f13]/85 backdrop-blur-xl p-8 sm:p-10 lg:p-12 rounded-[32px] sm:rounded-[36px] border border-white/15 shadow-[0_25px_70px_rgba(0,0,0,0.85)] relative overflow-hidden group will-change-transform"
+            className="lg:col-span-7 flex flex-col justify-between space-y-4 bg-[#0e0f13]/90 backdrop-blur-xl p-6 sm:p-8 lg:p-9 rounded-[28px] sm:rounded-[32px] border border-white/15 shadow-[0_25px_70px_rgba(0,0,0,0.85)] relative overflow-hidden group will-change-transform"
           >
             {/* Velo de Iluminación Suave en Hover */}
             <div className="absolute top-0 right-0 w-80 h-80 bg-[#59BFD6]/[0.06] rounded-full blur-3xl pointer-events-none group-hover:bg-[#59BFD6]/[0.12] transition-colors duration-700" />
 
-            <div className="space-y-4 relative z-10">
+            <div className="space-y-3 relative z-10">
               <div className="inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.25em] text-[#59BFD6]">
                 <span className="w-1.5 h-1.5 rounded-full bg-[#59BFD6] animate-pulse" />
                 <span>ESTUDIO DE AUTOR &bull; PUERTO VARAS</span>
               </div>
 
-              <p className="text-white font-medium text-2xl sm:text-3xl lg:text-4xl font-condensed uppercase tracking-tight leading-tight drop-shadow-md">
+              <p className="text-white font-medium text-xl sm:text-2xl lg:text-3xl font-condensed uppercase tracking-tight leading-tight drop-shadow-md">
                 Somos un Estudio de Diseño Cross Media y Fotografía en Puerto Varas.
               </p>
             </div>
 
-            <p className="text-white/80 font-light text-base sm:text-lg leading-relaxed relative z-10 max-w-2xl border-l-2 border-[#59BFD6]/40 pl-4 sm:pl-5">
+            <p className="text-white/85 font-light text-sm sm:text-base lg:text-lg leading-relaxed relative z-10 max-w-2xl border-l-2 border-[#59BFD6]/40 pl-4 sm:pl-5">
               Pero, <span className="italic font-serif text-white font-normal">¿Qué es Cross Media?</span> Nos referimos a que creamos piezas visuales para todos los medios, ya sean digitales, impresos y/o audiovisuales.
             </p>
           </div>
@@ -412,26 +404,26 @@ export function BrutalistCrossMedia() {
           {/* Columna Derecha (5 Cols, Asimétrica Descolgada): Laboratorio Técnico & Equipo */}
           <div
             ref={manifestoRightRef}
-            className="lg:col-span-5 lg:translate-y-8 xl:translate-y-12 flex flex-col justify-between space-y-6 bg-[#14151a]/75 backdrop-blur-xl p-7 sm:p-9 rounded-[32px] sm:rounded-[36px] border border-white/15 shadow-[0_25px_70px_rgba(0,0,0,0.9)] relative overflow-hidden group will-change-transform"
+            className="lg:col-span-5 lg:translate-y-4 flex flex-col justify-between space-y-4 bg-[#14151a]/85 backdrop-blur-xl p-6 sm:p-7 rounded-[28px] sm:rounded-[32px] border border-white/15 shadow-[0_25px_70px_rgba(0,0,0,0.9)] relative overflow-hidden group will-change-transform"
           >
-            <div className="space-y-3 relative z-10">
+            <div className="space-y-2 relative z-10">
               <span className="font-mono text-[10px] sm:text-[11px] uppercase tracking-[0.3em] text-white/50">
                 INFRAESTRUCTURA &bull; EXPEDICIÓN
               </span>
-              <p className="font-light text-white/85 text-sm sm:text-base lg:text-lg leading-relaxed">
+              <p className="font-light text-white/85 text-xs sm:text-sm lg:text-base leading-relaxed">
                 Contamos con un estudio de fotografía y grabación muy bien equipado, iluminación profesional y equipos de alta gama, tanto en tierra firme como desde el aire con dron 4K, haciendo resaltar tu producto o servicio para que pase al frente en la vitrina del mercado.
               </p>
             </div>
 
             {/* Píldoras Táctiles con Acabado de Cuarto Oscuro */}
-            <div className="flex flex-wrap items-center gap-2 pt-4 border-t border-white/10 font-mono text-[11px] text-white/80 relative z-10">
-              <span className="px-3 py-1.5 rounded-full bg-white/5 border border-white/10 text-white/90">
+            <div className="flex flex-wrap items-center gap-2 pt-3 border-t border-white/10 font-mono text-[11px] text-white/80 relative z-10">
+              <span className="px-3 py-1 rounded-full bg-white/5 border border-white/10 text-white/90">
                 Fotografía de autor
               </span>
-              <span className="px-3 py-1.5 rounded-full bg-white/5 border border-white/10 text-white/90">
+              <span className="px-3 py-1 rounded-full bg-white/5 border border-white/10 text-white/90">
                 Set propio
               </span>
-              <span className="px-3 py-1.5 rounded-full bg-[#59BFD6]/15 text-[#59BFD6] border border-[#59BFD6]/30 font-medium">
+              <span className="px-3 py-1 rounded-full bg-[#59BFD6]/15 text-[#59BFD6] border border-[#59BFD6]/30 font-medium">
                 Territorio austral
               </span>
             </div>
