@@ -13,6 +13,7 @@ import { BrutalistCrossMedia } from '@/components/home/BrutalistCrossMedia';
 import { WindParticleCanvas } from '@/components/ui/WindParticleCanvas';
 import { BeforeAfterSlider } from '@/components/ui/BeforeAfterSlider';
 import { OrganicStoriesSection } from '@/components/home/OrganicStoriesSection';
+import { PuelcheJesperCarousel } from '@/components/home/PuelcheJesperCarousel';
 
 export default function Home() {
   const heroWipeRef = useRef<HTMLDivElement>(null);
@@ -255,6 +256,14 @@ export default function Home() {
         ======================================================================
       */}
       <OrganicStoriesSection />
+
+      {/* 
+        ======================================================================
+        SECCIÓN AWWWARDS: CARRUSEL WEBGL INFINITO (JESPER LANDBERG INTERACTION)
+        Arco elástico en GPU, aberración cromática y física inercial
+        ======================================================================
+      */}
+      <PuelcheJesperCarousel />
 
       {/* 
         ======================================================================
