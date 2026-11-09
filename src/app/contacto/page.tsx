@@ -17,8 +17,33 @@ const DETAILED_SERVICES = [
   'Diseño de Marca & Identidad',
   'Desarrollo Web Next.js',
   'Diseño Editorial & Memorias',
+  'Edición Fotográfica & Retoque RAW',
   'Proyecto Integral Cross-Media',
 ];
+
+export const SERVICE_CANONICAL_MAP: Record<string, string[]> = {
+  'branding': ['Diseño Gráfico', 'Diseño de Marca & Identidad'],
+  'diseno-de-marca': ['Diseño Gráfico', 'Diseño de Marca & Identidad'],
+  'diseño de marca': ['Diseño Gráfico', 'Diseño de Marca & Identidad'],
+  'diseño de marca & identidad': ['Diseño Gráfico', 'Diseño de Marca & Identidad'],
+  'fotografia': ['Fotografía'],
+  'fotografía': ['Fotografía'],
+  'fotografia arquitectura & hoteleria': ['Fotografía', 'Fotografía Arquitectura & Hotelería'],
+  'fotografía arquitectura & hotelería': ['Fotografía', 'Fotografía Arquitectura & Hotelería'],
+  'desarrollo-web': ['Sitio Web', 'Desarrollo Web Next.js'],
+  'desarrollo web': ['Sitio Web', 'Desarrollo Web Next.js'],
+  'desarrollo web next.js': ['Sitio Web', 'Desarrollo Web Next.js'],
+  'sitio web': ['Sitio Web', 'Desarrollo Web Next.js'],
+  'edicion-fotografica': ['Fotografía', 'Edición Fotográfica & Retoque RAW'],
+  'edicion fotografica': ['Fotografía', 'Edición Fotográfica & Retoque RAW'],
+  'edición fotográfica': ['Fotografía', 'Edición Fotográfica & Retoque RAW'],
+  'editorial': ['Diseño Gráfico', 'Diseño Editorial & Memorias'],
+  'diseno-editorial': ['Diseño Gráfico', 'Diseño Editorial & Memorias'],
+  'diseño editorial': ['Diseño Gráfico', 'Diseño Editorial & Memorias'],
+  'diseño editorial & memorias': ['Diseño Gráfico', 'Diseño Editorial & Memorias'],
+  'redes-sociales': ['Redes Sociales'],
+  'redes sociales': ['Redes Sociales'],
+};
 
 // Constantes técnicas y referencias históricas para suite E2E
 export const BUDGETS = [
@@ -51,12 +76,47 @@ function ContactFormInner() {
   const initialService = searchParams.get('servicio') || '';
   const initialProject = searchParams.get('proyecto') || '';
 
+  // Normalizador canónico bidireccional con resolución por palabras clave
+  const resolveInitialServices = (raw: string): string[] => {
+    if (!raw) return [];
+    const normalized = raw.trim().toLowerCase();
+    const mapped = SERVICE_CANONICAL_MAP[normalized];
+    if (mapped) return Array.from(new Set([raw, ...mapped]));
+
+    const matches: string[] = [raw];
+    if (normalized.includes('fotograf') || normalized.includes('dron') || normalized.includes('aérea') || normalized.includes('aerea')) {
+      matches.push('Fotografía');
+      if (normalized.includes('arquitectura') || normalized.includes('hoteler') || normalized.includes('hotelera') || normalized.includes('cava') || normalized.includes('interiores')) {
+        matches.push('Fotografía Arquitectura & Hotelería');
+      }
+      if (normalized.includes('industrial') || normalized.includes('procesos') || normalized.includes('faena') || normalized.includes('dron')) {
+        matches.push('Fotografía Industrial & Dron 4K');
+      }
+    }
+    if (normalized.includes('retoque') || normalized.includes('edici') || normalized.includes('edición')) {
+      matches.push('Fotografía', 'Edición Fotográfica & Retoque RAW');
+    }
+    if (normalized.includes('marca') || normalized.includes('branding') || normalized.includes('identidad')) {
+      matches.push('Diseño Gráfico', 'Diseño de Marca & Identidad');
+    }
+    if (normalized.includes('web') || normalized.includes('next') || normalized.includes('sitio')) {
+      matches.push('Sitio Web', 'Desarrollo Web Next.js');
+    }
+    if (normalized.includes('editor') || normalized.includes('guía') || normalized.includes('guia') || normalized.includes('libro') || normalized.includes('memoria')) {
+      matches.push('Diseño Gráfico', 'Diseño Editorial & Memorias');
+    }
+    if (normalized.includes('redes') || normalized.includes('social') || normalized.includes('instagram')) {
+      matches.push('Redes Sociales');
+    }
+    return Array.from(new Set(matches));
+  };
+
   const [name, setName] = useState('');
   const [company, setCompany] = useState('');
   const [phone, setPhone] = useState('');
   const [email, setEmail] = useState('');
   const [selectedServices, setSelectedServices] = useState<string[]>(
-    initialService ? [initialService] : []
+    initialService ? resolveInitialServices(initialService) : (initialService ? [initialService] : [])
   );
   const [projectScale, setProjectScale] = useState<string>('Propuesta a la medida según alcance');
   const [selectedBudget, setSelectedBudget] = useState<string>('$1.5M — $3.0M CLP');
@@ -68,16 +128,46 @@ function ContactFormInner() {
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
 
+  const isServiceSelected = (service: string) => {
+    if (selectedServices.includes(service)) return true;
+    return selectedServices.some((s) => {
+      const normalized = s.trim().toLowerCase();
+      const mapped = SERVICE_CANONICAL_MAP[normalized];
+      if (mapped && mapped.includes(service)) return true;
+      if (service === 'Fotografía' && (normalized.includes('fotograf') || normalized.includes('dron'))) return true;
+      if (service === 'Diseño Gráfico' && (normalized.includes('marca') || normalized.includes('branding') || normalized.includes('editor'))) return true;
+      if (service === 'Sitio Web' && (normalized.includes('web') || normalized.includes('sitio'))) return true;
+      if (service === 'Redes Sociales' && (normalized.includes('redes') || normalized.includes('social'))) return true;
+      return false;
+    });
+  };
+
   const handleCheckboxChange = (service: string) => {
-    setSelectedServices((prev) =>
-      prev.includes(service)
-        ? prev.filter((s) => s !== service)
-        : [...prev, service]
-    );
+    setSelectedServices((prev) => {
+      const active = isServiceSelected(service);
+      if (active) {
+        return prev.filter((s) => {
+          if (s === service) return false;
+          const mapped = SERVICE_CANONICAL_MAP[s.trim().toLowerCase()];
+          if (mapped && mapped.includes(service)) return false;
+          return true;
+        });
+      } else {
+        return [...prev, service];
+      }
+    });
   };
 
   const generateWhatsAppLink = () => {
-    const srvText = selectedServices.length > 0 ? selectedServices.join(', ') : 'Servicios generales';
+    const cleanList = Array.from(
+      new Set(
+        selectedServices.flatMap((s) => {
+          const mapped = SERVICE_CANONICAL_MAP[s.trim().toLowerCase()];
+          return mapped || [s];
+        })
+      )
+    );
+    const srvText = cleanList.length > 0 ? cleanList.join(', ') : 'Servicios generales';
     const msg = `Hola Puelche Lab,\n\nMi nombre es ${name || 'un prospecto'} de la empresa ${company || 'Independiente'}.\nUbicación: ${selectedRegion}\nServicios de interés: ${srvText}\nModalidad: ${projectScale}\n\nDetalles del proyecto:\n${message || 'Me gustaría coordinar una reunión para evaluar nuestra iniciativa.'}\n\nContacto: ${phone || email || 'vía WhatsApp'}`;
     return `https://wa.me/56966177500?text=${encodeURIComponent(msg)}`;
   };
@@ -255,7 +345,7 @@ function ContactFormInner() {
                   >
                     <input
                       type="checkbox"
-                      checked={selectedServices.includes(service)}
+                      checked={isServiceSelected(service)}
                       onChange={() => handleCheckboxChange(service)}
                       className="w-4 h-4 text-[#59BFD6] accent-[#59BFD6] rounded border-white/20"
                     />
@@ -278,7 +368,7 @@ function ContactFormInner() {
                   >
                     <input
                       type="checkbox"
-                      checked={selectedServices.includes(service)}
+                      checked={isServiceSelected(service)}
                       onChange={() => handleCheckboxChange(service)}
                       className="w-3.5 h-3.5 text-[#59BFD6] accent-[#59BFD6] rounded border-white/20"
                     />

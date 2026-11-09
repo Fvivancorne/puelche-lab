@@ -360,7 +360,7 @@ export default function EdicionFotograficaPage() {
               Ver en One-Page de Servicios
             </Link>
             <Link
-              href="/contacto?servicio=Edici%C3%B3n%20Fotogr%C3%A1fica"
+              href="/contacto?servicio=edicion-fotografica"
               className="inline-flex items-center gap-2.5 px-8 py-3.5 bg-[#59BFD6] text-puelche-dark font-condensed uppercase tracking-widest text-xs font-bold rounded-full hover:bg-white transition-all shadow-lg hover:scale-105"
             >
               <span>Cotizar Edición Fotográfica</span>
@@ -479,7 +479,7 @@ export default function EdicionFotograficaPage() {
               <span className="font-bold">{activeModalProject.gallery.length}</span>
             </div>
             <Link
-              href="/contacto"
+              href="/contacto?servicio=edicion-fotografica"
               className="text-puelche-cyan font-condensed uppercase tracking-wider font-bold hover:underline"
             >
               Cotizar Retoque Similar &rarr;

@@ -609,7 +609,7 @@ export default function FotografiaPage() {
                   <span>Explorar Fotografías</span>
                 </button>
                 <Link
-                  href={`/contacto?servicio=Fotograf%C3%ADa&proyecto=${encodeURIComponent(currentExpedition.client)}`}
+                  href={`/contacto?servicio=fotografia&proyecto=${encodeURIComponent(currentExpedition.client)}`}
                   className="inline-flex items-center gap-2 px-5 py-3 border border-white/20 hover:border-white text-white font-condensed uppercase tracking-wider font-bold text-sm rounded-sm hover:bg-white/10 transition-colors"
                 >
                   <span>Cotizar Faena</span>
@@ -692,7 +692,7 @@ export default function FotografiaPage() {
               Ver en One-Page de Servicios
             </Link>
             <Link
-              href="/contacto?servicio=Fotograf%C3%ADa"
+              href="/contacto?servicio=fotografia"
               className="inline-flex items-center gap-2.5 px-8 py-3.5 bg-[#59BFD6] text-puelche-dark font-condensed uppercase tracking-widest text-xs font-bold rounded-full hover:bg-white transition-all shadow-lg hover:scale-105"
             >
               <span>Cotizar Producción</span>
@@ -814,7 +814,7 @@ export default function FotografiaPage() {
               <span className="font-bold">{activeModalProject.gallery.length}</span>
             </div>
             <Link
-              href={`/contacto?proyecto=${encodeURIComponent(activeModalProject.client)}`}
+              href={`/contacto?servicio=fotografia&proyecto=${encodeURIComponent(activeModalProject.client)}`}
               className="text-puelche-cyan font-condensed uppercase tracking-wider font-bold hover:underline"
             >
               Cotizar Proyecto Similar &rarr;

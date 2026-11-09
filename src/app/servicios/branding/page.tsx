@@ -727,7 +727,7 @@ export default function BrandingPage() {
                   <span>Ver Piezas en Alta Resolución</span>
                 </button>
                 <Link
-                  href={`/contacto?proyecto=${encodeURIComponent(currentFeatured.client)}`}
+                  href={`/contacto?servicio=branding&proyecto=${encodeURIComponent(currentFeatured.client)}`}
                   className="inline-flex items-center gap-2 px-5 py-3 border border-white/20 hover:border-white text-white font-condensed uppercase tracking-wider font-bold text-sm rounded-sm hover:bg-white/10 transition-colors"
                 >
                   <span>Cotizar Branding</span>
@@ -987,10 +987,16 @@ export default function BrandingPage() {
           <p className="font-sans text-sm text-[#4b5563] font-light">
             Creamos manuales de identidad, señalética y aplicaciones con identidad territorial y proyección global.
           </p>
-          <div>
+          <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-4">
+            <Link
+              href="/servicios#branding"
+              className="px-6 py-3.5 rounded-full border border-[#1e2229]/20 hover:border-[#1e2229] text-xs font-condensed uppercase tracking-wider text-[#1e2229] font-bold transition-all"
+            >
+              Ver en One-Page de Servicios
+            </Link>
             <Link
               href="/contacto?servicio=branding"
-              className="inline-flex items-center gap-3 px-8 py-4 bg-[#59BFD6] text-[#07080b] font-condensed uppercase tracking-widest text-sm font-bold rounded-sm hover:bg-[#48abc0] transition-colors shadow-md"
+              className="inline-flex items-center gap-2.5 px-8 py-3.5 bg-[#59BFD6] text-puelche-dark font-condensed uppercase tracking-widest text-xs font-bold rounded-full hover:bg-[#1e2229] hover:text-white transition-all shadow-lg hover:scale-105"
             >
               <span>Cotizar Diseño de Marca</span>
               <ArrowRight className="w-4 h-4" />
@@ -1113,7 +1119,7 @@ export default function BrandingPage() {
               <span className="text-white/40 hidden sm:inline">&bull; Desliza con 2 dedos en el pad mouse o flechas [← / →]</span>
             </div>
             <Link
-              href={`/contacto?proyecto=${encodeURIComponent(activeModalProject.client)}`}
+              href={`/contacto?servicio=branding&proyecto=${encodeURIComponent(activeModalProject.client)}`}
               className="text-[#59BFD6] font-condensed uppercase tracking-wider font-bold hover:underline"
             >
               Cotizar Proyecto Similar &rarr;

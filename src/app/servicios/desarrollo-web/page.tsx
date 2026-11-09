@@ -376,7 +376,7 @@ export default function DesarrolloWebPage() {
               Ver en One-Page de Servicios
             </Link>
             <Link
-              href="/contacto?servicio=Desarrollo%20Web%20Next.js"
+              href="/contacto?servicio=desarrollo-web"
               className="inline-flex items-center gap-2.5 px-8 py-3.5 bg-[#59BFD6] text-puelche-dark font-condensed uppercase tracking-widest text-xs font-bold rounded-full hover:bg-white transition-all shadow-lg hover:scale-105"
             >
               <span>Cotizar Sitio Web</span>
@@ -495,7 +495,7 @@ export default function DesarrolloWebPage() {
               <span className="font-bold">{activeModalProject.gallery.length}</span>
             </div>
             <Link
-              href="/contacto"
+              href={`/contacto?servicio=desarrollo-web&proyecto=${encodeURIComponent(activeModalProject.client)}`}
               className="text-puelche-cyan font-condensed uppercase tracking-wider font-bold hover:underline"
             >
               Cotizar Proyecto Similar &rarr;

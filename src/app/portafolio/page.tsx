@@ -1161,7 +1161,13 @@ function PortfolioContent() {
                 {/* Acciones de Cierre & Conversión a Contacto */}
                 <div className="pt-6 border-t border-white/10 space-y-3">
                   <Link
-                    href={`/contacto?proyecto=${encodeURIComponent(activeModalProject.title)}`}
+                    href={`/contacto?proyecto=${encodeURIComponent(activeModalProject.title)}&servicio=${
+                      activeModalProject.category === 'Fotografía' ? 'fotografia' :
+                      activeModalProject.category === 'Edición Fotográfica' ? 'edicion-fotografica' :
+                      activeModalProject.category === 'Branding' ? 'branding' :
+                      activeModalProject.category === 'Desarrollo Web' ? 'desarrollo-web' :
+                      activeModalProject.category === 'Editorial' ? 'editorial' : 'fotografia'
+                    }`}
                     className="w-full inline-flex items-center justify-center gap-2 py-3.5 px-6 rounded-full bg-[#59BFD6] text-puelche-dark font-condensed font-bold uppercase tracking-wider text-sm hover:bg-white hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 shadow-[0_0_20px_rgba(89,191,214,0.4)]"
                   >
                     <span>Cotizar Proyecto Similar</span>

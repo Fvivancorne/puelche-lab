@@ -470,7 +470,7 @@ export default function RedesSocialesPage() {
               Ver en One-Page de Servicios
             </Link>
             <Link
-              href="/contacto?servicio=Redes%20Sociales"
+              href="/contacto?servicio=redes-sociales"
               className="inline-flex items-center gap-2.5 px-8 py-3.5 bg-[#59BFD6] text-puelche-dark font-condensed uppercase tracking-widest text-xs font-bold rounded-full hover:bg-white transition-all shadow-lg hover:scale-105"
             >
               <span>Cotizar Redes Sociales</span>
