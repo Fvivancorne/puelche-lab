@@ -2,13 +2,14 @@ import React from 'react';
 import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
-import { ArrowUpRight, Globe, MapPin, Building2, Quote, Sparkles } from 'lucide-react';
+import { ArrowUpRight, Globe, MapPin, Building2, Quote, Sparkles, Wind } from 'lucide-react';
 import { AtmosphericBackground } from '@/components/ui/AtmosphericBackground';
+import { ClientsKineticExperience } from '@/components/clients/ClientsKineticExperience';
 
 export const metadata: Metadata = {
   title: 'Clientes | Puelche Lab Puerto Varas — Clientes & Territorio Austral',
   description:
-    'Empresas, instituciones y proyectos que confían en Puelche Lab a lo largo de Los Lagos, Chiloé, Aysén y Magallanes.',
+    'Empresas, instituciones y proyectos que confían en Puelche Lab a lo largo de Los Lagos, Chiloé, Aysén y Magallanes. Archivo territorial y cinematográfico de alianzas.',
 };
 
 export interface ClientLogo {
@@ -230,12 +231,12 @@ export const TESTIMONIALS = [
 
 export default function ClientesPage() {
   return (
-    <div className="relative w-full flex-1 bg-[#0D0E12] text-white min-h-screen overflow-hidden selection:bg-[#59BFD6] selection:text-[#0D0E12]">
+    <div className="relative w-full flex-1 bg-[#08090b] text-white min-h-screen overflow-hidden selection:bg-[#59BFD6] selection:text-[#08090b]">
       {/* ── ATMÓSFERA AUSTRAL VIVA: ORBES LUMINOSOS + MICRO-PARTÍCULAS EN CANVAS ── */}
-      <AtmosphericBackground intensity="medium" showParticles={true} className="z-0" />
+      <AtmosphericBackground intensity="vibrant" showParticles={true} className="z-0" />
 
       {/* ── PLACA FOTOGRÁFICA AUTÉNTICA DEL PAISAJE AUSTRAL (100% GENUINA, ANTI-STOCK) ── */}
-      <div className="absolute inset-0 pointer-events-none z-[1] opacity-10 mix-blend-screen overflow-hidden">
+      <div className="absolute inset-0 pointer-events-none z-[1] opacity-15 mix-blend-screen overflow-hidden">
         <Image
           src="/images/real/bg-home-2.jpg"
           alt="Atmósfera austral Puelche Lab"
@@ -243,8 +244,8 @@ export default function ClientesPage() {
           className="object-cover object-top filter grayscale contrast-125"
           priority
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-[#0D0E12] via-transparent to-[#0D0E12]" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_35%,#0D0E12_95%)]" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#08090b] via-transparent to-[#08090b]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_30%,#08090b_90%)]" />
       </div>
 
       {/* ── GUÍAS ÓPTICAS DE ESTUDIO & ESQUINAS DE ENCUADRE ── */}
@@ -255,8 +256,8 @@ export default function ClientesPage() {
         <span className="absolute -bottom-1.5 -right-1.5 w-3 h-3 border-b-2 border-r-2 border-[#59BFD6]/40" />
       </div>
 
-      {/* ── CABECERA EDITORIAL AWWWARDS SOTD (FONDO OBSIDIANA AUSTRAL & ACENTOS QUIRÚRGICOS) ── */}
-      <section className="relative z-10 pt-24 pb-14 md:pt-32 md:pb-20 px-6 sm:px-8 lg:px-12 text-center overflow-hidden border-b border-white/10">
+      {/* ── CABECERA EDITORIAL AWWWARDS SOTD ── */}
+      <section className="relative z-10 pt-28 pb-14 md:pt-36 md:pb-20 px-6 sm:px-8 lg:px-12 text-center overflow-hidden border-b border-white/10 bg-gradient-to-b from-[#101216]/90 via-[#08090b]/95 to-[#08090b]">
         {/* Glow atmosférico suave de fondo */}
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[350px] bg-[#59BFD6]/10 blur-[120px] rounded-full" />
@@ -280,137 +281,47 @@ export default function ClientesPage() {
           <div className="flex flex-wrap items-center justify-center gap-2.5 sm:gap-3 pt-6">
             <a
               href="#marcas"
-              className="px-4 py-2 rounded-full bg-white/[0.04] hover:bg-[#59BFD6] hover:text-puelche-dark border border-white/15 text-[11px] sm:text-xs font-mono tracking-wider uppercase text-white transition-all flex items-center gap-2 backdrop-blur-md hover:scale-105 shadow-sm"
+              className="px-4 py-2 rounded-full bg-white/[0.04] hover:bg-[#59BFD6] hover:text-[#08090b] border border-white/15 text-[11px] sm:text-xs font-mono tracking-wider uppercase text-white transition-all flex items-center gap-2 backdrop-blur-md hover:scale-105 shadow-sm"
             >
-              <span className="w-1.5 h-1.5 rounded-full bg-[#59BFD6]"></span>
-              <span>20 Marcas</span>
+              <span className="w-1.5 h-1.5 rounded-full bg-[#59BFD6]" />
+              <span>20 Marcas en Movimiento</span>
             </a>
             <a
               href="#territorio"
-              className="px-4 py-2 rounded-full bg-white/[0.04] hover:bg-[#59BFD6] hover:text-puelche-dark border border-white/15 text-[11px] sm:text-xs font-mono tracking-wider uppercase text-white transition-all flex items-center gap-2 backdrop-blur-md hover:scale-105 shadow-sm"
+              className="px-4 py-2 rounded-full bg-white/[0.04] hover:bg-[#59BFD6] hover:text-[#08090b] border border-white/15 text-[11px] sm:text-xs font-mono tracking-wider uppercase text-white transition-all flex items-center gap-2 backdrop-blur-md hover:scale-105 shadow-sm"
             >
-              <span className="w-1.5 h-1.5 rounded-full bg-white/40"></span>
+              <span className="w-1.5 h-1.5 rounded-full bg-white/40" />
               <span>Radio Territorial</span>
             </a>
             <a
               href="#testimonios"
-              className="px-4 py-2 rounded-full bg-white/[0.04] hover:bg-[#59BFD6] hover:text-puelche-dark border border-white/15 text-[11px] sm:text-xs font-mono tracking-wider uppercase text-white transition-all flex items-center gap-2 backdrop-blur-md hover:scale-105 shadow-sm"
+              className="px-4 py-2 rounded-full bg-white/[0.04] hover:bg-[#59BFD6] hover:text-[#08090b] border border-white/15 text-[11px] sm:text-xs font-mono tracking-wider uppercase text-white transition-all flex items-center gap-2 backdrop-blur-md hover:scale-105 shadow-sm"
             >
-              <span className="w-1.5 h-1.5 rounded-full bg-white/40"></span>
+              <span className="w-1.5 h-1.5 rounded-full bg-white/40" />
               <span>Testimonios</span>
             </a>
             <a
               href="#directorio"
-              className="px-4 py-2 rounded-full bg-white/[0.04] hover:bg-[#59BFD6] hover:text-puelche-dark border border-white/15 text-[11px] sm:text-xs font-mono tracking-wider uppercase text-white transition-all flex items-center gap-2 backdrop-blur-md hover:scale-105 shadow-sm"
+              className="px-4 py-2 rounded-full bg-white/[0.04] hover:bg-[#59BFD6] hover:text-[#08090b] border border-white/15 text-[11px] sm:text-xs font-mono tracking-wider uppercase text-white transition-all flex items-center gap-2 backdrop-blur-md hover:scale-105 shadow-sm"
             >
-              <span className="w-1.5 h-1.5 rounded-full bg-white/40"></span>
+              <span className="w-1.5 h-1.5 rounded-full bg-white/40" />
               <span>Directorio</span>
             </a>
           </div>
         </div>
       </section>
 
-      {/* ── 20 LOGOS OFICIALES: PROOF WALL SOBRIO EN OBSIDIANA ── */}
-      <section id="marcas" className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-20">
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 sm:gap-7 items-stretch justify-center">
-          {CLIENT_LOGOS.map((client) => (
-            <div
-              key={client.id}
-              data-cursor="CLIENTE"
-              className="relative h-48 sm:h-52 rounded-2xl bg-[#121418]/90 border border-white/10 backdrop-blur-md flex flex-col items-center justify-center overflow-hidden transition-all duration-300 hover:bg-[#16191f] hover:border-[#59BFD6]/60 hover:shadow-[0_20px_50px_rgba(0,0,0,0.7)] hover:-translate-y-1.5 group"
-            >
-              {/* Logo Centrado con amplitud y respiración */}
-              <div className="relative w-full h-full flex items-center justify-center p-6 transition-all duration-300 group-hover:scale-90 group-hover:-translate-y-4">
-                <Image
-                  src={`/images/real/clients/${client.file}`}
-                  alt={`Logo oficial ${client.name} — Cliente Puelche Lab`}
-                  width={320}
-                  height={180}
-                  unoptimized
-                  className="max-h-[75px] w-auto max-w-[80%] object-contain filter brightness-100 group-hover:brightness-125 transition-all duration-300 drop-shadow-md"
-                />
-              </div>
-
-              {/* Sutil pie de identificación en reposo */}
-              <div className="absolute bottom-3 inset-x-4 flex items-center justify-between text-white/50 group-hover:opacity-0 transition-opacity duration-200 pointer-events-none">
-                <span className="font-condensed text-xs uppercase tracking-wider text-white/80 font-semibold truncate">
-                  {client.name}
-                </span>
-                <span className="font-mono text-[9px] text-[#59BFD6] uppercase tracking-wider shrink-0">
-                  {client.region.split(',')[0]}
-                </span>
-              </div>
-
-              {/* Micro-Drawer de Alcance & Links al Hover */}
-              <div className="absolute inset-x-0 bottom-0 p-4 bg-gradient-to-t from-black via-black/95 to-black/85 border-t border-[#59BFD6]/40 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out flex flex-col gap-2 z-10">
-                <div className="flex items-center justify-between">
-                  <span className="font-condensed text-sm font-bold uppercase tracking-wider text-white">
-                    {client.name}
-                  </span>
-                  <span className="font-mono text-[9px] text-[#59BFD6] uppercase tracking-wider">
-                    {client.region}
-                  </span>
-                </div>
-                <p className="text-[11px] text-white/80 font-sans font-light leading-snug">
-                  {client.scope}
-                </p>
-
-                <div className="mt-1 flex flex-col gap-1.5">
-                  {client.projectSlug && (
-                    <Link
-                      href={`/portafolio?proyecto=${client.projectSlug}`}
-                      className="w-full py-1.5 px-3 rounded-lg bg-[#59BFD6] text-puelche-dark font-condensed font-bold text-xs uppercase tracking-wider hover:bg-white transition-colors shadow-md flex items-center justify-center gap-1.5"
-                    >
-                      <span>Ver Caso de Estudio</span>
-                      <ArrowUpRight className="w-3.5 h-3.5" />
-                    </Link>
-                  )}
-
-                  {client.websiteUrl && (
-                    <a
-                      href={client.websiteUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="w-full py-1 px-3 rounded-lg bg-white/10 hover:bg-white/20 border border-white/20 text-white font-condensed text-[11px] uppercase tracking-wider transition-colors flex items-center justify-center gap-1.5"
-                    >
-                      <Globe className="w-3 h-3 text-[#59BFD6]" />
-                      <span>Visitar Sitio Oficial</span>
-                      <ArrowUpRight className="w-3 h-3 text-white/60" />
-                    </a>
-                  )}
-
-                  {!client.projectSlug && (
-                    <Link
-                      href={`/contacto?servicio=${encodeURIComponent(client.scope)}`}
-                      className="w-full py-1.5 px-3 rounded-lg bg-white/10 border border-white/20 text-white font-condensed font-bold text-xs uppercase tracking-wider hover:bg-white hover:text-puelche-dark transition-colors flex items-center justify-center gap-1.5"
-                    >
-                      <span>Cotizar Servicio</span>
-                      <ArrowUpRight className="w-3.5 h-3.5 text-[#59BFD6]" />
-                    </Link>
-                  )}
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* Invitación Cinética al Scroll — Elimina el Falso Suelo */}
-        <div className="mt-14 flex flex-col items-center justify-center text-center">
-          <a
-            href="#territorio"
-            className="group inline-flex flex-col items-center gap-2.5 px-6 py-3.5 rounded-full bg-black/30 hover:bg-black/50 border border-white/20 backdrop-blur-md transition-all duration-300 hover:scale-105 shadow-lg"
-          >
-            <div className="flex items-center gap-2.5 font-mono text-xs uppercase tracking-widest text-white/90 group-hover:text-white">
-              <span className="w-2 h-2 rounded-full bg-[#59BFD6] animate-pulse"></span>
-              <span>Explorar Radio Territorial en la Patagonia</span>
-              <span className="text-[#59BFD6] group-hover:translate-y-1 transition-transform">↓</span>
-            </div>
-          </a>
-        </div>
+      {/* ── EXPERIENCIA KINÉTICA DE MARCAS (RÍO INFINITO + BOYAS FLOTANTES) ── */}
+      <section id="marcas">
+        <ClientsKineticExperience
+          clientLogos={CLIENT_LOGOS}
+          clientProfiles={CLIENT_PROFILES}
+          testimonials={TESTIMONIALS}
+        />
       </section>
 
-      {/* Darkroom Cinematic Transition — Alcance Geográfico + Directorio */}
-      <div className="relative bg-[#101216] text-white border-t border-white/15 overflow-hidden">
+      {/* ── ALCANCE GEOGRÁFICO & RADIO TERRITORIAL PATAGÓNICO (E2E CONTRACT SUPPORT) ── */}
+      <div className="relative bg-[#0d0f14] text-white border-t border-white/15 overflow-hidden">
         {/* Authentic Background with Moody Parallax Overlay */}
         <div className="absolute inset-0 z-0 pointer-events-none opacity-20">
           <Image
@@ -419,15 +330,15 @@ export default function ClientesPage() {
             fill
             className="object-cover filter grayscale contrast-125"
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-[#101216] via-[#101216]/90 to-[#101216]"></div>
+          <div className="absolute inset-0 bg-gradient-to-b from-[#0d0f14] via-[#0d0f14]/90 to-[#0d0f14]" />
         </div>
 
         {/* Territorial Scope Grid — Radio de Acción en la Patagonia */}
         <section id="territorio" className="relative z-10 max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-24 scroll-mt-20">
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6 border-b border-white/10 pb-8">
             <div className="max-w-2xl space-y-3">
-              <span className="font-serif italic text-sm text-[#59BFD6] block">
-                Territorio &amp; Rutas de Expedición
+              <span className="font-mono text-xs text-[#59BFD6] uppercase tracking-[0.25em] block">
+                TERRITORIO &amp; RUTAS DE EXPEDICIÓN
               </span>
               <h2 className="font-condensed text-4xl sm:text-5xl uppercase tracking-wider font-bold text-white">
                 Radio de Acción en la Patagonia Chilena
@@ -436,16 +347,16 @@ export default function ClientesPage() {
                 Presencia en terreno con base operativa en Puerto Varas y cobertura en 4 paisajes del sur austral.
               </p>
             </div>
-            <div className="flex items-center gap-2.5 text-xs font-serif italic text-white/70 shrink-0">
-              <span className="w-2 h-2 rounded-full bg-[#59BFD6]"></span>
+            <div className="flex items-center gap-2.5 text-xs font-mono text-white/70 shrink-0">
+              <span className="w-2 h-2 rounded-full bg-[#59BFD6]" />
               <span>Cuatro paisajes de trabajo en la Patagonia</span>
             </div>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            <div className="bg-[#181B20]/90 border border-white/10 p-7 rounded-2xl backdrop-blur-md space-y-4 hover:border-[#59BFD6]/50 transition-all duration-300 hover:-translate-y-1 group">
+            <div className="bg-[#14161c]/90 border border-white/10 p-7 rounded-2xl backdrop-blur-md space-y-4 hover:border-[#59BFD6]/50 transition-all duration-300 hover:-translate-y-1 group">
               <div className="flex items-center justify-between">
-                <span className="font-serif italic text-xs text-[#59BFD6]">
+                <span className="font-mono text-xs text-[#59BFD6]">
                   Nodo 01 &bull; Cuenca Lacustre
                 </span>
                 <MapPin className="w-4 h-4 text-white/40 group-hover:text-[#59BFD6] transition-colors" />
@@ -458,9 +369,9 @@ export default function ClientesPage() {
               </p>
             </div>
 
-            <div className="bg-[#181B20]/90 border border-white/10 p-7 rounded-2xl backdrop-blur-md space-y-4 hover:border-[#59BFD6]/50 transition-all duration-300 hover:-translate-y-1 group">
+            <div className="bg-[#14161c]/90 border border-white/10 p-7 rounded-2xl backdrop-blur-md space-y-4 hover:border-[#59BFD6]/50 transition-all duration-300 hover:-translate-y-1 group">
               <div className="flex items-center justify-between">
-                <span className="font-serif italic text-xs text-[#59BFD6]">
+                <span className="font-mono text-xs text-[#59BFD6]">
                   Nodo 02 &bull; El Mar Interior
                 </span>
                 <MapPin className="w-4 h-4 text-white/40 group-hover:text-[#59BFD6] transition-colors" />
@@ -473,9 +384,9 @@ export default function ClientesPage() {
               </p>
             </div>
 
-            <div className="bg-[#181B20]/90 border border-white/10 p-7 rounded-2xl backdrop-blur-md space-y-4 hover:border-[#59BFD6]/50 transition-all duration-300 hover:-translate-y-1 group">
+            <div className="bg-[#14161c]/90 border border-white/10 p-7 rounded-2xl backdrop-blur-md space-y-4 hover:border-[#59BFD6]/50 transition-all duration-300 hover:-translate-y-1 group">
               <div className="flex items-center justify-between">
-                <span className="font-serif italic text-xs text-[#59BFD6]">
+                <span className="font-mono text-xs text-[#59BFD6]">
                   Nodo 03 &bull; Fiordos &amp; Selva Fría
                 </span>
                 <MapPin className="w-4 h-4 text-white/40 group-hover:text-[#59BFD6] transition-colors" />
@@ -488,9 +399,9 @@ export default function ClientesPage() {
               </p>
             </div>
 
-            <div className="bg-[#181B20]/90 border border-white/10 p-7 rounded-2xl backdrop-blur-md space-y-4 hover:border-[#59BFD6]/50 transition-all duration-300 hover:-translate-y-1 group">
+            <div className="bg-[#14161c]/90 border border-white/10 p-7 rounded-2xl backdrop-blur-md space-y-4 hover:border-[#59BFD6]/50 transition-all duration-300 hover:-translate-y-1 group">
               <div className="flex items-center justify-between">
-                <span className="font-serif italic text-xs text-[#59BFD6]">
+                <span className="font-mono text-xs text-[#59BFD6]">
                   Nodo 04 &bull; El Confín Austral
                 </span>
                 <MapPin className="w-4 h-4 text-white/40 group-hover:text-[#59BFD6] transition-colors" />
@@ -508,8 +419,8 @@ export default function ClientesPage() {
         {/* Testimonials Section — Voces de Liderazgo Austral */}
         <section id="testimonios" className="relative z-10 max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 pb-24 border-t border-white/10 pt-20 scroll-mt-20">
           <div className="text-center max-w-2xl mx-auto mb-16 space-y-3">
-            <span className="font-serif italic text-sm text-[#59BFD6] block">
-              Vínculo Territorial &amp; Confianza
+            <span className="font-mono text-xs uppercase tracking-[0.25em] text-[#59BFD6] block">
+              VÍNCULO TERRITORIAL &amp; CONFIANZA
             </span>
             <h2 className="font-condensed text-4xl sm:text-5xl uppercase tracking-wider font-bold text-white">
               Voz de Nuestras Alianzas
@@ -523,7 +434,7 @@ export default function ClientesPage() {
             {TESTIMONIALS.map((t, idx) => (
               <div
                 key={idx}
-                className="bg-[#181B20]/80 border border-white/10 p-8 rounded-2xl flex flex-col justify-between relative group hover:border-[#59BFD6]/50 transition-all duration-300 hover:-translate-y-1"
+                className="bg-[#14161c]/80 border border-white/10 p-8 rounded-2xl flex flex-col justify-between relative group hover:border-[#59BFD6]/50 transition-all duration-300 hover:-translate-y-1"
               >
                 <Quote className="w-8 h-8 text-[#59BFD6]/40 mb-4 group-hover:text-[#59BFD6] transition-colors" />
                 <p className="font-sans text-sm text-white/85 font-light italic leading-relaxed mb-6">
@@ -533,10 +444,10 @@ export default function ClientesPage() {
                   <div className="font-condensed text-sm font-bold uppercase tracking-wider text-white">
                     {t.author}
                   </div>
-                  <div className="text-xs text-[#59BFD6] font-medium">
+                  <div className="text-xs text-[#59BFD6] font-medium font-mono">
                     {t.organization}
                   </div>
-                  <div className="text-[11px] text-white/50 font-serif italic mt-0.5">
+                  <div className="text-[11px] text-white/50 font-mono mt-0.5">
                     {t.location}
                   </div>
                 </div>
@@ -545,12 +456,12 @@ export default function ClientesPage() {
           </div>
         </section>
 
-        {/* Directory Table — Registro Institucional */}
+        {/* Directory Table — Registro Institucional (E2E CONTRACT OVERFLOW-X-AUTO & MIN-W-[700px]) */}
         <section id="directorio" className="relative z-10 max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 pb-28 border-t border-white/10 pt-20 scroll-mt-20">
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
             <div className="max-w-2xl space-y-3">
-              <span className="font-serif italic text-sm text-[#59BFD6] block">
-                Historial Documentado
+              <span className="font-mono text-xs uppercase tracking-[0.25em] text-[#59BFD6] block">
+                HISTORIAL DOCUMENTADO
               </span>
               <h2 className="font-condensed text-4xl sm:text-5xl uppercase tracking-wider font-bold text-white">
                 Directorio de Relaciones Corporativas
@@ -559,7 +470,7 @@ export default function ClientesPage() {
                 Historial documentado de alcances técnicos e industrias atendidas en la Patagonia.
               </p>
             </div>
-            <div className="font-serif italic text-xs text-white/60 bg-white/5 px-4 py-2 rounded-full border border-white/10 self-start md:self-auto">
+            <div className="font-mono text-xs text-white/60 bg-white/5 px-4 py-2 rounded-full border border-white/10 self-start md:self-auto">
               Alianzas y memorias territoriales
             </div>
           </div>
@@ -581,7 +492,7 @@ export default function ClientesPage() {
                     className="hover:bg-puelche-sand/20 transition-colors"
                   >
                     <td className="py-4 px-6 font-bold text-white font-condensed tracking-wide text-sm flex items-center gap-2">
-                      <span className="w-1.5 h-1.5 rounded-full bg-[#59BFD6]"></span>
+                      <span className="w-1.5 h-1.5 rounded-full bg-[#59BFD6]" />
                       <span>{cp.name}</span>
                     </td>
                     <td className="py-4 px-6 text-white/80">{cp.industry}</td>
@@ -594,7 +505,7 @@ export default function ClientesPage() {
           </div>
 
           {/* CTA Footer Block */}
-          <div className="mt-16 p-8 md:p-12 rounded-2xl bg-gradient-to-r from-puelche-dark to-[#1d2024] border border-white/15 flex flex-col md:flex-row items-center justify-between gap-8">
+          <div className="mt-16 p-8 md:p-12 rounded-2xl bg-gradient-to-r from-[#08090b] via-[#14161c] to-[#08090b] border border-white/15 flex flex-col md:flex-row items-center justify-between gap-8">
             <div className="space-y-2 text-center md:text-left">
               <h3 className="font-condensed text-2xl md:text-3xl font-bold uppercase tracking-wider text-white">
                 ¿Tu marca necesita elevar su estándar visual en el sur?
@@ -606,14 +517,14 @@ export default function ClientesPage() {
             <div className="flex flex-wrap items-center gap-4">
               <Link
                 href="/contacto"
-                className="py-3 px-6 rounded-xl bg-[#59BFD6] text-puelche-dark font-condensed font-bold text-sm uppercase tracking-wider hover:bg-white transition-all shadow-lg flex items-center gap-2"
+                className="py-3 px-6 rounded-xl bg-[#59BFD6] text-[#08090b] font-condensed font-bold text-sm uppercase tracking-wider hover:bg-white transition-all shadow-lg flex items-center gap-2"
               >
                 <span>Iniciar Brief de Proyecto</span>
                 <ArrowUpRight className="w-4 h-4" />
               </Link>
               <Link
                 href="/portafolio"
-                className="py-3 px-6 rounded-xl bg-white/10 border border-white/20 text-white font-condensed font-bold text-sm uppercase tracking-wider hover:bg-white hover:text-puelche-dark transition-all"
+                className="py-3 px-6 rounded-xl bg-white/10 border border-white/20 text-white font-condensed font-bold text-sm uppercase tracking-wider hover:bg-white hover:text-[#08090b] transition-all"
               >
                 <span>Ver Portafolio Completo</span>
               </Link>
