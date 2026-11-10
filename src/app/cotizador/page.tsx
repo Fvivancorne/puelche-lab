@@ -397,13 +397,19 @@ function CotizadorContent() {
               </span>
             </div>
 
-            {/* Total Prominente en CLP y USD */}
-            <div className="space-y-1">
+            {/* Total Prominente en CLP, UF Nacional y USD Referencial */}
+            <div className="space-y-1.5">
               <div className="font-condensed text-4xl sm:text-5xl font-black text-white tracking-tight">
                 {formattedClp}
               </div>
-              <div className="font-mono text-base text-[#59BFD6] font-semibold">
-                &asymp; {formattedUsd} USD
+              <div className="flex items-center gap-2 font-mono text-xs sm:text-sm text-[#59BFD6] font-semibold">
+                <span className="px-2 py-0.5 rounded-md bg-[#59BFD6]/10 border border-[#59BFD6]/20 text-[#59BFD6]">
+                  &asymp; {Math.round(pricing.totalClp / 39200).toLocaleString('es-CL')} UF
+                </span>
+                <span className="text-white/30">&bull;</span>
+                <span className="text-white/50 text-xs font-normal">
+                  Ref: {formattedUsd} USD
+                </span>
               </div>
             </div>
 

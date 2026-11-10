@@ -49,6 +49,7 @@ interface PricingConfig {
   updatedBy: string;
   currency: {
     usdToClpRate: number;
+    ufRate?: number;
     label: string;
   };
   tiers: Tier[];
@@ -137,6 +138,13 @@ export default function AdminPreciosPage() {
     setConfig((prev) => ({
       ...prev,
       currency: { ...prev.currency, usdToClpRate: rate },
+    }));
+  };
+
+  const updateUfRate = (rate: number) => {
+    setConfig((prev) => ({
+      ...prev,
+      currency: { ...prev.currency, ufRate: rate },
     }));
   };
 
@@ -318,19 +326,30 @@ export default function AdminPreciosPage() {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label className="block font-mono text-[11px] uppercase tracking-wider text-white/70 mb-1.5">
-                  Tasa 1 USD en CLP ($)
+                  Valor 1 UF en CLP ($) (Estándar Nacional Chile)
+                </label>
+                <input
+                  type="number"
+                  value={config.currency.ufRate || 39200}
+                  onChange={(e) => updateUfRate(Number(e.target.value) || 39200)}
+                  className="w-full bg-white/5 border border-white/15 focus:border-[#59BFD6] rounded-xl px-4 py-3 text-white font-mono text-sm outline-none"
+                />
+                <span className="font-mono text-[10px] text-white/40 block mt-1">
+                  Permite anclar propuestas ejecutivas en Unidades de Fomento.
+                </span>
+              </div>
+              <div>
+                <label className="block font-mono text-[11px] uppercase tracking-wider text-white/70 mb-1.5">
+                  Tasa 1 USD en CLP ($) (Referencial Extranjero)
                 </label>
                 <input
                   type="number"
                   value={config.currency.usdToClpRate}
                   onChange={(e) => updateUsdRate(Number(e.target.value) || 950)}
-                  className="w-full bg-white/5 border border-white/15 focus:border-[#59BFD6] rounded-xl px-4 py-3 text-white font-mono text-sm outline-none"
+                  className="w-full bg-white/5 border border-white/15 focus:border-[#C29B63] rounded-xl px-4 py-3 text-white font-mono text-sm outline-none"
                 />
-              </div>
-              <div className="p-4 rounded-2xl bg-white/[0.02] border border-white/5 flex flex-col justify-center">
-                <span className="font-mono text-[11px] text-white/50">Equivalencia referencial:</span>
-                <span className="font-mono text-sm text-[#59BFD6] font-semibold mt-1">
-                  $1.000.000 CLP &asymp; ${(1000000 / config.currency.usdToClpRate).toFixed(0)} USD
+                <span className="font-mono text-[10px] text-white/40 block mt-1">
+                  Referencia secundaria para clientes internacionales.
                 </span>
               </div>
             </div>

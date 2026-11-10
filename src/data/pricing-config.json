@@ -3,19 +3,20 @@
   "updatedBy": "Puelche Lab Admin",
   "currency": {
     "usdToClpRate": 950,
+    "ufRate": 39200,
     "label": "CLP"
   },
   "tiers": [
     {
       "maxPages": 1,
-      "basePrice": 1800000,
+      "basePrice": 1200000,
       "pricePerPage": 0,
       "baseWeeks": 2
     },
     {
       "maxPages": 5,
       "basePrice": 1800000,
-      "pricePerPage": 350000,
+      "pricePerPage": 300000,
       "baseWeeks": 4
     },
     {
