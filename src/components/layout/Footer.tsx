@@ -99,26 +99,39 @@ export function Footer() {
             </Link>
           </div>
 
-          {/* Social Icons */}
-          <div className="flex items-center justify-center space-x-6 pt-4 border-t border-white/10 max-w-xs mx-auto">
-            <a
-              href="https://www.facebook.com/PuelcheLabPublicidad/"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Facebook Puelche Lab Oficial"
-              className="w-10 h-10 rounded-full border border-white/20 bg-white/5 flex items-center justify-center text-white hover:bg-[#59BFD6] hover:text-puelche-dark hover:border-[#59BFD6] transition-all duration-200 shadow-md"
-            >
-              <Facebook className="w-4 h-4 fill-current" />
-            </a>
-            <a
-              href="https://www.instagram.com/puelche_lab/"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Instagram @puelche_lab"
-              className="w-10 h-10 rounded-full border border-white/20 bg-white/5 flex items-center justify-center text-white hover:bg-[#59BFD6] hover:text-puelche-dark hover:border-[#59BFD6] transition-all duration-200 shadow-md"
-            >
-              <Instagram className="w-4 h-4" />
-            </a>
+          {/* Social Icons & Direct Directory */}
+          <div className="flex flex-col items-center justify-center space-y-5 pt-6 border-t border-white/10 max-w-2xl mx-auto">
+            <div className="flex items-center justify-center space-x-6">
+              <a
+                href="https://www.facebook.com/PuelcheLabPublicidad/"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Facebook Puelche Lab Oficial"
+                className="w-10 h-10 rounded-full border border-white/20 bg-white/5 flex items-center justify-center text-white hover:bg-[#59BFD6] hover:text-puelche-dark hover:border-[#59BFD6] transition-all duration-200 shadow-md"
+              >
+                <Facebook className="w-4 h-4 fill-current" />
+              </a>
+              <a
+                href="https://www.instagram.com/puelche_lab/"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Instagram @puelche_lab"
+                className="w-10 h-10 rounded-full border border-white/20 bg-white/5 flex items-center justify-center text-white hover:bg-[#59BFD6] hover:text-puelche-dark hover:border-[#59BFD6] transition-all duration-200 shadow-md"
+              >
+                <Instagram className="w-4 h-4" />
+              </a>
+            </div>
+
+            {/* Direct Studio Navigation Links */}
+            <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 font-condensed uppercase tracking-wider text-xs text-white/60 pt-2">
+              <Link href="/servicios" className="hover:text-[#59BFD6] transition-colors">Servicios</Link>
+              <Link href="/portafolio" className="hover:text-[#59BFD6] transition-colors">Portafolio</Link>
+              <Link href="/auditor" className="hover:text-[#59BFD6] transition-colors">Auditor Web</Link>
+              <Link href="/cotizador" className="hover:text-[#59BFD6] transition-colors">Cotizador</Link>
+              <Link href="/clientes" className="hover:text-[#59BFD6] transition-colors">Clientes</Link>
+              <Link href="/contacto" className="hover:text-[#59BFD6] transition-colors">Contacto</Link>
+              <Link href="/admin/precios" className="hover:text-[#59BFD6] text-white/30 transition-colors">&bull; CMS Precios</Link>
+            </div>
           </div>
         </div>
       </div>

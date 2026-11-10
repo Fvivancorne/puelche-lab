@@ -218,11 +218,11 @@ html.lenis, html.lenis body {
 @keyframes pliego-slide-next {
   0% {
     opacity: 0;
-    transform: translate3d(80px, 0, 0) scale(0.96);
+    transform: translate3d(70px, 0, 0) scale(0.97);
     filter: drop-shadow(-40px 15px 50px rgba(0, 0, 0, 0.95));
   }
-  35% {
-    opacity: 0.85;
+  30% {
+    opacity: 0.7;
   }
   100% {
     opacity: 1;
@@ -234,11 +234,11 @@ html.lenis, html.lenis body {
 @keyframes pliego-slide-prev {
   0% {
     opacity: 0;
-    transform: translate3d(-80px, 0, 0) scale(0.96);
+    transform: translate3d(-70px, 0, 0) scale(0.97);
     filter: drop-shadow(40px 15px 50px rgba(0, 0, 0, 0.95));
   }
-  35% {
-    opacity: 0.85;
+  30% {
+    opacity: 0.7;
   }
   100% {
     opacity: 1;
@@ -248,12 +248,12 @@ html.lenis, html.lenis body {
 }
 
 .animate-pliego-next {
-  animation: pliego-slide-next 0.46s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: pliego-slide-next 0.72s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   will-change: transform, opacity, filter;
 }
 
 .animate-pliego-prev {
-  animation: pliego-slide-prev 0.46s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: pliego-slide-prev 0.72s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   will-change: transform, opacity, filter;
 }
 

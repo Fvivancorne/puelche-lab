@@ -43,7 +43,7 @@ export function Navbar() {
         </Link>
 
         {/* Desktop Navigation */}
-        <nav className="hidden lg:flex items-center space-x-7 font-condensed uppercase tracking-wider text-[15px] font-medium text-white">
+        <nav className="hidden lg:flex items-center space-x-6 xl:space-x-7 font-condensed uppercase tracking-wider text-[14px] xl:text-[15px] font-medium text-white">
           <Link
             href="/"
             className={cn(
@@ -52,6 +52,16 @@ export function Navbar() {
             )}
           >
             HOME
+          </Link>
+
+          <Link
+            href="/servicios"
+            className={cn(
+              'transition-colors py-2 hover:text-puelche-cyan relative',
+              pathname === '/servicios' ? 'text-puelche-cyan font-semibold' : 'text-white'
+            )}
+          >
+            SERVICIOS
           </Link>
 
           {/* Portafolio Dropdown */}
@@ -64,7 +74,7 @@ export function Navbar() {
               href="/portafolio"
               className={cn(
                 'inline-flex items-center gap-1.5 transition-colors py-2 hover:text-puelche-cyan relative',
-                isPortfolioActive ? 'text-puelche-cyan font-semibold' : 'text-white'
+                pathname === '/portafolio' ? 'text-puelche-cyan font-semibold' : 'text-white'
               )}
             >
               <span>PORTAFOLIO</span>
@@ -78,15 +88,22 @@ export function Navbar() {
 
             {/* Dropdown Menu */}
             {dropdownOpen && (
-              <div className="absolute left-0 top-full pt-2 w-56 animate-in fade-in slide-in-from-top-1 duration-150 z-50">
-                <div className="bg-[#3B3D42] bg-puelche-slate border border-white/15 shadow-2xl rounded-md overflow-hidden py-1">
+              <div className="absolute left-0 top-full pt-2 w-60 animate-in fade-in slide-in-from-top-1 duration-150 z-50">
+                <div className="bg-[#24262b] border border-white/15 shadow-2xl rounded-xl overflow-hidden py-1 backdrop-blur-xl">
+                  <Link
+                    href="/portafolio"
+                    className="block px-4 py-2.5 text-xs font-condensed tracking-wider uppercase transition-colors border-b border-white/10 text-[#59BFD6] font-bold hover:bg-white/10"
+                    onClick={() => setDropdownOpen(false)}
+                  >
+                    Ver Todo el Portafolio &rarr;
+                  </Link>
                   {PORTFOLIO_DROPDOWN.map((item) => (
                     <Link
                       key={item.href}
                       href={item.href}
                       className={cn(
-                        'block px-4 py-2.5 text-xs font-condensed tracking-wider uppercase transition-colors border-b border-white/5 last:border-0 hover:bg-white/10 hover:text-puelche-cyan',
-                        pathname === item.href ? 'text-puelche-cyan bg-white/10 font-bold' : 'text-white/90'
+                        'block px-4 py-2 text-xs font-condensed tracking-wider uppercase transition-colors border-b border-white/5 last:border-0 hover:bg-white/10 hover:text-puelche-cyan',
+                        pathname === item.href ? 'text-puelche-cyan bg-white/10 font-bold' : 'text-white/80'
                       )}
                       onClick={() => setDropdownOpen(false)}
                     >
@@ -97,6 +114,19 @@ export function Navbar() {
               </div>
             )}
           </div>
+
+          <Link
+            href="/auditor"
+            className={cn(
+              'inline-flex items-center gap-1.5 transition-colors py-2 hover:text-puelche-cyan relative',
+              pathname === '/auditor' ? 'text-puelche-cyan font-semibold' : 'text-white'
+            )}
+          >
+            <span>AUDITOR</span>
+            <span className="px-1.5 py-0.2 rounded-full bg-[#59BFD6]/20 text-[#59BFD6] font-mono text-[9px] uppercase tracking-normal">
+              20s
+            </span>
+          </Link>
 
           <Link
             href="/clientes"
@@ -124,7 +154,7 @@ export function Navbar() {
           <SoundscapeToggle />
 
           <Link
-            href="/contacto"
+            href="/cotizador"
             className="hidden sm:inline-flex items-center gap-2 px-5 py-2 rounded-sm bg-puelche-cyan text-white hover:bg-puelche-cyan-dark font-condensed uppercase tracking-wider text-xs font-bold transition-all duration-200 shadow"
           >
             <span>Cotizar Proyecto</span>
@@ -151,11 +181,12 @@ export function Navbar() {
         <Link href="/servicios/desarrollo-web">Desarrollo Web</Link>
         <Link href="/servicios/editorial">Editorial</Link>
         <Link href="/clientes">Clientes</Link>
+        <Link href="/contacto">Cotizar Proyecto</Link>
       </div>
 
       {/* Mobile Drawer */}
       {mobileOpen && (
-        <div className="lg:hidden fixed inset-x-0 top-[70px] bg-puelche-slate border-b border-puelche-slate-dark shadow-2xl py-6 px-6 font-condensed uppercase tracking-wider text-base z-50">
+        <div className="lg:hidden fixed inset-x-0 top-[70px] bg-puelche-slate border-b border-puelche-slate-dark shadow-2xl py-6 px-6 font-condensed uppercase tracking-wider text-base z-50 max-h-[calc(100vh-70px)] overflow-y-auto">
           <div className="flex flex-col space-y-4">
             <Link
               href="/"
@@ -166,6 +197,17 @@ export function Navbar() {
               )}
             >
               HOME
+            </Link>
+
+            <Link
+              href="/servicios"
+              onClick={() => setMobileOpen(false)}
+              className={cn(
+                'py-2 border-b border-white/10 font-bold',
+                pathname === '/servicios' ? 'text-puelche-cyan font-semibold' : 'text-white'
+              )}
+            >
+              SERVICIOS
             </Link>
 
             <div className="py-2 border-b border-white/10 space-y-2">
@@ -179,16 +221,6 @@ export function Navbar() {
                   )}
                 >
                   PORTAFOLIO COMPLETO &rarr;
-                </Link>
-                <Link
-                  href="/servicios"
-                  onClick={() => setMobileOpen(false)}
-                  className={cn(
-                    'text-[10px] uppercase tracking-wider text-white/50 hover:text-puelche-cyan',
-                    pathname === '/servicios' && 'text-puelche-cyan font-semibold'
-                  )}
-                >
-                  6 Oficios
                 </Link>
               </div>
               <div className="pl-3 space-y-2 text-sm pt-1">
@@ -207,6 +239,32 @@ export function Navbar() {
                 ))}
               </div>
             </div>
+
+            <Link
+              href="/auditor"
+              onClick={() => setMobileOpen(false)}
+              className={cn(
+                'py-2 border-b border-white/10 font-bold flex items-center justify-between',
+                pathname === '/auditor' ? 'text-puelche-cyan font-semibold' : 'text-white'
+              )}
+            >
+              <span>AUDITOR DIGITAL</span>
+              <span className="px-2 py-0.5 rounded-full bg-[#59BFD6]/20 text-[#59BFD6] font-mono text-[10px]">
+                20s
+              </span>
+            </Link>
+
+            <Link
+              href="/cotizador"
+              onClick={() => setMobileOpen(false)}
+              className={cn(
+                'py-2 border-b border-white/10 font-bold flex items-center justify-between text-[#59BFD6]',
+                pathname === '/cotizador' && 'font-bold'
+              )}
+            >
+              <span>COTIZADOR PARAMÉTRICO</span>
+              <ArrowUpRight className="w-4 h-4" />
+            </Link>
 
             <Link
               href="/clientes"

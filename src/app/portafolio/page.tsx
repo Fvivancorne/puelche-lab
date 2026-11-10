@@ -269,16 +269,14 @@ function PortfolioContent() {
     };
   }, [activeModalProject]);
 
-  // ── NAVEGACIÓN EN EL MODAL: DESPLAZAMIENTO FLUIDO CON PAD MOUSE & FOTOGRAMAS PROGRESIVOS ──
+  // ── NAVEGACIÓN EN EL MODAL: DESPLAZAMIENTO CALMADO CON PAD MOUSE (ANTI-HIPERSENSIBILIDAD) ──
   useEffect(() => {
     if (!activeModalProject) return;
 
     let accumulatorX = 0;
-    let accumulatorY = 0;
     let isMomentumLocked = false;
     let unlockTimer: NodeJS.Timeout | null = null;
-    const HORIZONTAL_THRESHOLD = 95; // Fricción suave y controlada (pad mouse con 2 dedos)
-    const VERTICAL_PHOTO_THRESHOLD = 110;
+    const HORIZONTAL_THRESHOLD = 200; // Umbral deliberado y sereno: elimina disparos accidentales
 
     const handleModalWheel = (e: WheelEvent) => {
       // PREVENCIÓN TOTAL DE NAVEGACIÓN DE HISTORIAL DE CHROME/SAFARI:
@@ -286,67 +284,44 @@ function PortfolioContent() {
         e.preventDefault();
       }
 
-      // Detectar si el puntero está sobre el visor fotográfico (columna izquierda)
-      const target = e.target as HTMLElement | null;
-      const isOverPhoto = target ? Boolean(target.closest('.modal-photo-area')) : false;
+      // SOLO SWIPE HORIZONTAL DELIBERADO: Si el usuario scrollea verticalmente, ignorar por completo
+      const isDeliberateHorizontal =
+        Math.abs(e.deltaX) > Math.abs(e.deltaY) * 1.5 && Math.abs(e.deltaX) > 6;
 
-      const isHorizontal = Math.abs(e.deltaX) > Math.abs(e.deltaY) && Math.abs(e.deltaX) > 3;
-      const isVertical = Math.abs(e.deltaY) >= Math.abs(e.deltaX) && Math.abs(e.deltaY) > 3;
+      if (!isDeliberateHorizontal) {
+        return; // El eje vertical queda 100% libre para leer la columna derecha
+      }
 
-      // EL EJE VERTICAL SOBRE EL TEXTO QUEDA 100% LIBRE PARA LEER
-      if (isVertical && !isOverPhoto) {
+      e.preventDefault();
+      e.stopPropagation();
+
+      // Si está en absorción de inercia del swipe anterior, mantener el candado activo mientras siga llegando inercia
+      if (isMomentumLocked) {
+        if (unlockTimer) clearTimeout(unlockTimer);
+        unlockTimer = setTimeout(() => {
+          isMomentumLocked = false;
+          accumulatorX = 0;
+        }, 350);
         return;
       }
 
-      if (isHorizontal || (isVertical && isOverPhoto)) {
-        e.preventDefault();
-        e.stopPropagation();
+      accumulatorX += e.deltaX;
 
-        if (isMomentumLocked) {
-          if (unlockTimer) clearTimeout(unlockTimer);
-          unlockTimer = setTimeout(() => {
-            isMomentumLocked = false;
-            accumulatorX = 0;
-            accumulatorY = 0;
-          }, 220);
-          return;
+      if (Math.abs(accumulatorX) >= HORIZONTAL_THRESHOLD) {
+        isMomentumLocked = true;
+        if (accumulatorX > 0) {
+          advanceModal('next');
+        } else {
+          advanceModal('prev');
         }
+        accumulatorX = 0;
 
-        if (isHorizontal) {
-          accumulatorX += e.deltaX;
-          if (Math.abs(accumulatorX) >= HORIZONTAL_THRESHOLD) {
-            isMomentumLocked = true;
-            if (accumulatorX > 0) {
-              advanceModal('next');
-            } else {
-              advanceModal('prev');
-            }
-            accumulatorX = 0;
-            accumulatorY = 0;
-
-            if (unlockTimer) clearTimeout(unlockTimer);
-            unlockTimer = setTimeout(() => {
-              isMomentumLocked = false;
-            }, 450);
-          }
-        } else if (isVertical && isOverPhoto) {
-          accumulatorY += e.deltaY;
-          if (Math.abs(accumulatorY) >= VERTICAL_PHOTO_THRESHOLD) {
-            isMomentumLocked = true;
-            if (accumulatorY > 0) {
-              advanceModal('next');
-            } else {
-              advanceModal('prev');
-            }
-            accumulatorX = 0;
-            accumulatorY = 0;
-
-            if (unlockTimer) clearTimeout(unlockTimer);
-            unlockTimer = setTimeout(() => {
-              isMomentumLocked = false;
-            }, 450);
-          }
-        }
+        // Cooldown firme de 800ms para absorber la desaceleración natural del trackpad de macOS
+        if (unlockTimer) clearTimeout(unlockTimer);
+        unlockTimer = setTimeout(() => {
+          isMomentumLocked = false;
+          accumulatorX = 0;
+        }, 800);
       }
     };
 
@@ -365,8 +340,8 @@ function PortfolioContent() {
       if (e.changedTouches.length === 1) {
         const deltaX = e.changedTouches[0].clientX - touchStartX;
         const deltaY = e.changedTouches[0].clientY - touchStartY;
-        // Swipe horizontal claro (>55px)
-        if (Math.abs(deltaX) > Math.abs(deltaY) * 1.4 && Math.abs(deltaX) > 55) {
+        // Swipe horizontal claro (>75px)
+        if (Math.abs(deltaX) > Math.abs(deltaY) * 1.5 && Math.abs(deltaX) > 75) {
           if (deltaX < 0) {
             advanceModal('next');
           } else {
