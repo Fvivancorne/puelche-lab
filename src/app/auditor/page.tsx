@@ -19,8 +19,11 @@ import {
   PhoneCall, 
   ArrowRight,
   Sparkles,
-  ExternalLink
+  ExternalLink,
+  Layers,
+  Compass
 } from 'lucide-react';
+import { AtmosphericBackground } from '@/components/ui/AtmosphericBackground';
 
 interface TelemetryLog {
   timestamp: string;
@@ -74,8 +77,6 @@ function AuditorContent() {
       const currentProgress = Math.min(100, (elapsed / DURATION) * 100);
       setProgress(currentProgress);
 
-      const sec = (elapsed / 1000).toFixed(1);
-
       // Phase 1 (0s - 3s)
       if (elapsed >= 500 && elapsed < 3000 && activePhaseIndex === 0) {
         setActivePhaseIndex(0);
@@ -83,8 +84,8 @@ function AuditorContent() {
           if (prev.some((l) => l.phase === 'P1')) return prev;
           return [
             ...prev,
-            { timestamp: `[00:01.2]`, phase: 'P1', message: `Resolviendo DNS para ${targetUrl}... IP: 185.199.108.153` },
-            { timestamp: `[00:02.4]`, phase: 'P1', message: `Negociación SSL/TLS 1.3 verificada. Latencia: 42ms.` },
+            { timestamp: `[00:01.2]`, phase: 'P1', message: `Resolviendo DNS para ${targetUrl}... Verificando latencia regional.` },
+            { timestamp: `[00:02.4]`, phase: 'P1', message: `Negociación SSL/TLS 1.3 verificada. Certificado activo.` },
           ];
         });
       }
@@ -96,9 +97,9 @@ function AuditorContent() {
           if (prev.some((l) => l.phase === 'P2')) return prev;
           return [
             ...prev,
-            { timestamp: `[00:04.1]`, phase: 'P2', message: `Descargando árbol DOM inicial (142 KB HTML).` },
-            { timestamp: `[00:05.6]`, phase: 'P2', message: `Escaneando estructura de encabezados: <h1> ausente en 8/10 rutas.` },
-            { timestamp: `[00:06.8]`, phase: 'P2', message: `Metadatos <meta name="description">: Vacíos o sin enfoque local.` },
+            { timestamp: `[00:04.1]`, phase: 'P2', message: `Descargando estructura DOM inicial de la plataforma.` },
+            { timestamp: `[00:05.6]`, phase: 'P2', message: `Escaneando jerarquía tipográfica: <h1> ausente en 8/10 rutas evaluadas.` },
+            { timestamp: `[00:06.8]`, phase: 'P2', message: `Metadatos descriptivos: Desalineados frente a búsqueda semántica local.` },
           ];
         });
       }
@@ -110,9 +111,9 @@ function AuditorContent() {
           if (prev.some((l) => l.phase === 'P3')) return prev;
           return [
             ...prev,
-            { timestamp: `[00:08.2]`, phase: 'P3', message: `Analizando 24 imágenes: 16 inyectadas como CSS background-image.` },
-            { timestamp: `[00:09.9]`, phase: 'P3', message: `Detección de fotos de stock genéricas: 34/100 autenticidad ocular.` },
-            { timestamp: `[00:11.4]`, phase: 'P3', message: `Formatos modernos (AVIF/WebP): No detectados. Payload: 8.4 MB.` },
+            { timestamp: `[00:08.2]`, phase: 'P3', message: `Inspección de activos fotográficos: 16 fotos cargadas en CSS sin compresión moderna.` },
+            { timestamp: `[00:09.9]`, phase: 'P3', message: `Autenticidad visual de marca: Detectadas imágenes de banco genérico sin autoría.` },
+            { timestamp: `[00:11.4]`, phase: 'P3', message: `Optimización moderna (AVIF / WebP): Ausente. Peso de transferencia: 8.4 MB.` },
           ];
         });
       }
@@ -124,23 +125,23 @@ function AuditorContent() {
           if (prev.some((l) => l.phase === 'P4')) return prev;
           return [
             ...prev,
-            { timestamp: `[00:13.3]`, phase: 'P4', message: `Emulando red móvil 4G (375px viewport)...` },
-            { timestamp: `[00:14.6]`, phase: 'P4', message: `Largest Contentful Paint (LCP): 4.8s (Crítico, umbral <2.5s).` },
-            { timestamp: `[00:15.8]`, phase: 'P4', message: `Cumulative Layout Shift (CLS): 0.28 (Desplazamiento inestable).` },
+            { timestamp: `[00:13.1]`, phase: 'P4', message: `Simulando conexión 4G móvil austral: LCP 4.8s registrado (umbral óptimo: < 1.2s).` },
+            { timestamp: `[00:14.5]`, phase: 'P4', message: `Cumulative Layout Shift (CLS): 0.28 por carga asíncrona de banners.` },
+            { timestamp: `[00:15.8]`, phase: 'P4', message: `Retención móvil: Estimación de rebote del 53% en visitantes en smartphones.` },
           ];
         });
       }
 
       // Phase 5 (16s - 20s)
-      if (elapsed >= 16000 && elapsed < 20000 && activePhaseIndex <= 4) {
+      if (elapsed >= 16000 && activePhaseIndex <= 4) {
         setActivePhaseIndex(4);
         setLogs((prev) => {
           if (prev.some((l) => l.phase === 'P5')) return prev;
           return [
             ...prev,
-            { timestamp: `[00:17.4]`, phase: 'P5', message: `JSON-LD Schema.org LocalBusiness: No estructurado.` },
-            { timestamp: `[00:18.8]`, phase: 'P5', message: `Auditoría GEO: Cero presencia en Perplexity, ChatGPT y Google AI.` },
-            { timestamp: `[00:20.0]`, phase: 'P5', message: `Diagnóstico forense compilado. Generando informe de conversión.` },
+            { timestamp: `[00:17.2]`, phase: 'P5', message: `Escaneo Schema.org JSON-LD: 0 entidades estructuradas para motores de IA.` },
+            { timestamp: `[00:18.9]`, phase: 'P5', message: `Evaluación de autoridad conversacional (ChatGPT / Perplexity): Sin presencia sintetizada.` },
+            { timestamp: `[00:19.9]`, phase: 'P5', message: `Consolidación de métricas finalizada. Generando diagnóstico editorial de negocio...` },
           ];
         });
       }
@@ -154,6 +155,7 @@ function AuditorContent() {
     };
 
     animFrameRef.current = requestAnimationFrame(tick);
+
     return () => {
       if (animFrameRef.current) cancelAnimationFrame(animFrameRef.current);
     };
@@ -168,40 +170,38 @@ function AuditorContent() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          name: leadName,
-          company: leadCompany || 'No especificada',
+          nombre: leadName,
           email: leadEmail,
-          phone: leadPhone,
-          services: ['Auditoría Forense Web + Video Loom'],
-          budget: 'Intermedio ($3M - $6M CLP)',
-          region: 'Los Lagos (Puerto Varas / Puerto Montt / Chiloé)',
-          projectScale: 'Auditoría Forense Web + Video Loom de 5 Minutos',
-          message: `Solicitud de Video Loom de 5 minutos para auditoría de ${targetUrl}. Salud Digital: 41/100.`,
+          telefono: leadPhone,
+          mensaje: `[Auditoría Puelche Lab] URL evaluada: ${targetUrl} | Empresa: ${leadCompany} | Puntuación: 41/100`,
+          presupuesto: '$4.000.000 - $8.000.000 CLP',
+          servicios: ['Desarrollo Web & Rediseño de Autor', 'Fotografía en Terreno'],
+          region: 'Región de Los Lagos',
         }),
       });
     } catch {
-      // Continuar al estado de éxito
+      // Graceful fallback
+    } finally {
+      setIsSubmitting(false);
+      setSimulationState('GATE_SUBMITTED');
     }
-
-    setIsSubmitting(false);
-    setSimulationState('GATE_SUBMITTED');
   };
 
   const whatsappMsg = encodeURIComponent(
-    `Hola Paula Valdivieso, completé la auditoría forense en tiempo real de Puelche Lab para ${targetUrl} (Salud Digital: 41/100). Mi nombre es ${leadName || 'Interesado'} de ${leadCompany || 'mi empresa'}. Me gustaría coordinar el video Loom personalizado de 5 minutos.`
+    `Hola Paula y equipo Puelche Lab, realicé la auditoría de mi sitio (${targetUrl}) en su plataforma. Obtuve un score de 41/100 y me gustaría coordinar el video Loom de 5 minutos o una reunión de diagnóstico.`
   );
 
   return (
     <div className="w-full max-w-6xl mx-auto space-y-12">
-      {/* ── HEADER DE AUDITORÍA FORENSE EN TIEMPO REAL ── */}
+      {/* ── HEADER EDITORIAL DE DIAGNÓSTICO DIGITAL ── */}
       <div className="text-center space-y-4">
         <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-[#59BFD6] font-mono text-xs uppercase tracking-widest">
-          <Activity className="w-3.5 h-3.5 animate-pulse text-[#59BFD6]" />
+          <Compass className="w-3.5 h-3.5 text-[#59BFD6]" />
           <span>PUELCHE LAB &bull; MOTOR AUDITOR EN TIEMPO REAL</span>
         </div>
 
         <h1 className="font-condensed text-4xl sm:text-6xl md:text-7xl uppercase font-bold text-white tracking-tight">
-          Autopsia Forense de Plataforma Web
+          Diagnóstico Digital & Autopsia Forense de Plataforma Web
         </h1>
 
         <p className="font-sans text-sm sm:text-base text-white/70 max-w-2xl mx-auto font-light leading-relaxed">
@@ -211,10 +211,10 @@ function AuditorContent() {
 
       {/* ── ESTADO 1: ENTRADA / IDLE ── */}
       {simulationState === 'IDLE' && (
-        <div className="bg-[#121316] border border-white/10 rounded-[32px] p-8 sm:p-12 shadow-2xl space-y-8 max-w-3xl mx-auto">
+        <div className="bg-white/[0.035] backdrop-blur-2xl border border-white/10 rounded-[32px] p-8 sm:p-12 shadow-[0_20px_60px_rgba(0,0,0,0.5)] space-y-8 max-w-3xl mx-auto">
           <div className="space-y-3">
-            <label htmlFor="target-url" className="font-mono text-xs uppercase tracking-wider text-white/70 block">
-              URL del Sitio Web a Auditar
+            <label htmlFor="target-url" className="font-mono text-xs uppercase tracking-wider text-white/80 block">
+              URL del Sitio Web a Evaluar
             </label>
             <div className="flex flex-col sm:flex-row gap-3">
               <input
@@ -235,12 +235,12 @@ function AuditorContent() {
                 <ArrowRight className="w-4 h-4" />
               </button>
             </div>
-            <p className="font-mono text-[11px] text-white/40 pt-1">
+            <p className="font-mono text-[11px] text-white/50 pt-1">
               * Simulación forense de 20 segundos con 5 fases de inspección telemetry de red y DOM.
             </p>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-6 border-t border-white/5 text-center">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-6 border-t border-white/10 text-center">
             <div className="p-4 rounded-2xl bg-white/[0.02] border border-white/5">
               <span className="font-mono text-[10px] text-white/40 uppercase block">Duración</span>
               <span className="font-mono text-sm font-semibold text-white mt-1 block">20.0 Segundos</span>
@@ -263,14 +263,14 @@ function AuditorContent() {
 
       {/* ── ESTADO 2: SIMULACIÓN EN TIEMPO REAL (20 SEGUNDOS) ── */}
       {simulationState === 'RUNNING' && (
-        <div className="bg-[#121316] border border-white/10 rounded-[32px] p-8 sm:p-12 shadow-2xl space-y-8 max-w-4xl mx-auto">
+        <div className="bg-white/[0.035] backdrop-blur-2xl border border-white/10 rounded-[32px] p-8 sm:p-12 shadow-[0_20px_60px_rgba(0,0,0,0.5)] space-y-8 max-w-4xl mx-auto">
           {/* Header de Telemetría */}
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-white/10">
             <div className="flex items-center gap-3">
               <div className="w-3 h-3 rounded-full bg-[#59BFD6] animate-ping" />
               <div>
                 <span className="font-mono text-xs uppercase tracking-wider text-white/50 block">
-                  Ejecutando Sonda Forense
+                  Ejecutando Sonda de Diagnóstico
                 </span>
                 <span className="font-mono text-sm font-bold text-white">
                   {targetUrl}
@@ -296,7 +296,7 @@ function AuditorContent() {
                 style={{ width: `${progress}%` }}
               />
             </div>
-            <div className="flex justify-between font-mono text-[10px] text-white/40">
+            <div className="flex justify-between font-mono text-[10px] text-white/50">
               {PHASES.map((p, i) => (
                 <span
                   key={p.id}
@@ -309,10 +309,10 @@ function AuditorContent() {
           </div>
 
           {/* Terminal Procedural de Telemetría */}
-          <div className="bg-[#090a0d] rounded-2xl border border-white/10 p-6 font-mono text-xs space-y-2.5 min-h-[220px] max-h-[300px] overflow-y-auto">
+          <div className="bg-[#14161c]/80 backdrop-blur-md rounded-2xl border border-white/10 p-6 font-mono text-xs space-y-2.5 min-h-[220px] max-h-[300px] overflow-y-auto">
             <div className="flex items-center gap-2 pb-3 border-b border-white/10 text-white/50 text-[11px]">
               <Terminal className="w-3.5 h-3.5 text-[#59BFD6]" />
-              <span>LOGS DE AUDITORÍA FORENSE EN VIVO</span>
+              <span>REGISTRO DE TELEMETRÍA EN TIEMPO REAL</span>
             </div>
 
             {logs.map((log, index) => (
@@ -329,31 +329,59 @@ function AuditorContent() {
       {/* ── ESTADO 3: DIAGNÓSTICO FORENSE & TRADUCCIÓN COMERCIAL (READY) ── */}
       {(simulationState === 'DIAGNOSTIC_READY' || simulationState === 'GATE_SUBMITTED') && (
         <div className="space-y-12">
-          {/* Tarjeta de Scorecard General */}
-          <div className="bg-gradient-to-br from-[#1c1214] via-[#121316] to-[#121316] border-2 border-red-500/30 rounded-[32px] p-8 sm:p-12 shadow-2xl flex flex-col md:flex-row items-center justify-between gap-8">
-            <div className="space-y-3 text-center md:text-left">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-red-500/10 border border-red-500/20 text-red-400 font-mono text-xs uppercase tracking-wider">
-                <ShieldAlert className="w-4 h-4 text-red-400" />
-                <span>Salud Digital de Plataforma: NIVEL CRÍTICO</span>
+          {/* Tarjeta de Scorecard General — Diseño Editorial Limpio (Sin rojos punk/headshot) */}
+          <div className="bg-white/[0.035] backdrop-blur-2xl border border-white/10 rounded-[36px] p-8 sm:p-12 shadow-[0_30px_90px_rgba(0,0,0,0.5)] flex flex-col md:flex-row items-center justify-between gap-8">
+            <div className="space-y-4 text-center md:text-left">
+              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#59BFD6]/10 border border-[#59BFD6]/20 text-[#59BFD6] font-mono text-xs uppercase tracking-wider">
+                <Activity className="w-4 h-4 text-[#59BFD6]" />
+                <span>Salud Digital de Plataforma: NIVEL CRÍTICO &bull; OPORTUNIDAD DE MODERNIZACIÓN</span>
               </div>
-              <h2 className="font-condensed text-3xl sm:text-5xl uppercase font-bold text-white">
+              <h2 className="font-condensed text-3xl sm:text-5xl uppercase font-bold text-white tracking-tight">
                 Puntuación Forense: 41 / 100
               </h2>
-              <p className="font-sans text-sm sm:text-base text-white/75 max-w-xl font-light">
+              <p className="font-sans text-sm sm:text-base text-white/75 max-w-xl font-light leading-relaxed">
                 Plataforma con fugas críticas de tráfico móvil, obsolescencia técnica en Core Web Vitals y nula autoridad semántica para motores de búsqueda de IA.
               </p>
             </div>
 
-            <div className="flex flex-col items-center justify-center p-6 rounded-3xl bg-black/50 border border-red-500/30 min-w-[200px]">
-              <span className="font-condensed text-6xl font-black text-red-400">41%</span>
-              <span className="font-mono text-[10px] text-white/50 uppercase tracking-widest mt-1">Índice Global</span>
+            {/* Gauge Circular Puelche (Cyan & Ochre) */}
+            <div className="relative flex flex-col items-center justify-center p-8 rounded-3xl bg-white/[0.02] border border-white/10 min-w-[220px]">
+              <div className="relative w-32 h-32 flex items-center justify-center">
+                <svg className="w-full h-full -rotate-90 transform" viewBox="0 0 120 120">
+                  <circle cx="60" cy="60" r="48" stroke="rgba(255,255,255,0.08)" strokeWidth="8" fill="none" />
+                  <circle
+                    cx="60"
+                    cy="60"
+                    r="48"
+                    stroke="url(#puelcheScoreGrad)"
+                    strokeWidth="8"
+                    fill="none"
+                    strokeDasharray="301.59"
+                    strokeDashoffset="177.9"
+                    strokeLinecap="round"
+                  />
+                  <defs>
+                    <linearGradient id="puelcheScoreGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stopColor="#59BFD6" />
+                      <stop offset="100%" stopColor="#C29B63" />
+                    </linearGradient>
+                  </defs>
+                </svg>
+                <div className="absolute inset-0 flex flex-col items-center justify-center">
+                  <span className="font-condensed text-4xl font-black text-white">41%</span>
+                  <span className="font-mono text-[9px] text-[#59BFD6] uppercase tracking-widest">Score</span>
+                </div>
+              </div>
+              <span className="font-mono text-[10px] text-white/50 uppercase tracking-widest mt-2">
+                Índice Global
+              </span>
             </div>
           </div>
 
           {/* Matriz de Traducción Comercial de Hallazgos Técnicos */}
           <div className="space-y-6">
             <div className="flex items-center justify-between border-b border-white/10 pb-4">
-              <h3 className="font-condensed text-2xl sm:text-3xl uppercase font-bold text-white">
+              <h3 className="font-condensed text-2xl sm:text-3xl uppercase font-bold text-white tracking-wide">
                 Matriz de Traducción Comercial (Técnica &rarr; Negocio)
               </h3>
               <span className="font-mono text-xs text-[#59BFD6]">5 Hallazgos Críticos</span>
@@ -361,9 +389,9 @@ function AuditorContent() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* Hallazgo 1: LCP */}
-              <div className="bg-[#121316] border border-white/10 rounded-3xl p-6 sm:p-8 space-y-4 hover:border-red-500/40 transition-colors">
+              <div className="bg-white/[0.03] backdrop-blur-xl border border-white/10 rounded-3xl p-6 sm:p-8 space-y-4 hover:border-[#59BFD6]/40 transition-colors">
                 <div className="flex items-center justify-between">
-                  <span className="font-mono text-[11px] uppercase tracking-wider text-red-400 bg-red-400/10 px-3 py-1 rounded-full">
+                  <span className="font-mono text-[11px] uppercase tracking-wider text-[#59BFD6] bg-[#59BFD6]/10 px-3 py-1 rounded-full border border-[#59BFD6]/20">
                     Hallazgo 01 &bull; Core Web Vitals
                   </span>
                   <span className="font-mono text-xs text-white/40">LCP 4.8s / 8.4 MB</span>
@@ -374,16 +402,16 @@ function AuditorContent() {
                 <p className="font-sans text-sm text-white/70 font-light leading-relaxed">
                   Más de la mitad de los potenciales clientes que abren el sitio en sus teléfonos abandonan antes de ver tu portafolio o servicios debido al peso no optimizado.
                 </p>
-                <div className="pt-3 border-t border-white/5 font-mono text-xs text-red-300 flex items-center gap-2">
-                  <TrendingDown className="w-4 h-4 text-red-400" />
+                <div className="pt-3 border-t border-white/5 font-mono text-xs text-[#59BFD6] flex items-center gap-2">
+                  <TrendingDown className="w-4 h-4 text-[#59BFD6]" />
                   <span>Impacto: Pérdida de 15 a 30 leads comerciales al mes.</span>
                 </div>
               </div>
 
               {/* Hallazgo 2: H1 & Meta */}
-              <div className="bg-[#121316] border border-white/10 rounded-3xl p-6 sm:p-8 space-y-4 hover:border-red-500/40 transition-colors">
+              <div className="bg-white/[0.03] backdrop-blur-xl border border-white/10 rounded-3xl p-6 sm:p-8 space-y-4 hover:border-[#C29B63]/40 transition-colors">
                 <div className="flex items-center justify-between">
-                  <span className="font-mono text-[11px] uppercase tracking-wider text-amber-400 bg-amber-400/10 px-3 py-1 rounded-full">
+                  <span className="font-mono text-[11px] uppercase tracking-wider text-[#C29B63] bg-[#C29B63]/10 px-3 py-1 rounded-full border border-[#C29B63]/20">
                     Hallazgo 02 &bull; SEO Orgánico
                   </span>
                   <span className="font-mono text-xs text-white/40">8/10 rutas sin H1</span>
@@ -394,16 +422,16 @@ function AuditorContent() {
                 <p className="font-sans text-sm text-white/70 font-light leading-relaxed">
                   Google no puede clasificar tu especialidad territorial ni servicios clave, cediendo los primeros lugares a competidores con sitios modernos.
                 </p>
-                <div className="pt-3 border-t border-white/5 font-mono text-xs text-amber-300 flex items-center gap-2">
-                  <EyeOff className="w-4 h-4 text-amber-400" />
+                <div className="pt-3 border-t border-white/5 font-mono text-xs text-[#C29B63] flex items-center gap-2">
+                  <EyeOff className="w-4 h-4 text-[#C29B63]" />
                   <span>Impacto: Obliga a gastar hasta un 340% más en Google Ads.</span>
                 </div>
               </div>
 
               {/* Hallazgo 3: Fotos de Stock & Fondos CSS */}
-              <div className="bg-[#121316] border border-white/10 rounded-3xl p-6 sm:p-8 space-y-4 hover:border-red-500/40 transition-colors">
+              <div className="bg-white/[0.03] backdrop-blur-xl border border-white/10 rounded-3xl p-6 sm:p-8 space-y-4 hover:border-white/30 transition-colors">
                 <div className="flex items-center justify-between">
-                  <span className="font-mono text-[11px] uppercase tracking-wider text-red-400 bg-red-400/10 px-3 py-1 rounded-full">
+                  <span className="font-mono text-[11px] uppercase tracking-wider text-white/90 bg-white/10 px-3 py-1 rounded-full border border-white/20">
                     Hallazgo 03 &bull; Confianza Ocular
                   </span>
                   <span className="font-mono text-xs text-white/40">16 fotos en CSS</span>
@@ -414,16 +442,16 @@ function AuditorContent() {
                 <p className="font-sans text-sm text-white/70 font-light leading-relaxed">
                   Tus fotografías son invisibles para Google Imágenes y los prospectos perciben la marca como un proveedor no especializado con fotos de stock.
                 </p>
-                <div className="pt-3 border-t border-white/5 font-mono text-xs text-red-300 flex items-center gap-2">
-                  <AlertTriangle className="w-4 h-4 text-red-400" />
+                <div className="pt-3 border-t border-white/5 font-mono text-xs text-white/80 flex items-center gap-2">
+                  <AlertTriangle className="w-4 h-4 text-[#C29B63]" />
                   <span>Impacto: Deprecia el anclaje de precios de tus servicios en un 30%–40%.</span>
                 </div>
               </div>
 
               {/* Hallazgo 4: Sin Schema.org ni GEO */}
-              <div className="bg-[#121316] border border-white/10 rounded-3xl p-6 sm:p-8 space-y-4 hover:border-red-500/40 transition-colors">
+              <div className="bg-white/[0.03] backdrop-blur-xl border border-white/10 rounded-3xl p-6 sm:p-8 space-y-4 hover:border-[#59BFD6]/40 transition-colors">
                 <div className="flex items-center justify-between">
-                  <span className="font-mono text-[11px] uppercase tracking-wider text-amber-400 bg-amber-400/10 px-3 py-1 rounded-full">
+                  <span className="font-mono text-[11px] uppercase tracking-wider text-[#59BFD6] bg-[#59BFD6]/10 px-3 py-1 rounded-full border border-[#59BFD6]/20">
                     Hallazgo 04 &bull; Inteligencia Artificial
                   </span>
                   <span className="font-mono text-xs text-white/40">0 menciones IA</span>
@@ -434,16 +462,16 @@ function AuditorContent() {
                 <p className="font-sans text-sm text-white/70 font-light leading-relaxed">
                   Cuando un ejecutivo corporativo o turista pregunta a la IA por estudios/hoteles recomendados en el sur, tu empresa no existe en las respuestas sintetizadas.
                 </p>
-                <div className="pt-3 border-t border-white/5 font-mono text-xs text-amber-300 flex items-center gap-2">
-                  <Cpu className="w-4 h-4 text-amber-400" />
+                <div className="pt-3 border-t border-white/5 font-mono text-xs text-[#59BFD6] flex items-center gap-2">
+                  <Cpu className="w-4 h-4 text-[#59BFD6]" />
                   <span>Impacto: Cero captación en el canal de mayor crecimiento empresarial B2B.</span>
                 </div>
               </div>
 
               {/* Hallazgo 5: Formulario Pasivo */}
-              <div className="md:col-span-2 bg-[#121316] border border-white/10 rounded-3xl p-6 sm:p-8 space-y-4 hover:border-red-500/40 transition-colors">
+              <div className="md:col-span-2 bg-white/[0.03] backdrop-blur-xl border border-white/10 rounded-3xl p-6 sm:p-8 space-y-4 hover:border-emerald-500/40 transition-colors">
                 <div className="flex items-center justify-between">
-                  <span className="font-mono text-[11px] uppercase tracking-wider text-[#59BFD6] bg-[#59BFD6]/10 px-3 py-1 rounded-full">
+                  <span className="font-mono text-[11px] uppercase tracking-wider text-emerald-400 bg-emerald-500/10 px-3 py-1 rounded-full border border-emerald-500/20">
                     Hallazgo 05 &bull; Embudo Comercial
                   </span>
                   <span className="font-mono text-xs text-white/40">Formulario Frío 1 Etapa</span>
@@ -463,14 +491,14 @@ function AuditorContent() {
           </div>
 
           {/* ── LEAD GATE CON VIDEO LOOM PERSONALIZADO ── */}
-          <div className="bg-[#15171c] border-2 border-[#59BFD6]/40 rounded-[36px] p-8 sm:p-12 shadow-[0_30px_90px_rgba(0,0,0,0.8)] space-y-8">
+          <div className="bg-gradient-to-b from-[#181c24] to-[#13151b] border border-white/15 rounded-[36px] p-8 sm:p-12 shadow-[0_30px_90px_rgba(0,0,0,0.8)] space-y-8">
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-white/10">
               <div className="space-y-1">
                 <div className="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-wider text-[#59BFD6]">
                   <Video className="w-4 h-4 text-[#59BFD6]" />
                   <span>VIDEO LOOM PERSONALIZADO EN COLA DE GRABACIÓN — CUPOS DISPONIBLES: 3 HOY</span>
                 </div>
-                <h3 className="font-condensed text-3xl sm:text-4xl uppercase font-bold text-white">
+                <h3 className="font-condensed text-3xl sm:text-4xl uppercase font-bold text-white tracking-wide">
                   Desbloquea el Video Loom de 5 Minutos con Paula Valdivieso
                 </h3>
               </div>
@@ -481,7 +509,7 @@ function AuditorContent() {
 
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
               {/* Loom Video Player Mockup */}
-              <div className="lg:col-span-5 relative aspect-[16/10] rounded-2xl overflow-hidden bg-black border border-white/20 shadow-2xl flex items-center justify-center group">
+              <div className="lg:col-span-5 relative aspect-[16/10] rounded-2xl overflow-hidden bg-black/70 border border-white/20 shadow-2xl flex items-center justify-center group">
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/60" />
 
                 {/* Central Play Button */}
@@ -495,7 +523,7 @@ function AuditorContent() {
                 </div>
 
                 {/* Circular Webcam Circle (Paula Valdivieso) in lower-left corner */}
-                <div className="absolute bottom-4 left-4 z-20 flex items-center gap-3 bg-black/70 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/20">
+                <div className="absolute bottom-4 left-4 z-20 flex items-center gap-3 bg-black/80 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/20">
                   <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#59BFD6] to-[#C29B63] flex items-center justify-center font-bold text-[#0b0d10] text-xs">
                     PV
                   </div>
@@ -504,9 +532,9 @@ function AuditorContent() {
                     <span className="font-mono text-[8px] text-[#59BFD6]">Directora Creativa</span>
                   </div>
                   <div className="flex items-center gap-0.5 ml-1">
-                    <span className="w-1 h-3 bg-emerald-400 rounded-full animate-soundwave-1" />
-                    <span className="w-1 h-4 bg-emerald-400 rounded-full animate-soundwave-2" />
-                    <span className="w-1 h-2 bg-emerald-400 rounded-full animate-soundwave-3" />
+                    <span className="w-1 h-3 bg-emerald-400 rounded-full animate-pulse" />
+                    <span className="w-1 h-4 bg-emerald-400 rounded-full animate-pulse" />
+                    <span className="w-1 h-2 bg-emerald-400 rounded-full animate-pulse" />
                   </div>
                 </div>
               </div>
@@ -614,8 +642,11 @@ function AuditorContent() {
 
 export default function AuditorPage() {
   return (
-    <div className="w-full flex flex-col bg-[#0b0d10] text-white min-h-screen selection:bg-[#59BFD6] selection:text-[#0b0d10]">
-      <section className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 pt-32 pb-24 md:pt-40 md:pb-32 w-full">
+    <div className="relative w-full flex flex-col bg-[#111317] text-white min-h-screen selection:bg-[#59BFD6] selection:text-[#0b0d10] overflow-hidden">
+      {/* Background dinámico con auroras patagónicas en movimiento suave */}
+      <AtmosphericBackground intensity="vibrant" showParticles={true} />
+
+      <section className="relative z-10 max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 pt-32 pb-24 md:pt-40 md:pb-32 w-full">
         <Suspense fallback={<div className="p-12 text-center font-mono text-white/60">Cargando motor auditor...</div>}>
           <AuditorContent />
         </Suspense>

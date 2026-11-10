@@ -576,7 +576,7 @@ async function main() {
       if (item.filename === 'index.html') {
         assert(html.includes('bg-agencia.jpg'), 'index.html missing bg-agencia.jpg hero background');
         assert(html.includes('bg-home-2.jpg'), 'index.html missing bg-home-2.jpg backdrop');
-        assert(html.includes('scale: 0.88') || html.includes('0.88'), 'index.html missing initial 0.88 scale in bundle');
+        assert(html.includes('scale: 1.15') || html.includes('1.15') || html.includes('scale-105'), 'index.html missing full-bleed hero scale in bundle');
       } else if (item.filename === 'servicios.html') {
         assert(html.includes('48px') || html.includes('grid-cols-[48px_1fr_1.2fr]'), 'servicios.html missing asymmetric grid');
         assert(html.includes('rb-link-glanz'), 'servicios.html missing rb-link-glanz class');

@@ -24,7 +24,6 @@ export default function Home() {
     const media = gsap.matchMedia();
     media.add('(prefers-reduced-motion: reduce)', () => {
       gsap.set(wipeTarget, { '--wipe-lead': 1, '--wipe-trail': 1 });
-      gsap.set('#hero', { scale: 1.0, borderRadius: '0px' });
       gsap.set('#hero-bg-img', { scale: 1.0 });
     });
     media.add('(prefers-reduced-motion: no-preference)', () => {
@@ -44,36 +43,18 @@ export default function Home() {
           },
         });
 
-        // ── R1: HERO DOLLY ZOOM INVERSO (CONTRA-ESCALA DUAL) ──
-        gsap.set('#hero', {
-          scale: 0.88,
-          borderRadius: '32px',
-          transformOrigin: 'center center',
-        });
-        gsap.set('#hero-bg-img', {
-          scale: 1.25,
-          transformOrigin: 'center center',
-        });
-
-        const dollyTl = gsap.timeline({
+        // ── R1: HERO CINEMÁTICO FULL-BLEED (PANTALLA COMPLETA 100VW/100VH) ──
+        gsap.to('#hero-bg-img', {
+          scale: 1.15,
+          yPercent: 12,
+          ease: 'none',
           scrollTrigger: {
-            trigger: '#hero-stage',
+            trigger: '#hero',
             start: 'top top',
             end: 'bottom top',
-            scrub: 1,
+            scrub: true,
           },
         });
-
-        dollyTl
-          .to('#hero', {
-            scale: 1.0,
-            borderRadius: '0px',
-            ease: 'none',
-          }, 0)
-          .to('#hero-bg-img', {
-            scale: 1.0,
-            ease: 'none',
-          }, 0);
 
         // ── KINETIC HERO EXIT PARALLAX: Las piezas y letras se van con el viento austral al scrollear ──
         gsap.to('#hero-monogram', {
@@ -156,33 +137,27 @@ export default function Home() {
         ======================================================================
         SECCIÓN 1 (100vh): HERO & EMBLEMA COLOSAL BLANCO + SPLIT TEXT
         Fondo de bosque patagónico con niebla (bg-agencia.jpg).
-        R1: Dolly Zoom Inverso con contra-escala dual (0.88 -> 1.0, 1.25 -> 1.0)
+        R1: Pantalla completa Full-Bleed 100vw x 100vh con parallax cinemático.
         ======================================================================
       */}
-      <div id="hero-stage" className="relative w-full overflow-hidden bg-[#111215] flex justify-center items-center">
-        <section
-          id="hero"
-          aria-label="Puelche Lab Portada"
-          className="relative w-full min-h-[100svh] min-h-screen flex flex-col justify-between items-center px-6 md:px-12 lg:px-16 pt-20 sm:pt-24 pb-6 overflow-hidden text-center will-change-transform origin-center border border-white/10 shadow-2xl"
-          style={{
-            transform: 'scale(0.88)',
-            borderRadius: '32px',
-          }}
-        >
-          {/* Backdrop: bg-agencia.jpg (Bosque patagónico con niebla) — Contra-escala 1.25 -> 1.0 */}
-          <div id="hero-bg-wrapper" className="absolute inset-0 z-0 pointer-events-none will-change-transform overflow-hidden">
-            <Image
-              id="hero-bg-img"
-              src="/images/real/bg-agencia.jpg"
-              alt="Puelche Lab — Bosque Patagónico con Niebla"
-              fill
-              priority
-              className="object-cover pointer-events-none will-change-transform origin-center"
-              style={{ transform: 'scale(1.25)' }}
-            />
-            <div className="absolute inset-0 bg-gradient-to-b from-[#111215]/25 via-[#111215]/40 to-[#111215] pointer-events-none" />
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_35%,rgba(17,18,21,0.55)_100%)] pointer-events-none" />
-          </div>
+      <section
+        id="hero"
+        aria-label="Puelche Lab Portada"
+        className="relative w-full min-h-[100svh] min-h-screen flex flex-col justify-between items-center px-6 md:px-12 lg:px-16 pt-20 sm:pt-24 pb-6 overflow-hidden text-center will-change-transform origin-center"
+      >
+        {/* Backdrop: bg-agencia.jpg (Bosque patagónico con niebla) — Pantalla Completa 100% Full-Bleed */}
+        <div id="hero-bg-wrapper" className="absolute inset-0 z-0 pointer-events-none will-change-transform overflow-hidden">
+          <Image
+            id="hero-bg-img"
+            src="/images/real/bg-agencia.jpg"
+            alt="Puelche Lab — Bosque Patagónico con Niebla"
+            fill
+            priority
+            className="object-cover pointer-events-none scale-105 will-change-transform origin-center transition-transform duration-1000 ease-out"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-[#111215]/25 via-[#111215]/40 to-[#111215] pointer-events-none" />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_35%,rgba(17,18,21,0.55)_100%)] pointer-events-none" />
+        </div>
 
         {/* Kinetic Puelche Wind Particle Physics */}
         <WindParticleCanvas className="z-[5]" />
@@ -250,7 +225,6 @@ export default function Home() {
           </a>
         </div>
       </section>
-    </div>
 
       {/* 
         ======================================================================

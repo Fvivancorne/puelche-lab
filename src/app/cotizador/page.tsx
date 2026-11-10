@@ -3,6 +3,7 @@
 import React, { useState, useMemo, Suspense } from 'react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
+import { AtmosphericBackground } from '@/components/ui/AtmosphericBackground';
 import { 
   Calculator, 
   Layers, 
@@ -469,11 +470,24 @@ function CotizadorContent() {
 
 export default function CotizadorPage() {
   return (
-    <div className="w-full flex flex-col bg-[#0b0d10] text-white min-h-screen selection:bg-[#59BFD6] selection:text-[#0b0d10]">
-      <section className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 pt-32 pb-24 md:pt-40 md:pb-32 w-full">
+    <div className="relative w-full flex flex-col bg-[#111317] text-white min-h-screen selection:bg-[#59BFD6] selection:text-[#0b0d10] overflow-hidden">
+      {/* Dynamic Patagonian atmospheric background with floating light and micro-particles */}
+      <AtmosphericBackground intensity="medium" showParticles={true} />
+
+      <section className="relative z-10 max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 pt-32 pb-24 md:pt-40 md:pb-32 w-full">
         <Suspense fallback={<div className="p-12 text-center font-mono text-white/60">Cargando cotizador paramétrico...</div>}>
           <CotizadorContent />
         </Suspense>
+
+        {/* Link discreto para panel de administración de tarifas */}
+        <div className="mt-16 pt-8 border-t border-white/5 text-center">
+          <Link
+            href="/admin/precios"
+            className="inline-flex items-center gap-2 font-mono text-[11px] text-white/30 hover:text-[#59BFD6] transition-colors"
+          >
+            <span>&bull; Panel de Administración de Tarifas (Alejandro &bull; CMS)</span>
+          </Link>
+        </div>
       </section>
     </div>
   );

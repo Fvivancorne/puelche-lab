@@ -1,0 +1,124 @@
+{
+  "lastUpdated": "2026-11-10T10:35:00Z",
+  "updatedBy": "Puelche Lab Admin",
+  "currency": {
+    "usdToClpRate": 950,
+    "label": "CLP"
+  },
+  "tiers": [
+    {
+      "maxPages": 1,
+      "basePrice": 1800000,
+      "pricePerPage": 0,
+      "baseWeeks": 2
+    },
+    {
+      "maxPages": 5,
+      "basePrice": 1800000,
+      "pricePerPage": 350000,
+      "baseWeeks": 4
+    },
+    {
+      "maxPages": 10,
+      "basePrice": 3200000,
+      "pricePerPage": 440000,
+      "baseWeeks": 7
+    },
+    {
+      "maxPages": 20,
+      "basePrice": 5400000,
+      "pricePerPage": 310000,
+      "baseWeeks": 10
+    },
+    {
+      "maxPages": 99,
+      "basePrice": 8500000,
+      "pricePerPage": 275000,
+      "baseWeeks": 14
+    }
+  ],
+  "companySizes": [
+    {
+      "id": "startup",
+      "label": "Startup / Profesional",
+      "desc": "Independiente o negocio unipersonal",
+      "multiplier": 1.0
+    },
+    {
+      "id": "pyme",
+      "label": "PyME Regional",
+      "desc": "Negocio en crecimiento o comercio local",
+      "multiplier": 1.15
+    },
+    {
+      "id": "consolidada",
+      "label": "Empresa Consolidada",
+      "desc": "Operador regional con equipo y tracción",
+      "multiplier": 1.3
+    },
+    {
+      "id": "corporativo",
+      "label": "Corporativo Nacional",
+      "desc": "Multinacional, salmonera, retail o gran turismo",
+      "multiplier": 1.55
+    }
+  ],
+  "addons": [
+    {
+      "id": "foto-terreno",
+      "name": "Producción Fotográfica en Terreno",
+      "price": 1200000,
+      "description": "Jornada completa en faena/locación austral con equipo Sony Alpha + ópticas G Master.",
+      "category": "Fotografía",
+      "active": true
+    },
+    {
+      "id": "dron-4k",
+      "name": "Filmación Aérea con Dron 4K",
+      "price": 750000,
+      "description": "Tomas aéreas en resolución 4K 60fps con piloto certificado DGAC.",
+      "category": "Audiovisual",
+      "active": true
+    },
+    {
+      "id": "branding",
+      "name": "Identidad de Marca & Manual de Normas",
+      "price": 1850000,
+      "description": "Rediseño de marca, isotipo, paleta cromática, tipografías y manual institucional.",
+      "category": "Branding",
+      "active": true
+    },
+    {
+      "id": "edicion-raw",
+      "name": "Edición Fotográfica Fine-Art & Retoque RAW",
+      "price": 650000,
+      "description": "Calibración de color pliego por pliego y revelado de archivo en alta resolución.",
+      "category": "Postproducción",
+      "active": true
+    },
+    {
+      "id": "geo-seo",
+      "name": "Arquitectura GEO & Schema.org Semántico",
+      "price": 550000,
+      "description": "Inyección de entidades JSON-LD, optimización para ChatGPT, Perplexity y Google AI.",
+      "category": "Estrategia Digital",
+      "active": true
+    },
+    {
+      "id": "editorial",
+      "name": "Diseño Editorial / Memoria Corporativa Digital",
+      "price": 1400000,
+      "description": "Maquetación reticular estilo suizo, pliegos interactivos y exportable a imprenta.",
+      "category": "Editorial",
+      "active": true
+    },
+    {
+      "id": "soporte-anual",
+      "name": "Despliegue de Alta Disponibilidad & Soporte",
+      "price": 950000,
+      "description": "Monitoreo 99.9% uptime en Vercel, optimización de caché, backups y soporte anual.",
+      "category": "Infraestructura",
+      "active": true
+    }
+  ]
+}

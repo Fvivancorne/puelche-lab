@@ -1129,22 +1129,22 @@ registerTest('T6.7', 'Awwwards Showstopper: AwwwardsCursor recognizes drag state
 // TIER 7: AWWWARDS SOTY 7-MODULE ACCEPTANCE TRACK (28 Tests)
 // ============================================================================
 
-// --- R1: Hero Cinemático con Dolly Zoom Inverso ---
-registerTest('T7.1.1', 'R1: Hero Dolly Zoom implements dual counter-scale wrappers (0.88 -> 1.0, 1.25 -> 1.0)', 7, 'R1-DollyZoom', () => {
+// --- R1: Hero Cinemático Full-Bleed (100vw / 100vh Pantalla Completa) ---
+registerTest('T7.1.1', 'R1: Hero Full-Bleed Cinematic Photography (100vw, scale-105 to 1.15 parallax without card crop)', 7, 'R1-DollyZoom', () => {
   const home = readFile('src/app/page.tsx');
-  assertContains(home, 'scale: 0.88', 'Hero outer wrapper must have initial scale 0.88');
-  assertContains(home, "borderRadius: '32px'", 'Hero outer wrapper must have initial borderRadius 32px');
-  assertContains(home, 'scale: 1.0', 'Hero outer wrapper must expand to scale 1.0');
-  assertContains(home, "borderRadius: '0px'", 'Hero outer wrapper must flatten to borderRadius 0px');
-  assertContains(home, 'scale: 1.25', 'Hero inner background image must start at scale 1.25');
+  assertContains(home, 'min-h-[100svh]', 'Hero section must have full viewport height min-h-[100svh]');
+  assertContains(home, 'w-full', 'Hero section must span 100% viewport width');
+  assertContains(home, 'scale-105', 'Hero background image must start with subtle full-bleed scale-105');
+  assertContains(home, 'scale: 1.15', 'Hero background image must expand via parallax scale 1.15');
   assertContains(home, 'hero-bg-img', 'Hero background image element missing hero-bg-img identifier');
+  assert(!home.includes("borderRadius: '32px'"), 'Hero must NOT crop or shrink image inside a 32px rounded card');
 });
 
-registerTest('T7.1.2', 'R1: Hero Dolly Zoom binds to ScrollTrigger scrub timeline with #hero-stage', 7, 'R1-DollyZoom', () => {
+registerTest('T7.1.2', 'R1: Hero Parallax binds to ScrollTrigger scrub with #hero', 7, 'R1-DollyZoom', () => {
   const home = readFile('src/app/page.tsx');
-  assertContains(home, "trigger: '#hero-stage'", 'ScrollTrigger must target #hero-stage');
-  assertContains(home, 'scrub: 1', 'ScrollTrigger must configure scrub for fluid dolly zoom');
-  assertContains(home, 'dollyTl', 'Hero must define synchronized dollyTl counter-scale timeline');
+  assertContains(home, "trigger: '#hero'", 'ScrollTrigger must target #hero');
+  assertContains(home, 'scrub: true', 'ScrollTrigger must configure scrub for fluid parallax');
+  assertContains(home, 'yPercent: 12', 'Hero background must implement subtle yPercent parallax translation');
 });
 
 registerTest('T7.1.3', 'R1: Hero background image public/images/real/bg-agencia.jpg is authentic (>40KB, JPEG)', 7, 'R1-DollyZoom', () => {
