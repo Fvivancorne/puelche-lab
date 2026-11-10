@@ -1,12 +1,13 @@
-# Project: Puelche Lab Website Replication & Redesign
+# Project: Puelche Lab — Awwwards Site of the Year ($30,000 USD) Transformation
 
 ## Architecture
 - **Framework**: Next.js 16.4.3 (App Router) + Turbopack
 - **UI Engine**: React 19 + TypeScript 5.7
-- **Styling**: Tailwind CSS 3.4 (with custom typography & kinetic wipe tokens)
-- **Virtual Smooth Scrolling**: Lenis 1.1.20 integrated with GSAP 3.12 ticker
-- **Asset System**: 100% Genuine brand assets in `public/images/real/` (15 base assets + 20 client logos)
-- **Zero-Tolerance Anti-Stock**: 0 occurrences of Unsplash across the entire codebase (`grep -r "unsplash" src/` must return empty)
+- **Styling**: Tailwind CSS 3.4 + Custom Cinematic Awwwards Design Tokens & Keyframes (`rb-link-glanz`)
+- **Animation & Physics**: GSAP 3.12 + ScrollTrigger Scrub + LagSmoothing(0)
+- **Virtual Smooth Scrolling**: Lenis 1.1.20 with Penner exponential curve `easeOutExpo = (x) => Math.min(1, 1.001 - Math.pow(2, -10 * x))`, `duration: 1.2s`, scoped strictly to `(hover: hover) and (pointer: fine)`.
+- **Zero-Latency Navigation**: Page transitions with `clipPath: inset(0% 0% 100% 0%)` and speculative prefetching on `onMouseEnter` / `onTouchStart`.
+- **Authentic Asset System**: 100% Genuine archive in `public/images/real/` (including `bg-agencia.jpg`, `bg-home-2.jpg`, 9 edition photos in `edicion/`, 6 raw/master pairs in `before-after/`, 20 client logos in `clients/`). Zero Unsplash / Zero Stock.
 
 ## Code Layout
 ```
@@ -14,101 +15,100 @@
 ├── public/
 │   └── images/
 │       └── real/
-│           ├── logo-top.png                    # Navbar horizontal cyan/white logo
-│           ├── logo-puelche.png                # Stacked brand mark
-│           ├── bg-home-2.jpg                   # Hero backdrop (Patagonian grass & mountains)
-│           ├── bg-agencia.jpg                  # Studio manifesto backdrop (Valdivian rainforest)
-│           ├── bg-portafolios-fotografia-*.jpg # Genuine portfolio project photographs
-│           └── clients/                        # 20 real client logos (cliente1..20)
+│           ├── bg-agencia.jpg                  # Valdivian rainforest mist (Hero background)
+│           ├── bg-home-2.jpg                   # Patagonian pasture & river (Storytelling backdrop)
+│           ├── logo-top.png                    # Navbar horizontal cyan logo
+│           ├── logo-puelche.png                # Stacked brand emblem
+│           ├── edicion/                        # 9 authentic edition master photographs
+│           ├── before-after/                   # 6 raw/master photographic comparison pairs
+│           ├── clients/                        # 20 real corporate client logos
+│           └── facebook/                       # Curated authentic expedition albums
 ├── src/
 │   ├── app/
-│   │   ├── layout.tsx                          # Root layout, fonts, JSON-LD schema, Lenis
-│   │   ├── page.tsx                            # Home: Hero, Manifiesto, Pilares, Featured, Clients, CTA
-│   │   ├── portafolio/page.tsx                 # Filterable portfolio & modal drawer
-│   │   ├── clientes/page.tsx                   # 20 Client logos grid, testimonials, territorial nodes
-│   │   ├── contacto/page.tsx                   # 4-step interactive brief & direct WhatsApp
+│   │   ├── layout.tsx                          # Root layout, fonts, JSON-LD schema, SmoothScrollProvider
+│   │   ├── page.tsx                            # Hero with Dolly Zoom Inverso, darkroom BeforeAfterSlider, manifesto
+│   │   ├── globals.css                         # Custom typography, rb-link-glanz effect, darkroom styles
+│   │   ├── auditor/page.tsx                    # R6: Real-time 20s audit engine, diagnostics & Loom lead gate
+│   │   ├── cotizador/page.tsx                  # R6: Parametric pricing estimator (CLP/USD) & WhatsApp handoff
 │   │   ├── servicios/
-│   │   │   ├── page.tsx                        # Overview of 4 disciplines
-│   │   │   ├── fotografia/page.tsx             # 4 optical disciplines & equipment
-│   │   │   ├── branding/page.tsx               # Cross-media identity & case study
-│   │   │   ├── desarrollo-web/page.tsx         # Next.js vs WordPress & Sur Terra case study
-│   │   │   └── editorial/page.tsx              # Swiss layout & Viajes Falabella guide
+│   │   │   ├── page.tsx                        # R4: Asymmetric Triptych Grid (48px 1fr 1.2fr) + hover photo reveal
+│   │   │   ├── fotografia/page.tsx
+│   │   │   ├── branding/page.tsx
+│   │   │   ├── desarrollo-web/page.tsx
+│   │   │   ├── edicion-fotografica/page.tsx
+│   │   │   ├── editorial/page.tsx
+│   │   │   └── redes-sociales/page.tsx
+│   │   ├── portafolio/page.tsx                 # R5: Synchronized 3-Column DynamoTripleSlider
+│   │   ├── clientes/page.tsx                   # 20 real client logos on 100% cyan
+│   │   └── contacto/page.tsx                   # Authentic contact brief & WhatsApp
 │   ├── components/
-│   │   ├── layout/
-│   │   │   ├── Navbar.tsx                      # Navbar with official logo-top.png
-│   │   │   └── Footer.tsx                      # Footer with logo-puelche.png & real contact info
 │   │   ├── providers/
-│   │   │   └── SmoothScrollProvider.tsx        # Lenis smooth scroll
-│   │   └── ui/
-│   │       └── WhatsAppButton.tsx              # Floating WhatsApp to +56 9 6617 7500
+│   │   │   └── SmoothScrollProvider.tsx        # R2: Lenis 120Hz easeOutExpo, fine pointer scoped
+│   │   ├── ui/
+│   │   │   ├── BeforeAfterSlider.tsx           # R3: Darkroom Mesa de Revelado with tactile analog dial
+│   │   │   ├── PageTransition.tsx              # R7: ClipPath inset curtain & speculative prefetching
+│   │   │   └── WhatsAppButton.tsx
+│   │   └── portfolio/
+│   │       ├── DynamoTripleSlider.tsx          # R5: The Smart Villas 3-column synchronized slider
+│   │       └── LatitudeWorksRail.tsx
 │   └── data/
-│       └── portfolio.ts                        # PORTFOLIO_PROJECTS, CLIENT_LOGOS, STUDIO_SERVICES
-├── docs/
-│   └── ledger.md                               # Formal verification ledger
-└── tests/
-    └── e2e/                                    # Requirement-driven opaque-box test suite
+│       └── portfolio.ts                        # Authentic portfolio projects & austral metadata
+├── tests/
+│   ├── gen3_challenger_visual.ts               # Visual & interactive stress suite (22/22 tests passed)
+│   ├── gen3_challenger_math.ts                 # Math & state machine stress suite (17/17 tests passed)
+│   └── e2e/
+│       └── runner.ts                           # Autonomous opaque-box test runner (Tiers 1-7, 168 tests passed)
+└── docs/
+    └── ledger.md                               # Formal verification ledger
 ```
 
 ## Feature Inventory
-| # | Feature | Description | Milestone | Source |
-|---|---------|-------------|-----------|--------|
-| 1 | Official Logo in Navbar | Render `/images/real/logo-top.png` replacing Lucide Wind icon | M1 | Survey R1 |
-| 2 | Official Logo & Contact in Footer | Render `/images/real/logo-puelche.png` + Paula Valdivieso contact | M1 | Survey R1/R2 |
-| 3 | Remove Unsplash from Services | Replace 3 Unsplash URLs in branding, editorial, and desarrollo-web | M1 | Survey R1 |
-| 4 | Clean Remote Patterns in Config | Purge `images.unsplash.com` from `next.config.ts` | M1 | Survey R1 |
-| 5 | Portfolio Data Zero-Unsplash | Map all 8 projects in `portfolio.ts` to `/images/real/bg-*.jpg` | M2 | Survey R1 |
-| 6 | Interactive Portfolio Showcase | 5 filter tabs, project modal drawer, dynamic counts, responsive cards | M2 | Survey R2 |
-| 7 | Hero Section with Genuine Asset | Render `bg-home-2.jpg`, kinetic text wipe, and Puerto Varas badge | M3 | Survey R2 |
-| 8 | Agency Manifesto & Cross-Media | Render `bg-agencia.jpg`, Viento Puelche story, and 4 pillars | M3 | Survey R2 |
-| 9 | Client Logo Asset Download | Download 20 client logos into `public/images/real/clients/` | M4 | Survey R2 |
-| 10 | Real Clients Grid & Proof | Render 20 logos, testimonials, and 4 territorial nodes in `/clientes` | M4 | Survey R2 |
-| 11 | Authentic Contact Brief | 4-step project brief, verified email/phone, direct WhatsApp generator | M4 | Survey R2 |
-| 12 | E2E Test Suite Infrastructure | Autonomous test runner and assertion engine | E2E Track | Arch |
-| 13 | Tier 1-4 Requirement Tests | 100% coverage across all 11 features with zero Unsplash validation | E2E Track | Arch |
-| 14 | Final E2E Pass & Ledger Certification | Pass 100% of E2E test suite and record in `docs/ledger.md` | M5 | Acceptance |
+| # | Feature | Description | Milestone | Source | Status |
+|---|---------|-------------|-----------|--------|--------|
+| 1 | Hero Cinemático con Dolly Zoom Inverso | Dual counter-scale: wrapper 0.88 -> 1.0, background `bg-agencia.jpg` 1.25 -> 1.0 via ScrollTrigger scrub | M1 | R1 | DONE |
+| 2 | Smooth Scroll Híbrido de 120Hz | Lenis with `easeOutExpo = (x) => Math.min(1, 1.001 - Math.pow(2, -10 * x))`, duration 1.2s, lagSmoothing(0), desktop scoped | M1 | R2 | DONE |
+| 3 | Transiciones con ClipPath & Prefetching | Page transitions with `clipPath: inset(0% 0% 100% 0%)` and speculative prefetching on `mouseover`/`touchstart` | M1 | R7 | DONE |
+| 4 | Mesa de Revelado Fotográfico de Autor | Darkroom interactive staging with tactile analog rotary dial, loaded with `public/images/real/edicion/` and raw/master pairs | M2 | R3 | DONE |
+| 5 | Grilla Asimétrica Tríptica de Servicios | `grid-template-columns: 48px 1fr 1.2fr` with ordinal, title, description, `rb-link-glanz` button & background photo reveal | M2 | R4 | DONE |
+| 6 | Slider Cinemático Sincronizado 3 Columnas | The Smart Villas DynamoList pattern: Col 1 Concept/Story, Col 2 Metrics/Coordinates, Col 3 Large Format Photography | M2 | R5 | DONE |
+| 7 | Motor Auditor en Tiempo Real | `/auditor` with 20s 5-phase simulation, progress bar, technical-to-commercial translation, Loom video lead gate | M3 | R6 | DONE |
+| 8 | Cotizador Paramétrico Determinista | `/cotizador` with piecewise page formula, company size multipliers, 7 add-ons, CLP & USD, delivery timeline, WhatsApp handoff | M3 | R6 | DONE |
+| 9 | Package & Quality Scripts Alignment | Configure `"lint": "tsc --noEmit"` in `package.json` so `npm run lint` passes without blocking errors | M1 | Build Track | DONE |
+| 10 | Tier 7 Acceptance Test Battery | Extend `tests/e2e/runner.ts` with comprehensive tests verifying R1-R7 and HTTP 200 contracts for all routes | M4 | E2E Track | DONE |
+| 11 | Final E2E Suite & Audit Certification | 100% pass across all test tiers, clean production Turbopack build, CLEAN forensic audit verdict | M4 | Gate | DONE |
 
 ## Milestones
-| # | Name | Scope | Dependencies | Status |
-|---|------|-------|-------------|--------|
-| M1 | Brand Identity & Core Layout | Navbar with official logo, Footer with real mark & contact, purge Unsplash from service pages, clean next.config.ts | none | DONE |
-| M2 | Portfolio Showcase & Zero-Stock Data | Clean `portfolio.ts` (0 Unsplash), update `/portafolio` page and project modal | M1 | DONE |
-| M3 | Home Page & Cinematic Atmosphere | Home Hero with `bg-home-2.jpg`, Manifiesto with `bg-agencia.jpg`, featured projects, pillars | M2 | DONE |
-| M4 | Real Clients Grid & Contact Brief | Download 20 client logos, `/clientes` page with logo grid, `/contacto` page with 4-step brief | M1 | IN_PROGRESS |
-| M5 | Final E2E Pass & Ledger Certification | Pass 100% of E2E test suite (Tiers 1-4), adversarial hardening (Tier 5), compile clean build, write `docs/ledger.md` | M1, M2, M3, M4, TEST_READY.md | PLANNED |
-| E2E | E2E Testing Track | Independent opaque-box test runner covering Tiers 1-4; produces `TEST_READY.md` | none | DONE |
+| # | Name | Scope | Dependencies | Status | Evidence |
+|---|------|-------|-------------|--------|---|
+| M1 | Cinematic Foundation & Navigation (R1, R2, R7, Lint) | Hero Dolly Zoom, Lenis 120Hz smooth scroll, ClipPath page transitions & prefetch, package.json lint fix | none | DONE | Approved by Reviewer 1 & Challenger 1 |
+| M2 | Interactive Editorial & Staging (R3, R4, R5) | Darkroom BeforeAfterSlider with rotary dial, Asymmetric Services Grid (48px 1fr 1.2fr), 3-Column DynamoTripleSlider | M1 | DONE | Approved by Reviewer 2 & Challenger 1 |
+| M3 | Real-Time Commercial Engines (R6) | `/auditor` 20s simulation & Loom gate, `/cotizador` parametric math model & handoff | M1 | DONE | Approved by Reviewer 2 & Challenger 2 |
+| M4 | Final E2E Suite & Audit Certification | Tier 7 test suite extension, 100% test pass, clean build & lint, independent review, challenger & forensic audit | M1, M2, M3 | DONE | Certified CLEAN by Forensic Auditor |
 
 ## Interface Contracts
-### Navbar ↔ Application
-- Logo image path: `/images/real/logo-top.png`
-- Height: 32px to 40px (responsive `h-8 md:h-10 w-auto object-contain`)
-- Links: `/` (Inicio), `/portafolio` (Portafolio), `/servicios` (Servicios), `/clientes` (Clientes), `/contacto` (Contacto)
-- Theme: Glassmorphic with dynamic scroll detection (`scrolled` state)
+### SmoothScrollProvider ↔ GSAP
+- Window global: `(window as any).lenisInstance`
+- Ticker: `gsap.ticker.add(updateTicker)` with `gsap.ticker.lagSmoothing(0)`
+- Query: `window.matchMedia('(hover: hover) and (pointer: fine)')`
+- Easing: `easeOutExpo = (x: number) => Math.min(1, 1.001 - Math.pow(2, -10 * x))`
 
-### Portfolio Data Contract (`src/data/portfolio.ts`)
-```typescript
-export interface Project {
-  id: string;
-  title: string;
-  client: string;
-  category: 'fotografia' | 'branding' | 'desarrollo-web' | 'editorial';
-  location: string;
-  year: string;
-  image: string; // Strictly local /images/real/*, NEVER http/unsplash
-  summary: string;
-  deliverables: string[];
-  metrics?: { label: string; value: string };
-  href: string;
-}
-```
+### PageTransition ↔ Next.js Router
+- Trigger: Global delegated listener on `mouseover`/`touchstart` for internal links -> `router.prefetch(url)`
+- Click interception: Prevents default, runs GSAP `clipPath: inset(100% 0% 0% 0%) -> inset(0% 0% 0% 0%)` (0.42s), then `router.push()`
+- Route Swap: Listens to `pathname` change, scrolls immediately to (0, 0), runs GSAP `clipPath: inset(0% 0% 0% 0%) -> inset(0% 0% 100% 0%)` (0.48s)
 
-### Client Logos Contract (`public/images/real/clients/`)
-- Format: PNG `cliente{1..20}-1.png`
-- Display: Monochrome / grayscale with hover color or high-contrast filter on dark background
-- Mapping: 20 verified regional and national corporate clients
+### BeforeAfterSlider ↔ Darkroom Dial
+- Export: `export const BEFORE_AFTER_CASES`
+- Role: `role="slider"`, `aria-valuenow`, `aria-valuemin="0"`, `aria-valuemax="100"`
+- Dial: `DarkroomRotaryDial` mapped to exposure percentage (0% - 100%) and edition photograph selector
 
-### Contact Data Contract
-- Lead Creative / Director: Paula Valdivieso
-- Email: `paula.valdivieso@puelchelab.cl`
-- Phone / WhatsApp: `+56 9 6617 7500` (`wa.me/56966177500`)
-- Operating Hours: `Lunes a Viernes de 09:00 a 19:00 hrs.`
-- Location: Puerto Varas, Región de Los Lagos, Chile
+### DynamoTripleSlider Contract
+- Triple synchronization on `activeIndex` state
+- Column 1: `title`, `client`, `year`, `summary`, `deliverables`, `category`
+- Column 2: `location`, `coordinates` (e.g. `41°19′S 72°59′W`), `optics`, `climate`, `altitude`, `azimuth`
+- Column 3: `image` (strictly `/images/real/*`), `alt`, `lightboxAction`
+
+### Cotizador Parametric Formula Contract
+- Inputs: `pages` (1..30), `companySize` ('startup' | 'pyme' | 'empresa' | 'corporativo'), `addons` (Set<string>)
+- Formula: `Total = Math.round((Base(pages) * Multiplier(companySize) + Sum(Addons)) / 10000) * 10000`
+- Zero NaN, zero negative numbers, Chilean Peso format (`$X.XXX.XXX CLP`) and USD equivalent (`$X.XXX USD` at 950 CLP/USD).

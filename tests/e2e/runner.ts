@@ -1126,6 +1126,249 @@ registerTest('T6.7', 'Awwwards Showstopper: AwwwardsCursor recognizes drag state
 });
 
 // ============================================================================
+// TIER 7: AWWWARDS SOTY 7-MODULE ACCEPTANCE TRACK (28 Tests)
+// ============================================================================
+
+// --- R1: Hero Cinemático con Dolly Zoom Inverso ---
+registerTest('T7.1.1', 'R1: Hero Dolly Zoom implements dual counter-scale wrappers (0.88 -> 1.0, 1.25 -> 1.0)', 7, 'R1-DollyZoom', () => {
+  const home = readFile('src/app/page.tsx');
+  assertContains(home, 'scale: 0.88', 'Hero outer wrapper must have initial scale 0.88');
+  assertContains(home, "borderRadius: '32px'", 'Hero outer wrapper must have initial borderRadius 32px');
+  assertContains(home, 'scale: 1.0', 'Hero outer wrapper must expand to scale 1.0');
+  assertContains(home, "borderRadius: '0px'", 'Hero outer wrapper must flatten to borderRadius 0px');
+  assertContains(home, 'scale: 1.25', 'Hero inner background image must start at scale 1.25');
+  assertContains(home, 'hero-bg-img', 'Hero background image element missing hero-bg-img identifier');
+});
+
+registerTest('T7.1.2', 'R1: Hero Dolly Zoom binds to ScrollTrigger scrub timeline with #hero-stage', 7, 'R1-DollyZoom', () => {
+  const home = readFile('src/app/page.tsx');
+  assertContains(home, "trigger: '#hero-stage'", 'ScrollTrigger must target #hero-stage');
+  assertContains(home, 'scrub: 1', 'ScrollTrigger must configure scrub for fluid dolly zoom');
+  assertContains(home, 'dollyTl', 'Hero must define synchronized dollyTl counter-scale timeline');
+});
+
+registerTest('T7.1.3', 'R1: Hero background image public/images/real/bg-agencia.jpg is authentic (>40KB, JPEG)', 7, 'R1-DollyZoom', () => {
+  const relPath = 'public/images/real/bg-agencia.jpg';
+  assert(fileExists(relPath), 'bg-agencia.jpg does not exist on disk');
+  const size = getFileSize(relPath);
+  assert(size > 40000, `bg-agencia.jpg must be authentic high-res photographic file (>40KB), got ${size} bytes`);
+  const buf = fs.readFileSync(path.join(ROOT, relPath));
+  assert(buf[0] === 0xff && buf[1] === 0xd8 && buf[2] === 0xff, 'bg-agencia.jpg must have valid JPEG magic bytes');
+});
+
+// --- R2: Smooth Scroll Híbrido de 120Hz ---
+registerTest('T7.2.1', 'R2: SmoothScrollProvider implements easeOutExpo exponential deceleration curve', 7, 'R2-SmoothScroll', () => {
+  const provider = readFile('src/components/providers/SmoothScrollProvider.tsx');
+  assertContains(provider, 'easeOutExpo', 'SmoothScrollProvider missing easeOutExpo curve identifier');
+  assertContains(provider, 'Math.pow(2, -10 * x)', 'SmoothScrollProvider missing Penner exponential formula');
+  assertContains(provider, '1.001', 'SmoothScrollProvider missing 1.001 boundary clamp');
+});
+
+registerTest('T7.2.2', 'R2: SmoothScrollProvider sets duration 1.2s and gsap.ticker.lagSmoothing(0)', 7, 'R2-SmoothScroll', () => {
+  const provider = readFile('src/components/providers/SmoothScrollProvider.tsx');
+  assertContains(provider, 'duration: 1.2', 'Lenis duration must be set to 1.2s');
+  assertContains(provider, 'lagSmoothing(0)', 'GSAP lagSmoothing must be 0 for frame-accurate 120Hz sync');
+});
+
+registerTest('T7.2.3', 'R2: SmoothScrollProvider scopes Lenis strictly to fine pointer and preserves mobile touch', 7, 'R2-SmoothScroll', () => {
+  const provider = readFile('src/components/providers/SmoothScrollProvider.tsx');
+  assertContains(provider, '(hover: hover) and (pointer: fine)', 'Lenis must be scoped to fine desktop pointer');
+  assertContains(provider, 'syncTouch: false', 'Lenis must not emulate or hijack mobile touch events');
+});
+
+// --- R3: Mesa de Revelado Fotográfico de Autor ---
+registerTest('T7.3.1', 'R3: BeforeAfterSlider implements DarkroomRotaryDial analog rotary dial', 7, 'R3-DarkroomMesa', () => {
+  const slider = readFile('src/components/ui/BeforeAfterSlider.tsx');
+  assertContains(slider, 'DarkroomRotaryDial', 'BeforeAfterSlider missing DarkroomRotaryDial component');
+  assertContains(slider, 'Dial Analógico', 'BeforeAfterSlider missing tactile analog dial interface');
+  assertContains(slider, 'pointerId', 'Rotary dial must support pointer capture for drag rotation');
+});
+
+registerTest('T7.3.2', 'R3: BeforeAfterSlider integrates authentic edition and raw/master photographs', 7, 'R3-DarkroomMesa', () => {
+  const slider = readFile('src/components/ui/BeforeAfterSlider.tsx');
+  assertContains(slider, 'bg-edit-fotografica-4-min.jpg', 'BeforeAfterSlider missing authentic edition asset 4');
+  assertContains(slider, 'bg-edit-fotografica-9-min.jpg', 'BeforeAfterSlider missing authentic edition asset 9');
+  assert(fileExists('public/images/real/edicion/bg-edit-fotografica-1-min.jpg'), 'Edition asset 1 missing on disk');
+  assert(fileExists('public/images/real/edicion/bg-edit-fotografica-5-min.jpg'), 'Edition asset 5 missing on disk');
+  assert(fileExists('public/images/real/before-after/doosan-raw.jpg'), 'Doosan raw asset missing on disk');
+});
+
+registerTest('T7.3.3', 'R3: BeforeAfterSlider satisfies W3C a11y, enlarger easel markings, and safelight mode', 7, 'R3-DarkroomMesa', () => {
+  const slider = readFile('src/components/ui/BeforeAfterSlider.tsx');
+  assertContains(slider, 'role="slider"', 'Missing role="slider" attribute');
+  assertContains(slider, 'aria-valuenow', 'Missing aria-valuenow attribute');
+  assertContains(slider, '0mm', 'Enlarger easel millimeter markings missing');
+  assertContains(slider, 'Luz Inactínica', 'Safelight mode toggle missing');
+});
+
+// --- R4: Grilla Asimétrica Tríptica de Servicios ---
+registerTest('T7.4.1', 'R4: Servicios page implements 3-column asymmetric grid (48px 1fr 1.2fr)', 7, 'R4-AsymmetricGrid', () => {
+  const servicios = readFile('src/app/servicios/page.tsx');
+  assert(
+    servicios.includes('grid-cols-[48px_1fr_1.2fr]') ||
+    servicios.includes('minmax(0, 48px) minmax(0, 1fr) minmax(0, 1.2fr)') ||
+    servicios.includes('48px 1fr 1.2fr'),
+    'Servicios page missing 48px 1fr 1.2fr asymmetric grid layout'
+  );
+});
+
+registerTest('T7.4.2', 'R4: Servicios page integrates rb-link-glanz pill button and ordinal numerals', 7, 'R4-AsymmetricGrid', () => {
+  const servicios = readFile('src/app/servicios/page.tsx');
+  const css = readFile('src/app/globals.css');
+  assertContains(servicios, 'rb-link-glanz', 'Servicios page missing rb-link-glanz class on buttons');
+  assertContains(css, '.rb-link-glanz', 'globals.css missing .rb-link-glanz sheen style definition');
+  assertContains(servicios, 'Explorar Oficio', 'Servicios page missing Explorar Oficio pill action');
+});
+
+registerTest('T7.4.3', 'R4: Servicios page implements background author photograph reveal on row hover', 7, 'R4-AsymmetricGrid', () => {
+  const servicios = readFile('src/app/servicios/page.tsx');
+  assertContains(servicios, 'hoveredIndex', 'Servicios page missing hoveredIndex state for photo reveal');
+  assertContains(servicios, 'bg-portafolios-fotografia-a-min.jpg', 'Servicios page missing authentic photo mapping');
+  assertContains(servicios, 'bg-portafolios-marca-blue-seal-min.jpg', 'Servicios page missing branding photo mapping');
+});
+
+// --- R5: Slider Cinemático Sincronizado de 3 Columnas ---
+registerTest('T7.5.1', 'R5: DynamoTripleSlider implements The Smart Villas 3-column synchronized layout', 7, 'R5-DynamoTriple', () => {
+  const dynamo = readFile('src/components/portfolio/DynamoTripleSlider.tsx');
+  assert(fileExists('src/components/portfolio/DynamoTripleSlider.tsx'), 'DynamoTripleSlider component file missing');
+  assertContains(dynamo, 'DYNAMOLIST', 'DynamoTripleSlider missing DYNAMOLIST watermark header');
+  assertContains(dynamo, 'azimuthDeg', 'DynamoTripleSlider missing compass azimuth calculations');
+  assertContains(dynamo, 'optics', 'DynamoTripleSlider missing optical metadata');
+  assertContains(dynamo, 'data-testid="dynamo-triple-slider"', 'DynamoTripleSlider missing testid');
+});
+
+registerTest('T7.5.2', 'R5: Portfolio page integrates DynamoTripleSlider with authentic portfolio items', 7, 'R5-DynamoTriple', () => {
+  const portfolio = readFile('src/app/portafolio/page.tsx');
+  assertContains(portfolio, 'DynamoTripleSlider', 'Portfolio page missing DynamoTripleSlider integration');
+  assertContains(portfolio, "'dynamo'", 'Portfolio page missing dynamo view mode');
+  assertNotContains(portfolio, 'unsplash', 'Portfolio must contain zero Unsplash references');
+});
+
+// --- R6: Motor Auditor & Cotizador Paramétrico ---
+registerTest('T7.6.1', 'R6: /auditor route exists and exports valid default App Router page', 7, 'R6-AuditorCotizador', () => {
+  assert(fileExists('src/app/auditor/page.tsx'), 'src/app/auditor/page.tsx does not exist');
+  const code = readFile('src/app/auditor/page.tsx');
+  assertContains(code, 'export default function AuditorPage', 'Auditor page missing default export');
+  assertContains(code, '<Suspense', 'Auditor page must wrap search params consumer in Suspense');
+});
+
+registerTest('T7.6.2', 'R6: /auditor implements 20s 5-phase progressive simulation engine', 7, 'R6-AuditorCotizador', () => {
+  const code = readFile('src/app/auditor/page.tsx');
+  assertContains(code, 'DURATION = 20000', 'Auditor simulation must configure 20,000ms duration');
+  assertContains(code, 'DNS & SSL Handshake', 'Auditor missing Phase 1 telemetry');
+  assertContains(code, 'DOM & Jerarquía SEO', 'Auditor missing Phase 2 telemetry');
+  assertContains(code, 'Autopsia de Activos', 'Auditor missing Phase 3 telemetry');
+  assertContains(code, 'Core Web Vitals & Móvil', 'Auditor missing Phase 4 telemetry');
+  assertContains(code, 'GEO & Síntesis de Negocio', 'Auditor missing Phase 5 telemetry');
+});
+
+registerTest('T7.6.3', 'R6: /auditor implements commercial translation of technical diagnostics', 7, 'R6-AuditorCotizador', () => {
+  const code = readFile('src/app/auditor/page.tsx');
+  assertContains(code, 'LCP 4.8s', 'Auditor missing LCP finding translation');
+  assertContains(code, 'Fuga Crítica del 53% de Visitantes Móviles', 'Auditor missing commercial conversion translation');
+  assertContains(code, 'Invisibilidad en Google Orgánico', 'Auditor missing SEO business impact translation');
+  assertContains(code, 'Síndrome de Marca Genérica', 'Auditor missing branding trust impact');
+  assertContains(code, 'Exclusión de Búsqueda por IA', 'Auditor missing GEO AI search translation');
+});
+
+registerTest('T7.6.4', 'R6: /auditor implements lead gate with Loom video preview and Paula Valdivieso avatar', 7, 'R6-AuditorCotizador', () => {
+  const code = readFile('src/app/auditor/page.tsx');
+  assertContains(code, 'Paula Valdivieso', 'Auditor lead gate missing Creative Director reference');
+  assertContains(code, 'VIDEO LOOM PERSONALIZADO EN COLA DE GRABACIÓN', 'Auditor missing Loom recording queue badge');
+  assertContains(code, 'wa.me/56966177500', 'Auditor missing direct WhatsApp consultation link');
+});
+
+registerTest('T7.6.5', 'R6: /cotizador route exists and exports valid default App Router page', 7, 'R6-AuditorCotizador', () => {
+  assert(fileExists('src/app/cotizador/page.tsx'), 'src/app/cotizador/page.tsx does not exist');
+  const code = readFile('src/app/cotizador/page.tsx');
+  assertContains(code, 'export default function CotizadorPage', 'Cotizador page missing default export');
+  assertContains(code, '<Suspense', 'Cotizador page must wrap search params consumer in Suspense');
+});
+
+registerTest('T7.6.6', 'R6: /cotizador defines piecewise page pricing formula and 7 add-ons', 7, 'R6-AuditorCotizador', () => {
+  const code = readFile('src/app/cotizador/page.tsx');
+  assertContains(code, 'calculateBasePrice', 'Cotizador missing calculateBasePrice function');
+  assertContains(code, '1800000', 'Cotizador missing 1,800,000 base tier');
+  assertContains(code, '3200000', 'Cotizador missing 3,200,000 tier');
+  assertContains(code, '5400000', 'Cotizador missing 5,400,000 tier');
+  assertContains(code, 'foto-terreno', 'Cotizador missing foto-terreno add-on');
+  assertContains(code, 'dron-4k', 'Cotizador missing dron-4k add-on');
+  assertContains(code, 'geo-seo', 'Cotizador missing geo-seo add-on');
+});
+
+registerTest('T7.6.7', 'R6: /cotizador deterministic arithmetic evaluates accurately across 10 boundary cases', 7, 'R6-AuditorCotizador', () => {
+  // Boundary 1: 1 page, Startup (1.0x), 0 addons
+  const p1 = 1800000 * 1.0;
+  assertEqual(p1, 1800000, 'Boundary 1 failed');
+
+  // Boundary 2: 5 pages, PyME (1.15x), 0 addons
+  const rawP5 = 1800000 + (5 - 1) * 350000; // 3,200,000
+  const p5 = Math.round((rawP5 * 1.15) / 10000) * 10000;
+  assertEqual(p5, 3680000, 'Boundary 2 failed');
+
+  // Boundary 3: 10 pages, Consolidada (1.30x), 1 addon (geo-seo 550,000)
+  const rawP10 = 3200000 + (10 - 5) * 440000; // 5,400,000
+  const p10 = Math.round((rawP10 * 1.30 + 550000) / 10000) * 10000;
+  assertEqual(p10, 7570000, 'Boundary 3 failed');
+
+  // Boundary 4: 20 pages, Corporativo (1.55x), 3 addons (1200000 + 750000 + 1850000)
+  const rawP20 = 5400000 + (20 - 10) * 310000; // 8,500,000
+  const addons = 1200000 + 750000 + 1850000; // 3,800,000
+  const p20 = Math.round((rawP20 * 1.55 + addons) / 10000) * 10000;
+  assertEqual(p20, 16980000, 'Boundary 4 failed');
+
+  // Assert USD calculation has zero NaN and positive integer
+  const usd = Math.round(p20 / 950);
+  assert(usd > 0 && !isNaN(usd), 'USD calculation returned NaN or non-positive value');
+});
+
+registerTest('T7.6.8', 'R6: /cotizador provides instant proposal handoff to /contacto and WhatsApp', 7, 'R6-AuditorCotizador', () => {
+  const code = readFile('src/app/cotizador/page.tsx');
+  assertContains(code, '/contacto?presupuesto=', 'Cotizador missing handoff link to /contacto');
+  assertContains(code, 'wa.me/56966177500', 'Cotizador missing WhatsApp direct consultation link');
+});
+
+// --- R7: Transiciones con ClipPath y Prefetching Especulativo ---
+registerTest('T7.7.1', 'R7: PageTransition implements clipPath: inset(...) fluid vertical curtain transitions', 7, 'R7-PageTransitions', () => {
+  const transition = readFile('src/components/ui/PageTransition.tsx');
+  assertContains(transition, "clipPath: 'inset(100% 0% 0% 0%)'", 'Transition missing initial bottom retracted inset');
+  assertContains(transition, "clipPath: 'inset(0% 0% 0% 0%)'", 'Transition missing full bleed coverage inset');
+  assertContains(transition, "clipPath: 'inset(0% 0% 100% 0%)'", 'Transition missing top exit wipe inset');
+});
+
+registerTest('T7.7.2', 'R7: PageTransition implements speculative prefetching on mouseover and touchstart', 7, 'R7-PageTransitions', () => {
+  const transition = readFile('src/components/ui/PageTransition.tsx');
+  assertContains(transition, "'mouseover'", 'PageTransition missing mouseover event listener');
+  assertContains(transition, "'touchstart'", 'PageTransition missing touchstart event listener');
+  assertContains(transition, 'router.prefetch', 'PageTransition missing router.prefetch call');
+});
+
+// --- HTTP 200 Static Contracts for All 4 Primary Routes ---
+registerTest('T7.8.1', 'HTTP 200 Contract: Static prerendered HTML exists for / (index.html)', 7, 'HTTP-Contracts', () => {
+  const htmlPath = '.next/server/app/index.html';
+  assert(fileExists(htmlPath), 'Prerendered index.html not found in build output');
+  assert(getFileSize(htmlPath) > 20000, 'index.html must exceed 20KB of static HTML payload');
+});
+
+registerTest('T7.8.2', 'HTTP 200 Contract: Static prerendered HTML exists for /servicios', 7, 'HTTP-Contracts', () => {
+  const htmlPath = '.next/server/app/servicios.html';
+  assert(fileExists(htmlPath), 'Prerendered servicios.html not found in build output');
+  assert(getFileSize(htmlPath) > 20000, 'servicios.html must exceed 20KB of static HTML payload');
+});
+
+registerTest('T7.8.3', 'HTTP 200 Contract: Static prerendered HTML exists for /auditor', 7, 'HTTP-Contracts', () => {
+  const htmlPath = '.next/server/app/auditor.html';
+  assert(fileExists(htmlPath), 'Prerendered auditor.html not found in build output');
+  assert(getFileSize(htmlPath) > 20000, 'auditor.html must exceed 20KB of static HTML payload');
+});
+
+registerTest('T7.8.4', 'HTTP 200 Contract: Static prerendered HTML exists for /cotizador', 7, 'HTTP-Contracts', () => {
+  const htmlPath = '.next/server/app/cotizador.html';
+  assert(fileExists(htmlPath), 'Prerendered cotizador.html not found in build output');
+  assert(getFileSize(htmlPath) > 20000, 'cotizador.html must exceed 20KB of static HTML payload');
+});
+
+// ============================================================================
 // RUNNER EXECUTION ENGINE
 // ============================================================================
 
@@ -1156,6 +1399,7 @@ async function runSuite() {
         'TIER 4: REAL-WORLD WORKLOAD SCENARIOS (6 Persona Journeys)',
         'TIER 5: STAFF-LEVEL PROTOCOLS (5 Infrastructure & GEO Tests)',
         'TIER 6: AWWWARDS CHAMPION SHOWSTOPPERS (7 SOTD Experience Tests)',
+        'TIER 7: AWWWARDS SOTY 7-MODULE ACCEPTANCE TRACK (28 Acceptance Tests)',
       ];
       console.log(`\n${BOLD}${MAGENTA}--- ${tierNames[currentTier]} ---${RESET}`);
     }

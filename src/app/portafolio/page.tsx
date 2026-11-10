@@ -7,6 +7,7 @@ import { useSearchParams } from 'next/navigation';
 import { PORTFOLIO_PROJECTS, ProjectItem } from '@/data/portfolio';
 import { MapPin, Calendar, CheckCircle2, X, ArrowUpRight, ChevronLeft, ChevronRight, ChevronUp, ChevronDown, Compass, LayoutGrid, Waves, Film, Sparkles } from 'lucide-react';
 import { LatitudeWorksRail } from '@/components/portfolio/LatitudeWorksRail';
+import { DynamoTripleSlider } from '@/components/portfolio/DynamoTripleSlider';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
@@ -21,7 +22,7 @@ function PortfolioContent() {
   const [activeModalProject, setActiveModalProject] = useState<ProjectItem | null>(null);
   const [currentImageIndex, setCurrentImageIndex] = useState<number>(0);
   const [navDirection, setNavDirection] = useState<'next' | 'prev' | 'idle'>('idle');
-  const [viewMode, setViewMode] = useState<'river' | 'grid' | 'latitud'>('river');
+  const [viewMode, setViewMode] = useState<'river' | 'grid' | 'latitud' | 'dynamo'>('river');
 
   // GSAP ScrollTrigger Refs para el Río Cinético Austral (Horizontal Pinned Stream)
   const riverRunwayRef = useRef<HTMLDivElement>(null);
@@ -34,6 +35,8 @@ function PortfolioContent() {
       setViewMode('latitud');
     } else if (modoParam === 'grid') {
       setViewMode('grid');
+    } else if (modoParam === 'dynamo') {
+      setViewMode('dynamo');
     }
   }, [modoParam]);
 
@@ -571,12 +574,31 @@ function PortfolioContent() {
               <Compass className="w-3.5 h-3.5" />
               <span>Regla de Latitud Austral (41°S — 53°S)</span>
             </button>
+            <button
+              type="button"
+              onClick={() => setViewMode('dynamo')}
+              className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-condensed uppercase tracking-wider transition-all duration-300 ${
+                viewMode === 'dynamo'
+                  ? 'bg-[#59BFD6] text-puelche-dark font-bold shadow-md'
+                  : 'text-white/70 hover:text-white'
+              }`}
+            >
+              <Film className="w-3.5 h-3.5" />
+              <span>DynamoList (3 Columnas)</span>
+            </button>
           </div>
 
           <span className="font-mono text-xs text-white/50">
-            {viewMode === 'latitud' ? '6 estaciones territoriales' : `${filteredProjects.length} obras documentadas`}
+            {viewMode === 'latitud' ? '6 estaciones territoriales' : viewMode === 'dynamo' ? '6 obras sincronizadas' : `${filteredProjects.length} obras documentadas`}
           </span>
         </div>
+
+        {/* R5: Slider Cinemático Sincronizado de 3 Columnas (The Smart Villas DynamoList) */}
+        {viewMode === 'dynamo' && (
+          <div className="py-6">
+            <DynamoTripleSlider onOpenProject={handleOpenProject} />
+          </div>
+        )}
 
         {/* Regla de Latitud Austral — Recorrido Territorial de 41°S a 53°S */}
         {viewMode === 'latitud' && (
@@ -589,7 +611,7 @@ function PortfolioContent() {
         )}
 
         {/* Category Filters (Activos en Modo Río y Modo Grilla) */}
-        <div className={`flex flex-wrap items-center gap-2 pb-4 ${viewMode === 'latitud' ? 'hidden' : ''}`}>
+        <div className={`flex flex-wrap items-center gap-2 pb-4 ${viewMode === 'latitud' || viewMode === 'dynamo' ? 'hidden' : ''}`}>
           {CATEGORIES.map((category) => {
             const count = category === 'Todos'
               ? PORTFOLIO_PROJECTS.length

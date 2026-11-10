@@ -256,3 +256,25 @@ html.lenis, html.lenis body {
   animation: pliego-slide-prev 0.46s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   will-change: transform, opacity, filter;
 }
+
+/* ===== AWWWARDS: rb-link-glanz Sheen/Ink Pill Micro-Interaction ===== */
+.rb-link-glanz {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.rb-link-glanz::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(120deg, transparent 0%, rgba(255, 255, 255, 0.35) 50%, transparent 100%);
+  transform: translateX(-150%) skewX(-20deg);
+  transition: transform 0.65s cubic-bezier(0.19, 1, 0.22, 1);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.rb-link-glanz:hover::before {
+  transform: translateX(150%) skewX(-20deg);
+}

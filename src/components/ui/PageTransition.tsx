@@ -1,24 +1,54 @@
 'use client';
 
 import React, { useEffect, useRef } from 'react';
+import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
 import gsap from 'gsap';
 import { prefersReducedMotion, startEnergy } from '@/lib/energy';
 
 /**
- * Transición Atmosférica Puelche (Este a Oeste).
- * El viento puelche desciende de la cordillera (Este) barriendo en niebla
- * y saliendo hacia el océano Pacífico (Oeste) al revelar la nueva ruta.
+ * Transición de Página con ClipPath Inset y Prefetching Especulativo (R7).
+ * Utiliza clipPath: inset(...) para un barrido cinemático vertical y
+ * prefetching automático en onMouseEnter/mouseover y onTouchStart (0ms latencia percibida).
  */
-const FROM_EAST = 100; // Entra desde el Este (Cordillera)
-const TO_WEST = -100;  // Sale hacia el Oeste (Océano)
-
 export function PageTransition() {
   const router = useRouter();
   const pathname = usePathname();
   const curtainRef = useRef<HTMLDivElement>(null);
   const pending = useRef(false);
 
+  // 1. Prefetching Especulativo Global: mouseover y touchstart
+  useEffect(() => {
+    const prefetchLink = (target: HTMLElement | null) => {
+      if (!target) return;
+      const a = target.closest('a');
+      if (!a || a.target === '_blank' || a.hasAttribute('download')) return;
+      const href = a.getAttribute('href');
+      if (!href || href.startsWith('#') || href.startsWith('mailto:') || href.startsWith('tel:')) return;
+
+      try {
+        const url = new URL(href, window.location.href);
+        if (url.origin === window.location.origin && url.pathname !== window.location.pathname) {
+          router.prefetch(url.pathname + url.search);
+        }
+      } catch {
+        // Ignorar URLs no parseables
+      }
+    };
+
+    const handlePointerOver = (e: MouseEvent) => prefetchLink(e.target as HTMLElement);
+    const handleTouchStart = (e: TouchEvent) => prefetchLink(e.target as HTMLElement);
+
+    document.addEventListener('mouseover', handlePointerOver, { passive: true });
+    document.addEventListener('touchstart', handleTouchStart, { passive: true });
+
+    return () => {
+      document.removeEventListener('mouseover', handlePointerOver);
+      document.removeEventListener('touchstart', handleTouchStart);
+    };
+  }, [router]);
+
+  // 2. Interceptor de Navegación con ClipPath
   useEffect(() => {
     startEnergy();
 
@@ -37,9 +67,14 @@ export function PageTransition() {
       e.stopPropagation();
       pending.current = true;
 
+      // Barrido de entrada: de fondo recortado a cobertura completa
       gsap.timeline()
-        .set(curtainRef.current, { display: 'block', xPercent: FROM_EAST })
-        .to(curtainRef.current, { xPercent: 0, duration: 0.45, ease: 'power3.inOut' })
+        .set(curtainRef.current, { display: 'flex', clipPath: 'inset(100% 0% 0% 0%)' })
+        .to(curtainRef.current, {
+          clipPath: 'inset(0% 0% 0% 0%)',
+          duration: 0.42,
+          ease: 'power3.inOut',
+        })
         .add(() => router.push(url.pathname + url.search + url.hash));
     };
 
@@ -47,18 +82,24 @@ export function PageTransition() {
     return () => document.removeEventListener('click', onClick, true);
   }, [router]);
 
+  // 3. Barrido de Salida (Apertura al cargar la nueva ruta)
   useEffect(() => {
     if (!pending.current || !curtainRef.current) return;
     pending.current = false;
+
+    // Resetear scroll nativo y Lenis inmediatamente
     window.scrollTo(0, 0);
+    const win = window as Window & { lenisInstance?: { scrollTo: (y: number, opts?: { immediate?: boolean }) => void } };
+    win.lenisInstance?.scrollTo(0, { immediate: true });
 
     const main = document.querySelector<HTMLElement>('main');
     main?.setAttribute('tabindex', '-1');
     main?.focus({ preventScroll: true });
 
+    // Barrido de salida: hacia clipPath: inset(0% 0% 100% 0%) revelando la nueva ruta
     gsap.to(curtainRef.current, {
-      xPercent: TO_WEST,
-      duration: 0.5,
+      clipPath: 'inset(0% 0% 100% 0%)',
+      duration: 0.48,
       ease: 'power3.inOut',
       delay: 0.05,
       onComplete: () => {
@@ -71,11 +112,25 @@ export function PageTransition() {
     <div
       ref={curtainRef}
       aria-hidden="true"
-      className="fixed inset-0 z-[9998] pointer-events-none hidden w-[140%] -ml-[20%]"
+      className="fixed inset-0 z-[9998] pointer-events-none hidden bg-[#111215] flex-col items-center justify-center border-t border-[#59BFD6]/30 shadow-2xl"
       style={{
-        background:
-          'linear-gradient(90deg, transparent 0%, rgba(89, 191, 214, 0.12) 15%, rgba(17, 18, 21, 0.97) 45%, rgba(17, 18, 21, 0.97) 55%, rgba(89, 191, 214, 0.12) 85%, transparent 100%)',
+        clipPath: 'inset(0% 0% 100% 0%)',
+        willChange: 'clip-path',
       }}
-    />
+    >
+      {/* Emblema fotográfico de autor que palpita durante la transición */}
+      <div className="relative w-28 sm:w-36 aspect-[412/282] opacity-35 drop-shadow-2xl">
+        <Image
+          src="/images/real/logo-puelche.png"
+          alt=""
+          fill
+          priority
+          className="object-contain"
+        />
+      </div>
+      <span className="font-mono text-[10px] tracking-[0.3em] uppercase text-[#59BFD6] mt-4 opacity-60">
+        PUELCHE LAB &bull; EXPEDICIONES
+      </span>
+    </div>
   );
 }
