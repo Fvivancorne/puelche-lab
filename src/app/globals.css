@@ -218,42 +218,48 @@ html.lenis, html.lenis body {
 @keyframes pliego-slide-next {
   0% {
     opacity: 0;
-    transform: translate3d(70px, 0, 0) scale(0.97);
-    filter: drop-shadow(-40px 15px 50px rgba(0, 0, 0, 0.95));
+    transform: translate3d(60px, 0, 0) scale(0.985);
+    filter: drop-shadow(-35px 12px 45px rgba(0, 0, 0, 0.92));
   }
-  30% {
-    opacity: 0.7;
+  35% {
+    opacity: 0.65;
+  }
+  75% {
+    opacity: 0.95;
   }
   100% {
     opacity: 1;
     transform: translate3d(0, 0, 0) scale(1);
-    filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.85));
+    filter: drop-shadow(0 18px 36px rgba(0, 0, 0, 0.8));
   }
 }
 
 @keyframes pliego-slide-prev {
   0% {
     opacity: 0;
-    transform: translate3d(-70px, 0, 0) scale(0.97);
-    filter: drop-shadow(40px 15px 50px rgba(0, 0, 0, 0.95));
+    transform: translate3d(-60px, 0, 0) scale(0.985);
+    filter: drop-shadow(35px 12px 45px rgba(0, 0, 0, 0.92));
   }
-  30% {
-    opacity: 0.7;
+  35% {
+    opacity: 0.65;
+  }
+  75% {
+    opacity: 0.95;
   }
   100% {
     opacity: 1;
     transform: translate3d(0, 0, 0) scale(1);
-    filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.85));
+    filter: drop-shadow(0 18px 36px rgba(0, 0, 0, 0.8));
   }
 }
 
 .animate-pliego-next {
-  animation: pliego-slide-next 0.72s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: pliego-slide-next 0.88s cubic-bezier(0.19, 1, 0.22, 1) forwards;
   will-change: transform, opacity, filter;
 }
 
 .animate-pliego-prev {
-  animation: pliego-slide-prev 0.72s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: pliego-slide-prev 0.88s cubic-bezier(0.19, 1, 0.22, 1) forwards;
   will-change: transform, opacity, filter;
 }
 

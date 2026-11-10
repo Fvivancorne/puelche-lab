@@ -433,14 +433,14 @@ export default function BrandingPage() {
       let accumulatorX = 0;
       let isMomentumLocked = false;
       let unlockTimer: NodeJS.Timeout | null = null;
-      const HORIZONTAL_THRESHOLD = 160;
+      const HORIZONTAL_THRESHOLD = 280;
 
       const handleModalWheel = (e: WheelEvent) => {
         if (Math.abs(e.deltaX) > 0) {
           e.preventDefault();
         }
 
-        const isHorizontal = Math.abs(e.deltaX) > Math.abs(e.deltaY) && Math.abs(e.deltaX) > 3;
+        const isHorizontal = Math.abs(e.deltaX) > Math.abs(e.deltaY) * 1.6 && Math.abs(e.deltaX) > 8;
         if (!isHorizontal) return;
 
         e.preventDefault();
@@ -451,7 +451,7 @@ export default function BrandingPage() {
           unlockTimer = setTimeout(() => {
             isMomentumLocked = false;
             accumulatorX = 0;
-          }, 250);
+          }, 450);
           return;
         }
 
@@ -470,7 +470,7 @@ export default function BrandingPage() {
           unlockTimer = setTimeout(() => {
             isMomentumLocked = false;
             accumulatorX = 0;
-          }, 750);
+          }, 900);
         }
       };
 

@@ -3,6 +3,7 @@ import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowUpRight, Globe, MapPin, Building2, Quote, Sparkles } from 'lucide-react';
+import { AtmosphericBackground } from '@/components/ui/AtmosphericBackground';
 
 export const metadata: Metadata = {
   title: 'Clientes | Puelche Lab Puerto Varas — Clientes & Territorio Austral',
@@ -229,9 +230,33 @@ export const TESTIMONIALS = [
 
 export default function ClientesPage() {
   return (
-    <div className="w-full flex-1 bg-[#0D0E12] text-white min-h-screen">
+    <div className="relative w-full flex-1 bg-[#0D0E12] text-white min-h-screen overflow-hidden selection:bg-[#59BFD6] selection:text-[#0D0E12]">
+      {/* ── ATMÓSFERA AUSTRAL VIVA: ORBES LUMINOSOS + MICRO-PARTÍCULAS EN CANVAS ── */}
+      <AtmosphericBackground intensity="medium" showParticles={true} className="z-0" />
+
+      {/* ── PLACA FOTOGRÁFICA AUTÉNTICA DEL PAISAJE AUSTRAL (100% GENUINA, ANTI-STOCK) ── */}
+      <div className="absolute inset-0 pointer-events-none z-[1] opacity-10 mix-blend-screen overflow-hidden">
+        <Image
+          src="/images/real/bg-home-2.jpg"
+          alt="Atmósfera austral Puelche Lab"
+          fill
+          className="object-cover object-top filter grayscale contrast-125"
+          priority
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#0D0E12] via-transparent to-[#0D0E12]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_35%,#0D0E12_95%)]" />
+      </div>
+
+      {/* ── GUÍAS ÓPTICAS DE ESTUDIO & ESQUINAS DE ENCUADRE ── */}
+      <div className="absolute inset-x-8 top-28 bottom-16 border border-white/[0.04] pointer-events-none z-[2] hidden xl:block">
+        <span className="absolute -top-1.5 -left-1.5 w-3 h-3 border-t-2 border-l-2 border-[#59BFD6]/40" />
+        <span className="absolute -top-1.5 -right-1.5 w-3 h-3 border-t-2 border-r-2 border-[#59BFD6]/40" />
+        <span className="absolute -bottom-1.5 -left-1.5 w-3 h-3 border-b-2 border-l-2 border-[#59BFD6]/40" />
+        <span className="absolute -bottom-1.5 -right-1.5 w-3 h-3 border-b-2 border-r-2 border-[#59BFD6]/40" />
+      </div>
+
       {/* ── CABECERA EDITORIAL AWWWARDS SOTD (FONDO OBSIDIANA AUSTRAL & ACENTOS QUIRÚRGICOS) ── */}
-      <section className="relative pt-24 pb-14 md:pt-32 md:pb-20 px-6 sm:px-8 lg:px-12 text-center overflow-hidden border-b border-white/10">
+      <section className="relative z-10 pt-24 pb-14 md:pt-32 md:pb-20 px-6 sm:px-8 lg:px-12 text-center overflow-hidden border-b border-white/10">
         {/* Glow atmosférico suave de fondo */}
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[350px] bg-[#59BFD6]/10 blur-[120px] rounded-full" />

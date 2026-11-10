@@ -1,8 +1,11 @@
 'use client';
 
 import React, { useState, Suspense } from 'react';
+import Link from 'next/link';
+import Image from 'next/image';
 import { useSearchParams } from 'next/navigation';
-import { Mail, Phone, Clock, MapPin, Facebook, Instagram, Send, CheckCircle2, MessageCircle, RotateCcw } from 'lucide-react';
+import { Mail, Phone, Clock, MapPin, Facebook, Instagram, Send, CheckCircle2, MessageCircle, RotateCcw, Building2, Calculator, ArrowUpRight } from 'lucide-react';
+import { AtmosphericBackground } from '@/components/ui/AtmosphericBackground';
 
 const GENUINE_SERVICES = [
   'Fotografía',
@@ -540,11 +543,93 @@ function ContactFormInner() {
 
 export default function ContactoPage() {
   return (
-    <div className="w-full flex flex-col bg-[#0c0e12] text-white min-h-screen selection:bg-[#59BFD6] selection:text-[#0c0e12]">
-      <section className="max-w-6xl mx-auto px-6 sm:px-8 lg:px-12 pt-28 pb-16 md:pt-36 md:pb-24 w-full">
+    <div className="relative w-full flex flex-col bg-[#0c0e12] text-white min-h-screen selection:bg-[#59BFD6] selection:text-[#0c0e12] overflow-hidden">
+      {/* ── ATMÓSFERA AUSTRAL VIVA: GRADIENTES ORGÁNICOS + POLEN/VIENTO EN CANVAS ── */}
+      <AtmosphericBackground intensity="medium" showParticles={true} className="z-0" />
+
+      {/* ── PLACA FOTOGRÁFICA AUTÉNTICA DEL ESTUDIO / PUERTO VARAS (ANTI-STOCK) ── */}
+      <div className="absolute inset-0 pointer-events-none z-[1] opacity-15 mix-blend-screen overflow-hidden">
+        <Image
+          src="/images/real/bg-agencia.jpg"
+          alt="Estudio y Laboratorio Puelche Lab Puerto Varas"
+          fill
+          className="object-cover object-center filter grayscale contrast-125 scale-105"
+          priority
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#0c0e12] via-transparent to-[#0c0e12]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_30%,#0c0e12_90%)]" />
+      </div>
+
+      {/* ── AURORAL GLOWS & GUÍAS ÓPTICAS DE CUARTO OSCURO ── */}
+      <div className="absolute top-1/4 -left-48 w-[600px] h-[350px] bg-[#59BFD6]/[0.08] blur-[140px] rounded-full pointer-events-none z-[2]" />
+      <div className="absolute bottom-1/3 -right-48 w-[600px] h-[350px] bg-[#C29B63]/[0.07] blur-[150px] rounded-full pointer-events-none z-[2]" />
+
+      {/* Grilla técnica y marcas de encuadre en esquinas */}
+      <div className="absolute inset-x-8 top-32 bottom-20 border border-white/[0.04] pointer-events-none z-[2] hidden lg:block">
+        <span className="absolute -top-1.5 -left-1.5 w-3 h-3 border-t-2 border-l-2 border-[#59BFD6]/40" />
+        <span className="absolute -top-1.5 -right-1.5 w-3 h-3 border-t-2 border-r-2 border-[#59BFD6]/40" />
+        <span className="absolute -bottom-1.5 -left-1.5 w-3 h-3 border-b-2 border-l-2 border-[#59BFD6]/40" />
+        <span className="absolute -bottom-1.5 -right-1.5 w-3 h-3 border-b-2 border-r-2 border-[#59BFD6]/40" />
+      </div>
+
+      {/* ── CONTENIDO PRINCIPAL: FORMULARIO & DETALLES DE DESPACHO ── */}
+      <section className="relative z-10 max-w-6xl mx-auto px-6 sm:px-8 lg:px-12 pt-28 pb-16 md:pt-36 md:pb-24 w-full">
         <Suspense fallback={<div className="p-8 text-center font-condensed text-white">Cargando mesa de despacho...</div>}>
           <ContactFormInner />
         </Suspense>
+
+        {/* ── PUENTES DE CONTINUIDAD EDITORIAL: CONEXIÓN ENTRE PÁGINAS ── */}
+        <div className="mt-20 pt-12 border-t border-white/10 grid grid-cols-1 md:grid-cols-2 gap-6">
+          {/* Puente a Clientes */}
+          <Link
+            href="/clientes"
+            className="group p-6 rounded-2xl bg-[#14171B]/80 hover:bg-[#181c22] border border-white/10 hover:border-[#59BFD6]/50 transition-all duration-300 flex items-start gap-4 backdrop-blur-md hover:-translate-y-1 shadow-lg"
+          >
+            <div className="w-12 h-12 rounded-xl bg-[#59BFD6]/10 border border-[#59BFD6]/30 flex items-center justify-center text-[#59BFD6] shrink-0 group-hover:scale-110 transition-transform">
+              <Building2 className="w-6 h-6" />
+            </div>
+            <div className="space-y-1.5 flex-1">
+              <div className="flex items-center justify-between">
+                <span className="font-condensed text-lg uppercase font-bold text-white tracking-wide group-hover:text-[#59BFD6] transition-colors">
+                  Alianzas del Territorio
+                </span>
+                <ArrowUpRight className="w-4 h-4 text-[#59BFD6] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+              </div>
+              <p className="font-sans text-xs text-white/70 font-light leading-relaxed">
+                Más de 20 empresas e industrias en Los Lagos, Chiloé y Patagonia confían en Puelche Lab. Revisa el archivo territorial.
+              </p>
+              <div className="pt-1 flex items-center gap-2 font-mono text-[10px] uppercase text-[#59BFD6]">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#59BFD6]" />
+                <span>AquaChile &bull; Soldasur &bull; Seremi MMA &bull; Costaustralis</span>
+              </div>
+            </div>
+          </Link>
+
+          {/* Puente a Cotizador con UF */}
+          <Link
+            href="/cotizador"
+            className="group p-6 rounded-2xl bg-[#14171B]/80 hover:bg-[#181c22] border border-white/10 hover:border-[#C29B63]/50 transition-all duration-300 flex items-start gap-4 backdrop-blur-md hover:-translate-y-1 shadow-lg"
+          >
+            <div className="w-12 h-12 rounded-xl bg-[#C29B63]/10 border border-[#C29B63]/30 flex items-center justify-center text-[#C29B63] shrink-0 group-hover:scale-110 transition-transform">
+              <Calculator className="w-6 h-6" />
+            </div>
+            <div className="space-y-1.5 flex-1">
+              <div className="flex items-center justify-between">
+                <span className="font-condensed text-lg uppercase font-bold text-white tracking-wide group-hover:text-[#C29B63] transition-colors">
+                  Calculadora de Inversión (UF)
+                </span>
+                <ArrowUpRight className="w-4 h-4 text-[#C29B63] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+              </div>
+              <p className="font-sans text-xs text-white/70 font-light leading-relaxed">
+                ¿Requieres una estimación previa? Calcula el valor de tu producción fotográfica o desarrollo web con referencia en UF chilena y USD.
+              </p>
+              <div className="pt-1 flex items-center gap-2 font-mono text-[10px] uppercase text-[#C29B63]">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#C29B63]" />
+                <span>Valores transparentes &bull; Desglose por entregables</span>
+              </div>
+            </div>
+          </Link>
+        </div>
       </section>
     </div>
   );

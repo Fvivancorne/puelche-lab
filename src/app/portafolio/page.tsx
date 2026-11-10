@@ -276,7 +276,7 @@ function PortfolioContent() {
     let accumulatorX = 0;
     let isMomentumLocked = false;
     let unlockTimer: NodeJS.Timeout | null = null;
-    const HORIZONTAL_THRESHOLD = 200; // Umbral deliberado y sereno: elimina disparos accidentales
+    const HORIZONTAL_THRESHOLD = 280; // Umbral deliberado y sereno (calibración Mac Trackpad): elimina disparos accidentales
 
     const handleModalWheel = (e: WheelEvent) => {
       // PREVENCIÓN TOTAL DE NAVEGACIÓN DE HISTORIAL DE CHROME/SAFARI:
@@ -286,7 +286,7 @@ function PortfolioContent() {
 
       // SOLO SWIPE HORIZONTAL DELIBERADO: Si el usuario scrollea verticalmente, ignorar por completo
       const isDeliberateHorizontal =
-        Math.abs(e.deltaX) > Math.abs(e.deltaY) * 1.5 && Math.abs(e.deltaX) > 6;
+        Math.abs(e.deltaX) > Math.abs(e.deltaY) * 1.6 && Math.abs(e.deltaX) > 8;
 
       if (!isDeliberateHorizontal) {
         return; // El eje vertical queda 100% libre para leer la columna derecha
@@ -301,7 +301,7 @@ function PortfolioContent() {
         unlockTimer = setTimeout(() => {
           isMomentumLocked = false;
           accumulatorX = 0;
-        }, 350);
+        }, 450);
         return;
       }
 
@@ -316,12 +316,12 @@ function PortfolioContent() {
         }
         accumulatorX = 0;
 
-        // Cooldown firme de 800ms para absorber la desaceleración natural del trackpad de macOS
+        // Cooldown firme de 900ms para absorber la desaceleración natural del trackpad de macOS
         if (unlockTimer) clearTimeout(unlockTimer);
         unlockTimer = setTimeout(() => {
           isMomentumLocked = false;
           accumulatorX = 0;
-        }, 800);
+        }, 900);
       }
     };
 
