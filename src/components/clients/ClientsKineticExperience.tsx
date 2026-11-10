@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import {
@@ -12,27 +12,12 @@ import {
   X,
   Sparkles,
   Wind,
-  Eye,
-  Building2,
-  CheckCircle2,
-  Search,
-  Filter,
-  SlidersHorizontal,
-  ChevronRight,
-  Quote,
   Maximize2,
 } from 'lucide-react';
-import type { ClientLogo, ClientProfile } from '@/app/clientes/page';
+import type { ClientLogo } from '@/app/clientes/page';
 
 interface ClientsKineticExperienceProps {
   clientLogos: ClientLogo[];
-  clientProfiles: ClientProfile[];
-  testimonials: Array<{
-    quote: string;
-    author: string;
-    organization: string;
-    location: string;
-  }>;
 }
 
 // Photography mapping for authentic modal preview
@@ -63,15 +48,9 @@ const CLIENT_IMAGE_MAP: Record<string, string> = {
   Anasac: '/images/real/bg-portafolios-editorial-amino-max-min.jpg',
 };
 
-export function ClientsKineticExperience({
-  clientLogos,
-  clientProfiles,
-  testimonials,
-}: ClientsKineticExperienceProps) {
+export function ClientsKineticExperience({ clientLogos }: ClientsKineticExperienceProps) {
   // Modal state
   const [selectedClient, setSelectedClient] = useState<ClientLogo | null>(null);
-  const [activeRegionFilter, setActiveRegionFilter] = useState<string>('all');
-  const [searchQuery, setSearchQuery] = useState<string>('');
 
   // 3 Rails of logos
   const rail1 = useMemo(() => clientLogos.slice(0, 7), [clientLogos]);
@@ -195,27 +174,6 @@ export function ClientsKineticExperience({
     setTiltMap((prev) => ({ ...prev, [id]: { x: 0, y: 0 } }));
   };
 
-  // Filtered profiles for Directory
-  const filteredProfiles = useMemo(() => {
-    return clientProfiles.filter((p) => {
-      const matchesSearch =
-        searchQuery === '' ||
-        p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        p.industry.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        p.region.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        p.scope.toLowerCase().includes(searchQuery.toLowerCase());
-
-      const matchesRegion =
-        activeRegionFilter === 'all' ||
-        (activeRegionFilter === 'llanquihue' && (p.region.includes('Puerto Varas') || p.region.includes('Llanquihue') || p.region.includes('Los Lagos'))) ||
-        (activeRegionFilter === 'chiloe' && p.region.includes('Chiloé')) ||
-        (activeRegionFilter === 'patagonia' && (p.region.includes('Patagonia') || p.region.includes('Puelo') || p.region.includes('Fiordos'))) ||
-        (activeRegionFilter === 'magallanes' && (p.region.includes('Punta Arenas') || p.region.includes('Puerto Natales')));
-
-      return matchesSearch && matchesRegion;
-    });
-  }, [clientProfiles, searchQuery, activeRegionFilter]);
-
   // Render a Single Floating Buoy Card
   const renderBuoyCard = (client: ClientLogo, railIndex: number, cardIdx: number) => {
     const tilt = tiltMap[client.id] || { x: 0, y: 0 };
@@ -290,10 +248,8 @@ export function ClientsKineticExperience({
 
   return (
     <div className="relative w-full overflow-hidden">
-      {/* ══════════════════════════════════════════════════════════════════════ */}
       {/* ── 1. RÍO INFINITO CINÉTICO: VELOCITY RAILS 3D + BOYAS FLOTANTES ── */}
-      {/* ══════════════════════════════════════════════════════════════════════ */}
-      <section className="relative z-10 py-16 md:py-24 overflow-hidden border-b border-white/10 bg-gradient-to-b from-[#0a0c0f] via-[#0e1014] to-[#0a0c0f]">
+      <div className="relative z-10 py-16 md:py-24 overflow-hidden border-b border-white/10 bg-gradient-to-b from-[#0a0c0f] via-[#0e1014] to-[#0a0c0f]">
         {/* Subtle Watermark */}
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none opacity-[0.02] text-[18vw] font-condensed font-black uppercase text-white whitespace-nowrap">
           VIENTO AUSTRAL
@@ -336,7 +292,6 @@ export function ClientsKineticExperience({
               willChange: 'transform',
             }}
           >
-            {/* Duplicated arrays for seamless infinite ribbon */}
             {[...rail1, ...rail1, ...rail1, ...rail1].map((client, idx) =>
               renderBuoyCard(client, 1, idx)
             )}
@@ -388,283 +343,9 @@ export function ClientsKineticExperience({
             )}
           </div>
         </div>
-      </section>
+      </div>
 
-      {/* ══════════════════════════════════════════════════════════════════════ */}
-      {/* ── 2. RADAR DE COORDENADAS FLOTANTE (4 NODOS PATAGÓNICOS) ── */}
-      {/* ══════════════════════════════════════════════════════════════════════ */}
-      <section id="territorio" className="relative z-10 max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-24 scroll-mt-20">
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6 border-b border-white/10 pb-8">
-          <div className="max-w-2xl space-y-3">
-            <span className="font-mono text-xs text-[#59BFD6] uppercase tracking-[0.25em] block">
-              RADAR DE EXPEDICIÓN • 41°S — 53°S
-            </span>
-            <h2 className="font-condensed text-4xl sm:text-5xl uppercase tracking-wider font-bold text-white">
-              Radio de Acción en la Patagonia Chilena
-            </h2>
-            <p className="font-sans text-sm sm:text-base text-white/75 font-light leading-relaxed">
-              Presencia en terreno con base operativa en Puerto Varas y cobertura en 4 paisajes del sur austral.
-            </p>
-          </div>
-          <div className="flex items-center gap-2.5 text-xs font-mono text-white/70 bg-white/5 px-4 py-2 rounded-full border border-white/10">
-            <span className="w-2 h-2 rounded-full bg-[#59BFD6] animate-ping" />
-            <span>4 Nodos Activos en Terreno</span>
-          </div>
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {/* Nodo 01 */}
-          <div className="bg-[#14161c]/90 border border-white/10 hover:border-[#59BFD6]/60 p-7 rounded-2xl backdrop-blur-md space-y-4 transition-all duration-300 hover:-translate-y-2 shadow-xl group">
-            <div className="flex items-center justify-between border-b border-white/5 pb-3">
-              <span className="font-mono text-xs text-[#59BFD6] tracking-wider uppercase">
-                Nodo 01 &bull; Cuenca Lacustre
-              </span>
-              <MapPin className="w-4 h-4 text-white/40 group-hover:text-[#59BFD6] transition-colors" />
-            </div>
-            <div className="space-y-1">
-              <span className="font-mono text-[10px] text-white/40">41°19′S 72°59′W &bull; 85m s.n.m.</span>
-              <h3 className="font-condensed text-2xl font-bold uppercase tracking-wide text-white group-hover:text-[#59BFD6] transition-colors">
-                Cuenca Llanquihue
-              </h3>
-            </div>
-            <p className="font-sans text-xs text-white/70 leading-relaxed font-light">
-              Puerto Varas, Frutillar, Puerto Octay y Puerto Montt. Sede central con estudio propio y sala de postproducción de color.
-            </p>
-            <div className="pt-2 text-[11px] font-mono text-[#C29B63]">
-              <span>Base Principal Puelche Lab</span>
-            </div>
-          </div>
-
-          {/* Nodo 02 */}
-          <div className="bg-[#14161c]/90 border border-white/10 hover:border-[#59BFD6]/60 p-7 rounded-2xl backdrop-blur-md space-y-4 transition-all duration-300 hover:-translate-y-2 shadow-xl group">
-            <div className="flex items-center justify-between border-b border-white/5 pb-3">
-              <span className="font-mono text-xs text-[#59BFD6] tracking-wider uppercase">
-                Nodo 02 &bull; El Mar Interior
-              </span>
-              <MapPin className="w-4 h-4 text-white/40 group-hover:text-[#59BFD6] transition-colors" />
-            </div>
-            <div className="space-y-1">
-              <span className="font-mono text-[10px] text-white/40">42°30′S 73°45′W &bull; 12m s.n.m.</span>
-              <h3 className="font-condensed text-2xl font-bold uppercase tracking-wide text-white group-hover:text-[#59BFD6] transition-colors">
-                Archipiélago Chiloé
-              </h3>
-            </div>
-            <p className="font-sans text-xs text-white/70 leading-relaxed font-light">
-              Castro, Rilán, Dalcahue y Ancud. Hoteles boutique, cava y maderas vernáculas con navegación costera y fiordos interiores.
-            </p>
-            <div className="pt-2 text-[11px] font-mono text-[#C29B63]">
-              <span>Rilán &bull; Quilquico &bull; Maderas</span>
-            </div>
-          </div>
-
-          {/* Nodo 03 */}
-          <div className="bg-[#14161c]/90 border border-white/10 hover:border-[#59BFD6]/60 p-7 rounded-2xl backdrop-blur-md space-y-4 transition-all duration-300 hover:-translate-y-2 shadow-xl group">
-            <div className="flex items-center justify-between border-b border-white/5 pb-3">
-              <span className="font-mono text-xs text-[#59BFD6] tracking-wider uppercase">
-                Nodo 03 &bull; Fiordos & Selva Fría
-              </span>
-              <MapPin className="w-4 h-4 text-white/40 group-hover:text-[#59BFD6] transition-colors" />
-            </div>
-            <div className="space-y-1">
-              <span className="font-mono text-[10px] text-white/40">45°34′S 72°04′W &bull; 310m s.n.m.</span>
-              <h3 className="font-condensed text-2xl font-bold uppercase tracking-wide text-white group-hover:text-[#59BFD6] transition-colors">
-                Carretera Austral & Aysén
-              </h3>
-            </div>
-            <p className="font-sans text-xs text-white/70 leading-relaxed font-light">
-              Cochamó, Río Puelo y fiordos australes. Lodges de pesca y reservas ecológicas con acceso aéreo y terrestre de alta exigencia.
-            </p>
-            <div className="pt-2 text-[11px] font-mono text-[#C29B63]">
-              <span>Puelo &bull; Tagua Tagua &bull; Fiordos</span>
-            </div>
-          </div>
-
-          {/* Nodo 04 */}
-          <div className="bg-[#14161c]/90 border border-white/10 hover:border-[#59BFD6]/60 p-7 rounded-2xl backdrop-blur-md space-y-4 transition-all duration-300 hover:-translate-y-2 shadow-xl group">
-            <div className="flex items-center justify-between border-b border-white/5 pb-3">
-              <span className="font-mono text-xs text-[#59BFD6] tracking-wider uppercase">
-                Nodo 04 &bull; El Confín Austral
-              </span>
-              <MapPin className="w-4 h-4 text-white/40 group-hover:text-[#59BFD6] transition-colors" />
-            </div>
-            <div className="space-y-1">
-              <span className="font-mono text-[10px] text-white/40">53°09′S 70°55′W &bull; 28m s.n.m.</span>
-              <h3 className="font-condensed text-2xl font-bold uppercase tracking-wide text-white group-hover:text-[#59BFD6] transition-colors">
-                Magallanes Austral
-              </h3>
-            </div>
-            <p className="font-sans text-xs text-white/70 leading-relaxed font-light">
-              Punta Arenas y Puerto Natales. Hotelería patrimonial y expediciones australes en el confín austral de Chile y Patagonia profunda.
-            </p>
-            <div className="pt-2 text-[11px] font-mono text-[#C29B63]">
-              <span>Cabo de Hornos &bull; Costaustralis</span>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ══════════════════════════════════════════════════════════════════════ */}
-      {/* ── 3. VOCES AUSTRALES: CINTA CINEMÁTICA DE TESTIMONIOS ── */}
-      {/* ══════════════════════════════════════════════════════════════════════ */}
-      <section id="testimonios" className="relative z-10 max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-20 border-t border-white/10 scroll-mt-20">
-        <div className="text-center max-w-2xl mx-auto mb-16 space-y-3">
-          <span className="font-mono text-xs uppercase tracking-[0.25em] text-[#59BFD6] block">
-            VÍNCULO TERRITORIAL & CONFIANZA
-          </span>
-          <h2 className="font-condensed text-4xl sm:text-5xl uppercase tracking-wider font-bold text-white">
-            Voz de Nuestras Alianzas
-          </h2>
-          <p className="font-sans text-sm text-white/70 font-light">
-            Reflexiones de directores y gerencias sobre el estándar visual y la precisión territorial de Puelche Lab.
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {testimonials.map((t, idx) => (
-            <div
-              key={idx}
-              className="bg-[#14161c]/80 border border-white/10 p-8 rounded-2xl flex flex-col justify-between relative group hover:border-[#59BFD6]/60 transition-all duration-300 hover:-translate-y-2 shadow-xl backdrop-blur-md"
-            >
-              <Quote className="w-8 h-8 text-[#59BFD6]/40 mb-4 group-hover:text-[#59BFD6] transition-colors" />
-              <p className="font-sans text-sm text-white/85 font-light italic leading-relaxed mb-6">
-                &ldquo;{t.quote}&rdquo;
-              </p>
-              <div className="border-t border-white/10 pt-4 mt-auto">
-                <div className="font-condensed text-base font-bold uppercase tracking-wider text-white">
-                  {t.author}
-                </div>
-                <div className="text-xs text-[#59BFD6] font-medium font-mono">
-                  {t.organization}
-                </div>
-                <div className="text-[11px] text-white/50 font-mono mt-0.5">
-                  {t.location}
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* ══════════════════════════════════════════════════════════════════════ */}
-      {/* ── 4. CONSOLA BITÁCORA: DIRECTORIO DE RELACIONES CORPORATIVAS ── */}
-      {/* ── SATISFIES STRICT E2E TESTS (overflow-x-auto, min-w-[700px]) ── */}
-      {/* ══════════════════════════════════════════════════════════════════════ */}
-      <section id="directorio" className="relative z-10 max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 pb-28 border-t border-white/10 pt-20 scroll-mt-20">
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-6">
-          <div className="max-w-2xl space-y-2">
-            <span className="font-mono text-xs uppercase tracking-[0.25em] text-[#59BFD6] block">
-              HISTORIAL DOCUMENTADO
-            </span>
-            <h2 className="font-condensed text-4xl sm:text-5xl uppercase tracking-wider font-bold text-white">
-              Directorio de Relaciones Corporativas
-            </h2>
-            <p className="font-sans text-sm text-white/70 font-light">
-              Historial documentado de alcances técnicos e industrias atendidas en la Patagonia.
-            </p>
-          </div>
-
-          {/* Interactive Search Input */}
-          <div className="relative w-full md:w-72">
-            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-white/40" />
-            <input
-              type="text"
-              placeholder="Buscar cliente, industria..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 rounded-full bg-white/5 border border-white/15 text-xs font-mono text-white placeholder-white/40 focus:outline-none focus:border-[#59BFD6] transition-colors"
-            />
-          </div>
-        </div>
-
-        {/* Region Filter Chips */}
-        <div className="flex flex-wrap items-center gap-2 mb-6">
-          {[
-            { id: 'all', label: 'Todos los Territorios' },
-            { id: 'llanquihue', label: 'Cuenca Llanquihue' },
-            { id: 'chiloe', label: 'Chiloé' },
-            { id: 'patagonia', label: 'Patagonia & Fiordos' },
-            { id: 'magallanes', label: 'Magallanes' },
-          ].map((r) => (
-            <button
-              key={r.id}
-              type="button"
-              onClick={() => setActiveRegionFilter(r.id)}
-              className={`px-3.5 py-1.5 rounded-full font-mono text-xs uppercase tracking-wider transition-all ${
-                activeRegionFilter === r.id
-                  ? 'bg-[#59BFD6] text-[#0a0c0f] font-bold shadow-[0_0_15px_rgba(89,191,214,0.3)]'
-                  : 'bg-white/5 text-white/60 hover:text-white hover:bg-white/10 border border-white/10'
-              }`}
-            >
-              {r.label}
-            </button>
-          ))}
-        </div>
-
-        {/* Interactive Responsive Table Container */}
-        <div className="overflow-x-auto bg-[#14171B] border border-white/15 rounded-2xl shadow-2xl">
-          <table className="w-full min-w-[700px] text-left text-xs sm:text-sm font-sans">
-            <thead className="border-b border-white/15 bg-white/5 font-condensed uppercase tracking-wider text-white">
-              <tr>
-                <th className="py-4 px-6">Cliente</th>
-                <th className="py-4 px-6">Industria</th>
-                <th className="py-4 px-6">Territorio</th>
-                <th className="py-4 px-6">Alcance de Servicio</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-white/10 text-white/90">
-              {filteredProfiles.map((cp, idx) => (
-                <tr
-                  key={idx}
-                  className="hover:bg-puelche-sand/20 transition-colors cursor-pointer group"
-                  onClick={() => {
-                    const match = clientLogos.find((l) => l.name.toLowerCase().includes(cp.name.toLowerCase()) || cp.name.toLowerCase().includes(l.name.toLowerCase()));
-                    if (match) setSelectedClient(match);
-                  }}
-                >
-                  <td className="py-4 px-6 font-bold text-white font-condensed tracking-wide text-sm flex items-center gap-2 group-hover:text-[#59BFD6] transition-colors">
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#59BFD6]" />
-                    <span>{cp.name}</span>
-                  </td>
-                  <td className="py-4 px-6 text-white/80">{cp.industry}</td>
-                  <td className="py-4 px-6 text-[#59BFD6] font-mono text-xs">{cp.region}</td>
-                  <td className="py-4 px-6 text-white/70">{cp.scope}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-
-        {/* CTA Footer Block */}
-        <div className="mt-16 p-8 md:p-12 rounded-2xl bg-gradient-to-r from-[#0d0e12] via-[#14161c] to-[#0d0e12] border border-white/15 flex flex-col md:flex-row items-center justify-between gap-8 shadow-2xl">
-          <div className="space-y-2 text-center md:text-left">
-            <h3 className="font-condensed text-2xl md:text-3xl font-bold uppercase tracking-wider text-white">
-              ¿Tu marca necesita elevar su estándar visual en el sur?
-            </h3>
-            <p className="font-sans text-sm text-white/70 max-w-xl font-light">
-              Conversemos sobre tu próxima sesión fotográfica, identidad de marca o plataforma web desarrollada a la medida.
-            </p>
-          </div>
-          <div className="flex flex-wrap items-center gap-4">
-            <Link
-              href="/contacto"
-              className="py-3 px-6 rounded-xl bg-[#59BFD6] text-[#0a0c0f] font-condensed font-bold text-sm uppercase tracking-wider hover:bg-white transition-all shadow-lg flex items-center gap-2"
-            >
-              <span>Iniciar Brief de Proyecto</span>
-              <ArrowUpRight className="w-4 h-4" />
-            </Link>
-            <Link
-              href="/portafolio"
-              className="py-3 px-6 rounded-xl bg-white/10 border border-white/20 text-white font-condensed font-bold text-sm uppercase tracking-wider hover:bg-white hover:text-[#0a0c0f] transition-all"
-            >
-              <span>Ver Portafolio Completo</span>
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* ══════════════════════════════════════════════════════════════════════ */}
-      {/* ── 5. DRAWER / MODAL DE EXPEDICIÓN CINEMATOGRÁFICO ── */}
-      {/* ══════════════════════════════════════════════════════════════════════ */}
+      {/* ── DRAWER / MODAL DE EXPEDICIÓN CINEMATOGRÁFICO ── */}
       {selectedClient && (
         <div
           className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 md:p-10 bg-black/85 backdrop-blur-2xl animate-fade-in"

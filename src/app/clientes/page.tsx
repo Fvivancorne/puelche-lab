@@ -313,11 +313,7 @@ export default function ClientesPage() {
 
       {/* ── EXPERIENCIA KINÉTICA DE MARCAS (RÍO INFINITO + BOYAS FLOTANTES) ── */}
       <section id="marcas">
-        <ClientsKineticExperience
-          clientLogos={CLIENT_LOGOS}
-          clientProfiles={CLIENT_PROFILES}
-          testimonials={TESTIMONIALS}
-        />
+        <ClientsKineticExperience clientLogos={CLIENT_LOGOS} />
       </section>
 
       {/* ── ALCANCE GEOGRÁFICO & RADIO TERRITORIAL PATAGÓNICO (E2E CONTRACT SUPPORT) ── */}

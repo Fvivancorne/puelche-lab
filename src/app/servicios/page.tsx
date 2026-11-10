@@ -12,15 +12,14 @@ import {
   Share2,
   ArrowRight,
   ArrowUpRight,
-  ChevronUp,
-  ChevronDown,
+  ChevronLeft,
+  ChevronRight,
   Layers,
   LayoutGrid,
   Sparkles,
   Wind,
   Eye,
   Disc3,
-  MapPin,
   CheckCircle2,
 } from 'lucide-react';
 import { AtmosphericBackground } from '@/components/ui/AtmosphericBackground';
@@ -138,28 +137,24 @@ export default function ServiciosPage() {
   const [viewMode, setViewMode] = useState<'3d' | 'reticular'>('3d');
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [activeIndex, setActiveIndex] = useState<number>(0);
-  const [isAutoRotating, setIsAutoRotating] = useState<boolean>(true);
+  const [isAutoRotating, setIsAutoRotating] = useState<boolean>(false);
 
   // Physics & 3D Infinite Orbit States
   const stageRef = useRef<HTMLDivElement>(null);
   const currentPosRef = useRef<number>(0);
   const targetPosRef = useRef<number>(0);
   const isDraggingRef = useRef<boolean>(false);
-  const dragStartYRef = useRef<number>(0);
+  const dragStartXRef = useRef<number>(0);
   const dragStartPosRef = useRef<number>(0);
   const lastDragTimeRef = useRef<number>(0);
   const dragVelocityRef = useRef<number>(0);
   const animFrameRef = useRef<number | null>(null);
 
-  // Mouse tilt on active card
-  const [cardTilt, setCardTilt] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
-
-  // Update card transform positions via state for reactive rendering
+  // Reactive render position state
   const [renderPos, setRenderPos] = useState<number>(0);
-
   const total = SERVICES_LIST.length;
 
-  // Jump to specific service index with shortest circular path
+  // Jump to specific service index
   const navigateTo = useCallback(
     (index: number) => {
       setIsAutoRotating(false);
@@ -183,7 +178,7 @@ export default function ServiciosPage() {
     targetPosRef.current = Math.round(targetPosRef.current) - 1;
   }, []);
 
-  // 60-120fps Animation Loop with smooth Lerp interpolation and velocity decay
+  // 60-120fps Animation Loop with smooth Lerp interpolation and magnetic snapping
   useEffect(() => {
     let lastTime = performance.now();
 
@@ -191,16 +186,15 @@ export default function ServiciosPage() {
       const dt = Math.min(50, now - lastTime) / 1000;
       lastTime = now;
 
-      // Auto-rotation idle drift if enabled and user isn't actively dragging
       if (isAutoRotating && !isDraggingRef.current) {
         targetPosRef.current += 0.08 * dt;
       }
 
       // Smooth Lerp toward target position
       const diff = targetPosRef.current - currentPosRef.current;
-      currentPosRef.current += diff * 0.1;
+      currentPosRef.current += diff * 0.12;
 
-      // Snap to nearest whole integer when nearly stopped
+      // Magnetic snap to nearest integer when velocity is low
       if (!isDraggingRef.current && !isAutoRotating && Math.abs(diff) < 0.003) {
         targetPosRef.current = Math.round(targetPosRef.current);
         currentPosRef.current = targetPosRef.current;
@@ -221,20 +215,29 @@ export default function ServiciosPage() {
     };
   }, [total, isAutoRotating]);
 
-  // Wheel listener: normalized & prevents page jitter while scrolling through 3D tunnel
-  const handleWheel = useCallback((e: React.WheelEvent) => {
-    setIsAutoRotating(false);
-    // Smooth delta accumulation
-    const delta = e.deltaY;
-    const step = Math.sign(delta) * Math.min(1.2, Math.abs(delta) * 0.0022);
-    targetPosRef.current += step;
-  }, []);
+  // Non-passive wheel listener attached to stage element so e.preventDefault() works smoothly!
+  useEffect(() => {
+    const stage = stageRef.current;
+    if (!stage || viewMode !== '3d') return;
 
-  // Pointer drag controls with momentum toss
+    const handleWheelNative = (e: WheelEvent) => {
+      // Prevent browser from scrolling the window while interacting with the 3D orbit
+      e.preventDefault();
+      setIsAutoRotating(false);
+      const delta = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
+      const step = Math.sign(delta) * Math.min(1.0, Math.abs(delta) * 0.0028);
+      targetPosRef.current += step;
+    };
+
+    stage.addEventListener('wheel', handleWheelNative, { passive: false });
+    return () => stage.removeEventListener('wheel', handleWheelNative);
+  }, [viewMode]);
+
+  // Pointer drag controls (horizontal drag rotates the 3D cylinder)
   const handlePointerDown = (e: React.PointerEvent) => {
     setIsAutoRotating(false);
     isDraggingRef.current = true;
-    dragStartYRef.current = e.clientY;
+    dragStartXRef.current = e.clientX;
     dragStartPosRef.current = currentPosRef.current;
     lastDragTimeRef.current = performance.now();
     dragVelocityRef.current = 0;
@@ -247,9 +250,9 @@ export default function ServiciosPage() {
     if (!isDraggingRef.current) return;
     const now = performance.now();
     const dt = Math.max(1, now - lastDragTimeRef.current);
-    const deltaY = e.clientY - dragStartYRef.current;
-    // Drag sensitivity (approx 280px of drag = 1 service)
-    const newTarget = dragStartPosRef.current - deltaY / 260;
+    const deltaX = e.clientX - dragStartXRef.current;
+    // 280px of horizontal drag = 1 service rotation
+    const newTarget = dragStartPosRef.current - deltaX / 280;
     dragVelocityRef.current = (newTarget - targetPosRef.current) / (dt / 16);
     targetPosRef.current = newTarget;
     lastDragTimeRef.current = now;
@@ -265,17 +268,16 @@ export default function ServiciosPage() {
         // Safe fallback
       }
     }
-    // Momentum toss based on release velocity
-    const momentum = Math.max(-2, Math.min(2, dragVelocityRef.current * 1.8));
+    const momentum = Math.max(-1.5, Math.min(1.5, dragVelocityRef.current * 1.5));
     targetPosRef.current = Math.round(targetPosRef.current + momentum);
   };
 
   // Keyboard navigation
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'ArrowDown' || e.key === 'ArrowRight') {
+      if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
         nextService();
-      } else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
+      } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
         prevService();
       }
     };
@@ -297,7 +299,7 @@ export default function ServiciosPage() {
             key={serv.id}
             className={`absolute inset-0 transition-all duration-1000 ease-out ${
               hoveredIndex === idx || (viewMode === '3d' && activeIndex === idx)
-                ? 'opacity-30 scale-100'
+                ? 'opacity-25 scale-100'
                 : 'opacity-0 scale-105'
             }`}
           >
@@ -314,7 +316,7 @@ export default function ServiciosPage() {
       </div>
 
       {/* ── BANNER EDITORIAL DARK LUXURY & VIEW MODE SWITCHER ── */}
-      <section className="relative z-10 pt-28 pb-10 md:pt-36 md:pb-12 px-6 text-center border-b border-white/10 overflow-hidden bg-gradient-to-b from-[#101216]/90 via-[#08090b]/95 to-[#08090b]">
+      <section className="relative z-10 pt-28 pb-8 md:pt-36 md:pb-10 px-6 text-center border-b border-white/10 overflow-hidden bg-gradient-to-b from-[#101216]/90 via-[#08090b]/95 to-[#08090b]">
         {/* Kinetic Watermark */}
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 select-none pointer-events-none opacity-[0.03] whitespace-nowrap font-condensed text-[20vw] font-black uppercase text-white leading-none">
           OFICIO AUSTRAL
@@ -335,7 +337,7 @@ export default function ServiciosPage() {
           </p>
 
           {/* ── VIEW MODE TOGGLE & STATUS HUD ── */}
-          <div className="flex flex-wrap items-center justify-center gap-4 pt-4">
+          <div className="flex flex-wrap items-center justify-center gap-4 pt-3">
             <div className="inline-flex p-1 rounded-full bg-white/[0.05] border border-white/10 backdrop-blur-md">
               <button
                 type="button"
@@ -373,30 +375,48 @@ export default function ServiciosPage() {
       </section>
 
       {/* ══════════════════════════════════════════════════════════════════════ */}
-      {/* ── MODO 1: DANZA ÓPTICA 3D (INFINITE ORBIT & CAMERA FLY-THROUGH) ── */}
+      {/* ── MODO 1: DANZA ÓPTICA 3D (ORBITAL 3D CYLINDER COVERFLOW DANCE) ── */}
       {/* ══════════════════════════════════════════════════════════════════════ */}
       {viewMode === '3d' && (
         <section
           ref={stageRef}
-          onWheel={handleWheel}
           onPointerDown={handlePointerDown}
           onPointerMove={handlePointerMove}
           onPointerUp={handlePointerUp}
           onPointerCancel={handlePointerUp}
-          className="relative z-20 w-full min-h-[760px] md:min-h-[860px] flex flex-col items-center justify-center overflow-hidden cursor-grab active:cursor-grabbing select-none py-12 px-4"
+          className="relative z-20 w-full min-h-[720px] md:min-h-[820px] flex flex-col items-center justify-center overflow-hidden cursor-grab active:cursor-grabbing select-none py-10 px-4"
           style={{ touchAction: 'none' }}
         >
+          {/* Floating Left / Right Tactile Navigation Buttons */}
+          <button
+            type="button"
+            onClick={prevService}
+            aria-label="Servicio anterior"
+            className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 z-40 p-3.5 rounded-full bg-[#101216]/80 hover:bg-[#59BFD6] text-white hover:text-[#08090b] border border-white/15 hover:border-[#59BFD6] backdrop-blur-xl shadow-2xl transition-all duration-300 hover:scale-110 active:scale-95 group"
+          >
+            <ChevronLeft className="w-5 h-5 transition-transform group-hover:-translate-x-0.5" />
+          </button>
+
+          <button
+            type="button"
+            onClick={nextService}
+            aria-label="Siguiente servicio"
+            className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 z-40 p-3.5 rounded-full bg-[#101216]/80 hover:bg-[#59BFD6] text-white hover:text-[#08090b] border border-white/15 hover:border-[#59BFD6] backdrop-blur-xl shadow-2xl transition-all duration-300 hover:scale-110 active:scale-95 group"
+          >
+            <ChevronRight className="w-5 h-5 transition-transform group-hover:translate-x-0.5" />
+          </button>
+
           {/* Viewport 3D Perspective Box */}
           <div
-            className="relative w-full max-w-4xl h-[560px] md:h-[620px] flex items-center justify-center"
+            className="relative w-full max-w-5xl h-[520px] md:h-[580px] flex items-center justify-center"
             style={{
-              perspective: '1200px',
+              perspective: '1300px',
               perspectiveOrigin: '50% 50%',
               transformStyle: 'preserve-3d',
             }}
           >
             {SERVICES_LIST.map((serv, idx) => {
-              // Calculate wrapped angular/cylindrical offset relative to renderPos
+              // Wrapped angular / cylindrical offset relative to renderPos
               let offset = idx - (renderPos % total);
               while (offset > total / 2) offset -= total;
               while (offset < -total / 2) offset += total;
@@ -404,17 +424,17 @@ export default function ServiciosPage() {
               const absOffset = Math.abs(offset);
               const isActive = Math.round(absOffset) === 0;
 
-              // Don't render cards that are too far behind the camera
-              if (absOffset > 2.8) return null;
+              // Only render visible cards in orbital arc
+              if (absOffset > 2.6) return null;
 
-              // 3D Perspective Coordinates
-              const translateZ = -absOffset * 270;
-              const translateY = offset * 130;
-              const rotateX = offset * -15;
-              const scale = Math.max(0.68, 1 - absOffset * 0.12);
-              const opacity = Math.max(0.08, 1 - absOffset * 0.38);
-              const blurPx = Math.min(10, absOffset * 3.5);
-              const zIndex = Math.round(30 - absOffset * 8);
+              // 3D Orbital Coordinates (Horizontal Arc with Depth & Inward Yaw)
+              const translateX = offset * 420;
+              const translateZ = -absOffset * 190;
+              const rotateY = offset * -28;
+              const scale = Math.max(0.72, 1 - absOffset * 0.14);
+              const opacity = Math.max(0.18, 1 - absOffset * 0.36);
+              const blurPx = absOffset > 0.4 ? Math.min(8, absOffset * 2.8) : 0;
+              const zIndex = Math.round(30 - absOffset * 10);
 
               const Icon = serv.icon;
 
@@ -424,46 +444,37 @@ export default function ServiciosPage() {
                   onClick={() => {
                     if (!isActive) navigateTo(idx);
                   }}
-                  className={`absolute w-full max-w-3xl rounded-3xl overflow-hidden transition-shadow duration-300 ${
+                  className={`absolute w-[340px] sm:w-[460px] md:w-[680px] rounded-3xl overflow-hidden transition-all duration-300 ${
                     isActive
-                      ? 'border border-[#59BFD6]/40 shadow-[0_30px_90px_-20px_rgba(0,0,0,0.9),0_0_50px_rgba(89,191,214,0.18)]'
-                      : 'border border-white/10 hover:border-white/30 shadow-2xl cursor-pointer'
+                      ? 'border border-[#59BFD6]/50 shadow-[0_30px_90px_-20px_rgba(0,0,0,0.9),0_0_50px_rgba(89,191,214,0.22)]'
+                      : 'border border-white/10 hover:border-white/30 shadow-2xl cursor-pointer hover:brightness-110'
                   }`}
                   style={{
-                    transform: `translate3d(0, ${translateY}px, ${translateZ}px) rotateX(${rotateX}deg) scale(${scale})`,
+                    transform: `translate3d(${translateX}px, 0, ${translateZ}px) rotateY(${rotateY}deg) scale(${scale})`,
                     opacity,
                     filter: blurPx > 0 ? `blur(${blurPx}px)` : 'none',
                     zIndex,
-                    background: 'rgba(14, 16, 20, 0.88)',
+                    background: 'rgba(14, 16, 20, 0.92)',
                     backdropFilter: 'blur(20px)',
                     willChange: 'transform, opacity, filter',
                   }}
-                  onMouseMove={(e) => {
-                    if (isActive) {
-                      const rect = e.currentTarget.getBoundingClientRect();
-                      const x = (e.clientX - rect.left) / rect.width - 0.5;
-                      const y = (e.clientY - rect.top) / rect.height - 0.5;
-                      setCardTilt({ x, y });
-                    }
-                  }}
-                  onMouseLeave={() => setCardTilt({ x: 0, y: 0 })}
                 >
-                  {/* Inner Card Grid: Left Hero Image Plate, Right Editorial Specs */}
-                  <div className="grid grid-cols-1 md:grid-cols-12 min-h-[500px] md:min-h-[560px]">
+                  {/* Card Content Grid */}
+                  <div className="grid grid-cols-1 md:grid-cols-12 min-h-[460px] md:min-h-[500px]">
                     {/* Left Column: Authentic Photography & Viewfinder HUD (5 cols) */}
-                    <div className="relative md:col-span-5 overflow-hidden min-h-[220px] md:min-h-full">
+                    <div className="relative md:col-span-5 overflow-hidden min-h-[200px] md:min-h-full">
                       <Image
                         src={serv.image}
                         alt={serv.title}
                         fill
                         priority={isActive}
-                        className="object-cover object-center filter contrast-110 brightness-95 transition-transform duration-700 ease-out group-hover:scale-105"
+                        className="object-cover object-center filter contrast-110 brightness-95"
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t md:bg-gradient-to-r from-transparent via-[#0e1014]/40 to-[#0e1014]" />
+                      <div className="absolute inset-0 bg-gradient-to-t md:bg-gradient-to-r from-transparent via-[#0e1014]/50 to-[#0e1014]" />
 
                       {/* Optical Crosshair Overlay */}
                       <div className="absolute inset-0 pointer-events-none p-4 flex flex-col justify-between">
-                        <div className="flex items-center justify-between text-[10px] font-mono text-white/70 bg-black/40 backdrop-blur-md px-2.5 py-1 rounded-full border border-white/10 w-fit">
+                        <div className="flex items-center justify-between text-[10px] font-mono text-white/70 bg-black/50 backdrop-blur-md px-2.5 py-1 rounded-full border border-white/10 w-fit">
                           <span className="w-1.5 h-1.5 rounded-full bg-[#59BFD6] animate-pulse mr-2" />
                           <span>41°S &bull; {serv.coords}</span>
                         </div>
@@ -476,8 +487,8 @@ export default function ServiciosPage() {
                     </div>
 
                     {/* Right Column: Deep Technical Specs & Conversions (7 cols) */}
-                    <div className="relative md:col-span-7 p-6 sm:p-8 md:p-10 flex flex-col justify-between space-y-6">
-                      <div className="space-y-4">
+                    <div className="relative md:col-span-7 p-6 sm:p-7 md:p-8 flex flex-col justify-between space-y-5">
+                      <div className="space-y-3.5">
                         {/* Top Metadata Row */}
                         <div className="flex items-center justify-between gap-2 border-b border-white/10 pb-3">
                           <div className="inline-flex items-center gap-2 text-xs font-mono text-[#59BFD6] uppercase tracking-widest">
@@ -495,20 +506,20 @@ export default function ServiciosPage() {
                         </h2>
 
                         {/* Narrative Description */}
-                        <p className="font-sans text-sm sm:text-base text-white/80 font-light leading-relaxed">
+                        <p className="font-sans text-xs sm:text-sm text-white/80 font-light leading-relaxed">
                           {serv.desc}
                         </p>
 
                         {/* Deliverables Checklist */}
-                        <div className="pt-2">
+                        <div className="pt-1">
                           <span className="block font-mono text-[10px] uppercase tracking-wider text-white/40 mb-2">
                             Capacidades Técnicas Entregables:
                           </span>
-                          <div className="grid grid-cols-2 gap-2">
+                          <div className="grid grid-cols-2 gap-1.5">
                             {serv.deliverables.map((item) => (
                               <div
                                 key={item}
-                                className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-white/[0.04] border border-white/10 font-mono text-[11px] text-white/75"
+                                className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-white/[0.04] border border-white/10 font-mono text-[10px] text-white/75"
                               >
                                 <CheckCircle2 className="w-3 h-3 text-[#59BFD6] shrink-0" />
                                 <span className="truncate">{item}</span>
@@ -518,17 +529,17 @@ export default function ServiciosPage() {
                         </div>
 
                         {/* Verified Clients Proof */}
-                        <div className="pt-2 text-[11px] font-mono text-white/50">
+                        <div className="pt-1 text-[10px] font-mono text-white/50">
                           <span className="text-[#C29B63] font-semibold">Casos en Terreno: </span>
                           <span>{serv.clients}</span>
                         </div>
                       </div>
 
                       {/* Bottom Action Buttons */}
-                      <div className="flex flex-wrap items-center justify-between gap-4 pt-4 border-t border-white/10">
+                      <div className="flex flex-wrap items-center justify-between gap-3 pt-3 border-t border-white/10">
                         <Link
                           href={serv.href}
-                          className="rb-link-glanz inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-[#59BFD6] text-[#08090b] font-mono text-xs uppercase tracking-wider font-bold shadow-[0_0_20px_rgba(89,191,214,0.3)] hover:brightness-110 transition-all"
+                          className="rb-link-glanz inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#59BFD6] text-[#08090b] font-mono text-xs uppercase tracking-wider font-bold shadow-[0_0_20px_rgba(89,191,214,0.3)] hover:brightness-110 transition-all"
                         >
                           <span>Explorar Oficio</span>
                           <ArrowRight className="w-3.5 h-3.5" />
@@ -550,7 +561,7 @@ export default function ServiciosPage() {
           </div>
 
           {/* ── DUAL CONTROLS & TIMELINE SCRUBBER HUD ── */}
-          <div className="relative z-30 mt-8 w-full max-w-2xl px-4 flex flex-col items-center gap-4">
+          <div className="relative z-30 mt-6 w-full max-w-2xl px-4 flex flex-col items-center gap-3">
             {/* Timeline Nodes */}
             <div className="w-full flex items-center justify-between gap-2 p-2 rounded-full bg-white/[0.04] border border-white/10 backdrop-blur-md">
               <button
@@ -559,10 +570,10 @@ export default function ServiciosPage() {
                 aria-label="Servicio anterior"
                 className="p-2 rounded-full hover:bg-white/10 text-white/70 hover:text-white transition-colors"
               >
-                <ChevronUp className="w-4 h-4" />
+                <ChevronLeft className="w-4 h-4" />
               </button>
 
-              <div className="flex items-center gap-1.5 sm:gap-2">
+              <div className="flex items-center gap-1 sm:gap-2">
                 {SERVICES_LIST.map((s, i) => (
                   <button
                     key={s.id}
@@ -586,14 +597,14 @@ export default function ServiciosPage() {
                 aria-label="Siguiente servicio"
                 className="p-2 rounded-full hover:bg-white/10 text-white/70 hover:text-white transition-colors"
               >
-                <ChevronDown className="w-4 h-4" />
+                <ChevronRight className="w-4 h-4" />
               </button>
             </div>
 
             {/* Gesture Tip */}
             <div className="inline-flex items-center gap-2 font-mono text-[11px] text-white/40">
               <Wind className="w-3.5 h-3.5 text-[#59BFD6] animate-pulse" />
-              <span>Gira la rueda, arrastra verticalmente o usa las flechas del teclado</span>
+              <span>Gira la rueda del ratón, arrastra horizontalmente o usa las flechas</span>
             </div>
           </div>
         </section>
