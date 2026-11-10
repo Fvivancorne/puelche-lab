@@ -18,7 +18,6 @@ import {
   LayoutGrid,
   Sparkles,
   Wind,
-  Eye,
   Disc3,
   CheckCircle2,
 } from 'lucide-react';
@@ -137,72 +136,70 @@ export default function ServiciosPage() {
   const [viewMode, setViewMode] = useState<'3d' | 'reticular'>('3d');
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [activeIndex, setActiveIndex] = useState<number>(0);
-  const [isAutoRotating, setIsAutoRotating] = useState<boolean>(false);
 
-  // Physics & 3D Infinite Orbit States
+  // Cinematic Exponential Decay & Tactile Physics Refs
   const stageRef = useRef<HTMLDivElement>(null);
-  const currentPosRef = useRef<number>(0);
-  const targetPosRef = useRef<number>(0);
+  const posRef = useRef<number>(0);
+  const targetRef = useRef<number>(0);
+
   const isDraggingRef = useRef<boolean>(false);
   const dragStartXRef = useRef<number>(0);
   const dragStartPosRef = useRef<number>(0);
+  const lastClientXRef = useRef<number>(0);
   const lastDragTimeRef = useRef<number>(0);
-  const dragVelocityRef = useRef<number>(0);
+  const dragVelocitySamples = useRef<number[]>([]);
+  const wheelSnapTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const animFrameRef = useRef<number | null>(null);
 
-  // Reactive render position state
+  // Continuous render position state for silk-smooth reactive updates
   const [renderPos, setRenderPos] = useState<number>(0);
   const total = SERVICES_LIST.length;
 
-  // Jump to specific service index
+  // Jump smoothly to a specific service with shortest circular path
   const navigateTo = useCallback(
     (index: number) => {
-      setIsAutoRotating(false);
-      const current = currentPosRef.current;
+      const current = posRef.current;
       const currentNorm = ((Math.round(current) % total) + total) % total;
       let diff = index - currentNorm;
       if (diff > total / 2) diff -= total;
       if (diff < -total / 2) diff += total;
-      targetPosRef.current = Math.round(current) + diff;
+      targetRef.current = Math.round(current) + diff;
     },
     [total]
   );
 
   const nextService = useCallback(() => {
-    setIsAutoRotating(false);
-    targetPosRef.current = Math.round(targetPosRef.current) + 1;
+    targetRef.current = Math.round(targetRef.current) + 1;
   }, []);
 
   const prevService = useCallback(() => {
-    setIsAutoRotating(false);
-    targetPosRef.current = Math.round(targetPosRef.current) - 1;
+    targetRef.current = Math.round(targetRef.current) - 1;
   }, []);
 
-  // 60-120fps Animation Loop with smooth Lerp interpolation and magnetic snapping
+  // Frame-rate Independent Exponential Decay Loop (Asymptotic Air-Cushion, Zero Shockwave)
   useEffect(() => {
     let lastTime = performance.now();
 
     const loop = (now: number) => {
-      const dt = Math.min(50, now - lastTime) / 1000;
+      const dt = Math.min(32, Math.max(1, now - lastTime)) / 1000;
       lastTime = now;
 
-      if (isAutoRotating && !isDraggingRef.current) {
-        targetPosRef.current += 0.08 * dt;
+      if (!isDraggingRef.current) {
+        // Critical Exponential Relaxation: dx/dt = -decay * (x - target)
+        // Decays asymptotically to target with infinite mathematical smoothness (no bounce, no abrupt stop)
+        const decay = 7.8;
+        const factor = 1 - Math.exp(-decay * dt);
+        posRef.current += (targetRef.current - posRef.current) * factor;
+
+        // Ultra-fine rest threshold
+        if (Math.abs(targetRef.current - posRef.current) < 0.0001) {
+          posRef.current = targetRef.current;
+        }
       }
 
-      // Smooth Lerp toward target position
-      const diff = targetPosRef.current - currentPosRef.current;
-      currentPosRef.current += diff * 0.12;
+      setRenderPos(posRef.current);
 
-      // Magnetic snap to nearest integer when velocity is low
-      if (!isDraggingRef.current && !isAutoRotating && Math.abs(diff) < 0.003) {
-        targetPosRef.current = Math.round(targetPosRef.current);
-        currentPosRef.current = targetPosRef.current;
-      }
-
-      setRenderPos(currentPosRef.current);
-
-      const normIndex = ((Math.round(currentPosRef.current) % total) + total) % total;
+      const normIndex = ((Math.round(posRef.current) % total) + total) % total;
       setActiveIndex(normIndex);
 
       animFrameRef.current = requestAnimationFrame(loop);
@@ -213,34 +210,45 @@ export default function ServiciosPage() {
     return () => {
       if (animFrameRef.current) cancelAnimationFrame(animFrameRef.current);
     };
-  }, [total, isAutoRotating]);
+  }, [total]);
 
-  // Non-passive wheel listener attached to stage element so e.preventDefault() works smoothly!
+  // Tactile Non-Passive Wheel Listener: fluid continuous drift + gentle magnetic settle
   useEffect(() => {
     const stage = stageRef.current;
     if (!stage || viewMode !== '3d') return;
 
     const handleWheelNative = (e: WheelEvent) => {
-      // Prevent browser from scrolling the window while interacting with the 3D orbit
       e.preventDefault();
-      setIsAutoRotating(false);
+
+      // Delicate wheel sensitivity: gentle turn glides smoothly
       const delta = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
-      const step = Math.sign(delta) * Math.min(1.0, Math.abs(delta) * 0.0028);
-      targetPosRef.current += step;
+      const step = Math.sign(delta) * Math.min(0.6, Math.abs(delta) * 0.0022);
+
+      targetRef.current += step;
+
+      // Debounce magnetic snap: settles gently on closest card after wheel ceases
+      if (wheelSnapTimeoutRef.current) clearTimeout(wheelSnapTimeoutRef.current);
+      wheelSnapTimeoutRef.current = setTimeout(() => {
+        targetRef.current = Math.round(targetRef.current);
+      }, 180);
     };
 
     stage.addEventListener('wheel', handleWheelNative, { passive: false });
-    return () => stage.removeEventListener('wheel', handleWheelNative);
+    return () => {
+      stage.removeEventListener('wheel', handleWheelNative);
+      if (wheelSnapTimeoutRef.current) clearTimeout(wheelSnapTimeoutRef.current);
+    };
   }, [viewMode]);
 
-  // Pointer drag controls (horizontal drag rotates the 3D cylinder)
+  // Effortless Lightweight Dragging & Directional Swipe Commitment
   const handlePointerDown = (e: React.PointerEvent) => {
-    setIsAutoRotating(false);
     isDraggingRef.current = true;
     dragStartXRef.current = e.clientX;
-    dragStartPosRef.current = currentPosRef.current;
+    dragStartPosRef.current = posRef.current;
+    lastClientXRef.current = e.clientX;
     lastDragTimeRef.current = performance.now();
-    dragVelocityRef.current = 0;
+    dragVelocitySamples.current = [];
+
     if (stageRef.current) {
       stageRef.current.setPointerCapture(e.pointerId);
     }
@@ -251,16 +259,26 @@ export default function ServiciosPage() {
     const now = performance.now();
     const dt = Math.max(1, now - lastDragTimeRef.current);
     const deltaX = e.clientX - dragStartXRef.current;
-    // 280px of horizontal drag = 1 service rotation
-    const newTarget = dragStartPosRef.current - deltaX / 280;
-    dragVelocityRef.current = (newTarget - targetPosRef.current) / (dt / 16);
-    targetPosRef.current = newTarget;
+    const stepX = e.clientX - lastClientXRef.current;
+
+    // Instant velocity sample in px/ms
+    const instantVel = stepX / dt;
+    dragVelocitySamples.current.push(instantVel);
+    if (dragVelocitySamples.current.length > 5) dragVelocitySamples.current.shift();
+
+    lastClientXRef.current = e.clientX;
     lastDragTimeRef.current = now;
+
+    // Effortless travel: 120px drag moves 1 full card smoothly (ultra-light, zero resistance)
+    const newPos = dragStartPosRef.current - deltaX / 120;
+    posRef.current = newPos;
+    targetRef.current = newPos;
   };
 
   const handlePointerUp = (e: React.PointerEvent) => {
     if (!isDraggingRef.current) return;
     isDraggingRef.current = false;
+
     if (stageRef.current) {
       try {
         stageRef.current.releasePointerCapture(e.pointerId);
@@ -268,8 +286,22 @@ export default function ServiciosPage() {
         // Safe fallback
       }
     }
-    const momentum = Math.max(-1.5, Math.min(1.5, dragVelocityRef.current * 1.5));
-    targetPosRef.current = Math.round(targetPosRef.current + momentum);
+
+    const deltaX = e.clientX - dragStartXRef.current;
+    const samples = dragVelocitySamples.current;
+    const avgVel = samples.length > 0 ? samples.reduce((a, b) => a + b, 0) / samples.length : 0;
+
+    // Directional Swipe Commitment:
+    // Even a light swipe of 30px or quick flick (|avgVel| > 0.15) advances immediately to next/prev!
+    // No more struggling or having to drag across half the screen.
+    let target = Math.round(posRef.current);
+    if (deltaX < -30 || avgVel < -0.15) {
+      target = Math.floor(dragStartPosRef.current) + 1;
+    } else if (deltaX > 30 || avgVel > 0.15) {
+      target = Math.ceil(dragStartPosRef.current) - 1;
+    }
+
+    targetRef.current = target;
   };
 
   // Keyboard navigation
@@ -292,31 +324,45 @@ export default function ServiciosPage() {
       {/* ── ATMOSPHERIC CANVAS WITH DRIFTING PARTICLES & AURORA GLOW ── */}
       <AtmosphericBackground intensity="vibrant" showParticles={true} />
 
-      {/* ── REVELADO DE FOTOGRAFÍA DE AUTOR EN SEGUNDO PLANO AL HOVER (R4 COMPAT) ── */}
+      {/* ── CONTINUOUS HERMITE SMOOTHSTEP CROSSFADE: REVELADO FINE-ART (R4 COMPAT) ── */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden z-0" aria-hidden="true">
-        {SERVICES_LIST.map((serv, idx) => (
-          <div
-            key={serv.id}
-            className={`absolute inset-0 transition-all duration-1000 ease-out ${
-              hoveredIndex === idx || (viewMode === '3d' && activeIndex === idx)
-                ? 'opacity-25 scale-100'
-                : 'opacity-0 scale-105'
-            }`}
-          >
-            <Image
-              src={serv.image}
-              alt=""
-              fill
-              className="object-cover object-center filter grayscale contrast-125 brightness-90"
-            />
-            <div className="absolute inset-0 bg-gradient-to-r from-[#08090b] via-[#08090b]/80 to-[#08090b]" />
-            <div className="absolute inset-0 bg-gradient-to-b from-[#08090b]/90 via-transparent to-[#08090b]" />
-          </div>
-        ))}
+        {SERVICES_LIST.map((serv, idx) => {
+          // Wrapped continuous distance
+          let dist = Math.abs(idx - (renderPos % total));
+          while (dist > total / 2) dist = Math.abs(dist - total);
+
+          // Hermite smoothstep curve: t^2 * (3 - 2t) -> Zero derivative at peak (no sudden flashing!)
+          const t = Math.max(0, 1 - dist * 0.95);
+          const smoothFade = t * t * (3 - 2 * t);
+          const crossfadeOpacity = viewMode === '3d'
+            ? smoothFade * 0.32
+            : (hoveredIndex === idx ? 0.25 : 0);
+
+          return (
+            <div
+              key={serv.id}
+              className="absolute inset-0 will-change-[opacity]"
+              style={{
+                opacity: crossfadeOpacity,
+                transition: viewMode === '3d' ? 'none' : 'opacity 0.6s ease-out',
+              }}
+            >
+              <Image
+                src={serv.image}
+                alt=""
+                fill
+                priority={idx === 0}
+                className="object-cover object-center filter grayscale contrast-125 brightness-90"
+              />
+              <div className="absolute inset-0 bg-gradient-to-r from-[#08090b] via-[#08090b]/80 to-[#08090b]" />
+              <div className="absolute inset-0 bg-gradient-to-b from-[#08090b]/90 via-transparent to-[#08090b]" />
+            </div>
+          );
+        })}
       </div>
 
       {/* ── BANNER EDITORIAL DARK LUXURY & VIEW MODE SWITCHER ── */}
-      <section className="relative z-10 pt-28 pb-8 md:pt-36 md:pb-10 px-6 text-center border-b border-white/10 overflow-hidden bg-gradient-to-b from-[#101216]/90 via-[#08090b]/95 to-[#08090b]">
+      <section className="relative z-10 pt-28 pb-6 md:pt-36 md:pb-8 px-6 text-center border-b border-white/10 overflow-hidden bg-gradient-to-b from-[#101216]/90 via-[#08090b]/95 to-[#08090b]">
         {/* Kinetic Watermark */}
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 select-none pointer-events-none opacity-[0.03] whitespace-nowrap font-condensed text-[20vw] font-black uppercase text-white leading-none">
           OFICIO AUSTRAL
@@ -342,7 +388,7 @@ export default function ServiciosPage() {
               <button
                 type="button"
                 onClick={() => setViewMode('3d')}
-                className={`inline-flex items-center gap-2 px-5 py-2 rounded-full font-mono text-xs uppercase tracking-wider transition-all duration-300 ${
+                className={`inline-flex items-center gap-2 px-5 py-2 rounded-full font-mono text-xs uppercase tracking-wider transition-colors duration-200 ${
                   viewMode === '3d'
                     ? 'bg-[#59BFD6] text-[#08090b] font-bold shadow-[0_0_20px_rgba(89,191,214,0.4)]'
                     : 'text-white/70 hover:text-white'
@@ -354,7 +400,7 @@ export default function ServiciosPage() {
               <button
                 type="button"
                 onClick={() => setViewMode('reticular')}
-                className={`inline-flex items-center gap-2 px-5 py-2 rounded-full font-mono text-xs uppercase tracking-wider transition-all duration-300 ${
+                className={`inline-flex items-center gap-2 px-5 py-2 rounded-full font-mono text-xs uppercase tracking-wider transition-colors duration-200 ${
                   viewMode === 'reticular'
                     ? 'bg-[#59BFD6] text-[#08090b] font-bold shadow-[0_0_20px_rgba(89,191,214,0.4)]'
                     : 'text-white/70 hover:text-white'
@@ -375,7 +421,7 @@ export default function ServiciosPage() {
       </section>
 
       {/* ══════════════════════════════════════════════════════════════════════ */}
-      {/* ── MODO 1: DANZA ÓPTICA 3D (ORBITAL 3D CYLINDER COVERFLOW DANCE) ── */}
+      {/* ── MODO 1: DANZA ÓPTICA 3D (AIR-CUSHIONED DELICATE ORBITAL DANCE) ─── */}
       {/* ══════════════════════════════════════════════════════════════════════ */}
       {viewMode === '3d' && (
         <section
@@ -392,7 +438,7 @@ export default function ServiciosPage() {
             type="button"
             onClick={prevService}
             aria-label="Servicio anterior"
-            className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 z-40 p-3.5 rounded-full bg-[#101216]/80 hover:bg-[#59BFD6] text-white hover:text-[#08090b] border border-white/15 hover:border-[#59BFD6] backdrop-blur-xl shadow-2xl transition-all duration-300 hover:scale-110 active:scale-95 group"
+            className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 z-40 p-3.5 rounded-full bg-[#101216]/85 hover:bg-[#59BFD6] text-white hover:text-[#08090b] border border-white/15 hover:border-[#59BFD6] backdrop-blur-xl shadow-2xl transition-transform duration-200 hover:scale-110 active:scale-95 group"
           >
             <ChevronLeft className="w-5 h-5 transition-transform group-hover:-translate-x-0.5" />
           </button>
@@ -401,7 +447,7 @@ export default function ServiciosPage() {
             type="button"
             onClick={nextService}
             aria-label="Siguiente servicio"
-            className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 z-40 p-3.5 rounded-full bg-[#101216]/80 hover:bg-[#59BFD6] text-white hover:text-[#08090b] border border-white/15 hover:border-[#59BFD6] backdrop-blur-xl shadow-2xl transition-all duration-300 hover:scale-110 active:scale-95 group"
+            className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 z-40 p-3.5 rounded-full bg-[#101216]/85 hover:bg-[#59BFD6] text-white hover:text-[#08090b] border border-white/15 hover:border-[#59BFD6] backdrop-blur-xl shadow-2xl transition-transform duration-200 hover:scale-110 active:scale-95 group"
           >
             <ChevronRight className="w-5 h-5 transition-transform group-hover:translate-x-0.5" />
           </button>
@@ -416,25 +462,37 @@ export default function ServiciosPage() {
             }}
           >
             {SERVICES_LIST.map((serv, idx) => {
-              // Wrapped angular / cylindrical offset relative to renderPos
+              // Continuous offset relative to renderPos
               let offset = idx - (renderPos % total);
               while (offset > total / 2) offset -= total;
               while (offset < -total / 2) offset += total;
 
-              const absOffset = Math.abs(offset);
-              const isActive = Math.round(absOffset) === 0;
+              // Gaussian bell curve: derivative is EXACTLY 0 at offset = 0 (Zero Jolt / Zero Shockwave!)
+              const bell = Math.exp(-Math.pow(offset * 0.85, 2));
 
-              // Only render visible cards in orbital arc
-              if (absOffset > 2.6) return null;
+              // If card is far out of view, cull smoothly
+              if (bell < 0.04) return null;
 
-              // 3D Orbital Coordinates (Horizontal Arc with Depth & Inward Yaw)
-              const translateX = offset * 420;
-              const translateZ = -absOffset * 190;
-              const rotateY = offset * -28;
-              const scale = Math.max(0.72, 1 - absOffset * 0.14);
-              const opacity = Math.max(0.18, 1 - absOffset * 0.36);
-              const blurPx = absOffset > 0.4 ? Math.min(8, absOffset * 2.8) : 0;
-              const zIndex = Math.round(30 - absOffset * 10);
+              // Smooth Z-depth: gently glides forward and hovers at apex
+              const translateZ = (bell - 1) * 230; // 0 at center, -230px at sides
+
+              // Smooth Scale: 0.82 at sides to 1.0 at center, continuous derivative
+              const scale = 0.82 + 0.18 * bell;
+
+              // Smooth Cyan Border Glow: softly illuminates as it approaches center
+              const glowStrength = Math.pow(bell, 2.2);
+
+              // Smooth Horizontal Placement: progressive optical spacing
+              const translateX = offset * 430;
+
+              // Silky smooth Y-rotation: turns gracefully towards center (no kinks)
+              const rotateY = -Math.sin(Math.min(1.4, Math.max(-1.4, offset * 0.75))) * 22;
+
+              // Continuous Opacity: smoothly fades for distant cards
+              const opacity = Math.min(1, Math.pow(bell, 0.7));
+
+              // Z-Index: center card is always on top
+              const zIndex = Math.round(bell * 50);
 
               const Icon = serv.icon;
 
@@ -442,34 +500,42 @@ export default function ServiciosPage() {
                 <div
                   key={serv.id}
                   onClick={() => {
-                    if (!isActive) navigateTo(idx);
+                    // Clicking any side card navigates gracefully to it
+                    if (Math.abs(offset) > 0.25) navigateTo(idx);
                   }}
-                  className={`absolute w-[340px] sm:w-[460px] md:w-[680px] rounded-3xl overflow-hidden transition-all duration-300 ${
-                    isActive
-                      ? 'border border-[#59BFD6]/50 shadow-[0_30px_90px_-20px_rgba(0,0,0,0.9),0_0_50px_rgba(89,191,214,0.22)]'
-                      : 'border border-white/10 hover:border-white/30 shadow-2xl cursor-pointer hover:brightness-110'
-                  }`}
+                  className="absolute w-[330px] sm:w-[460px] md:w-[680px] rounded-3xl overflow-hidden cursor-pointer"
                   style={{
                     transform: `translate3d(${translateX}px, 0, ${translateZ}px) rotateY(${rotateY}deg) scale(${scale})`,
                     opacity,
-                    filter: blurPx > 0 ? `blur(${blurPx}px)` : 'none',
                     zIndex,
-                    background: 'rgba(14, 16, 20, 0.92)',
-                    backdropFilter: 'blur(20px)',
-                    willChange: 'transform, opacity, filter',
+                    background: 'rgba(14, 16, 20, 0.94)',
+                    backdropFilter: 'blur(16px)',
+                    borderColor: `rgba(89, 191, 214, ${0.12 + glowStrength * 0.5})`,
+                    boxShadow: `0 30px 90px -20px rgba(0,0,0,0.95), 0 0 ${glowStrength * 36}px rgba(89,191,214,${glowStrength * 0.24})`,
+                    borderWidth: '1px',
+                    borderStyle: 'solid',
+                    willChange: 'transform, opacity',
                   }}
                 >
                   {/* Card Content Grid */}
                   <div className="grid grid-cols-1 md:grid-cols-12 min-h-[460px] md:min-h-[500px]">
-                    {/* Left Column: Authentic Photography & Viewfinder HUD (5 cols) */}
+                    {/* Left Column: Authentic Photography with Optical Counter-Parallax (5 cols) */}
                     <div className="relative md:col-span-5 overflow-hidden min-h-[200px] md:min-h-full">
-                      <Image
-                        src={serv.image}
-                        alt={serv.title}
-                        fill
-                        priority={isActive}
-                        className="object-cover object-center filter contrast-110 brightness-95"
-                      />
+                      <div
+                        className="absolute inset-[-12%] will-change-transform"
+                        style={{
+                          transform: `translateX(${offset * -14}px) scale(1.08)`,
+                          transition: isDraggingRef.current ? 'none' : 'transform 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
+                        }}
+                      >
+                        <Image
+                          src={serv.image}
+                          alt={serv.title}
+                          fill
+                          priority={idx === 0}
+                          className="object-cover object-center filter contrast-110 brightness-95"
+                        />
+                      </div>
                       <div className="absolute inset-0 bg-gradient-to-t md:bg-gradient-to-r from-transparent via-[#0e1014]/50 to-[#0e1014]" />
 
                       {/* Optical Crosshair Overlay */}
@@ -604,7 +670,7 @@ export default function ServiciosPage() {
             {/* Gesture Tip */}
             <div className="inline-flex items-center gap-2 font-mono text-[11px] text-white/40">
               <Wind className="w-3.5 h-3.5 text-[#59BFD6] animate-pulse" />
-              <span>Gira la rueda del ratón, arrastra horizontalmente o usa las flechas</span>
+              <span>Gira la rueda, arrastra con el ratón o usa las flechas</span>
             </div>
           </div>
         </section>
@@ -662,7 +728,7 @@ export default function ServiciosPage() {
                   {/* Column 2: Service Title, Tag & Category (1fr) */}
                   <div className="space-y-2">
                     <div className="hidden lg:inline-flex items-center gap-2 px-2.5 py-0.5 rounded-full bg-white/5 border border-white/10 text-[#59BFD6] font-mono text-[10px] uppercase tracking-wider mb-2">
-                      <Icon className="w-3 h-3" />
+                      <Icon className="w-3.5 h-3.5" />
                       <span>{serv.tag}</span>
                     </div>
                     <h3 className="font-condensed text-3xl sm:text-4xl md:text-5xl uppercase font-bold tracking-tight text-white group-hover:text-[#59BFD6] transition-colors">

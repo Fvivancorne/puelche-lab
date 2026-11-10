@@ -31,31 +31,68 @@ export function AtmosphericBackground({
     let frameId: number | null = null;
     let time = 0;
 
-    // Mouse tracking with soft lerp
+    // Mouse tracking for orbs (normalized 0..1)
     const mouse = { x: 0.5, y: 0.5, targetX: 0.5, targetY: 0.5 };
+
+    // Real-time mouse tracking for particle wind vortex (actual pixels)
+    const mousePixel = {
+      x: -1000,
+      y: -1000,
+      prevX: -1000,
+      prevY: -1000,
+      speedX: 0,
+      speedY: 0,
+      active: false,
+    };
 
     const handleMouseMove = (e: MouseEvent) => {
       const rect = canvas.getBoundingClientRect();
       if (rect.width > 0 && rect.height > 0) {
-        mouse.targetX = (e.clientX - rect.left) / rect.width;
-        mouse.targetY = (e.clientY - rect.top) / rect.height;
+        const px = e.clientX - rect.left;
+        const py = e.clientY - rect.top;
+
+        if (mousePixel.prevX !== -1000) {
+          mousePixel.speedX = px - mousePixel.prevX;
+          mousePixel.speedY = py - mousePixel.prevY;
+        }
+        mousePixel.prevX = px;
+        mousePixel.prevY = py;
+        mousePixel.x = px;
+        mousePixel.y = py;
+        mousePixel.active = true;
+
+        mouse.targetX = px / rect.width;
+        mouse.targetY = py / rect.height;
       }
     };
 
-    window.addEventListener('mousemove', handleMouseMove, { passive: true });
+    const handleMouseLeave = () => {
+      mousePixel.active = false;
+      mousePixel.x = -1000;
+      mousePixel.y = -1000;
+    };
 
-    // Floating micro-particles (Patagonian mist & stardust)
-    const particleCount = showParticles ? 45 : 0;
-    const particles = Array.from({ length: particleCount }, () => ({
-      x: Math.random(),
-      y: Math.random(),
-      vx: -(0.0003 + Math.random() * 0.0006), // Gentle leftward drift (Viento Puelche)
-      vy: (Math.random() - 0.5) * 0.0003,
-      radius: 1 + Math.random() * 2,
-      baseAlpha: 0.15 + Math.random() * 0.45,
-      pulse: Math.random() * Math.PI * 2,
-      color: Math.random() > 0.35 ? '89, 191, 214' : '194, 155, 99', // Cyan or Ochre
-    }));
+    window.addEventListener('mousemove', handleMouseMove, { passive: true });
+    window.addEventListener('mouseleave', handleMouseLeave);
+
+    // Floating micro-particles (Patagonian mist & stardust reacting to wind & cursor)
+    const particleCount = showParticles ? 80 : 0;
+    const particles = Array.from({ length: particleCount }, () => {
+      const baseVx = -(0.4 + Math.random() * 0.8); // Gentle leftward drift (Viento Puelche)
+      const baseVy = (Math.random() - 0.5) * 0.3;
+      return {
+        x: Math.random() * 1920,
+        y: Math.random() * 1080,
+        vx: baseVx,
+        vy: baseVy,
+        baseVx,
+        baseVy,
+        radius: 1.1 + Math.random() * 2.2,
+        baseAlpha: 0.16 + Math.random() * 0.45,
+        pulse: Math.random() * Math.PI * 2,
+        color: Math.random() > 0.35 ? '89, 191, 214' : '194, 155, 99', // Cyan or Ochre
+      };
+    });
 
     const resize = () => {
       const parent = canvas.parentElement;
@@ -69,6 +106,12 @@ export function AtmosphericBackground({
       canvas.style.width = `${width}px`;
       canvas.style.height = `${height}px`;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+      // Re-scatter any particles outside bounds
+      for (const p of particles) {
+        if (p.x > width) p.x = Math.random() * width;
+        if (p.y > height) p.y = Math.random() * height;
+      }
     };
 
     resize();
@@ -83,13 +126,13 @@ export function AtmosphericBackground({
     const render = () => {
       time += reducedMotion ? 0.002 : 0.008;
 
-      // Soft mouse lerp
+      // Soft mouse lerp for ambient auroras
       mouse.x += (mouse.targetX - mouse.x) * 0.04;
       mouse.y += (mouse.targetY - mouse.y) * 0.04;
 
       ctx.clearRect(0, 0, width, height);
 
-      // Deep organic atmospheric base gradient (Rich Alpine Slate, not pitch black)
+      // Deep organic atmospheric base gradient (Rich Alpine Slate)
       const baseGrad = ctx.createLinearGradient(0, 0, 0, height);
       baseGrad.addColorStop(0, '#131519');
       baseGrad.addColorStop(0.5, '#16191f');
@@ -97,7 +140,7 @@ export function AtmosphericBackground({
       ctx.fillStyle = baseGrad;
       ctx.fillRect(0, 0, width, height);
 
-      // ── ORB 1: CYÁN AUSTRAL (Viento Puelche) ──
+      // ── ORB 1: CYAN AUSTRAL (Viento Puelche) ──
       const orb1X = width * (0.35 + Math.sin(time * 0.6) * 0.18 + (mouse.x - 0.5) * 0.12);
       const orb1Y = height * (0.3 + Math.cos(time * 0.5) * 0.14 + (mouse.y - 0.5) * 0.1);
       const orb1R = Math.max(width, height) * 0.55;
@@ -130,29 +173,78 @@ export function AtmosphericBackground({
       ctx.fillStyle = grad3;
       ctx.fillRect(0, 0, width, height);
 
-      // ── PARTICULAS FLOTANTES (Bruma y viento austral) ──
-      if (showParticles) {
+      // ── PARTICULAS FLOTANTES REACTIVAS AL VIENTO Y AL CURSOR ──
+      if (showParticles && width > 0 && height > 0) {
+        const influenceRadius = 170;
+        const influenceRadiusSq = influenceRadius * influenceRadius;
+
         for (const p of particles) {
           if (!reducedMotion) {
+            p.pulse += 0.025;
+
+            // Cursor wind vortex & aerodynamic repulsion
+            if (mousePixel.active) {
+              const dx = p.x - mousePixel.x;
+              const dy = p.y - mousePixel.y;
+              const distSq = dx * dx + dy * dy;
+
+              if (distSq < influenceRadiusSq && distSq > 0) {
+                const dist = Math.sqrt(distSq);
+                const force = (1 - dist / influenceRadius) * 2.8;
+                const angle = Math.atan2(dy, dx);
+
+                // Repulsive push away from cursor
+                p.vx += Math.cos(angle) * force;
+                p.vy += Math.sin(angle) * force;
+
+                // Swirling vortex (tangential eddy around cursor)
+                const tangAngle = angle + Math.PI / 2;
+                p.vx += Math.cos(tangAngle) * (force * 0.85);
+                p.vy += Math.sin(tangAngle) * (force * 0.85);
+
+                // Mouse momentum drag
+                p.vx += mousePixel.speedX * 0.045;
+                p.vy += mousePixel.speedY * 0.045;
+              }
+            }
+
+            // Natural Puelche wind velocity recovery with gentle undulation
+            const undulation = Math.sin(time * 1.5 + p.pulse) * 0.25;
+            p.vx += (p.baseVx - p.vx) * 0.04;
+            p.vy += (p.baseVy + undulation - p.vy) * 0.04;
+
             p.x += p.vx;
             p.y += p.vy;
-            p.pulse += 0.02;
 
-            // Wrap around edges
-            if (p.x < 0) p.x = 1;
-            if (p.y < 0) p.y = 1;
-            if (p.y > 1) p.y = 0;
+            // Wrap around edges seamlessly
+            if (p.x < -20) p.x = width + 20;
+            if (p.x > width + 20) p.x = -20;
+            if (p.y < -20) p.y = height + 20;
+            if (p.y > height + 20) p.y = -20;
           }
 
-          const px = p.x * width;
-          const py = p.y * height;
           const alpha = p.baseAlpha * (0.7 + Math.sin(p.pulse) * 0.3) * alphaMult;
+          const currentRadius = p.radius * (1 + (Math.abs(p.vx) > 1.8 ? 0.35 : 0));
 
           ctx.beginPath();
-          ctx.arc(px, py, p.radius, 0, Math.PI * 2);
+          ctx.arc(p.x, p.y, currentRadius, 0, Math.PI * 2);
           ctx.fillStyle = `rgba(${p.color}, ${alpha})`;
           ctx.fill();
+
+          // Subtle wind streak tail when agitated by cursor movement
+          if (!reducedMotion && Math.hypot(p.vx, p.vy) > 1.8) {
+            ctx.beginPath();
+            ctx.moveTo(p.x, p.y);
+            ctx.lineTo(p.x - p.vx * 3.5, p.y - p.vy * 3.5);
+            ctx.strokeStyle = `rgba(${p.color}, ${alpha * 0.4})`;
+            ctx.lineWidth = currentRadius * 0.7;
+            ctx.stroke();
+          }
         }
+
+        // Decay mouse speed over frames
+        mousePixel.speedX *= 0.85;
+        mousePixel.speedY *= 0.85;
       }
 
       frameId = requestAnimationFrame(render);
@@ -168,6 +260,7 @@ export function AtmosphericBackground({
     return () => {
       if (frameId) cancelAnimationFrame(frameId);
       window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('mouseleave', handleMouseLeave);
       motionQuery.removeEventListener('change', handleMotionChange);
       resizeObserver.disconnect();
     };
