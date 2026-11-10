@@ -161,6 +161,7 @@ function PortfolioContent() {
   const nextImage = (e?: React.MouseEvent) => {
     if (e) e.stopPropagation();
     if (activeGallery.length > 1) {
+      setNavDirection('next');
       setCurrentImageIndex((prev) => (prev + 1) % activeGallery.length);
     }
   };
@@ -168,9 +169,34 @@ function PortfolioContent() {
   const prevImage = (e?: React.MouseEvent) => {
     if (e) e.stopPropagation();
     if (activeGallery.length > 1) {
+      setNavDirection('prev');
       setCurrentImageIndex((prev) => (prev - 1 + activeGallery.length) % activeGallery.length);
     }
   };
+
+  const advanceModal = useCallback((direction: 'next' | 'prev') => {
+    if (!activeModalProject) return;
+
+    if (direction === 'next') {
+      // Si la galería tiene más fotos y no estamos en la última, avanzar de foto suavemente
+      if (activeGallery.length > 1 && currentImageIndex < activeGallery.length - 1) {
+        setNavDirection('next');
+        setCurrentImageIndex((prev) => prev + 1);
+      } else {
+        // Al terminar las fotos, avanzar a la siguiente obra
+        nextProject();
+      }
+    } else {
+      // Si no estamos en la primera foto, retroceder de foto
+      if (activeGallery.length > 1 && currentImageIndex > 0) {
+        setNavDirection('prev');
+        setCurrentImageIndex((prev) => prev - 1);
+      } else {
+        // En la primera foto, retroceder a la obra anterior
+        prevProject();
+      }
+    }
+  }, [activeModalProject, activeGallery.length, currentImageIndex, nextProject, prevProject]);
 
   // Keyboard navigation for multi-piece gallery, next/prev project & escape to close
   useEffect(() => {
@@ -180,21 +206,21 @@ function PortfolioContent() {
       if (e.key === 'Escape') {
         handleCloseModal();
       } else if (e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D') {
-        nextProject();
+        advanceModal('next');
       } else if (e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A') {
-        prevProject();
+        advanceModal('prev');
       } else if (e.key === 'ArrowDown' || e.key === 'PageDown') {
         e.preventDefault();
-        nextProject();
+        advanceModal('next');
       } else if (e.key === 'ArrowUp' || e.key === 'PageUp') {
         e.preventDefault();
-        prevProject();
+        advanceModal('prev');
       }
     };
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [activeModalProject, activeGallery.length, currentImageIndex, nextProject, prevProject, handleCloseModal]);
+  }, [activeModalProject, advanceModal, handleCloseModal]);
 
   // Auto-open project modal if ?proyecto= query param is provided
   useEffect(() => {
@@ -240,14 +266,16 @@ function PortfolioContent() {
     };
   }, [activeModalProject]);
 
-  // ── NAVEGACIÓN EN EL MODAL: FRICCIÓN FIRME (160px) & BLOQUEO ESTRICTO DE INERCIA (750ms) ──
+  // ── NAVEGACIÓN EN EL MODAL: DESPLAZAMIENTO FLUIDO CON PAD MOUSE & FOTOGRAMAS PROGRESIVOS ──
   useEffect(() => {
     if (!activeModalProject) return;
 
     let accumulatorX = 0;
+    let accumulatorY = 0;
     let isMomentumLocked = false;
     let unlockTimer: NodeJS.Timeout | null = null;
-    const HORIZONTAL_THRESHOLD = 160; // Umbral de fricción firme: requiere un gesto deliberado
+    const HORIZONTAL_THRESHOLD = 95; // Fricción suave y controlada (pad mouse con 2 dedos)
+    const VERTICAL_PHOTO_THRESHOLD = 110;
 
     const handleModalWheel = (e: WheelEvent) => {
       // PREVENCIÓN TOTAL DE NAVEGACIÓN DE HISTORIAL DE CHROME/SAFARI:
@@ -255,44 +283,67 @@ function PortfolioContent() {
         e.preventDefault();
       }
 
-      const isHorizontal = Math.abs(e.deltaX) > Math.abs(e.deltaY) && Math.abs(e.deltaX) > 4;
+      // Detectar si el puntero está sobre el visor fotográfico (columna izquierda)
+      const target = e.target as HTMLElement | null;
+      const isOverPhoto = target ? Boolean(target.closest('.modal-photo-area')) : false;
 
-      // EL EJE VERTICAL ESTÁ 100% LIBRE: Permite leer y scrollear todo el contenido interno sin interferencias
-      if (!isHorizontal) {
+      const isHorizontal = Math.abs(e.deltaX) > Math.abs(e.deltaY) && Math.abs(e.deltaX) > 3;
+      const isVertical = Math.abs(e.deltaY) >= Math.abs(e.deltaX) && Math.abs(e.deltaY) > 3;
+
+      // EL EJE VERTICAL SOBRE EL TEXTO QUEDA 100% LIBRE PARA LEER
+      if (isVertical && !isOverPhoto) {
         return;
       }
 
-      e.preventDefault();
-      e.stopPropagation();
+      if (isHorizontal || (isVertical && isOverPhoto)) {
+        e.preventDefault();
+        e.stopPropagation();
 
-      // Si está en absorción de inercia del swipe anterior, mantener bloqueado mientras siga llegando inercia
-      if (isMomentumLocked) {
-        if (unlockTimer) clearTimeout(unlockTimer);
-        unlockTimer = setTimeout(() => {
-          isMomentumLocked = false;
-          accumulatorX = 0;
-        }, 300);
-        return;
-      }
-
-      accumulatorX += e.deltaX;
-
-      if (Math.abs(accumulatorX) >= HORIZONTAL_THRESHOLD) {
-        isMomentumLocked = true; // Bloqueo de inercia: garantiza exactamente 1 obra por swipe deliberado
-
-        if (accumulatorX > 0) {
-          nextProject();
-        } else {
-          prevProject();
+        if (isMomentumLocked) {
+          if (unlockTimer) clearTimeout(unlockTimer);
+          unlockTimer = setTimeout(() => {
+            isMomentumLocked = false;
+            accumulatorX = 0;
+            accumulatorY = 0;
+          }, 220);
+          return;
         }
-        accumulatorX = 0;
 
-        // Cooldown estricto de 750ms para absorber todo el momentum del trackpad de macOS
-        if (unlockTimer) clearTimeout(unlockTimer);
-        unlockTimer = setTimeout(() => {
-          isMomentumLocked = false;
-          accumulatorX = 0;
-        }, 750);
+        if (isHorizontal) {
+          accumulatorX += e.deltaX;
+          if (Math.abs(accumulatorX) >= HORIZONTAL_THRESHOLD) {
+            isMomentumLocked = true;
+            if (accumulatorX > 0) {
+              advanceModal('next');
+            } else {
+              advanceModal('prev');
+            }
+            accumulatorX = 0;
+            accumulatorY = 0;
+
+            if (unlockTimer) clearTimeout(unlockTimer);
+            unlockTimer = setTimeout(() => {
+              isMomentumLocked = false;
+            }, 450);
+          }
+        } else if (isVertical && isOverPhoto) {
+          accumulatorY += e.deltaY;
+          if (Math.abs(accumulatorY) >= VERTICAL_PHOTO_THRESHOLD) {
+            isMomentumLocked = true;
+            if (accumulatorY > 0) {
+              advanceModal('next');
+            } else {
+              advanceModal('prev');
+            }
+            accumulatorX = 0;
+            accumulatorY = 0;
+
+            if (unlockTimer) clearTimeout(unlockTimer);
+            unlockTimer = setTimeout(() => {
+              isMomentumLocked = false;
+            }, 450);
+          }
+        }
       }
     };
 
@@ -311,12 +362,12 @@ function PortfolioContent() {
       if (e.changedTouches.length === 1) {
         const deltaX = e.changedTouches[0].clientX - touchStartX;
         const deltaY = e.changedTouches[0].clientY - touchStartY;
-        // Solo swipe horizontal claro y deliberado (>65px)
-        if (Math.abs(deltaX) > Math.abs(deltaY) * 1.5 && Math.abs(deltaX) > 65) {
+        // Swipe horizontal claro (>55px)
+        if (Math.abs(deltaX) > Math.abs(deltaY) * 1.4 && Math.abs(deltaX) > 55) {
           if (deltaX < 0) {
-            nextProject();
+            advanceModal('next');
           } else {
-            prevProject();
+            advanceModal('prev');
           }
         }
       }
@@ -332,7 +383,7 @@ function PortfolioContent() {
       window.removeEventListener('touchstart', handleTouchStart);
       window.removeEventListener('touchend', handleTouchEnd);
     };
-  }, [activeModalProject, nextProject, prevProject]);
+  }, [activeModalProject, advanceModal]);
 
   // ── DESPLAZAMIENTO HORIZONTAL DEL RÍO CINÉTICO: AMORTIGUACIÓN SUAVE (1.1x) & FLECHAS ──
   useEffect(() => {
@@ -1052,8 +1103,12 @@ function PortfolioContent() {
                         <button
                           key={i}
                           type="button"
-                          onClick={() => setCurrentImageIndex(i)}
-                          className={`relative w-20 h-14 rounded-lg overflow-hidden border-2 shrink-0 transition-all duration-200 ${
+                          onClick={() => {
+                            if (i > currentImageIndex) setNavDirection('next');
+                            else if (i < currentImageIndex) setNavDirection('prev');
+                            setCurrentImageIndex(i);
+                          }}
+                          className={`relative w-20 h-14 rounded-lg overflow-hidden border-2 shrink-0 transition-all duration-300 ${
                             i === currentImageIndex
                               ? 'border-[#59BFD6] scale-105 shadow-[0_0_12px_rgba(89,191,214,0.5)]'
                               : 'border-white/20 opacity-60 hover:opacity-100'
