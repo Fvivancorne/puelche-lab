@@ -76,6 +76,15 @@
 | 9 | Package & Quality Scripts Alignment | Configure `"lint": "tsc --noEmit"` in `package.json` so `npm run lint` passes without blocking errors | M1 | Build Track | DONE |
 | 10 | Tier 7 Acceptance Test Battery | Extend `tests/e2e/runner.ts` with comprehensive tests verifying R1-R7 and HTTP 200 contracts for all routes | M4 | E2E Track | DONE |
 | 11 | Final E2E Suite & Audit Certification | 100% pass across all test tiers, clean production Turbopack build, CLEAN forensic audit verdict | M4 | Gate | DONE |
+| 12 | Dossier Analítico Integral 8 Recursos & 10 Herramientas | Comprehensive research dossier covering all 8 axes and 10 video/motion tools | M5 | R1 | DONE |
+| 13 | Cabina de Preparación para Agentes de IA & GEO en /auditor | 5 interactive diagnostic modules: llms.txt, AI crawlers matrix, Schema.org @graph, context density, OG card | M6 | R2 | DONE |
+| 14 | Publicación de /llms.txt y /llms-full.txt Nativos | Official high-density markdown indexes for Puelche Lab | M6 | R2 | DONE |
+| 15 | Micro-interacciones Cinemáticas Magnetic & KineticTextSwap | Spring physics cursor magnet for CTAs and kinetic typographic roll effect | M6 | R2 | DONE |
+| 16 | Corrección de Soundwave Classes & Reduced Motion Reset | Paula webcam audio classes animate-soundwave-1..3 and page.tsx #hero scale/radius reset | M6 | R2 | DONE |
+| 17 | Skill de Agencia: agencia-motion-video-arsenal | Full packaging of the 10 video/motion tools under Triple S standard | M7 | R3 | DONE |
+| 18 | Skill de Agencia: GEO/LLM Readiness & llms.txt Architect | Enhanced AI audit & llms.txt generator skills | M7 | R3 | DONE |
+| 19 | Catálogo de Workflows Prioritarios n8n | Top workflows for lead enrichment, WhatsApp RAG bot, and content factory | M7 | R3 | DONE |
+| 20 | Certificación E2E, Clean Build & Lint, Review, Challenger & Audit | 100% pass on all test harnesses, clean lint, clean build, review, challenger and forensic audit | M8 | Gate | DONE |
 
 ## Milestones
 | # | Name | Scope | Dependencies | Status | Evidence |
@@ -84,6 +93,10 @@
 | M2 | Interactive Editorial & Staging (R3, R4, R5) | Darkroom BeforeAfterSlider with rotary dial, Asymmetric Services Grid (48px 1fr 1.2fr), 3-Column DynamoTripleSlider | M1 | DONE | Approved by Reviewer 2 & Challenger 1 |
 | M3 | Real-Time Commercial Engines (R6) | `/auditor` 20s simulation & Loom gate, `/cotizador` parametric math model & handoff | M1 | DONE | Approved by Reviewer 2 & Challenger 2 |
 | M4 | Final E2E Suite & Audit Certification | Tier 7 test suite extension, 100% test pass, clean build & lint, independent review, challenger & forensic audit | M1, M2, M3 | DONE | Certified CLEAN by Forensic Auditor |
+| M5 | Dossier Analítico de los 8 Recursos y 10 Herramientas | Creación de docs/DOSSIER_ESTRATEGICO_REFERENCIAS_IA_GEO_CINEMATICA.md cubriendo los 8 ejes temáticos y las 10 herramientas | M4 | DONE | 1,202 lines approved by Reviewer 2 & Challenger 2 |
+| M6 | Integración de GEO / LLM Readiness y Cinemática en Puelche Lab | Upgrade de /auditor/page.tsx, /llms.txt, Magnetic.tsx, KineticTextSwap.tsx, corrección de tests | M5 | DONE | Verified 22/22 static pages, clean lint |
+| M7 | Empaquetado de Skills en Ecosistema de Agencia | Creación de agencia-motion-video-arsenal, agencia-geo-llm-readiness-master, agencia-llm-txt-architect, y workflows n8n | M5 | DONE | Syntax & spec verified by Challenger 2 |
+| M8 | Verificación E2E, Clean Build & Lint, Review, Challenger & Forensic Audit | Validación integral de builds, lints, runners, revisión independiente, challengers y auditor forense | M6, M7 | DONE | 222/222 checks passing (E2E + Challengers), Verdict CLEAN |
 
 ## Interface Contracts
 ### SmoothScrollProvider ↔ GSAP

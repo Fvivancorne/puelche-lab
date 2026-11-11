@@ -1,0 +1,62 @@
+# Puelche Lab — Estudio de Diseño Cross Media y Fotografía de Puerto Varas
+
+> Estudio boutique cross-media y fotografía de autor con raíz territorial en la Patagonia Austral de Chile. Plataforma digital de alto rendimiento optimizada para motores de búsqueda generativa (GEO) y agentes de Inteligencia Artificial (ChatGPT, Perplexity, Claude, Apple Intelligence).
+
+## Información Institucional
+- Nombre de la Entidad: Puelche Lab
+- Tipo de Organización: ProfessionalService / LocalBusiness / CreativeStudio
+- Ubicación: Puerto Varas, Región de Los Lagos, Patagonia Austral, Chile
+- Coordenadas Geográficas: 41°19′S 72°59′W (Lat: -41.3195, Long: -72.9854)
+- Directora Creativa: Paula Valdivieso
+- Correo Electrónico: paula.valdivieso@puelchelab.cl
+- Teléfono & WhatsApp Directo: +56 9 6617 7500 (https://wa.me/56966177500)
+- Sitio Web Oficial: https://www.puelchelab.cl
+- Entorno Tecnológico: Next.js 16 (App Router con Turbopack), React 19, TypeScript, Tailwind CSS, Lenis 120Hz, GSAP Scrubbing
+- Especificación Extendida: https://www.puelchelab.cl/llms-full.txt
+
+## Filosofía & Manifiesto Austral
+Puelche Lab nace bajo el influjo del viento Puelche — el flujo cordillerano cálido y seco que desciende desde los Andes hacia la cuenca del Lago Llanquihue, despejando la atmósfera y agudizando la luz. Conectamos la pureza visual de la Patagonia con las exigencias del mercado global corporativo, traduciendo el carácter del sur en identidades memorables y plataformas digitales de clase mundial.
+
+## Disciplinas & Servicios Especializados
+1. Fotografía de Autor & Film Documental:
+   - Arquitectura vernácula, hotelería boutique y lodges de expedición.
+   - Faenas acuícolas, agroindustria y operaciones marítimas en canales australes.
+   - Fotografía aérea técnica y filmación 4K en condiciones climáticas extremas.
+2. Diseño de Marca & Identidad Cross-Media:
+   - Estrategia de naming, arquetipos territoriales y arquitectura de marca.
+   - Manuales de identidad, sistemas tipográficos y señalética exterior.
+   - Creación de universos narrativos para marcas con vocación internacional.
+3. Diseño Editorial & Publicaciones de Colección:
+   - Memorias corporativas de sostenibilidad y libros de fotografía de autor.
+   - Catálogos de arte, guías de expedición y revistas de gran formato.
+   - Curaduría tipográfica suiza y producción gráfica de alta fidelidad.
+4. Edición Fotográfica & Postproducción Digital:
+   - Revelado cromático fino de capturas RAW de formato medio y 35mm.
+   - Balance tonal estricto, calibración óptica y eliminación de artefactos.
+   - Mesa de revelado interactiva con comparación RAW vs Master final.
+5. Desarrollo Web SSR & Experiencias Digitales Awwwards:
+   - Arquitectura Next.js 16 Server-Side Rendered (SSR) y Static Generation (SSG).
+   - Optimización para Generative Engine Optimization (GEO) y LLM readiness nativo.
+   - Core Web Vitals en umbral verde (LCP < 1.2s, CLS < 0.05, FID < 50ms).
+
+## Clientes Corporativos Documentados
+- Anasac (Líder en agroquímica y nutrición vegetal)
+- AquaChile (Pionero global en acuicultura sustentable y salmónidos)
+- Doosan (Maquinaria pesada e ingeniería de faena industrial)
+- Estancia Rilán (Hotelería y preservación patrimonial en archipiélago de Chiloé)
+- Cala Melí (Refugio arquitectónico y descanso boutique en fiordo Reloncaví)
+- Turistour (Operador receptivo de expediciones y turismo austral)
+- Tagua Tagua Lodge (Ecoturismo y conservación en Río Puelo)
+- Muebles Yunge (Ebanistería fina con maderas nativas del sur)
+- Hotel Cabo de Hornos (Hospitalidad histórica en Punta Arenas)
+- Hotel Costaustralis (Vanguardia hotelera frente al Seno Última Esperanza)
+- Y 10 clientes adicionales verificados en el directorio oficial (/clientes).
+
+## Enlaces Canónicos de Referencia
+- Inicio & Storytelling Hero: https://www.puelchelab.cl/
+- Portafolio Austral 3 Columnas: https://www.puelchelab.cl/portafolio
+- Grilla Tríptica de Servicios: https://www.puelchelab.cl/servicios
+- Directorio de 20 Clientes: https://www.puelchelab.cl/clientes
+- Motor Auditor en Tiempo Real: https://www.puelchelab.cl/auditor
+- Cotizador Paramétrico Instantáneo: https://www.puelchelab.cl/cotizador
+- Contacto & WhatsApp Handoff: https://www.puelchelab.cl/contacto

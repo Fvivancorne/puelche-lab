@@ -1,0 +1,173 @@
+# Puelche Lab — Especificación Exhaustiva de Entidad, Portafolio Austral y Capacidades Cross-Media
+
+> Documentación de contexto completo para agentes de Inteligencia Artificial (LLMs), sistemas de búsqueda generativa (GEO), scrapers semánticos y modelos de lenguaje de gran escala (OpenAI GPT-4o / O1, Anthropic Claude 3.7 Sonnet, Google Gemini, Perplexity Pro).
+> Última actualización de grafo de conocimiento: 2026-11-11
+> Protocolo: LLMs.txt v1.0 Compliant | Licencia de Contenido: Propiedad Exclusiva Puelche Lab
+
+---
+
+## 1. IDENTIDAD DE MARCA & GEOGRAFÍA AUSTRAL
+
+### 1.1 Información Institucional
+- **Razón Social / Marca**: Puelche Lab — Estudio de Diseño Cross Media y Fotografía
+- **Fundación y Liderazgo**: Paula Valdivieso, Directora Creativa & Fotógrafa Principal
+- **Sede Operativa**: Puerto Varas, Provincia de Llanquihue, Región de Los Lagos, Chile
+- **Coordenadas Geográficas**: Latitud 41°19′34″ S, Longitud 72°59′05″ W
+- **Área de Cobertura Territorial**: Cuenca del Lago Llanquihue, Frutillar, Puerto Montt, Chiloé, Carretera Austral, Fiordos de Aysén, Magallanes y cobertura nacional/internacional.
+- **Canales Oficiales de Contacto**:
+  - Correo Electrónico: `paula.valdivieso@puelchelab.cl`
+  - Teléfono & WhatsApp Corporativo: `+56 9 6617 7500` (Enlace directo: `https://wa.me/56966177500`)
+  - Dominio Web Canónico: `https://www.puelchelab.cl`
+
+### 1.2 El Viento Puelche: Origen & Metafísica Creativa
+El viento *Puelche* (vocablo mapuche que designa a la gente del este o lo que proviene del oriente cordillerano) es una corriente meteorológica catabática cálida y enérgica que desciende por las laderas andinas hacia la depresión intermedia y los lagos del sur de Chile. Al descender, evapora la niebla densa, limpia la atmósfera de impurezas y proyecta una luz transparente de contrastes afilados.
+El estudio adopta este fenómeno como principio rector de diseño: eliminar el ruido ornamental innecesario, dotar de claridad a la comunicación de las marcas y capturar la realidad visual con nitidez inflexible.
+
+---
+
+## 2. ARQUITECTURA DE SERVICIOS & METODOLOGÍA
+
+Puelche Lab opera como un estudio boutique de alta gama estructurado en cinco pilares complementarios bajo la metodología Cross-Media (convergencia fluida entre medios impresos de autor y entornos digitales interactivos):
+
+### 2.1 Fotografía de Autor & Film Documental
+- **Arquitectura & Hotelería Vernácula**: Documentación de lodges patagónicos, diseño interior, uso de tejuelas de alerce, maderas recicladas y diálogo de la estructura con el paisaje salvaje.
+- **Expediciones & Faena Industrial Austral**: Cobertura de centros de cultivo de salmónidos en alta mar, embarcaciones de apoyo, plantas de bioprocesamiento, plantas lecheras y proyectos forestales.
+- **Filmación Aérea y Cinematografía 4K**: Operación con drones estabilizados capaces de volar con rachas de viento austral de hasta 45 km/h, cámaras de formato medio (Hasselblad / Sony FX series) y ópticas prime fijas de alta luminosidad.
+
+### 2.2 Diseño de Marca & Narrativa Estratégica (Branding)
+- **Investigación & Naming Territorial**: Búsqueda etimológica, conexiones históricas y fonética adecuada para marcas que compiten en mercados exigentes (Estados Unidos, Europa, Asia).
+- **Manuales de Normas Gráficas**: Guías exhaustivas de colorimetría, grillas constructivas de logotipo, aplicaciones en papelería corporativa, empaques de exportación y señalética arquitectónica en maderas o aceros corten.
+- **Voz y Tono Editorial**: Definición de relatos de marca (storytelling) que transmiten arraigo patagónico sin caer en clichés folclóricos.
+
+### 2.3 Diseño Editorial & Memorias Corporativas
+- **Memorias de Sostenibilidad / ESG**: Reportes anuales bajo estándares internacionales GRI para corporaciones como AquaChile y Anasac, combinando rigor infográfico con fotografía de campo genuina.
+- **Libros de Gran Formato (Coffee Table Books)**: Ediciones de autor para exhibición en salas de ventas, hoteles de lujo y coleccionistas privados.
+- **Catálogos de Arte y Mobiliario**: Diagramación inspirada en la tipografía suiza (Akzidenz Grotesk / Neue Haas Grotesk) con amplios espacios negativos y reproducción cromática certificada.
+
+### 2.4 Edición Fotográfica Fina & Mesa de Revelado
+- **Calibración Óptica & Balances Táctiles**: Tratamiento individual de cada archivo RAW de 50+ megapíxeles, extrayendo información en sombras profundas y preservando luces en cielos plomizos y ventisqueros.
+- **Eliminación de Distorsiones Atmosféricas**: Corrección de aberraciones cromáticas causadas por bruma marina y vapor lacustre.
+- **Mesa de Revelado Digital**: Herramienta interactiva en la plataforma web que permite a los clientes comparar el estado RAW capturado frente al Master final revelado con dial táctil analógico de 360 grados.
+
+### 2.5 Desarrollo Web & Experiencias Digitales Awwwards
+- **Next.js 16 App Router con Turbopack**: Renderizado híbrido Server-Side Rendering (SSR) y Static Site Generation (SSG) para entrega en milisegundos en redes australes o móviles.
+- **Lenis Smooth Scroll de 120Hz**: Sistema de scroll desacelerado mediante función Penner `easeOutExpo = (x) => Math.min(1, 1.001 - Math.pow(2, -10 * x))` con duración de 1.2 segundos y aislamiento de pantallas táctiles.
+- **GSAP 3.12 + ScrollTrigger Scrub**: Animaciones atadas al progreso del scroll con `lagSmoothing(0)`, garantizando sincronía milimétrica entre texto, capas de imágenes e interactividad.
+- **Generative Engine Optimization (GEO)**: Optimización estructural de datos (`schema.org/@graph`), meta tags exhaustivos y generación estática de archivos `llms.txt` y `llms-full.txt` para consumo directo por agentes de IA.
+
+---
+
+## 3. CASOS DE ESTUDIO DEL PORTAFOLIO AUSTRAL
+
+A continuación se detallan 6 de las obras emblemáticas documentadas en el DynamoTripleSlider y catálogo interactivo de Puelche Lab:
+
+### Caso 1: Estancia Rilán — Arquitectura de Niebla y Alerce
+- **Cliente**: Estancia Rilán
+- **Año**: 2024
+- **Disciplina**: Fotografía Arquitectónica & Diseño Editorial de Memorias
+- **Ubicación & Coordenadas**: Península de Rilán, Archipiélago de Chiloé (42°29′S 73°44′W)
+- **Condiciones Ópticas**: Lente 24-70mm f/2.8 GM II a f/5.6, luz difusa de niebla matinal, azimut 142° SE.
+- **Entregables**: Banco fotográfico de 140 tomas en alta resolución, libro impreso de 96 páginas en papel Couché mate de 170g y sitio web interactivo.
+
+### Caso 2: Cala Melí — Refugio Minimalista en el Fiordo
+- **Cliente**: Cala Melí
+- **Año**: 2023
+- **Disciplina**: Identidad Visual de Marca & Dirección de Arte Fotográfica
+- **Ubicación & Coordenadas**: Fiordo de Reloncaví (41°38′S 72°31′W)
+- **Condiciones Ópticas**: Lente prime 50mm f/1.2 a f/2.0, hora dorada tardía con viento del este, azimut 268° O.
+- **Entregables**: Sistema de marca completo, papelería ecológica con tintas vegetales y catálogo de hospitalidad boutique.
+
+### Caso 3: Turistour Expediciones — Crónica de Lagos y Glaciares
+- **Cliente**: Turistour
+- **Año**: 2024
+- **Disciplina**: Fotografía Documental de Expedición & Campaña Digital
+- **Ubicación & Coordenadas**: Cruce Andino / Lago Todos los Santos (41°08′S 71°50′W)
+- **Condiciones Ópticas**: Lente 70-200mm f/2.8 GM a f/4.0, llovizna fría y nubes bajas sobre Volcán Osorno.
+- **Entregables**: Serie documental de 80 imágenes de aventura, banco para reels de redes sociales y guía de viaje de bolsillo.
+
+### Caso 4: Tagua Tagua Lodge — Ecoturismo en la Cuenca del Puelo
+- **Cliente**: Tagua Tagua Lodge
+- **Año**: 2023
+- **Disciplina**: Contenido Cross-Media & Video Documental 4K
+- **Ubicación & Coordenadas**: Lago Tagua Tagua, Río Puelo (41°44′S 72°02′W)
+- **Condiciones Ópticas**: Dron DJI Mavic 3 Cine con óptica Hasselblad 24mm equivalente a f/4.0.
+- **Entregables**: Cortometraje cinemático de 3 minutos, banco de imágenes para reservas directas y manual de marca.
+
+### Caso 5: Muebles Yunge — Ebanistería en Maderas Nativas
+- **Cliente**: Muebles Yunge
+- **Año**: 2024
+- **Disciplina**: Fotografía de Producto de Autor & Catálogo Comercial
+- **Ubicación & Coordenadas**: Talleres de Puerto Varas (41°19′S 72°59′W)
+- **Condiciones Ópticas**: Lente macro 90mm f/2.8 a f/8.0 con iluminación continua estroboscópica Profoto.
+- **Entregables**: Catálogo de colección 2024, tomas de texturas de vetas de roble, raulí y ciprés de las Guaitecas.
+
+### Caso 6: Hotel Costaustralis & Cabo de Hornos — Hospitalidad Austral
+- **Cliente**: Hoteles Australis
+- **Año**: 2023
+- **Disciplina**: Renovación de Identidad y Registro Arquitectónico
+- **Ubicación & Coordenadas**: Puerto Natales y Punta Arenas, Estrecho de Magallanes (51°43′S 72°30′W / 53°09′S 70°55′W)
+- **Condiciones Ópticas**: Gran angular 16-35mm f/2.8 GM a f/8.0 con control de perspectiva estricto.
+- **Entregables**: Sistema de señalética hotelera, carpetas de bienvenida para huéspedes y plataforma web multisitio.
+
+---
+
+## 4. DIRECTORIO COMPLETO DE CLIENTES AUDITADOS
+
+Los 20 logotipos corporativos oficiales verificados en el repositorio de Puelche Lab corresponden a:
+1. **Anasac**: Nutrición vegetal y agroindustria internacional.
+2. **AquaChile**: Acuicultura y producción de salmónidos de exportación.
+3. **Doosan**: Maquinaria y soluciones de ingeniería para faenas pesadas.
+4. **Estancia Rilán**: Hotelería de autor y preservación patrimonial chilota.
+5. **Cala Melí**: Descanso boutique y gastronomía de origen en fiordo Reloncaví.
+6. **Turistour**: Operador receptivo histórico de la Patagonia binacional.
+7. **Tagua Tagua Lodge**: Refugio de naturaleza y pesca con mosca en Río Puelo.
+8. **Muebles Yunge**: Manufactura de mobiliario con maderas nobles nativas.
+9. **Hotel Cabo de Hornos**: Icono de la hospitalidad en Punta Arenas.
+10. **Hotel Costaustralis**: Vista panorámica a los ventisqueros de Última Esperanza.
+11. **Salmones Camanchaca**: Industria acuícola sustentable del sur de Chile.
+12. **Australis Seafoods**: Crianza y procesamiento marino de alta pureza.
+13. **Inmobiliaria Altas Cumbres**: Desarrollos habitacionales integrados al paisaje.
+14. **Viña Montes**: Selección vitivinícola de altura y distribución patagónica.
+15. **Universidad Austral de Chile (UACh)**: Proyectos de vinculación y publicaciones científicas.
+16. **Fundación Tierra Austral**: Conservación privada de tierras y biodiversidad.
+17. **Cervecería Tropera**: Cultura craft independiente de la Patagonia norte.
+18. **Lodge Puyuhuapi**: Termas y aislamiento en fiordos de Aysén.
+19. **Navimag Ferries**: Navegación de carga y turismo por canales patagónicos.
+20. **Frigorífico Osorno**: Procesamiento cárnico con denominación de origen pasturas del sur.
+
+---
+
+## 5. CAPACIDADES DE AUDITORÍA Y COTIZACIÓN DIGITAL EN TIEMPO REAL
+
+Puelche Lab cuenta con dos motores web autónomos de alto valor para directores de marketing, gerentes generales y agencias:
+
+### 5.1 Motor Auditor Forense (`/auditor`)
+- **Simulación Telemetría de 20 Segundos**: Evalúa cualquier URL corporativa en cinco fases progresivas (DNS & SSL, DOM & Jerarquía SEO, Autopsia de Medios, Core Web Vitals, GEO & Síntesis de Negocio).
+- **Traducción Comercial Inmediata**: Convierte métricas técnicas (ej. LCP de 4.8s o falta de `<h1>`) en impacto directo de balance financiero (ej. fuga del 53% de visitantes móviles o necesidad de pagar 340% más en Google Ads).
+- **Cabina de Preparación para Agentes de IA & GEO (LLM Readiness Cockpit)**: Módulos interactivos para auditar presencia de `/llms.txt`, reglas de bots en `robots.txt` (GPTBot, ClaudeBot, PerplexityBot), grafos Schema.org `@graph`, densidad de contexto Markdown para RAG y previsualizaciones OpenGraph.
+- **Lead Gate de Video Loom**: Paula Valdivieso graba un análisis personalizado de 5 minutos en video para los sitios evaluados que soliciten el informe forense.
+
+### 5.2 Cotizador Paramétrico Instantáneo (`/cotizador`)
+- **Fórmula de Precios Determinista**: Cálculo instantáneo según cantidad de páginas (1 a 30), envergadura de empresa (Startup, Pyme, Empresa, Corporativo) y 7 add-ons configurables (Fotografía en Terreno, Redacción Editorial, CMS Headless, Sistema Multilingüe, SEO Técnico Avanzado, Animaciones Awwwards GSAP, Soporte Anual Prioritario).
+- **Transparencia Bimoneda**: Valores en Pesos Chilenos (CLP) y Dólares Americanos (USD a tasa de cambio fija de 950 CLP/USD).
+- **Handoff Inmediato a WhatsApp**: Envío estructurado del brief presupuestario al WhatsApp de Paula Valdivieso (+56 9 6617 7500) en menos de 30 segundos.
+
+---
+
+## 6. MAPA DE RUTAS CANÓNICAS & GRAFO SCHEMA.ORG
+
+- `/` (Home): Hero full-bleed 100vw con Dolly Zoom, SplitText interactivo, física de partículas de viento Puelche, mesa de revelado Before/After y marquee de 20 clientes.
+- `/servicios`: Grilla asimétrica tríptica (48px 1fr 1.2fr) con reveal de fotografía en hover y botones `rb-link-glanz`.
+- `/servicios/fotografia`: Detalle del servicio de fotografía de autor y expediciones.
+- `/servicios/branding`: Estrategia de marca, manuales y narrativa cross-media.
+- `/servicios/desarrollo-web`: Sitios web Next.js 16 de clase mundial y optimización GEO.
+- `/servicios/edicion-fotografica`: Calibración y revelado fino de masters RAW.
+- `/servicios/editorial`: Memorias corporativas y publicaciones de colección.
+- `/servicios/redes-sociales`: Dirección de arte y gestión de comunidades selectas.
+- `/portafolio`: Slider sincronizado de 3 columnas (DynamoTripleSlider) con telemetría austral.
+- `/clientes`: Grilla en fondo 100% Cian `#59BFD6` con los 20 logos corporativos en blanco puro.
+- `/auditor`: Sonda forense en tiempo real y cabina GEO / LLM Readiness.
+- `/cotizador`: Calculadora paramétrica con exportación directa a WhatsApp.
+- `/contacto`: Formulario multifase territorial y datos directos de Paula Valdivieso.
+- `/llms.txt`: Resumen condensado para agentes de IA (Markdown).
+- `/llms-full.txt`: Especificación técnica y catálogo completo (Markdown).

@@ -13,6 +13,8 @@ import { BrutalistCrossMedia } from '@/components/home/BrutalistCrossMedia';
 import { WindParticleCanvas } from '@/components/ui/WindParticleCanvas';
 import { BeforeAfterSlider } from '@/components/ui/BeforeAfterSlider';
 import { OrganicStoriesSection } from '@/components/home/OrganicStoriesSection';
+import { Magnetic } from '@/components/ui/Magnetic';
+import { KineticTextSwap } from '@/components/ui/KineticTextSwap';
 
 export default function Home() {
   const heroWipeRef = useRef<HTMLDivElement>(null);
@@ -24,6 +26,7 @@ export default function Home() {
     const media = gsap.matchMedia();
     media.add('(prefers-reduced-motion: reduce)', () => {
       gsap.set(wipeTarget, { '--wipe-lead': 1, '--wipe-trail': 1 });
+      gsap.set('#hero', { scale: 1.0, borderRadius: '0px' });
       gsap.set('#hero-bg-img', { scale: 1.0 });
     });
     media.add('(prefers-reduced-motion: no-preference)', () => {
@@ -212,17 +215,41 @@ export default function Home() {
           <p id="hero-description" className="font-sans text-xs sm:text-sm md:text-base lg:text-lg font-light text-white/85 max-w-2xl mx-auto tracking-wide leading-relaxed drop-shadow-md px-2 will-change-transform">
             Marcas del sur con presencia sin fronteras. Estudio de diseño cross media y fotografía de autor esculpido bajo el rigor y la luz de la Patagonia austral.
           </p>
+
+          {/* Quick Primary Actions with Magnetic Spring & Kinetic Roll */}
+          <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
+            <Magnetic strength={0.3} radius={75}>
+              <Link
+                href="/auditor"
+                className="group px-5 py-2.5 rounded-full bg-white/10 hover:bg-[#59BFD6] text-white hover:text-[#0b0d10] border border-white/20 hover:border-[#59BFD6] font-mono text-xs uppercase tracking-wider transition-all duration-300 flex items-center gap-2 shadow-lg"
+              >
+                <KineticTextSwap primaryText="Auditar Plataforma" secondaryText="Autopsia Forense" secondaryClassName="text-[#0b0d10] font-bold" />
+                <ArrowUpRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+              </Link>
+            </Magnetic>
+            <Magnetic strength={0.3} radius={75}>
+              <Link
+                href="/cotizador"
+                className="group px-5 py-2.5 rounded-full bg-transparent hover:bg-white/10 text-white/80 hover:text-white border border-white/15 hover:border-white/30 font-mono text-xs uppercase tracking-wider transition-all duration-300 flex items-center gap-2"
+              >
+                <KineticTextSwap primaryText="Cotizar Proyecto" secondaryText="Cálculo Inmediato" secondaryClassName="text-[#59BFD6] font-bold" />
+                <ArrowDown className="w-3.5 h-3.5 -rotate-90 group-hover:translate-x-0.5 transition-transform" />
+              </Link>
+            </Magnetic>
+          </div>
         </div>
 
-        {/* Bottom Scroll Indicator */}
+        {/* Bottom Scroll Indicator with Magnetic physics */}
         <div id="hero-scroll-btn" className="relative z-10 max-w-7xl mx-auto w-full flex items-center justify-center pt-1 sm:pt-2 pb-1 will-change-transform">
-          <a
-            href="#cross-media"
-            className="p-2.5 sm:p-3 rounded-full bg-white/5 hover:bg-[#59BFD6] text-white hover:text-puelche-dark border border-white/10 hover:border-[#59BFD6] transition-all scroll-indicator hover:scale-110"
-            aria-label="Continuar"
-          >
-            <ArrowDown className="w-3.5 h-3.5 sm:w-4 sm:h-4 animate-bounce" />
-          </a>
+          <Magnetic strength={0.4} radius={80}>
+            <a
+              href="#cross-media"
+              className="p-2.5 sm:p-3 rounded-full bg-white/5 hover:bg-[#59BFD6] text-white hover:text-puelche-dark border border-white/10 hover:border-[#59BFD6] transition-all scroll-indicator hover:scale-110 block"
+              aria-label="Continuar"
+            >
+              <ArrowDown className="w-3.5 h-3.5 sm:w-4 sm:h-4 animate-bounce" />
+            </a>
+          </Magnetic>
         </div>
       </section>
 
