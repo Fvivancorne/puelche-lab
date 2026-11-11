@@ -79,3 +79,60 @@ Integrity mode: development
 ### Verificación Técnica
 - [ ] `npm run build` compila con 0 errores de TypeScript y todas las rutas estáticas prerenderizadas.
 - [ ] Auditoría visual en 1440px, 768px y 375px confirmando la exactitud cromática y de storytelling.
+
+
+## Follow-up — 2026-11-11T14:07:09Z
+
+Análisis integral y dossier estratégico de los 8 recursos y reels de referencia para Felipe, ejecutando la integración e implementación directa de sus innovaciones visuales, cinemáticas, de ingeniería inversa y capacidades de IA/GEO en la plataforma de Puelche Lab (https://puelche-lab.vercel.app, repositorio local en /Users/felipeandresvivancocornejo/Documents/GitHub/puelche-lab) y en el ecosistema de skills de la agencia.
+
+Working directory: /Users/felipeandresvivancocornejo/Documents/GitHub/puelche-lab
+Integrity mode: development
+
+## Verification Resources
+
+- Instagram Reel: https://www.instagram.com/reel/DajA62oPAog/?vrfl=MWt5ajlhbnBpZjVyYQ==
+- Sitio en vivo: https://puelche-lab.vercel.app
+- 10 herramientas del carrusel de @mateo_folador (descomprimidas de WhatsApp_Unknown_2026-11-11_at_10.20.39.zip): Ghost Editor, FFmpeg Skill, Claude Shorts, MotionClone, Motion Skills, yt-dlp, Whisper, Awesome Claude Video Skills, Three.js Skills, HyperFrames
+- Repositorio Zie619/n8n-workflows: https://github.com/Zie619/n8n-workflows (4.343 flujos en 188 categorías)
+- Metodología Triple S (Skills, Specs, Scripts) y clasificadores tipo Jev (Master Playbook V2 / SDD)
+- Protocolo y herramientas REA MCP para ingeniería inversa y clonación forense
+
+## Requirements
+
+### R1. Dossier Analítico de los 8 Recursos y Herramientas de Referencia
+Elaborar un informe analítico exhaustivo y estructurado para Felipe comentando en profundidad cada uno de los 8 bloques temáticos y las 10 herramientas de video/motion/código desglosadas:
+- Auditoría GEO y LLM Readiness (@hectorcastillo.pro: '¿Tu Sitio Web Está Listo para Agentes de IA?'), contrastando su metodología con el motor `/auditor` en tiempo real de Puelche Lab.
+- Metodología Triple S (@alenzuti: Skills, Specs & Scripts) y blindaje anti-quema de tokens aplicado a los flujos de agentes y desarrollo determinista.
+- Reverse Engineer Anything (REA MCP) y auditoría forense (@sanmunoz.ia) para disección y reconstrucción fidedigna de experiencias web.
+- Recursos de Branding y Editorial: Fonts In Use, Color Hunt, Brand New (UnderConsideration), Awwwards y Book Cover Archive, orientados a la dirección de arte y fotografía de autor del estudio.
+- Recursos de Micro-Interacciones y Código: 21st.dev, Godly, Refero y Design Spells para elevar la artesanía de la interfaz.
+- Desmitificación de creación web con 1 prompt (@ferchovisuals) y análisis técnico de casos reales: Lusion (oryzo.ai), Locomotive (lisa.locomotive.ca) y Active Theory (santionispirits.com).
+- Revelado cinemático con ScrollReveal y GSAP.
+- Análisis y selección de workflows de alto impacto del repositorio Zie619/n8n-workflows (4.343 flujos).
+- Síntesis operativa de las 10 herramientas de @mateo_folador (Ghost Editor, FFmpeg Skill, Claude Shorts, MotionClone, Motion Skills, yt-dlp, Whisper, Awesome Claude Video Skills, Three.js Skills, HyperFrames).
+
+### R2. Integración e Implementación Directa en Puelche Lab
+Implementar las mejoras y componentes derivados del análisis directamente en el repositorio local de Puelche Lab (`/Users/felipeandresvivancocornejo/Documents/GitHub/puelche-lab`):
+- Optimizar la arquitectura y diagnósticos del motor `/auditor` con verificaciones GEO / LLM Readiness.
+- Incorporar micro-interacciones cinemáticas con GSAP / ScrollTrigger inspiradas en las referencias analizadas.
+- Preservar la identidad de marca, fotografía real de autor y diseño editorial cross-media del estudio sin incorporar imágenes de stock ni alterar los activos genuinos.
+
+### R3. Actualización e Integración en Skills de la Agencia
+Documentar y empaquetar los patrones, scripts y especificaciones extraídas de las 10 herramientas de video/motion y workflows de n8n relevantes dentro de las skills operativas del ecosistema de la agencia.
+
+## Acceptance Criteria
+
+### Dossier Analítico y Calidad Estratégica
+- [ ] El dossier cubre detalladamente los 8 ejes temáticos y las 10 herramientas desglosadas, estableciendo paralelismos y recomendaciones concretas para Felipe y Puelche Lab.
+- [ ] La comparativa técnica entre el `/auditor` de Puelche Lab y el framework de GEO / LLM Readiness identifica mejoras concretas de detección de compatibilidad con agentes de IA.
+- [ ] El análisis de casos de estudio (@ferchovisuals) desglosa la matemática y arquitectura técnica de Lusion, Locomotive y Active Theory sin simplificaciones superficiales.
+- [ ] Se incluye una selección documentada de workflows de n8n prioritarios para captación y operaciones del estudio.
+
+### Código e Integración en Repositorio
+- [ ] El repositorio compila limpiamente (`npm run build`) en Next.js 16 App Router sin errores de TypeScript ni fallos de empaquetado.
+- [ ] `npm run lint` pasa sin advertencias ni errores bloqueantes.
+- [ ] Todas las rutas del sitio (`/`, `/auditor`, etc.) responden con código HTTP 200 y renderizan los componentes actualizados correctamente.
+- [ ] Las mejoras visuales y cinemáticas funcionan fluidamente y respetan la exclusividad de fotografías reales de archivo sin dependencias de stock.
+
+### Integración en Skills
+- [ ] Las herramientas y flujos identificados como clave quedan sintetizados y accesibles para los agentes de la agencia bajo el estándar de Skills/Specs.

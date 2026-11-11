@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "tsc --noEmit"
+    "lint": "tsc --noEmit",
+    "test": "npx tsx tests/api_auditor.test.ts && npx tsx tests/e2e/runner.ts && npx tsx tests/gen3_challenger_math.ts && npx tsx tests/gen3_challenger_visual.ts"
   },
   "dependencies": {
     "@types/node": "^22.10.0",

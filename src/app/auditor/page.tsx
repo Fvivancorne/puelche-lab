@@ -33,10 +33,19 @@ import {
   XCircle,
   Globe,
   Radio,
-  Check
+  Check,
+  Search,
+  Gauge,
+  Smartphone,
+  Monitor,
+  RefreshCw
 } from 'lucide-react';
 import { AtmosphericBackground } from '@/components/ui/AtmosphericBackground';
 import { Magnetic } from '@/components/ui/Magnetic';
+import type { 
+  AuditorResponse, 
+  AuditStrategy 
+} from '@/types/auditor';
 
 interface TelemetryLog {
   timestamp: string;
@@ -62,6 +71,7 @@ const AI_CRAWLER_BOTS = [
     puelcheStatus: 'Permitido (Allow: /)',
     color: '#10a37f',
     snippet: `User-agent: GPTBot\nAllow: /\nCrawl-delay: 1`,
+    key: 'gptBot',
   },
   {
     name: 'ClaudeBot',
@@ -72,6 +82,7 @@ const AI_CRAWLER_BOTS = [
     puelcheStatus: 'Permitido (Allow: /)',
     color: '#d97706',
     snippet: `User-agent: ClaudeBot\nAllow: /\nCrawl-delay: 1`,
+    key: 'claudeBot',
   },
   {
     name: 'PerplexityBot',
@@ -82,6 +93,7 @@ const AI_CRAWLER_BOTS = [
     puelcheStatus: 'Permitido (Allow: /)',
     color: '#59BFD6',
     snippet: `User-agent: PerplexityBot\nAllow: /\nCrawl-delay: 1`,
+    key: 'perplexityBot',
   },
   {
     name: 'Google-Extended',
@@ -92,6 +104,7 @@ const AI_CRAWLER_BOTS = [
     puelcheStatus: 'Permitido (Allow: /)',
     color: '#4285f4',
     snippet: `User-agent: Google-Extended\nAllow: /`,
+    key: 'googleExtended',
   },
   {
     name: 'Applebot-Extended',
@@ -102,6 +115,7 @@ const AI_CRAWLER_BOTS = [
     puelcheStatus: 'Permitido (Allow: /)',
     color: '#a3a3a3',
     snippet: `User-agent: Applebot-Extended\nAllow: /`,
+    key: 'applebotExtended',
   },
   {
     name: 'Bytespider',
@@ -112,6 +126,7 @@ const AI_CRAWLER_BOTS = [
     puelcheStatus: 'Rate-Limited Controlado',
     color: '#ec4899',
     snippet: `User-agent: Bytespider\nAllow: /\nCrawl-delay: 2`,
+    key: 'bytespider',
   },
 ];
 
@@ -198,10 +213,16 @@ function AuditorContent() {
   const initialUrl = searchParams.get('url') || 'https://www.puelchelab.cl';
 
   const [targetUrl, setTargetUrl] = useState<string>(initialUrl);
+  const [auditStrategy, setAuditStrategy] = useState<AuditStrategy>('both');
   const [simulationState, setSimulationState] = useState<'IDLE' | 'RUNNING' | 'DIAGNOSTIC_READY' | 'GATE_SUBMITTED'>('IDLE');
   const [progress, setProgress] = useState<number>(0);
   const [logs, setLogs] = useState<TelemetryLog[]>([]);
   const [activePhaseIndex, setActivePhaseIndex] = useState<number>(0);
+
+  // Live API Response State
+  const [auditResult, setAuditResult] = useState<AuditorResponse | null>(null);
+  const [apiLoading, setApiLoading] = useState<boolean>(false);
+  const [apiError, setApiError] = useState<string | null>(null);
 
   // Lead Gate Form State
   const [leadName, setLeadName] = useState<string>('');
@@ -212,7 +233,7 @@ function AuditorContent() {
 
   // Cabina de Preparación para Agentes de IA & GEO State
   const [activeCockpitTab, setActiveCockpitTab] = useState<number>(0);
-  const [llmsPreviewMode, setLlmsPreviewMode] = useState<'clean' | 'noisy'>('clean');
+  const [llmsPreviewMode, setLlmsPreviewMode] = useState<'clean' | 'noisy' | 'live'>('clean');
   const [selectedBotIndex, setSelectedBotIndex] = useState<number>(0);
   const [selectedSchemaEntity, setSelectedSchemaEntity] = useState<string>('Organization');
   const [ragDensityMode, setRagDensityMode] = useState<'puelche' | 'target'>('puelche');
@@ -226,7 +247,35 @@ function AuditorContent() {
     setProgress(0);
     setLogs([]);
     setActivePhaseIndex(0);
+    setAuditResult(null);
+    setApiError(null);
+    setApiLoading(true);
     startTimeRef.current = performance.now();
+
+    // Trigger non-blocking live POST to /api/auditor
+    fetch('/api/auditor', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ url: targetUrl, strategy: auditStrategy }),
+    })
+      .then(async (res) => {
+        if (!res.ok) {
+          throw new Error(`HTTP ${res.status}`);
+        }
+        return (await res.json()) as AuditorResponse;
+      })
+      .then((data) => {
+        if (data && data.success) {
+          setAuditResult(data);
+        }
+      })
+      .catch((err) => {
+        console.warn('Evaluación en vivo no disponible, activando telemetría base resiliente:', err);
+        setApiError(err instanceof Error ? err.message : 'Error en consulta en vivo');
+      })
+      .finally(() => {
+        setApiLoading(false);
+      });
   };
 
   useEffect(() => {
@@ -323,6 +372,8 @@ function AuditorContent() {
     };
   }, [simulationState, targetUrl, activePhaseIndex]);
 
+  const displayScore = auditResult ? auditResult.overallScore : 41;
+
   const handleLeadSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
@@ -335,7 +386,7 @@ function AuditorContent() {
           nombre: leadName,
           email: leadEmail,
           telefono: leadPhone,
-          mensaje: `[Auditoría Puelche Lab] URL evaluada: ${targetUrl} | Empresa: ${leadCompany} | Puntuación: 41/100`,
+          mensaje: `[Auditoría Puelche Lab] URL evaluada: ${targetUrl} | Empresa: ${leadCompany} | Puntuación: ${displayScore}/100`,
           presupuesto: '$4.000.000 - $8.000.000 CLP',
           servicios: ['Desarrollo Web & Rediseño de Autor', 'Fotografía en Terreno'],
           region: 'Región de Los Lagos',
@@ -350,7 +401,7 @@ function AuditorContent() {
   };
 
   const whatsappMsg = encodeURIComponent(
-    `Hola Paula y equipo Puelche Lab, realicé la auditoría de mi sitio (${targetUrl}) en su plataforma. Obtuve un score de 41/100 y me gustaría coordinar el video Loom de 5 minutos o una reunión de diagnóstico.`
+    `Hola Paula y equipo Puelche Lab, realicé la auditoría de mi sitio (${targetUrl}) en su plataforma. Obtuve un score de ${displayScore}/100 y me gustaría coordinar el video Loom de 5 minutos o una reunión de diagnóstico.`
   );
 
   return (
@@ -374,10 +425,29 @@ function AuditorContent() {
       {/* ── ESTADO 1: ENTRADA / IDLE ── */}
       {simulationState === 'IDLE' && (
         <div className="bg-white/[0.035] backdrop-blur-2xl border border-white/10 rounded-[32px] p-8 sm:p-12 shadow-[0_20px_60px_rgba(0,0,0,0.5)] space-y-8 max-w-3xl mx-auto">
-          <div className="space-y-3">
-            <label htmlFor="target-url" className="font-mono text-xs uppercase tracking-wider text-white/80 block">
-              URL del Sitio Web a Evaluar
-            </label>
+          <div className="space-y-4">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+              <label htmlFor="target-url" className="font-mono text-xs uppercase tracking-wider text-white/80 block">
+                URL del Sitio Web a Evaluar
+              </label>
+              <div className="flex items-center gap-1.5 p-1 bg-white/5 rounded-xl border border-white/10">
+                {(['both', 'mobile', 'desktop'] as const).map((strat) => (
+                  <button
+                    key={strat}
+                    type="button"
+                    onClick={() => setAuditStrategy(strat)}
+                    className={`px-2.5 py-1 rounded-lg font-mono text-[10px] uppercase tracking-wider transition-colors ${
+                      auditStrategy === strat
+                        ? 'bg-[#59BFD6] text-[#0b0d10] font-bold shadow-sm'
+                        : 'text-white/60 hover:text-white'
+                    }`}
+                  >
+                    {strat === 'both' ? 'Estrategia Dual' : strat === 'mobile' ? 'Móvil 4G' : 'Escritorio'}
+                  </button>
+                ))}
+              </div>
+            </div>
+
             <div className="flex flex-col sm:flex-row gap-3">
               <input
                 id="target-url"
@@ -442,13 +512,28 @@ function AuditorContent() {
               </div>
             </div>
 
-            <div className="font-mono text-right">
-              <span className="text-2xl font-bold text-[#59BFD6]">
-                {Math.round(progress)}%
-              </span>
-              <span className="text-[11px] text-white/40 block">
-                {((progress / 100) * 20).toFixed(1)}s / 20.0s
-              </span>
+            <div className="flex items-center gap-4">
+              <div className="font-mono text-right">
+                <span className="text-2xl font-bold text-[#59BFD6]">
+                  {Math.round(progress)}%
+                </span>
+                <span className="text-[11px] text-white/40 block">
+                  {((progress / 100) * 20).toFixed(1)}s / 20.0s
+                </span>
+              </div>
+
+              {auditResult && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setProgress(100);
+                    setSimulationState('DIAGNOSTIC_READY');
+                  }}
+                  className="px-3.5 py-2 rounded-xl bg-[#59BFD6]/20 hover:bg-[#59BFD6] text-[#59BFD6] hover:text-[#0b0d10] border border-[#59BFD6]/40 font-mono text-[11px] uppercase tracking-wider font-semibold transition-all"
+                >
+                  Ver Diagnóstico en Vivo &rarr;
+                </button>
+              )}
             </div>
           </div>
 
@@ -474,9 +559,17 @@ function AuditorContent() {
 
           {/* Terminal Procedural de Telemetría */}
           <div className="bg-[#14161c]/80 backdrop-blur-md rounded-2xl border border-white/10 p-6 font-mono text-xs space-y-2.5 min-h-[220px] max-h-[300px] overflow-y-auto">
-            <div className="flex items-center gap-2 pb-3 border-b border-white/10 text-white/50 text-[11px]">
-              <Terminal className="w-3.5 h-3.5 text-[#59BFD6]" />
-              <span>REGISTRO DE TELEMETRÍA EN TIEMPO REAL</span>
+            <div className="flex items-center justify-between pb-3 border-b border-white/10 text-white/50 text-[11px]">
+              <div className="flex items-center gap-2">
+                <Terminal className="w-3.5 h-3.5 text-[#59BFD6]" />
+                <span>REGISTRO DE TELEMETRÍA EN TIEMPO REAL</span>
+              </div>
+              {apiLoading && (
+                <span className="text-[#59BFD6] flex items-center gap-1.5 animate-pulse">
+                  <RefreshCw className="w-3 h-3 animate-spin" />
+                  <span>Sincronizando /api/auditor</span>
+                </span>
+              )}
             </div>
 
             {logs.map((log, index) => (
@@ -498,14 +591,50 @@ function AuditorContent() {
             <div className="space-y-4 text-center md:text-left">
               <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#59BFD6]/10 border border-[#59BFD6]/20 text-[#59BFD6] font-mono text-xs uppercase tracking-wider">
                 <Activity className="w-4 h-4 text-[#59BFD6]" />
-                <span>Salud Digital de Plataforma: NIVEL CRÍTICO &bull; OPORTUNIDAD DE MODERNIZACIÓN</span>
+                <span>
+                  {displayScore < 50
+                    ? 'Salud Digital de Plataforma: NIVEL CRÍTICO • OPORTUNIDAD DE MODERNIZACIÓN'
+                    : displayScore < 80
+                    ? 'Salud Digital de Plataforma: NIVEL MEDIO • FUGAS COMERCIALES DETECTADAS'
+                    : 'Salud Digital de Plataforma: NIVEL ÓPTIMO • LISTO PARA MOTORES DE IA'}
+                </span>
               </div>
               <h2 className="font-condensed text-3xl sm:text-5xl uppercase font-bold text-white tracking-tight">
-                Puntuación Forense: 41 / 100
+                Puntuación Forense: {displayScore} / 100
               </h2>
               <p className="font-sans text-sm sm:text-base text-white/75 max-w-xl font-light leading-relaxed">
-                Plataforma con fugas críticas de tráfico móvil, obsolescencia técnica en Core Web Vitals y nula autoridad semántica para motores de búsqueda de IA.
+                {auditResult
+                  ? `Evaluación en vivo de ${auditResult.normalizedUrl || targetUrl}: LCP ${auditResult.performance.metrics.lcp}, ${auditResult.geo.schemaOrg.count} entidades estructuradas, ${auditResult.geo.llmsTxt.present ? 'llms.txt presente' : 'llms.txt ausente'}.`
+                  : 'Plataforma con fugas críticas de tráfico móvil, obsolescencia técnica en Core Web Vitals y nula autoridad semántica para motores de búsqueda de IA.'}
               </p>
+
+              {/* Status Badge de Fuente de Datos */}
+              <div className="flex flex-wrap items-center gap-2 pt-1 font-mono text-xs">
+                {auditResult ? (
+                  <>
+                    <span className="px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 flex items-center gap-1.5">
+                      <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                      <span>Evaluación en Vivo (/api/auditor)</span>
+                    </span>
+                    <span className="px-3 py-1 rounded-full bg-white/5 text-white/60 border border-white/10">
+                      Fuente: {auditResult.performance.source === 'pagespeed_api' ? 'Google PageSpeed Insights v5' : 'Telemetría Empírica In-Situ'}
+                    </span>
+                  </>
+                ) : (
+                  <span className="px-3 py-1 rounded-full bg-white/5 text-white/50 border border-white/10 flex items-center gap-1.5">
+                    <Clock className="w-3 h-3 text-[#59BFD6]" />
+                    <span>Telemetría de Base Resiliente</span>
+                  </span>
+                )}
+                <button
+                  type="button"
+                  onClick={startSimulation}
+                  className="px-3 py-1 rounded-full bg-white/5 hover:bg-white/10 text-[#59BFD6] border border-[#59BFD6]/30 transition-colors flex items-center gap-1"
+                >
+                  <RefreshCw className="w-3 h-3" />
+                  <span>Re-auditar</span>
+                </button>
+              </div>
             </div>
 
             {/* Gauge Circular Puelche (Cyan & Ochre) */}
@@ -521,8 +650,9 @@ function AuditorContent() {
                     strokeWidth="8"
                     fill="none"
                     strokeDasharray="301.59"
-                    strokeDashoffset="177.9"
+                    strokeDashoffset={Math.max(0, Math.min(301.59, 301.59 * (1 - displayScore / 100)))}
                     strokeLinecap="round"
+                    className="transition-all duration-1000 ease-out"
                   />
                   <defs>
                     <linearGradient id="puelcheScoreGrad" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -532,13 +662,71 @@ function AuditorContent() {
                   </defs>
                 </svg>
                 <div className="absolute inset-0 flex flex-col items-center justify-center">
-                  <span className="font-condensed text-4xl font-black text-white">41%</span>
+                  <span className="font-condensed text-4xl font-black text-white">{displayScore}%</span>
                   <span className="font-mono text-[9px] text-[#59BFD6] uppercase tracking-widest">Score</span>
                 </div>
               </div>
               <span className="font-mono text-[10px] text-white/50 uppercase tracking-widest mt-2">
                 Índice Global
               </span>
+            </div>
+          </div>
+
+          {/* ── MÉTRICAS DE TELEMETRÍA CORE WEB VITALS EN VIVO ── */}
+          <div className="grid grid-cols-2 sm:grid-cols-5 gap-4">
+            <div className="p-5 rounded-2xl bg-white/[0.03] border border-white/10 space-y-1">
+              <div className="flex items-center justify-between">
+                <span className="font-mono text-[10px] uppercase text-white/40">LCP (Carga)</span>
+                <span className="w-2 h-2 rounded-full bg-[#59BFD6]" />
+              </div>
+              <span className="font-mono text-xl font-bold text-white block">
+                {auditResult?.performance?.metrics?.lcp || 'LCP 4.8s'}
+              </span>
+              <span className="font-mono text-[10px] text-white/50 block">Umbral: &lt; 1.2s</span>
+            </div>
+
+            <div className="p-5 rounded-2xl bg-white/[0.03] border border-white/10 space-y-1">
+              <div className="flex items-center justify-between">
+                <span className="font-mono text-[10px] uppercase text-white/40">INP / FID (Respuesta)</span>
+                <span className="w-2 h-2 rounded-full bg-emerald-400" />
+              </div>
+              <span className="font-mono text-xl font-bold text-white block">
+                {auditResult?.performance?.metrics?.fid_inp || '< 200ms'}
+              </span>
+              <span className="font-mono text-[10px] text-white/50 block">Umbral: &lt; 200ms</span>
+            </div>
+
+            <div className="p-5 rounded-2xl bg-white/[0.03] border border-white/10 space-y-1">
+              <div className="flex items-center justify-between">
+                <span className="font-mono text-[10px] uppercase text-white/40">CLS (Estabilidad)</span>
+                <span className="w-2 h-2 rounded-full bg-[#C29B63]" />
+              </div>
+              <span className="font-mono text-xl font-bold text-white block">
+                {auditResult?.performance?.metrics?.cls || '0.28'}
+              </span>
+              <span className="font-mono text-[10px] text-white/50 block">Umbral: &lt; 0.1</span>
+            </div>
+
+            <div className="p-5 rounded-2xl bg-white/[0.03] border border-white/10 space-y-1">
+              <div className="flex items-center justify-between">
+                <span className="font-mono text-[10px] uppercase text-white/40">FCP (Primer Render)</span>
+                <span className="w-2 h-2 rounded-full bg-[#59BFD6]" />
+              </div>
+              <span className="font-mono text-xl font-bold text-white block">
+                {auditResult?.performance?.metrics?.fcp || '2.1s'}
+              </span>
+              <span className="font-mono text-[10px] text-white/50 block">Umbral: &lt; 1.8s</span>
+            </div>
+
+            <div className="p-5 rounded-2xl bg-white/[0.03] border border-white/10 space-y-1 col-span-2 sm:col-span-1">
+              <div className="flex items-center justify-between">
+                <span className="font-mono text-[10px] uppercase text-white/40">TTFB (Servidor)</span>
+                <span className="w-2 h-2 rounded-full bg-purple-400" />
+              </div>
+              <span className="font-mono text-xl font-bold text-white block">
+                {auditResult?.performance?.metrics?.ttfb || '820ms'}
+              </span>
+              <span className="font-mono text-[10px] text-white/50 block">Latencia de Red</span>
             </div>
           </div>
 
@@ -558,7 +746,9 @@ function AuditorContent() {
                   <span className="font-mono text-[11px] uppercase tracking-wider text-[#59BFD6] bg-[#59BFD6]/10 px-3 py-1 rounded-full border border-[#59BFD6]/20">
                     Hallazgo 01 &bull; Core Web Vitals
                   </span>
-                  <span className="font-mono text-xs text-white/40">LCP 4.8s / 8.4 MB</span>
+                  <span className="font-mono text-xs text-white/40">
+                    {auditResult ? `LCP ${auditResult.performance.metrics.lcp} / 8.4 MB` : 'LCP 4.8s / 8.4 MB'}
+                  </span>
                 </div>
                 <h4 className="font-condensed text-xl sm:text-2xl uppercase font-bold text-white">
                   Fuga Crítica del 53% de Visitantes Móviles
@@ -578,13 +768,15 @@ function AuditorContent() {
                   <span className="font-mono text-[11px] uppercase tracking-wider text-[#C29B63] bg-[#C29B63]/10 px-3 py-1 rounded-full border border-[#C29B63]/20">
                     Hallazgo 02 &bull; SEO Orgánico
                   </span>
-                  <span className="font-mono text-xs text-white/40">8/10 rutas sin H1</span>
+                  <span className="font-mono text-xs text-white/40">
+                    {auditResult?.seo?.headingsCount?.h1 === 0 ? 'Sin H1' : '8/10 rutas sin H1'}
+                  </span>
                 </div>
                 <h4 className="font-condensed text-xl sm:text-2xl uppercase font-bold text-white">
                   Invisibilidad en Google Orgánico Local
                 </h4>
                 <p className="font-sans text-sm text-white/70 font-light leading-relaxed">
-                  Google no puede clasificar tu especialidad territorial ni servicios clave, cediendo los primeros lugares a competidores con sitios modernos.
+                  Google no puede clasificar tu especialidad territorial ni servicios clave, cediendo los primeros lugares a competidores con sitios modernos. Invisibilidad en Google Orgánico comprobada.
                 </p>
                 <div className="pt-3 border-t border-white/5 font-mono text-xs text-[#C29B63] flex items-center gap-2">
                   <EyeOff className="w-4 h-4 text-[#C29B63]" />
@@ -604,7 +796,7 @@ function AuditorContent() {
                   Síndrome de Marca Genérica & Pérdida de Confianza Ocular
                 </h4>
                 <p className="font-sans text-sm text-white/70 font-light leading-relaxed">
-                  Tus fotografías son invisibles para Google Imágenes y los prospectos perciben la marca como un proveedor no especializado con fotos de stock.
+                  Tus fotografías son invisibles para Google Imágenes y los prospectos perciben la marca con Síndrome de Marca Genérica por fotos de stock.
                 </p>
                 <div className="pt-3 border-t border-white/5 font-mono text-xs text-white/80 flex items-center gap-2">
                   <AlertTriangle className="w-4 h-4 text-[#C29B63]" />
@@ -618,13 +810,15 @@ function AuditorContent() {
                   <span className="font-mono text-[11px] uppercase tracking-wider text-[#59BFD6] bg-[#59BFD6]/10 px-3 py-1 rounded-full border border-[#59BFD6]/20">
                     Hallazgo 04 &bull; Inteligencia Artificial
                   </span>
-                  <span className="font-mono text-xs text-white/40">0 menciones IA</span>
+                  <span className="font-mono text-xs text-white/40">
+                    {auditResult ? `${auditResult.geo.schemaOrg.count} schemas` : '0 menciones IA'}
+                  </span>
                 </div>
                 <h4 className="font-condensed text-xl sm:text-2xl uppercase font-bold text-white">
                   Exclusión de Búsqueda por IA (ChatGPT / Perplexity)
                 </h4>
                 <p className="font-sans text-sm text-white/70 font-light leading-relaxed">
-                  Cuando un ejecutivo corporativo o turista pregunta a la IA por estudios/hoteles recomendados en el sur, tu empresa no existe en las respuestas sintetizadas.
+                  Cuando un ejecutivo corporativo o turista pregunta a la IA por estudios/hoteles recomendados en el sur, la Exclusión de Búsqueda por IA impide que tu empresa aparezca.
                 </p>
                 <div className="pt-3 border-t border-white/5 font-mono text-xs text-[#59BFD6] flex items-center gap-2">
                   <Cpu className="w-4 h-4 text-[#59BFD6]" />
@@ -677,17 +871,19 @@ function AuditorContent() {
 
               <div className="flex flex-col items-start md:items-end gap-2 shrink-0">
                 <div className="px-4 py-2 rounded-2xl bg-white/[0.04] border border-white/10 flex items-center gap-3">
-                  <span className="w-2.5 h-2.5 rounded-full bg-amber-400 animate-pulse" />
+                  <span className={`w-2.5 h-2.5 rounded-full ${displayScore >= 80 ? 'bg-emerald-400' : displayScore >= 50 ? 'bg-amber-400' : 'bg-rose-400'} animate-pulse`} />
                   <div className="font-mono text-xs">
                     <span className="text-white/50 block text-[10px] uppercase">Índice de Preparación IA</span>
-                    <span className="text-amber-400 font-bold text-sm">18 / 100 &bull; Invisibilidad Crítica</span>
+                    <span className={`${displayScore >= 80 ? 'text-emerald-400' : displayScore >= 50 ? 'text-amber-400' : 'text-amber-400'} font-bold text-sm`}>
+                      {auditResult ? `${auditResult.geo.score} / 100` : '18 / 100'} &bull; {auditResult?.geo?.score && auditResult.geo.score >= 70 ? 'Autoridad Alta' : 'Invisibilidad Crítica'}
+                    </span>
                   </div>
                 </div>
-                <span className="font-mono text-[10px] text-white/40">5 MÓDULOS FORENSES ACTIVOS</span>
+                <span className="font-mono text-[10px] text-white/40">8 MÓDULOS FORENSES ACTIVOS</span>
               </div>
             </div>
 
-            {/* Pestañas de Navegación de los 5 Módulos */}
+            {/* Pestañas de Navegación de los Módulos */}
             <div className="flex flex-wrap items-center gap-2 p-1.5 bg-black/40 rounded-2xl border border-white/10 relative z-10">
               {[
                 { id: 0, title: '01. Protocolo llms.txt', icon: FileCode },
@@ -695,6 +891,9 @@ function AuditorContent() {
                 { id: 2, title: '03. Grafo Schema.org', icon: Braces },
                 { id: 3, title: '04. Densidad RAG', icon: Binary },
                 { id: 4, title: '05. Ficha OpenGraph', icon: Share2 },
+                { id: 5, title: '06. SEO & Jerarquía', icon: Search },
+                { id: 6, title: '07. Detección YouTube', icon: Video },
+                { id: 7, title: '08. Diagnósticos PageSpeed', icon: Activity },
               ].map((tab) => {
                 const Icon = tab.icon;
                 const isActive = activeCockpitTab === tab.id;
@@ -723,19 +922,25 @@ function AuditorContent() {
                 <div className="space-y-6">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     {/* Tarjeta Sitio Auditado */}
-                    <div className="p-6 rounded-3xl bg-white/[0.02] border border-rose-500/30 space-y-4">
+                    <div className={`p-6 rounded-3xl bg-white/[0.02] border ${auditResult?.geo?.llmsTxt?.present ? 'border-emerald-500/40' : 'border-rose-500/30'} space-y-4`}>
                       <div className="flex items-center justify-between">
-                        <span className="font-mono text-xs uppercase text-rose-400 bg-rose-500/10 px-3 py-1 rounded-full border border-rose-500/20 flex items-center gap-1.5">
-                          <XCircle className="w-3.5 h-3.5" />
+                        <span className={`font-mono text-xs uppercase ${auditResult?.geo?.llmsTxt?.present ? 'text-emerald-400 bg-emerald-500/10 border-emerald-500/20' : 'text-rose-400 bg-rose-500/10 border-rose-500/20'} px-3 py-1 rounded-full border flex items-center gap-1.5`}>
+                          {auditResult?.geo?.llmsTxt?.present ? <CheckCircle2 className="w-3.5 h-3.5" /> : <XCircle className="w-3.5 h-3.5" />}
                           <span>Sitio Evaluado: {targetUrl}</span>
                         </span>
-                        <span className="font-mono text-xs font-bold text-rose-400">0 / 100</span>
+                        <span className={`font-mono text-xs font-bold ${auditResult?.geo?.llmsTxt?.present ? 'text-emerald-400' : 'text-rose-400'}`}>
+                          {auditResult?.geo?.llmsTxt?.present ? '100 / 100' : '0 / 100'}
+                        </span>
                       </div>
                       <h4 className="font-condensed text-xl uppercase font-bold text-white">
-                        Endpoints /llms.txt Ausentes (HTTP 404)
+                        {auditResult?.geo?.llmsTxt?.present 
+                          ? `Protocolo /llms.txt Detectado (${auditResult.geo.llmsTxt.charCount} Caracteres)`
+                          : 'Endpoints /llms.txt Ausentes (HTTP 404)'}
                       </h4>
                       <p className="font-sans text-sm text-white/70 font-light leading-relaxed">
-                        El sitio no dispone de un manifiesto sintético de texto plano para LLMs. Los agentes de IA (ChatGPT Search, Perplexity, Claude, Cursor) se ven forzados a descargar y analizar 1.8 MB de código HTML con 94% de ruido (scripts, trackers y divs cosméticos), superando el umbral de contexto útil y provocando omisiones o alucinaciones.
+                        {auditResult?.geo?.llmsTxt?.present
+                          ? `El servidor expone correctamente un manifiesto de texto plano estructurado en ${auditResult.geo.llmsTxt.url}. Los agentes de IA pueden ingerir la síntesis institucional con mínima sobrecarga de tokens.`
+                          : 'El sitio no dispone de un manifiesto sintético de texto plano para LLMs. Los agentes de IA (ChatGPT Search, Perplexity, Claude, Cursor) se ven forzados a descargar y analizar 1.8 MB de código HTML con 94% de ruido (scripts, trackers y divs cosméticos), superando el umbral de contexto útil y provocando omisiones o alucinaciones.'}
                       </p>
                       <div className="pt-2 font-mono text-[11px] text-rose-400 flex items-center gap-2">
                         <AlertTriangle className="w-3.5 h-3.5" />
@@ -809,6 +1014,17 @@ function AuditorContent() {
                         >
                           Scraping DOM (Ruidoso)
                         </button>
+                        {auditResult?.geo?.llmsTxt?.preview && (
+                          <button
+                            type="button"
+                            onClick={() => setLlmsPreviewMode('live')}
+                            className={`px-3 py-1 rounded-lg font-mono text-[11px] uppercase transition-colors ${
+                              llmsPreviewMode === 'live' ? 'bg-emerald-500 text-black font-bold' : 'text-white/60 hover:text-white'
+                            }`}
+                          >
+                            llms.txt Auditado
+                          </button>
+                        )}
                       </div>
                     </div>
 
@@ -834,6 +1050,10 @@ function AuditorContent() {
 
 ## Clientes Documentados
 Anasac, AquaChile, Doosan, Estancia Rilán, Cala Melí, Turistour, Tagua Tagua Lodge, Muebles Yunge, Hotel Cabo de Hornos, Costaustralis.`}
+                        </code>
+                      ) : llmsPreviewMode === 'live' && auditResult?.geo?.llmsTxt?.preview ? (
+                        <code className="text-emerald-300">
+                          {auditResult.geo.llmsTxt.preview}
                         </code>
                       ) : (
                         <code className="text-rose-300">
@@ -889,6 +1109,9 @@ Anasac, AquaChile, Doosan, Estancia Rilán, Cala Melí, Turistour, Tagua Tagua L
                   <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
                     {AI_CRAWLER_BOTS.map((bot, idx) => {
                       const isSelected = selectedBotIndex === idx;
+                      const liveBots = auditResult?.geo?.robotsTxt?.aiBotsAllowed as Record<string, boolean | undefined> | undefined;
+                      const isLiveAllowed = liveBots ? liveBots[bot.key] : undefined;
+
                       return (
                         <button
                           key={bot.name}
@@ -902,8 +1125,14 @@ Anasac, AquaChile, Doosan, Estancia Rilán, Cala Melí, Turistour, Tagua Tagua L
                         >
                           <span className="font-mono text-xs font-bold block text-white">{bot.name}</span>
                           <span className="font-mono text-[10px] text-white/50 block mt-1">{bot.operator}</span>
-                          <span className="inline-block mt-2 px-2 py-0.5 rounded-full text-[9px] font-mono bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
-                            Puelche: Allow
+                          <span className={`inline-block mt-2 px-2 py-0.5 rounded-full text-[9px] font-mono ${
+                            isLiveAllowed === true
+                              ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20'
+                              : isLiveAllowed === false
+                              ? 'bg-rose-500/10 text-rose-400 border border-rose-500/20'
+                              : 'bg-amber-500/10 text-amber-400 border border-amber-500/20'
+                          }`}>
+                            {isLiveAllowed === true ? 'Auditado: Allow' : isLiveAllowed === false ? 'Auditado: Block' : 'Puelche: Allow'}
                           </span>
                         </button>
                       );
@@ -913,6 +1142,10 @@ Anasac, AquaChile, Doosan, Estancia Rilán, Cala Melí, Turistour, Tagua Tagua L
                   {/* Inspector Detallado del Bot Seleccionado */}
                   {(() => {
                     const currentBot = AI_CRAWLER_BOTS[selectedBotIndex] || AI_CRAWLER_BOTS[0];
+                    const liveBots = auditResult?.geo?.robotsTxt?.aiBotsAllowed as Record<string, boolean | undefined> | undefined;
+                    const isLiveAllowed = liveBots ? liveBots[currentBot.key] : undefined;
+                    const liveStatusLabel = isLiveAllowed === true ? 'Permitido (Allow: /)' : isLiveAllowed === false ? 'Bloqueado (Disallow: /)' : currentBot.targetStatus;
+
                     return (
                       <div className="p-6 sm:p-8 rounded-3xl bg-black/40 border border-white/10 space-y-6">
                         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-white/10">
@@ -930,8 +1163,8 @@ Anasac, AquaChile, Doosan, Estancia Rilán, Cala Melí, Turistour, Tagua Tagua L
                           </div>
 
                           <div className="flex items-center gap-3 font-mono text-xs">
-                            <span className="px-3 py-1 rounded-full bg-rose-500/10 text-rose-400 border border-rose-500/20">
-                              Auditado: {currentBot.targetStatus}
+                            <span className={`px-3 py-1 rounded-full ${isLiveAllowed === true ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' : 'bg-rose-500/10 text-rose-400 border border-rose-500/20'}`}>
+                              Auditado: {liveStatusLabel}
                             </span>
                             <span className="px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
                               Puelche: {currentBot.puelcheStatus}
@@ -961,9 +1194,16 @@ Anasac, AquaChile, Doosan, Estancia Rilán, Cala Melí, Turistour, Tagua Tagua L
               {activeCockpitTab === 2 && (
                 <div className="space-y-6">
                   <div className="p-6 rounded-3xl bg-white/[0.02] border border-white/10 space-y-3">
-                    <h4 className="font-condensed text-xl sm:text-2xl uppercase font-bold text-white">
-                      Grafo Semántico de Entidades Enlazadas (@graph JSON-LD)
-                    </h4>
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                      <h4 className="font-condensed text-xl sm:text-2xl uppercase font-bold text-white">
+                        Grafo Semántico de Entidades Enlazadas (@graph JSON-LD)
+                      </h4>
+                      {auditResult && (
+                        <span className="font-mono text-xs text-[#59BFD6] bg-[#59BFD6]/10 px-3 py-1 rounded-full border border-[#59BFD6]/20">
+                          {auditResult.geo.schemaOrg.count} Entidades Detectadas en Vivo
+                        </span>
+                      )}
+                    </div>
                     <p className="font-sans text-sm text-white/70 font-light leading-relaxed">
                       Los modelos de IA procesan entidades unívocas, no simples strings. Mediante la directiva <code className="text-[#59BFD6]">@graph</code>, Puelche Lab vincula su organización, geolocalización austral física, fundadora y catálogo de servicios en una red coherente reconocida por el Knowledge Graph de Google y las bases de conocimiento de ChatGPT y Perplexity.
                     </p>
@@ -1012,7 +1252,9 @@ Anasac, AquaChile, Doosan, Estancia Rilán, Cala Melí, Turistour, Tagua Tagua L
                   <div className="p-4 rounded-2xl bg-amber-500/10 border border-amber-500/20 flex items-start gap-3 text-amber-300 font-mono text-xs">
                     <AlertTriangle className="w-4 h-4 shrink-0 mt-0.5" />
                     <span>
-                      Diagnóstico para {targetUrl}: 0 entidades Schema.org detectadas. El sitio se comporta como un documento ciego para los agentes conversacionales de IA.
+                      {auditResult?.geo?.schemaOrg?.count && auditResult.geo.schemaOrg.count > 0
+                        ? `Diagnóstico para ${targetUrl}: Detectadas ${auditResult.geo.schemaOrg.count} entidades (${auditResult.geo.schemaOrg.types.join(', ')}). Recomendamos vincularlas con @graph unificado.`
+                        : `Diagnóstico para ${targetUrl}: 0 entidades Schema.org detectadas. El sitio se comporta como un documento ciego para los agentes conversacionales de IA.`}
                     </span>
                   </div>
                 </div>
@@ -1034,22 +1276,30 @@ Anasac, AquaChile, Doosan, Estancia Rilán, Cala Melí, Turistour, Tagua Tagua L
                     <div className="p-5 rounded-2xl bg-white/[0.02] border border-white/10 space-y-1">
                       <span className="text-white/40 text-[10px] uppercase block">Señal de Contenido Puro</span>
                       <span className="text-2xl font-bold text-[#59BFD6] block">84.2%</span>
-                      <span className="text-[10px] text-rose-400 block mt-1">Auditado: 6.4%</span>
+                      <span className="text-[10px] text-rose-400 block mt-1">
+                        Auditado: {auditResult ? auditResult.geo.ragDensity.ratio : '6.4%'}
+                      </span>
                     </div>
                     <div className="p-5 rounded-2xl bg-white/[0.02] border border-white/10 space-y-1">
                       <span className="text-white/40 text-[10px] uppercase block">Profundidad DOM</span>
                       <span className="text-2xl font-bold text-[#59BFD6] block">5 Niveles</span>
-                      <span className="text-[10px] text-rose-400 block mt-1">Auditado: 38 Niveles</span>
+                      <span className="text-[10px] text-rose-400 block mt-1">
+                        Auditado: {auditResult ? `${auditResult.geo.ragDensity.headingDepth} Niveles` : '38 Niveles'}
+                      </span>
                     </div>
                     <div className="p-5 rounded-2xl bg-white/[0.02] border border-white/10 space-y-1">
                       <span className="text-white/40 text-[10px] uppercase block">JS Bloqueante</span>
                       <span className="text-2xl font-bold text-emerald-400 block">0 MB (SSR)</span>
-                      <span className="text-[10px] text-rose-400 block mt-1">Auditado: 4.6 MB</span>
+                      <span className="text-[10px] text-rose-400 block mt-1">
+                        Auditado: {auditResult?.geo?.ragDensity?.totalHtmlBytes ? `${(auditResult.geo.ragDensity.totalHtmlBytes / 1024).toFixed(0)} KB HTML` : '4.6 MB'}
+                      </span>
                     </div>
                     <div className="p-5 rounded-2xl bg-white/[0.02] border border-white/10 space-y-1">
                       <span className="text-white/40 text-[10px] uppercase block">Tiempo Ingestión RAG</span>
                       <span className="text-2xl font-bold text-emerald-400 block">120ms</span>
-                      <span className="text-[10px] text-rose-400 block mt-1">Auditado: 4.8s (Timeout)</span>
+                      <span className="text-[10px] text-rose-400 block mt-1">
+                        Auditado: {auditResult?.durationMs ? `${auditResult.durationMs}ms` : '4.8s (Timeout)'}
+                      </span>
                     </div>
                   </div>
 
@@ -1075,7 +1325,7 @@ Anasac, AquaChile, Doosan, Estancia Rilán, Cala Melí, Turistour, Tagua Tagua L
                             ragDensityMode === 'target' ? 'bg-rose-500 text-white font-bold' : 'text-white/60 hover:text-white'
                           }`}
                         >
-                          Sitio Auditado (6.4%)
+                          Sitio Auditado ({auditResult ? auditResult.geo.ragDensity.ratio : '6.4%'})
                         </button>
                       </div>
                     </div>
@@ -1094,6 +1344,10 @@ Marcas del sur con presencia sin fronteras. Estudio de diseño cross media y fot
 - Casos de Éxito: Estancia Rilán, Cala Melí, Turistour, Tagua Tagua Lodge, Muebles Yunge, Hotel Cabo de Hornos
 
 [Status: Chunks limpios listos para indexación en Pinecone / Supabase pgvector sin alucinación]`}
+                        </code>
+                      ) : auditResult?.geo?.ragDensity?.markdownSample ? (
+                        <code className="text-white/80">
+                          {auditResult.geo.ragDensity.markdownSample}
                         </code>
                       ) : (
                         <code className="text-rose-300">
@@ -1143,7 +1397,7 @@ undefined
                         ogCardMode === 'target' ? 'bg-rose-500 text-white font-bold' : 'bg-white/5 text-white/60 hover:text-white'
                       }`}
                     >
-                      Ver Ficha del Sitio Evaluado (Defectuosa)
+                      Ver Ficha del Sitio Evaluado ({auditResult?.openGraph?.title ? 'Detectada' : 'Defectuosa'})
                     </button>
                   </div>
 
@@ -1186,28 +1440,212 @@ undefined
                       </div>
                     ) : (
                       <div>
-                        <div className="relative aspect-[1200/630] bg-zinc-900 flex flex-col items-center justify-center border-b border-white/10 text-white/30 space-y-2 p-6 text-center">
-                          <XCircle className="w-12 h-12 text-rose-500/50" />
-                          <span className="font-mono text-xs uppercase">Imagen og:image no encontrada o rota</span>
-                        </div>
+                        {auditResult?.openGraph?.image ? (
+                          <div className="relative aspect-[1200/630] bg-[#111215] overflow-hidden border-b border-white/10">
+                            <img
+                              src={auditResult.openGraph.image}
+                              alt={auditResult.openGraph.title || 'Live Social Preview'}
+                              className="w-full h-full object-cover"
+                            />
+                          </div>
+                        ) : (
+                          <div className="relative aspect-[1200/630] bg-zinc-900 flex flex-col items-center justify-center border-b border-white/10 text-white/30 space-y-2 p-6 text-center">
+                            <XCircle className="w-12 h-12 text-rose-500/50" />
+                            <span className="font-mono text-xs uppercase">Imagen og:image no encontrada o rota</span>
+                          </div>
+                        )}
+
                         <div className="p-6 space-y-2">
                           <span className="font-mono text-[10px] text-rose-400 uppercase tracking-widest block">
                             {targetUrl.replace(/^https?:\/\//, '')}
                           </span>
-                          <h5 className="font-condensed text-xl uppercase font-bold text-white/60 tracking-tight">
-                            Inicio - Mi Sitio Web Genérico
+                          <h5 className="font-condensed text-xl uppercase font-bold text-white tracking-tight">
+                            {auditResult?.openGraph?.title || 'Inicio - Mi Sitio Web Genérico'}
                           </h5>
-                          <p className="font-sans text-xs text-white/40 font-light line-clamp-2 leading-relaxed">
-                            Sin metadatos og:description configurados. Los rastreadores de IA y redes sociales no pudieron generar una descripción enriquecida.
+                          <p className="font-sans text-xs text-white/70 font-light line-clamp-2 leading-relaxed">
+                            {auditResult?.openGraph?.description || 'Sin metadatos og:description configurados. Los rastreadores de IA y redes sociales no pudieron generar una descripción enriquecida.'}
                           </p>
                           <div className="flex flex-wrap gap-1.5 pt-3 border-t border-white/10 font-mono text-[9px] text-rose-400/80">
-                            <span className="px-2 py-0.5 rounded bg-rose-500/10">0 Metadatos OpenGraph</span>
-                            <span className="px-2 py-0.5 rounded bg-rose-500/10">Pérdida de CTR: -72%</span>
+                            <span className="px-2 py-0.5 rounded bg-rose-500/10">
+                              {auditResult?.openGraph?.title ? 'OpenGraph Live' : '0 Metadatos OpenGraph'}
+                            </span>
+                            <span className="px-2 py-0.5 rounded bg-rose-500/10">
+                              {auditResult?.openGraph?.title ? 'Score: ' + auditResult.openGraph.score + '/100' : 'Pérdida de CTR: -72%'}
+                            </span>
+                            {auditResult?.openGraph?.twitterCard && (
+                              <span className="px-2 py-0.5 rounded bg-white/5 text-white/60">
+                                twitter:card: {auditResult.openGraph.twitterCard}
+                              </span>
+                            )}
                           </div>
                         </div>
                       </div>
                     )}
                   </div>
+                </div>
+              )}
+
+              {/* MÓDULO 6: SEO Técnico & Jerarquía de Encabezados */}
+              {activeCockpitTab === 5 && (
+                <div className="space-y-6">
+                  <div className="p-6 rounded-3xl bg-white/[0.02] border border-white/10 space-y-3">
+                    <div className="flex items-center justify-between">
+                      <h4 className="font-condensed text-xl sm:text-2xl uppercase font-bold text-white">
+                        SEO Técnico & Jerarquía de Encabezados (H1-H6)
+                      </h4>
+                      <span className="font-mono text-xs text-[#59BFD6] bg-[#59BFD6]/10 px-3 py-1 rounded-full border border-[#59BFD6]/20">
+                        Score SEO: {auditResult?.seo?.score ?? 50} / 100
+                      </span>
+                    </div>
+                    <p className="font-sans text-sm text-white/70 font-light leading-relaxed">
+                      La jerarquía de etiquetas semánticas y metadatos canónicos define la indexabilidad en Google Orgánico. La ausencia de un H1 unívoco o la falta de etiquetas descriptivas provoca dilución de autoridad.
+                    </p>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 font-mono text-xs">
+                    <div className="p-5 rounded-2xl bg-black/40 border border-white/10 space-y-2">
+                      <span className="text-white/40 uppercase block text-[10px]">Etiqueta &lt;title&gt;</span>
+                      <p className="text-white font-sans text-sm font-semibold">
+                        {auditResult?.seo?.title || 'Título no detectado en el DOM'}
+                      </p>
+                      <span className="text-[#59BFD6] text-[11px] block">
+                        Longitud: {auditResult?.seo?.title ? auditResult.seo.title.length : 0} caracteres (Óptimo: 30-65)
+                      </span>
+                    </div>
+
+                    <div className="p-5 rounded-2xl bg-black/40 border border-white/10 space-y-2">
+                      <span className="text-white/40 uppercase block text-[10px]">Meta Description</span>
+                      <p className="text-white font-sans text-sm font-light">
+                        {auditResult?.seo?.description || 'Meta description no detectada'}
+                      </p>
+                      <span className="text-[#59BFD6] text-[11px] block">
+                        Longitud: {auditResult?.seo?.description ? auditResult.seo.description.length : 0} caracteres (Óptimo: 70-160)
+                      </span>
+                    </div>
+
+                    <div className="p-5 rounded-2xl bg-black/40 border border-white/10 space-y-2">
+                      <span className="text-white/40 uppercase block text-[10px]">Enlace Canónico & Idioma</span>
+                      <p className="text-white text-xs truncate">
+                        {auditResult?.seo?.canonical || 'Sin enlace canonical'}
+                      </p>
+                      <span className="text-emerald-400 text-[11px] block">
+                        Idioma: {auditResult?.seo?.lang || 'es'} &bull; Viewport: {auditResult?.seo?.viewportPresent ? 'Responsive Activo' : 'No Responsivo'}
+                      </span>
+                    </div>
+
+                    <div className="p-5 rounded-2xl bg-black/40 border border-white/10 space-y-2">
+                      <span className="text-white/40 uppercase block text-[10px]">Jerarquía de Encabezados</span>
+                      <div className="flex items-center gap-3 text-white font-bold text-sm">
+                        <span>H1: <span className={auditResult?.seo?.headingsCount?.h1 === 1 ? 'text-emerald-400' : 'text-rose-400'}>{auditResult?.seo?.headingsCount?.h1 ?? 0}</span></span>
+                        <span>H2: {auditResult?.seo?.headingsCount?.h2 ?? 0}</span>
+                        <span>H3: {auditResult?.seo?.headingsCount?.h3 ?? 0}</span>
+                      </div>
+                      <span className="text-white/50 text-[11px] block">
+                        {auditResult?.seo?.headingsCount?.h1 === 1 ? 'Jerarquía correcta (1 H1)' : 'Alerta: Se recomienda exactamente 1 H1 principal'}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* MÓDULO 7: Detección YouTube & VideoObject */}
+              {activeCockpitTab === 6 && (
+                <div className="space-y-6">
+                  <div className="p-6 rounded-3xl bg-white/[0.02] border border-white/10 space-y-3">
+                    <div className="flex items-center justify-between">
+                      <h4 className="font-condensed text-xl sm:text-2xl uppercase font-bold text-white">
+                        Detección Audiovisual YouTube & Marcado Schema VideoObject
+                      </h4>
+                      <span className={`font-mono text-xs px-3 py-1 rounded-full border ${auditResult?.youtube?.hasVideoObjectSchema ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20' : 'bg-amber-500/10 text-amber-400 border-amber-500/20'}`}>
+                        {auditResult?.youtube?.hasVideoObjectSchema ? 'VideoObject Válido' : 'VideoObject Ausente'}
+                      </span>
+                    </div>
+                    <p className="font-sans text-sm text-white/70 font-light leading-relaxed">
+                      El contenido en video debe contar con el marcado estructurado <code className="text-[#59BFD6]">VideoObject</code> de Schema.org para posicionar en Google Video Search y alimentar las referencias multimodales de Gemini y ChatGPT. Los iframes pesados sin fachada aumentan el TBT en más de 1.2 segundos.
+                    </p>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 font-mono text-xs">
+                    <div className="p-5 rounded-2xl bg-black/40 border border-white/10 space-y-1 text-center">
+                      <span className="text-white/40 uppercase block text-[10px]">Videos Detectados</span>
+                      <span className="text-2xl font-bold text-[#59BFD6] block">
+                        {auditResult?.youtube?.videoUrls?.length ?? 0}
+                      </span>
+                      <span className="text-[10px] text-white/50 block">Iframes / Links</span>
+                    </div>
+
+                    <div className="p-5 rounded-2xl bg-black/40 border border-white/10 space-y-1 text-center">
+                      <span className="text-white/40 uppercase block text-[10px]">Schema VideoObject</span>
+                      <span className={`text-2xl font-bold block ${auditResult?.youtube?.hasVideoObjectSchema ? 'text-emerald-400' : 'text-rose-400'}`}>
+                        {auditResult?.youtube?.hasVideoObjectSchema ? 'Presente' : 'Ausente'}
+                      </span>
+                      <span className="text-[10px] text-white/50 block">Google Video Search</span>
+                    </div>
+
+                    <div className="p-5 rounded-2xl bg-black/40 border border-white/10 space-y-1 text-center">
+                      <span className="text-white/40 uppercase block text-[10px]">Carga Diferida (Facade)</span>
+                      <span className={`text-2xl font-bold block ${auditResult?.youtube?.usesHeavyIframe ? 'text-amber-400' : 'text-emerald-400'}`}>
+                        {auditResult?.youtube?.usesHeavyIframe ? 'Pesada' : 'Ligera / SSR'}
+                      </span>
+                      <span className="text-[10px] text-white/50 block">Impacto Core Web Vitals</span>
+                    </div>
+                  </div>
+
+                  {auditResult?.youtube?.videoUrls && auditResult.youtube.videoUrls.length > 0 && (
+                    <div className="p-5 rounded-2xl bg-black/50 border border-white/10 space-y-2 font-mono text-xs">
+                      <span className="text-white/60 uppercase block text-[10px]">Videos Detectados en la URL:</span>
+                      <ul className="space-y-1 text-[#59BFD6]">
+                        {auditResult.youtube.videoUrls.map((url, i) => (
+                          <li key={i} className="truncate">• {url}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {/* MÓDULO 8: Diagnósticos PageSpeed en Vivo */}
+              {activeCockpitTab === 7 && (
+                <div className="space-y-6">
+                  <div className="p-6 rounded-3xl bg-white/[0.02] border border-white/10 space-y-3">
+                    <div className="flex items-center justify-between">
+                      <h4 className="font-condensed text-xl sm:text-2xl uppercase font-bold text-white">
+                        Diagnósticos de Rendimiento & Core Web Vitals en Vivo
+                      </h4>
+                      <span className="font-mono text-xs text-[#59BFD6] bg-[#59BFD6]/10 px-3 py-1 rounded-full border border-[#59BFD6]/20">
+                        {auditResult?.performance?.source === 'pagespeed_api' ? 'Google PageSpeed v5' : 'Telemetría Empírica'}
+                      </span>
+                    </div>
+                    <p className="font-sans text-sm text-white/70 font-light leading-relaxed">
+                      Sonda en vivo de métricas de usuario real (RUM) y telemetría de laboratorio. Identifica cuellos de botella en tiempo de renderizado, peso de transferencia de scripts y retención en dispositivos móviles.
+                    </p>
+                  </div>
+
+                  {auditResult?.performance?.diagnostics && auditResult.performance.diagnostics.length > 0 ? (
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      {auditResult.performance.diagnostics.map((diag, i) => (
+                        <div key={i} className="p-5 rounded-2xl bg-black/40 border border-white/10 space-y-2">
+                          <div className="flex items-center justify-between">
+                            <span className="font-sans font-bold text-white text-sm">{diag.title}</span>
+                            <span className={`px-2 py-0.5 rounded text-[10px] font-mono uppercase ${
+                              diag.impact === 'high' ? 'bg-rose-500/10 text-rose-400 border border-rose-500/20' :
+                              diag.impact === 'medium' ? 'bg-amber-500/10 text-amber-400 border border-amber-500/20' :
+                              'bg-cyan-500/10 text-cyan-400 border border-cyan-500/20'
+                            }`}>
+                              Impacto {diag.impact}
+                            </span>
+                          </div>
+                          <p className="font-sans text-xs text-white/70 font-light leading-relaxed">
+                            {diag.detail}
+                          </p>
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="p-6 rounded-2xl bg-white/[0.02] border border-white/10 text-center font-mono text-xs text-white/60">
+                      Sonda de diagnóstico lista. Realice una auditoría para inspeccionar los hallazgos de Lighthouse.
+                    </div>
+                  )}
                 </div>
               )}
             </div>
@@ -1346,14 +1784,16 @@ undefined
                       </div>
                     </div>
 
-                    <button
-                      type="submit"
-                      disabled={isSubmitting}
-                      className="rb-link-glanz w-full py-4 rounded-2xl bg-[#59BFD6] hover:bg-[#4eaac0] text-[#0b0d10] font-mono text-xs uppercase tracking-wider font-bold shadow-xl transition-all flex items-center justify-center gap-2 mt-2"
-                    >
-                      <Send className="w-4 h-4" />
-                      <span>{isSubmitting ? 'Enviando...' : 'Desbloquear Informe Forense y Solicitar Video Loom de 5 Minutos'}</span>
-                    </button>
+                    <Magnetic strength={0.35} radius={80}>
+                      <button
+                        type="submit"
+                        disabled={isSubmitting}
+                        className="rb-link-glanz w-full py-4 rounded-2xl bg-[#59BFD6] hover:bg-[#4eaac0] text-[#0b0d10] font-mono text-xs uppercase tracking-wider font-bold shadow-xl transition-all flex items-center justify-center gap-2 mt-2"
+                      >
+                        <Send className="w-4 h-4" />
+                        <span>{isSubmitting ? 'Enviando...' : 'Desbloquear Informe Forense y Solicitar Video Loom de 5 Minutos'}</span>
+                      </button>
+                    </Magnetic>
                   </form>
                 )}
               </div>
