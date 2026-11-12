@@ -133,15 +133,17 @@ export const SERVICES_LIST: ServiceDetail[] = [
 ];
 
 export default function ServiciosPage() {
-  const [viewMode, setViewMode] = useState<'3d' | 'reticular'>('3d');
-  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const [viewMode, setViewMode] = useState<'sticky' | '3d' | 'reticular'>('sticky');
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(0);
   const [activeIndex, setActiveIndex] = useState<number>(0);
 
   // Cinematic Exponential Decay & Tactile Physics Refs
   const stageRef = useRef<HTMLDivElement>(null);
+  const stickyCardRefs = useRef<(HTMLDivElement | null)[]>([]);
   const posRef = useRef<number>(0);
   const targetRef = useRef<number>(0);
 
+  const isPointerDownRef = useRef<boolean>(false);
   const isDraggingRef = useRef<boolean>(false);
   const dragStartXRef = useRef<number>(0);
   const dragStartPosRef = useRef<number>(0);
@@ -155,9 +157,48 @@ export default function ServiciosPage() {
   const [renderPos, setRenderPos] = useState<number>(0);
   const total = SERVICES_LIST.length;
 
+  // Scroll-Driven Observer for Sticky Stacking Mode: dynamically syncs background & Optical HUD
+  useEffect(() => {
+    if (viewMode !== 'sticky') return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const idxAttr = entry.target.getAttribute('data-service-idx');
+            if (idxAttr !== null) {
+              const idx = Number(idxAttr);
+              if (!Number.isNaN(idx)) {
+                setActiveIndex(idx);
+                setHoveredIndex(idx);
+              }
+            }
+          }
+        });
+      },
+      {
+        rootMargin: '-25% 0px -35% 0px',
+        threshold: 0.2,
+      }
+    );
+
+    stickyCardRefs.current.forEach((el) => {
+      if (el) observer.observe(el);
+    });
+
+    return () => observer.disconnect();
+  }, [viewMode]);
+
   // Jump smoothly to a specific service with shortest circular path
   const navigateTo = useCallback(
     (index: number) => {
+      if (viewMode === 'sticky') {
+        const el = stickyCardRefs.current[index];
+        if (el) {
+          el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+        return;
+      }
       const current = posRef.current;
       const currentNorm = ((Math.round(current) % total) + total) % total;
       let diff = index - currentNorm;
@@ -165,7 +206,7 @@ export default function ServiciosPage() {
       if (diff < -total / 2) diff += total;
       targetRef.current = Math.round(current) + diff;
     },
-    [total]
+    [total, viewMode]
   );
 
   const nextService = useCallback(() => {
@@ -178,6 +219,7 @@ export default function ServiciosPage() {
 
   // Frame-rate Independent Exponential Decay Loop (Asymptotic Air-Cushion, Zero Shockwave)
   useEffect(() => {
+    if (viewMode !== '3d') return;
     let lastTime = performance.now();
 
     const loop = (now: number) => {
@@ -185,13 +227,10 @@ export default function ServiciosPage() {
       lastTime = now;
 
       if (!isDraggingRef.current) {
-        // Critical Exponential Relaxation: dx/dt = -decay * (x - target)
-        // Decays asymptotically to target with infinite mathematical smoothness (no bounce, no abrupt stop)
         const decay = 7.8;
         const factor = 1 - Math.exp(-decay * dt);
         posRef.current += (targetRef.current - posRef.current) * factor;
 
-        // Ultra-fine rest threshold
         if (Math.abs(targetRef.current - posRef.current) < 0.0001) {
           posRef.current = targetRef.current;
         }
@@ -210,27 +249,28 @@ export default function ServiciosPage() {
     return () => {
       if (animFrameRef.current) cancelAnimationFrame(animFrameRef.current);
     };
-  }, [total]);
+  }, [total, viewMode]);
 
-  // Tactile Non-Passive Wheel Listener: fluid continuous drift + gentle magnetic settle
+  // Non-hijacking Wheel Listener: strictly horizontal gestures move 3D carousel; vertical scroll remains 100% free
   useEffect(() => {
     const stage = stageRef.current;
     if (!stage || viewMode !== '3d') return;
 
     const handleWheelNative = (e: WheelEvent) => {
+      const isHorizontalSwipe = Math.abs(e.deltaX) > Math.abs(e.deltaY) * 1.4 && Math.abs(e.deltaX) > 4;
+      if (!isHorizontalSwipe) {
+        return; // Allow natural vertical scrolling down the page
+      }
+
       e.preventDefault();
 
-      // Delicate wheel sensitivity: gentle turn glides smoothly
-      const delta = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
-      const step = Math.sign(delta) * Math.min(0.6, Math.abs(delta) * 0.0022);
-
+      const step = Math.sign(e.deltaX) * Math.min(0.45, Math.abs(e.deltaX) * 0.0018);
       targetRef.current += step;
 
-      // Debounce magnetic snap: settles gently on closest card after wheel ceases
       if (wheelSnapTimeoutRef.current) clearTimeout(wheelSnapTimeoutRef.current);
       wheelSnapTimeoutRef.current = setTimeout(() => {
         targetRef.current = Math.round(targetRef.current);
-      }, 180);
+      }, 220);
     };
 
     stage.addEventListener('wheel', handleWheelNative, { passive: false });
@@ -240,28 +280,43 @@ export default function ServiciosPage() {
     };
   }, [viewMode]);
 
-  // Effortless Lightweight Dragging & Directional Swipe Commitment
+  // Safe Dragging: Never hijacks clicks on buttons or links!
   const handlePointerDown = (e: React.PointerEvent) => {
-    isDraggingRef.current = true;
+    const targetEl = e.target as HTMLElement | null;
+    if (targetEl?.closest('a, button, input, select, textarea')) {
+      return; // Native click on links and buttons works 100% untouched
+    }
+
+    isPointerDownRef.current = true;
+    isDraggingRef.current = false;
     dragStartXRef.current = e.clientX;
     dragStartPosRef.current = posRef.current;
     lastClientXRef.current = e.clientX;
     lastDragTimeRef.current = performance.now();
     dragVelocitySamples.current = [];
-
-    if (stageRef.current) {
-      stageRef.current.setPointerCapture(e.pointerId);
-    }
   };
 
   const handlePointerMove = (e: React.PointerEvent) => {
-    if (!isDraggingRef.current) return;
+    if (!isPointerDownRef.current) return;
+    const deltaX = e.clientX - dragStartXRef.current;
+
+    // Only engage drag + pointer capture after intentional horizontal movement (> 8px)
+    if (!isDraggingRef.current) {
+      if (Math.abs(deltaX) < 8) return;
+      isDraggingRef.current = true;
+      if (stageRef.current) {
+        try {
+          stageRef.current.setPointerCapture(e.pointerId);
+        } catch {
+          // Safe fallback
+        }
+      }
+    }
+
     const now = performance.now();
     const dt = Math.max(1, now - lastDragTimeRef.current);
-    const deltaX = e.clientX - dragStartXRef.current;
     const stepX = e.clientX - lastClientXRef.current;
 
-    // Instant velocity sample in px/ms
     const instantVel = stepX / dt;
     dragVelocitySamples.current.push(instantVel);
     if (dragVelocitySamples.current.length > 5) dragVelocitySamples.current.shift();
@@ -269,19 +324,26 @@ export default function ServiciosPage() {
     lastClientXRef.current = e.clientX;
     lastDragTimeRef.current = now;
 
-    // Effortless travel: 120px drag moves 1 full card smoothly (ultra-light, zero resistance)
-    const newPos = dragStartPosRef.current - deltaX / 120;
+    const newPos = dragStartPosRef.current - deltaX / 140;
     posRef.current = newPos;
     targetRef.current = newPos;
   };
 
   const handlePointerUp = (e: React.PointerEvent) => {
-    if (!isDraggingRef.current) return;
+    if (!isPointerDownRef.current) return;
+    isPointerDownRef.current = false;
+
+    if (!isDraggingRef.current) {
+      return;
+    }
+
     isDraggingRef.current = false;
 
     if (stageRef.current) {
       try {
-        stageRef.current.releasePointerCapture(e.pointerId);
+        if (stageRef.current.hasPointerCapture(e.pointerId)) {
+          stageRef.current.releasePointerCapture(e.pointerId);
+        }
       } catch {
         // Safe fallback
       }
@@ -291,13 +353,10 @@ export default function ServiciosPage() {
     const samples = dragVelocitySamples.current;
     const avgVel = samples.length > 0 ? samples.reduce((a, b) => a + b, 0) / samples.length : 0;
 
-    // Directional Swipe Commitment:
-    // Even a light swipe of 30px or quick flick (|avgVel| > 0.15) advances immediately to next/prev!
-    // No more struggling or having to drag across half the screen.
     let target = Math.round(posRef.current);
-    if (deltaX < -30 || avgVel < -0.15) {
+    if (deltaX < -35 || avgVel < -0.18) {
       target = Math.floor(dragStartPosRef.current) + 1;
-    } else if (deltaX > 30 || avgVel > 0.15) {
+    } else if (deltaX > 35 || avgVel > 0.18) {
       target = Math.ceil(dragStartPosRef.current) - 1;
     }
 
@@ -306,37 +365,38 @@ export default function ServiciosPage() {
 
   // Keyboard navigation
   useEffect(() => {
+    if (viewMode !== '3d') return;
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+      if (e.key === 'ArrowRight') {
         nextService();
-      } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+      } else if (e.key === 'ArrowLeft') {
         prevService();
       }
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [nextService, prevService]);
+  }, [nextService, prevService, viewMode]);
 
   const activeService = SERVICES_LIST[activeIndex] || SERVICES_LIST[0];
 
   return (
-    <div className="relative w-full flex flex-col bg-[#08090b] text-white min-h-screen selection:bg-[#59BFD6] selection:text-[#08090b] overflow-hidden">
+    <div className="relative w-full flex flex-col bg-[#08090b] text-white min-h-screen selection:bg-[#59BFD6] selection:text-[#08090b] overflow-x-clip">
       {/* ── ATMOSPHERIC CANVAS WITH DRIFTING PARTICLES & AURORA GLOW ── */}
       <AtmosphericBackground intensity="vibrant" showParticles={true} />
 
       {/* ── CONTINUOUS HERMITE SMOOTHSTEP CROSSFADE: REVELADO FINE-ART (R4 COMPAT) ── */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden z-0" aria-hidden="true">
         {SERVICES_LIST.map((serv, idx) => {
-          // Wrapped continuous distance
-          let dist = Math.abs(idx - (renderPos % total));
-          while (dist > total / 2) dist = Math.abs(dist - total);
-
-          // Hermite smoothstep curve: t^2 * (3 - 2t) -> Zero derivative at peak (no sudden flashing!)
-          const t = Math.max(0, 1 - dist * 0.95);
-          const smoothFade = t * t * (3 - 2 * t);
-          const crossfadeOpacity = viewMode === '3d'
-            ? smoothFade * 0.32
-            : (hoveredIndex === idx ? 0.25 : 0);
+          let crossfadeOpacity = 0;
+          if (viewMode === '3d') {
+            let dist = Math.abs(idx - (renderPos % total));
+            while (dist > total / 2) dist = Math.abs(dist - total);
+            const t = Math.max(0, 1 - dist * 0.95);
+            const smoothFade = t * t * (3 - 2 * t);
+            crossfadeOpacity = smoothFade * 0.32;
+          } else {
+            crossfadeOpacity = hoveredIndex === idx ? 0.24 : 0;
+          }
 
           return (
             <div
@@ -344,7 +404,7 @@ export default function ServiciosPage() {
               className="absolute inset-0 will-change-[opacity]"
               style={{
                 opacity: crossfadeOpacity,
-                transition: viewMode === '3d' ? 'none' : 'opacity 0.6s ease-out',
+                transition: viewMode === '3d' ? 'none' : 'opacity 0.65s ease-out',
               }}
             >
               <Image
@@ -362,7 +422,7 @@ export default function ServiciosPage() {
       </div>
 
       {/* ── BANNER EDITORIAL DARK LUXURY & VIEW MODE SWITCHER ── */}
-      <section className="relative z-10 pt-28 pb-6 md:pt-36 md:pb-8 px-6 text-center border-b border-white/10 overflow-hidden bg-gradient-to-b from-[#101216]/90 via-[#08090b]/95 to-[#08090b]">
+      <section className="relative z-10 pt-28 pb-8 md:pt-36 md:pb-10 px-6 text-center border-b border-white/10 overflow-hidden bg-gradient-to-b from-[#101216]/90 via-[#08090b]/95 to-[#08090b]">
         {/* Kinetic Watermark */}
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 select-none pointer-events-none opacity-[0.03] whitespace-nowrap font-condensed text-[20vw] font-black uppercase text-white leading-none">
           OFICIO AUSTRAL
@@ -371,7 +431,7 @@ export default function ServiciosPage() {
         <div className="relative z-10 max-w-4xl mx-auto space-y-4">
           <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-white/[0.04] border border-white/10 text-[#59BFD6] font-mono text-[11px] uppercase tracking-[0.25em]">
             <span className="w-1.5 h-1.5 rounded-full bg-[#59BFD6] animate-pulse shadow-[0_0_8px_#59BFD6]" />
-            <span>41°S &bull; DISCIPLINA TÉCNICA & DANZA ÓPTICA 3D</span>
+            <span>41°S &bull; DISCIPLINA TÉCNICA &amp; PLIEGOS APILADOS</span>
           </div>
 
           <h1 className="font-condensed text-5xl sm:text-7xl md:text-8xl uppercase tracking-tight text-white font-bold leading-[0.95] drop-shadow-2xl">
@@ -379,16 +439,28 @@ export default function ServiciosPage() {
           </h1>
 
           <p className="font-sans text-sm sm:text-base md:text-lg text-white/75 max-w-2xl mx-auto font-light leading-relaxed pt-1">
-            Diseño Cross Media y Fotografía de autor esculpidos bajo el clima y las distancias de la Patagonia austral. Seis disciplinas técnicas guiadas por el rigor, la luz natural y el compromiso con el territorio.
+            Diseño Cross Media y Fotografía de autor esculpidos bajo el clima y las distancias de la Patagonia austral. Desliza hacia abajo para recorrer cada una de nuestras seis especialidades.
           </p>
 
           {/* ── VIEW MODE TOGGLE & STATUS HUD ── */}
           <div className="flex flex-wrap items-center justify-center gap-4 pt-3">
-            <div className="inline-flex p-1 rounded-full bg-white/[0.05] border border-white/10 backdrop-blur-md">
+            <div className="inline-flex flex-wrap justify-center p-1 rounded-2xl sm:rounded-full bg-white/[0.05] border border-white/10 backdrop-blur-md">
+              <button
+                type="button"
+                onClick={() => setViewMode('sticky')}
+                className={`inline-flex items-center gap-2 px-4 sm:px-5 py-2 rounded-full font-mono text-xs uppercase tracking-wider transition-colors duration-200 ${
+                  viewMode === 'sticky'
+                    ? 'bg-[#59BFD6] text-[#08090b] font-bold shadow-[0_0_20px_rgba(89,191,214,0.4)]'
+                    : 'text-white/70 hover:text-white'
+                }`}
+              >
+                <Sparkles className="w-3.5 h-3.5" />
+                <span>Recorrido Scroll</span>
+              </button>
               <button
                 type="button"
                 onClick={() => setViewMode('3d')}
-                className={`inline-flex items-center gap-2 px-5 py-2 rounded-full font-mono text-xs uppercase tracking-wider transition-colors duration-200 ${
+                className={`inline-flex items-center gap-2 px-4 sm:px-5 py-2 rounded-full font-mono text-xs uppercase tracking-wider transition-colors duration-200 ${
                   viewMode === '3d'
                     ? 'bg-[#59BFD6] text-[#08090b] font-bold shadow-[0_0_20px_rgba(89,191,214,0.4)]'
                     : 'text-white/70 hover:text-white'
@@ -400,7 +472,7 @@ export default function ServiciosPage() {
               <button
                 type="button"
                 onClick={() => setViewMode('reticular')}
-                className={`inline-flex items-center gap-2 px-5 py-2 rounded-full font-mono text-xs uppercase tracking-wider transition-colors duration-200 ${
+                className={`inline-flex items-center gap-2 px-4 sm:px-5 py-2 rounded-full font-mono text-xs uppercase tracking-wider transition-colors duration-200 ${
                   viewMode === 'reticular'
                     ? 'bg-[#59BFD6] text-[#08090b] font-bold shadow-[0_0_20px_rgba(89,191,214,0.4)]'
                     : 'text-white/70 hover:text-white'
@@ -412,16 +484,164 @@ export default function ServiciosPage() {
             </div>
 
             {/* Optical HUD Indicator */}
-            <div className="hidden sm:inline-flex items-center gap-3 px-4 py-2 rounded-full bg-white/[0.03] border border-white/10 font-mono text-xs text-white/60">
+            <div className="hidden lg:inline-flex items-center gap-3 px-4 py-2 rounded-full bg-white/[0.03] border border-white/10 font-mono text-xs text-white/60">
               <Disc3 className="w-3.5 h-3.5 text-[#59BFD6] animate-spin" style={{ animationDuration: '8s' }} />
-              <span>{activeService.focal}</span>
+              <span>0{activeIndex + 1}/0{total} &bull; {activeService.focal}</span>
             </div>
           </div>
         </div>
       </section>
 
       {/* ══════════════════════════════════════════════════════════════════════ */}
-      {/* ── MODO 1: DANZA ÓPTICA 3D (AIR-CUSHIONED DELICATE ORBITAL DANCE) ─── */}
+      {/* ── MODO 1 (POR DEFECTO): RECORRIDO STICKY PROGRESIVO (STACKING CARDS) ─ */}
+      {/* ══════════════════════════════════════════════════════════════════════ */}
+      {viewMode === 'sticky' && (
+        <section className="relative z-20 max-w-6xl mx-auto w-full px-4 sm:px-8 lg:px-12 py-12 md:py-20">
+          {/* Barra superior rápida de acceso a cada especialidad */}
+          <div className="flex flex-wrap items-center justify-center gap-2 mb-12">
+            {SERVICES_LIST.map((s, i) => (
+              <button
+                key={s.id}
+                type="button"
+                onClick={() => navigateTo(i)}
+                className={`px-3.5 py-1.5 rounded-full font-mono text-[11px] uppercase tracking-wider transition-all border ${
+                  activeIndex === i
+                    ? 'bg-[#59BFD6]/15 text-[#59BFD6] border-[#59BFD6]/50 font-bold shadow-[0_0_15px_rgba(89,191,214,0.2)]'
+                    : 'bg-white/[0.03] text-white/60 border-white/10 hover:text-white hover:border-white/25'
+                }`}
+              >
+                0{i + 1}. {s.title}
+              </button>
+            ))}
+          </div>
+
+          {/* Pila de Tarjetas Sticky: obligan al visitante a recorrer los 6 servicios al hacer scroll */}
+          <div className="relative space-y-12 md:space-y-24 pb-16">
+            {SERVICES_LIST.map((serv, idx) => {
+              const Icon = serv.icon;
+              return (
+                <div
+                  key={serv.id}
+                  id={serv.id}
+                  data-service-idx={idx}
+                  ref={(el) => {
+                    stickyCardRefs.current[idx] = el;
+                  }}
+                  onMouseEnter={() => {
+                    setHoveredIndex(idx);
+                    setActiveIndex(idx);
+                  }}
+                  className="md:sticky scroll-mt-28 rounded-3xl overflow-hidden border border-white/15 bg-[#0d0f14]/[0.96] backdrop-blur-2xl shadow-[0_-25px_70px_rgba(0,0,0,0.92)] transition-colors duration-300 hover:border-[#59BFD6]/50"
+                  style={{
+                    top: `calc(92px + ${idx * 14}px)`,
+                    zIndex: 10 + idx,
+                  }}
+                >
+                  <div className="grid grid-cols-1 md:grid-cols-12 min-h-[440px] md:min-h-[480px]">
+                    {/* Columna Fotográfica Real */}
+                    <div className="relative md:col-span-5 overflow-hidden min-h-[240px] md:min-h-full">
+                      <Image
+                        src={serv.image}
+                        alt={serv.title}
+                        fill
+                        priority={idx === 0}
+                        className="object-cover object-center filter contrast-110 brightness-95 transition-transform duration-700 hover:scale-105"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t md:bg-gradient-to-r from-transparent via-[#0d0f14]/45 to-[#0d0f14]" />
+
+                      <div className="absolute inset-0 pointer-events-none p-5 flex flex-col justify-between">
+                        <div className="flex items-center justify-between text-[10px] font-mono text-white/80 bg-black/60 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/15 w-fit">
+                          <span className="w-1.5 h-1.5 rounded-full bg-[#59BFD6] animate-pulse mr-2" />
+                          <span>41°S &bull; {serv.coords} &bull; {serv.territory}</span>
+                        </div>
+
+                        <div className="flex items-center justify-between text-[10px] font-mono text-white/60 bg-black/45 px-3 py-1 rounded-full border border-white/10 w-fit">
+                          <span>{serv.focal}</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Columna de Especificaciones y Botones 100% Activos */}
+                    <div className="md:col-span-7 p-6 sm:p-8 md:p-10 flex flex-col justify-between space-y-6">
+                      <div className="space-y-4">
+                        <div className="flex items-center justify-between gap-2 border-b border-white/10 pb-3.5">
+                          <div className="inline-flex items-center gap-2 text-xs font-mono text-[#59BFD6] uppercase tracking-widest">
+                            <Icon className="w-4 h-4" />
+                            <span>{serv.tag}</span>
+                          </div>
+                          <span className="font-mono text-xs text-white/50 bg-white/5 px-3 py-1 rounded-full border border-white/10">
+                            PLIEGO [ 0{idx + 1} / 0{total} ]
+                          </span>
+                        </div>
+
+                        <h2 className="font-condensed text-4xl sm:text-5xl md:text-6xl font-bold uppercase tracking-tight text-white leading-[0.95]">
+                          {serv.title}
+                        </h2>
+
+                        <p className="font-sans text-sm sm:text-base text-white/80 font-light leading-relaxed">
+                          {serv.desc}
+                        </p>
+
+                        <div className="pt-1">
+                          <span className="block font-mono text-[10px] uppercase tracking-wider text-white/45 mb-2.5">
+                            Capacidades Técnicas Entregables:
+                          </span>
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                            {serv.deliverables.map((item) => (
+                              <div
+                                key={item}
+                                className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-white/[0.04] border border-white/10 font-mono text-xs text-white/80"
+                              >
+                                <CheckCircle2 className="w-3.5 h-3.5 text-[#59BFD6] shrink-0" />
+                                <span className="truncate">{item}</span>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+
+                        <div className="pt-1 text-xs font-mono text-white/55">
+                          <span className="text-[#C29B63] font-semibold">Casos en Terreno: </span>
+                          <span>{serv.clients}</span>
+                        </div>
+                      </div>
+
+                      <div className="flex flex-wrap items-center justify-between gap-4 pt-4 border-t border-white/10">
+                        <Link
+                          href={serv.href}
+                          className="rb-link-glanz inline-flex items-center gap-2.5 px-6 py-3 rounded-full bg-[#59BFD6] hover:bg-white text-[#08090b] font-mono text-xs uppercase tracking-wider font-bold shadow-[0_0_25px_rgba(89,191,214,0.35)] transition-all hover:scale-105"
+                        >
+                          <span>Explorar Oficio</span>
+                          <ArrowRight className="w-4 h-4" />
+                        </Link>
+
+                        <div className="flex flex-wrap items-center gap-4">
+                          <Link
+                            href={`/cotizador?servicio=${serv.id}`}
+                            className="inline-flex items-center gap-1.5 text-xs font-mono uppercase tracking-wider text-white/75 hover:text-[#59BFD6] transition-colors"
+                          >
+                            <span>Calcular Presupuesto</span>
+                            <ArrowUpRight className="w-3.5 h-3.5" />
+                          </Link>
+                          <Link
+                            href={`/contacto?servicio=${serv.id}`}
+                            className="inline-flex items-center gap-1.5 text-xs font-mono uppercase tracking-wider text-[#C29B63] hover:text-white transition-colors"
+                          >
+                            <span>Cotizar Directo</span>
+                            <ArrowUpRight className="w-3.5 h-3.5" />
+                          </Link>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </section>
+      )}
+
+      {/* ══════════════════════════════════════════════════════════════════════ */}
+      {/* ── MODO 2: DANZA ÓPTICA 3D (AIR-CUSHIONED DELICATE ORBITAL DANCE) ─── */}
       {/* ══════════════════════════════════════════════════════════════════════ */}
       {viewMode === '3d' && (
         <section
@@ -431,7 +651,7 @@ export default function ServiciosPage() {
           onPointerUp={handlePointerUp}
           onPointerCancel={handlePointerUp}
           className="relative z-20 w-full min-h-[720px] md:min-h-[820px] flex flex-col items-center justify-center overflow-hidden cursor-grab active:cursor-grabbing select-none py-10 px-4"
-          style={{ touchAction: 'none' }}
+          style={{ touchAction: 'pan-y' }}
         >
           {/* Floating Left / Right Tactile Navigation Buttons */}
           <button
@@ -602,9 +822,11 @@ export default function ServiciosPage() {
                       </div>
 
                       {/* Bottom Action Buttons */}
-                      <div className="flex flex-wrap items-center justify-between gap-3 pt-3 border-t border-white/10">
+                      <div className="relative z-30 flex flex-wrap items-center justify-between gap-3 pt-3 border-t border-white/10">
                         <Link
                           href={serv.href}
+                          onPointerDown={(e) => e.stopPropagation()}
+                          onClick={(e) => e.stopPropagation()}
                           className="rb-link-glanz inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#59BFD6] text-[#08090b] font-mono text-xs uppercase tracking-wider font-bold shadow-[0_0_20px_rgba(89,191,214,0.3)] hover:brightness-110 transition-all"
                         >
                           <span>Explorar Oficio</span>
@@ -613,6 +835,8 @@ export default function ServiciosPage() {
 
                         <Link
                           href={`/cotizador?servicio=${serv.id}`}
+                          onPointerDown={(e) => e.stopPropagation()}
+                          onClick={(e) => e.stopPropagation()}
                           className="inline-flex items-center gap-1 text-xs font-mono uppercase tracking-wider text-white/70 hover:text-[#59BFD6] transition-colors"
                         >
                           <span>Calcular Presupuesto</span>
@@ -670,14 +894,14 @@ export default function ServiciosPage() {
             {/* Gesture Tip */}
             <div className="inline-flex items-center gap-2 font-mono text-[11px] text-white/40">
               <Wind className="w-3.5 h-3.5 text-[#59BFD6] animate-pulse" />
-              <span>Gira la rueda, arrastra con el ratón o usa las flechas</span>
+              <span>Desliza en horizontal, arrastra con el ratón o usa las flechas &larr; &rarr;</span>
             </div>
           </div>
         </section>
       )}
 
       {/* ══════════════════════════════════════════════════════════════════════ */}
-      {/* ── MODO 2: PLIEGOS RETICULARES (TRÍPTICO ASIMÉTRICO 48px 1fr 1.2fr) ── */}
+      {/* ── MODO 3: PLIEGOS RETICULARES (TRÍPTICO ASIMÉTRICO 48px 1fr 1.2fr) ── */}
       {/* ── R4 CONTRACT COMPATIBLE: tests/e2e/runner.ts GUARANTEE 100% PASS ── */}
       {/* ══════════════════════════════════════════════════════════════════════ */}
       <section
@@ -705,16 +929,13 @@ export default function ServiciosPage() {
             return (
               <div
                 key={serv.id}
-                id={serv.href.replace('/servicios/', '')}
+                id={viewMode === 'sticky' ? `index-${serv.id}` : serv.href.replace('/servicios/', '')}
                 onMouseEnter={() => setHoveredIndex(idx)}
                 onMouseLeave={() => setHoveredIndex(null)}
                 className="scroll-mt-28 py-10 md:py-14 transition-all duration-500 group hover:bg-white/[0.02] px-4 -mx-4 rounded-3xl"
               >
                 {/* Asymmetric Triptych Grid: 48px fixed ordinal, 1fr title/badge, 1.2fr description & pill button */}
-                <div
-                  className="grid grid-cols-1 lg:grid-cols-[48px_1fr_1.2fr] gap-6 lg:gap-12 items-baseline"
-                  style={{ gridTemplateColumns: 'minmax(0, 48px) minmax(0, 1fr) minmax(0, 1.2fr)' }}
-                >
+                <div className="grid grid-cols-1 lg:grid-cols-[48px_1fr_1.2fr] gap-6 lg:gap-12 items-baseline">
                   {/* Column 1: Ordinal Numeral (48px fixed) */}
                   <div className="flex items-center gap-3 lg:block">
                     <span className="font-mono text-sm text-[#59BFD6] group-hover:text-white transition-colors">
