@@ -133,11 +133,12 @@ export const SERVICES_LIST: ServiceDetail[] = [
 ];
 
 export default function ServiciosPage() {
-  const [viewMode, setViewMode] = useState<'sticky' | '3d' | 'reticular'>('sticky');
+  const [viewMode, setViewMode] = useState<'3d' | 'sticky' | 'reticular'>('3d');
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(0);
   const [activeIndex, setActiveIndex] = useState<number>(0);
 
   // Cinematic Exponential Decay & Tactile Physics Refs
+  const trackRef = useRef<HTMLDivElement>(null);
   const stageRef = useRef<HTMLDivElement>(null);
   const stickyCardRefs = useRef<(HTMLDivElement | null)[]>([]);
   const posRef = useRef<number>(0);
@@ -150,14 +151,54 @@ export default function ServiciosPage() {
   const lastClientXRef = useRef<number>(0);
   const lastDragTimeRef = useRef<number>(0);
   const dragVelocitySamples = useRef<number[]>([]);
-  const wheelSnapTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const animFrameRef = useRef<number | null>(null);
 
   // Continuous render position state for silk-smooth reactive updates
   const [renderPos, setRenderPos] = useState<number>(0);
   const total = SERVICES_LIST.length;
 
-  // Scroll-Driven Observer for Sticky Stacking Mode: dynamically syncs background & Optical HUD
+  // Helper: computes desktop sticky scroll track boundaries for 1:1 vertical-to-horizontal sync
+  const getTrackMetrics = useCallback(() => {
+    const track = trackRef.current;
+    const stage = stageRef.current;
+    if (!track || !stage) return null;
+    const rect = track.getBoundingClientRect();
+    const trackTop = rect.top + window.scrollY;
+    const stickyHeight = stage.offsetHeight;
+    const scrollableDistance = track.offsetHeight - stickyHeight;
+    const startY = Math.max(0, trackTop - 70);
+    const endY = startY + scrollableDistance;
+    return { startY, endY, scrollableDistance };
+  }, []);
+
+  // Helper: smoothly scrolls to a specific card index (desktop sticky track or mobile fallback)
+  const scrollToServiceIndex = useCallback(
+    (idx: number) => {
+      const clampedIdx = ((idx % total) + total) % total;
+      const metrics = getTrackMetrics();
+      if (metrics && metrics.scrollableDistance > 50) {
+        const targetY = metrics.startY + (clampedIdx / (total - 1)) * metrics.scrollableDistance;
+        const win = window as Window & {
+          lenisInstance?: { scrollTo: (y: number, opts?: { duration?: number }) => void };
+        };
+        if (win.lenisInstance) {
+          win.lenisInstance.scrollTo(targetY, { duration: 1.0 });
+        } else {
+          window.scrollTo({ top: targetY, behavior: 'smooth' });
+        }
+      } else {
+        const current = posRef.current;
+        const currentNorm = ((Math.round(current) % total) + total) % total;
+        let diff = clampedIdx - currentNorm;
+        if (diff > total / 2) diff -= total;
+        if (diff < -total / 2) diff += total;
+        targetRef.current = Math.round(current) + diff;
+      }
+    },
+    [getTrackMetrics, total]
+  );
+
+  // Scroll-Driven Observer for Sticky Vertical Stacking Mode
   useEffect(() => {
     if (viewMode !== 'sticky') return;
 
@@ -189,7 +230,6 @@ export default function ServiciosPage() {
     return () => observer.disconnect();
   }, [viewMode]);
 
-  // Jump smoothly to a specific service with shortest circular path
   const navigateTo = useCallback(
     (index: number) => {
       if (viewMode === 'sticky') {
@@ -199,25 +239,34 @@ export default function ServiciosPage() {
         }
         return;
       }
-      const current = posRef.current;
-      const currentNorm = ((Math.round(current) % total) + total) % total;
-      let diff = index - currentNorm;
-      if (diff > total / 2) diff -= total;
-      if (diff < -total / 2) diff += total;
-      targetRef.current = Math.round(current) + diff;
+      scrollToServiceIndex(index);
     },
-    [total, viewMode]
+    [scrollToServiceIndex, viewMode]
   );
 
   const nextService = useCallback(() => {
-    targetRef.current = Math.round(targetRef.current) + 1;
-  }, []);
+    const metrics = getTrackMetrics();
+    if (metrics && metrics.scrollableDistance > 50) {
+      const currentIdx = Math.round(targetRef.current);
+      const nextIdx = currentIdx >= total - 1 ? 0 : currentIdx + 1;
+      scrollToServiceIndex(nextIdx);
+    } else {
+      targetRef.current = Math.round(targetRef.current) + 1;
+    }
+  }, [getTrackMetrics, scrollToServiceIndex, total]);
 
   const prevService = useCallback(() => {
-    targetRef.current = Math.round(targetRef.current) - 1;
-  }, []);
+    const metrics = getTrackMetrics();
+    if (metrics && metrics.scrollableDistance > 50) {
+      const currentIdx = Math.round(targetRef.current);
+      const prevIdx = currentIdx <= 0 ? total - 1 : currentIdx - 1;
+      scrollToServiceIndex(prevIdx);
+    } else {
+      targetRef.current = Math.round(targetRef.current) - 1;
+    }
+  }, [getTrackMetrics, scrollToServiceIndex, total]);
 
-  // Frame-rate Independent Exponential Decay Loop (Asymptotic Air-Cushion, Zero Shockwave)
+  // Unified Animation Loop: drives horizontal 3D cards cleanly from sticky vertical scroll + exponential easing
   useEffect(() => {
     if (viewMode !== '3d') return;
     let lastTime = performance.now();
@@ -227,11 +276,18 @@ export default function ServiciosPage() {
       lastTime = now;
 
       if (!isDraggingRef.current) {
-        const decay = 7.8;
+        const metrics = getTrackMetrics();
+        if (metrics && metrics.scrollableDistance > 50) {
+          const clampedY = Math.max(metrics.startY, Math.min(metrics.endY, window.scrollY));
+          const progress = (clampedY - metrics.startY) / metrics.scrollableDistance;
+          targetRef.current = progress * (total - 1);
+        }
+
+        const decay = 8.5;
         const factor = 1 - Math.exp(-decay * dt);
         posRef.current += (targetRef.current - posRef.current) * factor;
 
-        if (Math.abs(targetRef.current - posRef.current) < 0.0001) {
+        if (Math.abs(targetRef.current - posRef.current) < 0.0002) {
           posRef.current = targetRef.current;
         }
       }
@@ -240,6 +296,7 @@ export default function ServiciosPage() {
 
       const normIndex = ((Math.round(posRef.current) % total) + total) % total;
       setActiveIndex(normIndex);
+      setHoveredIndex(normIndex);
 
       animFrameRef.current = requestAnimationFrame(loop);
     };
@@ -249,42 +306,41 @@ export default function ServiciosPage() {
     return () => {
       if (animFrameRef.current) cancelAnimationFrame(animFrameRef.current);
     };
-  }, [total, viewMode]);
+  }, [getTrackMetrics, total, viewMode]);
 
-  // Non-hijacking Wheel Listener: strictly horizontal gestures move 3D carousel; vertical scroll remains 100% free
+  // Horizontal Trackpad Gesture Sync: swiping sideways (deltaX) glides cleanly along the sticky horizontal track
   useEffect(() => {
     const stage = stageRef.current;
     if (!stage || viewMode !== '3d') return;
 
     const handleWheelNative = (e: WheelEvent) => {
-      const isHorizontalSwipe = Math.abs(e.deltaX) > Math.abs(e.deltaY) * 1.4 && Math.abs(e.deltaX) > 4;
+      const isHorizontalSwipe = Math.abs(e.deltaX) > Math.abs(e.deltaY) * 1.3 && Math.abs(e.deltaX) > 4;
       if (!isHorizontalSwipe) {
-        return; // Allow natural vertical scrolling down the page
+        return; // Let vertical scroll flow naturally to drive the sticky horizontal track!
       }
 
       e.preventDefault();
 
-      const step = Math.sign(e.deltaX) * Math.min(0.45, Math.abs(e.deltaX) * 0.0018);
-      targetRef.current += step;
-
-      if (wheelSnapTimeoutRef.current) clearTimeout(wheelSnapTimeoutRef.current);
-      wheelSnapTimeoutRef.current = setTimeout(() => {
-        targetRef.current = Math.round(targetRef.current);
-      }, 220);
+      const metrics = getTrackMetrics();
+      if (metrics && metrics.scrollableDistance > 50) {
+        const nextY = Math.max(metrics.startY, Math.min(metrics.endY, window.scrollY + e.deltaX * 1.8));
+        window.scrollTo(0, nextY);
+      } else {
+        targetRef.current += Math.sign(e.deltaX) * Math.min(0.45, Math.abs(e.deltaX) * 0.002);
+      }
     };
 
     stage.addEventListener('wheel', handleWheelNative, { passive: false });
     return () => {
       stage.removeEventListener('wheel', handleWheelNative);
-      if (wheelSnapTimeoutRef.current) clearTimeout(wheelSnapTimeoutRef.current);
     };
-  }, [viewMode]);
+  }, [getTrackMetrics, viewMode]);
 
   // Safe Dragging: Never hijacks clicks on buttons or links!
   const handlePointerDown = (e: React.PointerEvent) => {
     const targetEl = e.target as HTMLElement | null;
     if (targetEl?.closest('a, button, input, select, textarea')) {
-      return; // Native click on links and buttons works 100% untouched
+      return;
     }
 
     isPointerDownRef.current = true;
@@ -300,7 +356,6 @@ export default function ServiciosPage() {
     if (!isPointerDownRef.current) return;
     const deltaX = e.clientX - dragStartXRef.current;
 
-    // Only engage drag + pointer capture after intentional horizontal movement (> 8px)
     if (!isDraggingRef.current) {
       if (Math.abs(deltaX) < 8) return;
       isDraggingRef.current = true;
@@ -324,7 +379,7 @@ export default function ServiciosPage() {
     lastClientXRef.current = e.clientX;
     lastDragTimeRef.current = now;
 
-    const newPos = dragStartPosRef.current - deltaX / 140;
+    const newPos = Math.max(0, Math.min(total - 1, dragStartPosRef.current - deltaX / 160));
     posRef.current = newPos;
     targetRef.current = newPos;
   };
@@ -355,12 +410,12 @@ export default function ServiciosPage() {
 
     let target = Math.round(posRef.current);
     if (deltaX < -35 || avgVel < -0.18) {
-      target = Math.floor(dragStartPosRef.current) + 1;
+      target = Math.min(total - 1, Math.floor(dragStartPosRef.current) + 1);
     } else if (deltaX > 35 || avgVel > 0.18) {
-      target = Math.ceil(dragStartPosRef.current) - 1;
+      target = Math.max(0, Math.ceil(dragStartPosRef.current) - 1);
     }
 
-    targetRef.current = target;
+    scrollToServiceIndex(target);
   };
 
   // Keyboard navigation
@@ -422,29 +477,41 @@ export default function ServiciosPage() {
       </div>
 
       {/* ── BANNER EDITORIAL DARK LUXURY & VIEW MODE SWITCHER ── */}
-      <section className="relative z-10 pt-28 pb-8 md:pt-36 md:pb-10 px-6 text-center border-b border-white/10 overflow-hidden bg-gradient-to-b from-[#101216]/90 via-[#08090b]/95 to-[#08090b]">
+      <section className="relative z-10 pt-24 pb-6 md:pt-28 md:pb-8 px-6 text-center border-b border-white/10 overflow-hidden bg-gradient-to-b from-[#101216]/90 via-[#08090b]/95 to-[#08090b]">
         {/* Kinetic Watermark */}
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 select-none pointer-events-none opacity-[0.03] whitespace-nowrap font-condensed text-[20vw] font-black uppercase text-white leading-none">
           OFICIO AUSTRAL
         </div>
 
-        <div className="relative z-10 max-w-4xl mx-auto space-y-4">
+        <div className="relative z-10 max-w-4xl mx-auto space-y-3">
           <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-white/[0.04] border border-white/10 text-[#59BFD6] font-mono text-[11px] uppercase tracking-[0.25em]">
             <span className="w-1.5 h-1.5 rounded-full bg-[#59BFD6] animate-pulse shadow-[0_0_8px_#59BFD6]" />
-            <span>41°S &bull; DISCIPLINA TÉCNICA &amp; PLIEGOS APILADOS</span>
+            <span>41°S &bull; DISCIPLINA TÉCNICA &amp; DANZA ÓPTICA 3D</span>
           </div>
 
-          <h1 className="font-condensed text-5xl sm:text-7xl md:text-8xl uppercase tracking-tight text-white font-bold leading-[0.95] drop-shadow-2xl">
+          <h1 className="font-condensed text-5xl sm:text-6xl md:text-7xl uppercase tracking-tight text-white font-bold leading-[0.95] drop-shadow-2xl">
             PLIEGOS DE OFICIO
           </h1>
 
-          <p className="font-sans text-sm sm:text-base md:text-lg text-white/75 max-w-2xl mx-auto font-light leading-relaxed pt-1">
-            Diseño Cross Media y Fotografía de autor esculpidos bajo el clima y las distancias de la Patagonia austral. Desliza hacia abajo para recorrer cada una de nuestras seis especialidades.
+          <p className="font-sans text-sm sm:text-base text-white/75 max-w-2xl mx-auto font-light leading-relaxed pt-1">
+            Diseño Cross Media y Fotografía de autor esculpidos bajo el clima y las distancias de la Patagonia austral. Haz scroll hacia abajo o desliza horizontalmente para recorrer cada especialidad.
           </p>
 
           {/* ── VIEW MODE TOGGLE & STATUS HUD ── */}
-          <div className="flex flex-wrap items-center justify-center gap-4 pt-3">
+          <div className="flex flex-wrap items-center justify-center gap-4 pt-2">
             <div className="inline-flex flex-wrap justify-center p-1 rounded-2xl sm:rounded-full bg-white/[0.05] border border-white/10 backdrop-blur-md">
+              <button
+                type="button"
+                onClick={() => setViewMode('3d')}
+                className={`inline-flex items-center gap-2 px-4 sm:px-5 py-2 rounded-full font-mono text-xs uppercase tracking-wider transition-colors duration-200 ${
+                  viewMode === '3d'
+                    ? 'bg-[#59BFD6] text-[#08090b] font-bold shadow-[0_0_20px_rgba(89,191,214,0.4)]'
+                    : 'text-white/70 hover:text-white'
+                }`}
+              >
+                <Layers className="w-3.5 h-3.5" />
+                <span>Danza Óptica 3D</span>
+              </button>
               <button
                 type="button"
                 onClick={() => setViewMode('sticky')}
@@ -455,13 +522,13 @@ export default function ServiciosPage() {
                 }`}
               >
                 <Sparkles className="w-3.5 h-3.5" />
-                <span>Recorrido Scroll</span>
+                <span>Recorrido Vertical</span>
               </button>
               <button
                 type="button"
-                onClick={() => setViewMode('3d')}
+                onClick={() => setViewMode('reticular')}
                 className={`inline-flex items-center gap-2 px-4 sm:px-5 py-2 rounded-full font-mono text-xs uppercase tracking-wider transition-colors duration-200 ${
-                  viewMode === '3d'
+                  viewMode === 'reticular'
                     ? 'bg-[#59BFD6] text-[#08090b] font-bold shadow-[0_0_20px_rgba(89,191,214,0.4)]'
                     : 'text-white/70 hover:text-white'
                 }`}
@@ -641,18 +708,19 @@ export default function ServiciosPage() {
       )}
 
       {/* ══════════════════════════════════════════════════════════════════════ */}
-      {/* ── MODO 2: DANZA ÓPTICA 3D (AIR-CUSHIONED DELICATE ORBITAL DANCE) ─── */}
+      {/* ── MODO 1: DANZA ÓPTICA 3D (STICKY HORIZONTAL GLIDE ON SCROLL) ────── */}
       {/* ══════════════════════════════════════════════════════════════════════ */}
       {viewMode === '3d' && (
-        <section
-          ref={stageRef}
-          onPointerDown={handlePointerDown}
-          onPointerMove={handlePointerMove}
-          onPointerUp={handlePointerUp}
-          onPointerCancel={handlePointerUp}
-          className="relative z-20 w-full min-h-[720px] md:min-h-[820px] flex flex-col items-center justify-center overflow-hidden cursor-grab active:cursor-grabbing select-none py-10 px-4"
-          style={{ touchAction: 'pan-y' }}
-        >
+        <div ref={trackRef} className="relative z-20 w-full md:h-[340vh]">
+          <section
+            ref={stageRef}
+            onPointerDown={handlePointerDown}
+            onPointerMove={handlePointerMove}
+            onPointerUp={handlePointerUp}
+            onPointerCancel={handlePointerUp}
+            className="md:sticky md:top-[70px] w-full min-h-[680px] md:h-[calc(100vh-70px)] flex flex-col items-center justify-center overflow-hidden cursor-grab active:cursor-grabbing select-none py-6 px-4"
+            style={{ touchAction: 'pan-y' }}
+          >
           {/* Floating Left / Right Tactile Navigation Buttons */}
           <button
             type="button"
@@ -894,10 +962,11 @@ export default function ServiciosPage() {
             {/* Gesture Tip */}
             <div className="inline-flex items-center gap-2 font-mono text-[11px] text-white/40">
               <Wind className="w-3.5 h-3.5 text-[#59BFD6] animate-pulse" />
-              <span>Desliza en horizontal, arrastra con el ratón o usa las flechas &larr; &rarr;</span>
+              <span>Haz scroll hacia abajo, desliza en horizontal o usa las flechas &larr; &rarr; para recorrer los 6 oficios</span>
             </div>
           </div>
         </section>
+        </div>
       )}
 
       {/* ══════════════════════════════════════════════════════════════════════ */}
