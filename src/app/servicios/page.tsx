@@ -533,18 +533,6 @@ export default function ServiciosPage() {
                     : 'text-white/70 hover:text-white'
                 }`}
               >
-                <Layers className="w-3.5 h-3.5" />
-                <span>Danza Óptica 3D</span>
-              </button>
-              <button
-                type="button"
-                onClick={() => setViewMode('reticular')}
-                className={`inline-flex items-center gap-2 px-4 sm:px-5 py-2 rounded-full font-mono text-xs uppercase tracking-wider transition-colors duration-200 ${
-                  viewMode === 'reticular'
-                    ? 'bg-[#59BFD6] text-[#08090b] font-bold shadow-[0_0_20px_rgba(89,191,214,0.4)]'
-                    : 'text-white/70 hover:text-white'
-                }`}
-              >
                 <LayoutGrid className="w-3.5 h-3.5" />
                 <span>Pliegos Reticulares</span>
               </button>
@@ -746,7 +734,6 @@ export default function ServiciosPage() {
             style={{
               perspective: '1300px',
               perspectiveOrigin: '50% 50%',
-              transformStyle: 'preserve-3d',
             }}
           >
             {SERVICES_LIST.map((serv, idx) => {
@@ -890,7 +877,10 @@ export default function ServiciosPage() {
                       </div>
 
                       {/* Bottom Action Buttons */}
-                      <div className="relative z-30 flex flex-wrap items-center justify-between gap-3 pt-3 border-t border-white/10">
+                      <div
+                        className="relative z-30 flex flex-wrap items-center justify-between gap-3 pt-3 border-t border-white/10"
+                        style={{ pointerEvents: idx === activeIndex ? 'auto' : 'none' }}
+                      >
                         <Link
                           href={serv.href}
                           onPointerDown={(e) => e.stopPropagation()}
