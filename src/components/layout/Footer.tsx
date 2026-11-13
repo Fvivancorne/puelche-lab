@@ -3,10 +3,16 @@
 import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { usePathname } from 'next/navigation';
 import { Instagram, Facebook, ArrowUpRight, Mail, Phone, MapPin } from 'lucide-react';
 import { STUDIO_SERVICES } from '@/data/portfolio';
 
 export function Footer() {
+  const pathname = usePathname();
+
+  if (pathname?.startsWith('/admin')) {
+    return null;
+  }
   return (
     <footer id="footer" className="w-full bg-[#0a0b0e] bg-[#18191B] text-white relative overflow-hidden border-t border-white/10">
       {/* ── LÍNEA DE LUZ PATAGÓNICA SUPERIOR ── */}

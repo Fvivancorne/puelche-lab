@@ -1,9 +1,15 @@
 'use client';
 
 import React from 'react';
+import { usePathname } from 'next/navigation';
 import { MessageCircle } from 'lucide-react';
 
 export function WhatsAppButton() {
+  const pathname = usePathname();
+
+  if (pathname?.startsWith('/admin')) {
+    return null;
+  }
   const whatsappUrl = 'https://wa.me/56966177500?text=' + encodeURIComponent(
     'Hola Paula y equipo Puelche Lab, me gustaría cotizar un proyecto de fotografía o diseño en Puerto Varas.'
   );
