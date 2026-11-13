@@ -53,7 +53,7 @@ export default function AdminCmsHubPage() {
   const [pin, setPin] = useState<string>('');
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [authError, setAuthError] = useState<string | null>(null);
-  const [activeTab, setActiveTab] = useState<'dashboard' | 'tarifario' | 'portafolio' | 'servicios' | 'clientes' | 'leads' | 'twenty'>('dashboard');
+  const [activeTab, setActiveTab] = useState<'dashboard' | 'tarifario' | 'portafolio' | 'servicios' | 'clientes' | 'leads' | 'ajustes'>('dashboard');
   const [portfolioFilter, setPortfolioFilter] = useState<string>('todos');
 
   // Live currency state
@@ -341,24 +341,19 @@ export default function AdminCmsHubPage() {
               </div>
             </button>
 
-            {/* TWENTY CRM INTEGRATION TAB */}
+            {/* CONFIGURACIÓN DEL ESTUDIO */}
             <button
-              onClick={() => setActiveTab('twenty')}
+              onClick={() => setActiveTab('ajustes')}
               className={`w-full flex items-center justify-between px-3.5 py-3 rounded-xl transition-all ${
-                activeTab === 'twenty'
-                  ? 'bg-gradient-to-r from-[#59BFD6] to-[#4eaac0] text-[#08090b] font-bold shadow-[0_0_20px_rgba(89,191,214,0.35)]'
-                  : 'text-white/80 hover:text-white hover:bg-white/5 border border-white/5'
+                activeTab === 'ajustes'
+                  ? 'bg-[#59BFD6] text-[#08090b] font-bold shadow-[0_0_20px_rgba(89,191,214,0.35)]'
+                  : 'text-white/70 hover:text-white hover:bg-white/5'
               }`}
             >
               <div className="flex items-center gap-3">
-                <Workflow className="w-4 h-4 text-[#59BFD6]" />
-                <span>Twenty CRM Bridge</span>
+                <Sliders className="w-4 h-4" />
+                <span>Configuración Estudio</span>
               </div>
-              <span className={`text-[9px] uppercase px-1.5 py-0.5 rounded font-bold ${
-                activeTab === 'twenty' ? 'bg-[#08090b] text-[#59BFD6]' : 'bg-[#59BFD6]/20 text-[#59BFD6]'
-              }`}>
-                B2B
-              </span>
             </button>
           </nav>
         </div>
@@ -417,7 +412,7 @@ export default function AdminCmsHubPage() {
               {activeTab === 'servicios' && 'Disciplinas de Autor'}
               {activeTab === 'clientes' && 'Directorio de Alianzas'}
               {activeTab === 'leads' && 'Buzón de Cotizaciones'}
-              {activeTab === 'twenty' && 'Twenty CRM • Arquitectura de Ventas'}
+              {activeTab === 'ajustes' && 'Configuración del Estudio & Datos de Contacto'}
             </h1>
           </div>
 
@@ -549,18 +544,18 @@ export default function AdminCmsHubPage() {
               <div className="p-6 rounded-3xl bg-[#111318] border border-white/10 space-y-4">
                 <div className="flex items-center justify-between border-b border-white/10 pb-3">
                   <span className="font-mono text-xs uppercase tracking-wider text-[#C29B63]">
-                    Twenty CRM & Gestión de Ventas
+                    Buzón Comercial & Cotizaciones
                   </span>
-                  <Workflow className="w-4 h-4 text-[#C29B63]" />
+                  <Mail className="w-4 h-4 text-[#C29B63]" />
                 </div>
                 <p className="font-sans text-sm text-white/70 leading-relaxed">
-                  Conexión directa entre las cotizaciones web y el pipeline comercial de la agencia para gestionar deals corporativos con AquaChile, Turistour y Estancia Rilán.
+                  Enrutamiento directo e instantáneo de prospectos de alto valor hacia el WhatsApp de Paula Valdivieso y correo de Alejandro Lattes sin intermediarios.
                 </p>
                 <button
-                  onClick={() => setActiveTab('twenty')}
+                  onClick={() => setActiveTab('leads')}
                   className="inline-flex items-center gap-2 text-xs font-mono text-[#59BFD6] hover:underline uppercase"
                 >
-                  <span>Ver Arquitectura Twenty CRM &rarr;</span>
+                  <span>Ver Canales de Despacho &rarr;</span>
                 </button>
               </div>
             </div>
@@ -984,88 +979,74 @@ export default function AdminCmsHubPage() {
         )}
 
         {/* ══════════════════════════════════════════════════════════════════ */}
-        {/* TAB 7: TWENTY CRM INTEGRATION BRIDGE                               */}
+        {/* TAB 7: CONFIGURACIÓN DEL ESTUDIO (DATOS DE CONTACTO & CANALES)     */}
         {/* ══════════════════════════════════════════════════════════════════ */}
-        {activeTab === 'twenty' && (
+        {activeTab === 'ajustes' && (
           <div className="space-y-6">
-            <div className="p-8 rounded-3xl bg-gradient-to-br from-[#11141c] via-[#151a24] to-[#11141c] border border-white/10 space-y-6 shadow-2xl">
-              <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 border-b border-white/10 pb-6">
-                <div className="space-y-2 max-w-2xl">
-                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#59BFD6]/10 text-[#59BFD6] font-mono text-xs border border-[#59BFD6]/20">
-                    <Workflow className="w-3.5 h-3.5" />
-                    <span>Twenty CRM &bull; Arquitectura Omnicanal de la Agencia</span>
+            <div className="p-8 rounded-3xl bg-[#111318] border border-white/10 space-y-8">
+              <div>
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#59BFD6]/10 text-[#59BFD6] font-mono text-xs border border-[#59BFD6]/20 mb-2">
+                  <Sliders className="w-3.5 h-3.5" />
+                  <span>Configuración Centralizada del Estudio</span>
+                </div>
+                <h2 className="font-condensed text-3xl font-bold uppercase text-white">
+                  Identidad, Canales de Contacto & Seguridad
+                </h2>
+                <p className="font-sans text-sm text-white/70 max-w-2xl mt-1 leading-relaxed">
+                  Datos de contacto oficiales que alimentan el Navbar, Footer, Cotizador y mensajes directos de WhatsApp para Paula Valdivieso y Alejandro Lattes.
+                </p>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="p-6 rounded-2xl bg-white/[0.02] border border-white/10 space-y-4">
+                  <span className="font-mono text-xs text-[#C29B63] uppercase font-bold block">
+                    1. Paula Valdivieso (Comercial)
+                  </span>
+                  <div className="space-y-3 font-mono text-xs">
+                    <div>
+                      <span className="text-white/40 block text-[10px]">CORREO OFICIAL:</span>
+                      <span className="text-white font-bold">paula.valdivieso@puelchelab.cl</span>
+                    </div>
+                    <div>
+                      <span className="text-white/40 block text-[10px]">WHATSAPP COMERCIAL:</span>
+                      <span className="text-emerald-400 font-bold">+56 9 6617 7500</span>
+                    </div>
+                    <div>
+                      <span className="text-white/40 block text-[10px]">ROL:</span>
+                      <span className="text-white/80">Socia &bull; Dirección Comercial & Cotizaciones</span>
+                    </div>
                   </div>
-                  <h2 className="font-condensed text-3xl font-bold uppercase text-white tracking-wide">
-                    ¿Por qué Twenty CRM + CMS Next.js?
-                  </h2>
-                  <p className="font-sans text-sm text-white/70 leading-relaxed">
-                    Un <strong>CMS</strong> administra el contenido visual del sitio web (fotos, carruseles 3D, textos). Un <strong>CRM como Twenty</strong> administra el proceso de ventas B2B (leads corporativos, etapas del embudo comercial, contactos y seguimiento de cotizaciones).
-                  </p>
                 </div>
 
-                <div className="flex flex-col sm:flex-row gap-3 shrink-0">
-                  <a
-                    href="https://twenty.com"
-                    target="_blank"
-                    rel="noreferrer"
-                    className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-2xl bg-[#59BFD6] hover:bg-white text-[#08090b] font-mono text-xs uppercase tracking-wider font-bold transition-all shadow-[0_0_20px_rgba(89,191,214,0.3)]"
-                  >
-                    <span>Conectar Instancia Twenty</span>
-                    <ExternalLink className="w-3.5 h-3.5" />
-                  </a>
+                <div className="p-6 rounded-2xl bg-white/[0.02] border border-white/10 space-y-4">
+                  <span className="font-mono text-xs text-[#59BFD6] uppercase font-bold block">
+                    2. Alejandro Lattes Corona (Creativo)
+                  </span>
+                  <div className="space-y-3 font-mono text-xs">
+                    <div>
+                      <span className="text-white/40 block text-[10px]">CORREO OFICIAL:</span>
+                      <span className="text-white font-bold">alejandro@puelchelab.cl</span>
+                    </div>
+                    <div>
+                      <span className="text-white/40 block text-[10px]">TELÉFONO ESTUDIO:</span>
+                      <span className="text-white font-bold">+56 9 9936 3705</span>
+                    </div>
+                    <div>
+                      <span className="text-white/40 block text-[10px]">ROL:</span>
+                      <span className="text-white/80">Fundador &bull; Dirección Creativa & Fotografía</span>
+                    </div>
+                  </div>
                 </div>
               </div>
 
-              {/* Architectural Comparison Matrix */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
-                <div className="p-6 rounded-2xl bg-white/[0.02] border border-white/10 space-y-3">
-                  <div className="flex items-center gap-2 text-[#59BFD6] font-mono text-xs font-bold uppercase">
-                    <Monitor className="w-4 h-4" />
-                    <span>1. CMS Next.js (Esta Consola)</span>
-                  </div>
-                  <ul className="space-y-2 text-xs font-sans text-white/80">
-                    <li className="flex items-start gap-2">
-                      <Check className="w-4 h-4 text-[#59BFD6] shrink-0 mt-0.5" />
-                      <span>Control de fotos RAW Sony G Master y carrusel 3D horizontal.</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <Check className="w-4 h-4 text-[#59BFD6] shrink-0 mt-0.5" />
-                      <span>Calibración de la fórmula matemática del cotizador público.</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <Check className="w-4 h-4 text-[#59BFD6] shrink-0 mt-0.5" />
-                      <span>Indexación automática de la UF de Chile sin costo de mantenimiento.</span>
-                    </li>
-                  </ul>
+              {/* Security & Access Box */}
+              <div className="p-6 rounded-2xl bg-white/[0.02] border border-white/10 space-y-3 font-mono text-xs">
+                <div className="flex items-center gap-2 text-white/80 font-bold">
+                  <Lock className="w-4 h-4 text-[#59BFD6]" />
+                  <span>Seguridad del Panel Admin</span>
                 </div>
-
-                <div className="p-6 rounded-2xl bg-white/[0.02] border border-white/10 space-y-3">
-                  <div className="flex items-center gap-2 text-emerald-400 font-mono text-xs font-bold uppercase">
-                    <Workflow className="w-4 h-4" />
-                    <span>2. Twenty CRM (Pipeline de Ventas)</span>
-                  </div>
-                  <ul className="space-y-2 text-xs font-sans text-white/80">
-                    <li className="flex items-start gap-2">
-                      <Check className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
-                      <span>Recepción de prospectos que cotizan en <code>/cotizador</code> o <code>/contacto</code>.</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <Check className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
-                      <span>Tablero Kanban: <em>Lead Nuevo &rarr; Reunión &rarr; Propuesta &rarr; Ganado</em>.</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <Check className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
-                      <span>Asignación automática a Paula Valdivieso para llamadas y cotizaciones.</span>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-
-              {/* Webhook Architecture Diagram */}
-              <div className="p-5 rounded-2xl bg-black/40 border border-white/5 space-y-2 font-mono text-xs">
-                <span className="text-[#59BFD6] font-bold block">Flujo de Inyección Automática Webhook:</span>
-                <p className="text-white/60">
-                  <code>[Cliente en /cotizador]</code> &rarr; <code>[Cálculo UF/CLP]</code> &rarr; <code>[Webhook POST /api/contact]</code> &rarr; <code>[Creación de Lead en Twenty CRM + WhatsApp Paula]</code>
+                <p className="text-white/60 font-sans text-xs">
+                  El PIN actual es <code>puelche2026</code>. Las sesiones se guardan de forma aislada en el navegador del administrador sin cookies invasivas.
                 </p>
               </div>
             </div>
