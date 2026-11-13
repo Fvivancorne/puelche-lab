@@ -248,9 +248,9 @@ export default function AdminPreciosPage() {
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="flex items-center gap-3">
             <Link
-              href="/cotizador"
+              href="/admin"
               className="p-2 rounded-xl bg-white/5 hover:bg-white/10 text-white/70 hover:text-white transition-colors"
-              title="Ver Cotizador Público"
+              title="Volver a Consola Maestra CMS"
             >
               <ArrowLeft className="w-4 h-4" />
             </Link>
@@ -262,7 +262,7 @@ export default function AdminPreciosPage() {
                 </h1>
               </div>
               <p className="font-mono text-[11px] text-white/50">
-                Ajuste en vivo de precios, multiplicadores y add-ons para cotizaciones
+                <Link href="/admin" className="hover:text-[#59BFD6] transition-colors">CMS Maestro</Link> &bull; Ajuste en vivo de precios, multiplicadores y add-ons
               </p>
             </div>
           </div>
