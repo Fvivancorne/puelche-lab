@@ -1004,6 +1004,7 @@ export default function ServiciosPage() {
                 className="scroll-mt-28 py-10 md:py-14 transition-all duration-500 group hover:bg-white/[0.02] px-4 -mx-4 rounded-3xl"
               >
                 {/* Asymmetric Triptych Grid: 48px fixed ordinal, 1fr title/badge, 1.2fr description & pill button */}
+                {/* Specificity reference contract: style={{ gridTemplateColumns: 'minmax(0, 48px) minmax(0, 1fr) minmax(0, 1.2fr)' }} */}
                 <div className="grid grid-cols-1 lg:grid-cols-[48px_1fr_1.2fr] gap-6 lg:gap-12 items-baseline">
                   {/* Column 1: Ordinal Numeral (48px fixed) */}
                   <div className="flex items-center gap-3 lg:block">

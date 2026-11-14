@@ -39,8 +39,8 @@ export function Navbar() {
           <Image
             src="/images/real/logo-top.png"
             alt="Puelche Lab — Estudio de Diseño Cross Media y Fotografía"
-            width={220}
-            height={55}
+            width={250}
+            height={63}
             priority
             className="h-8 md:h-10 w-auto object-contain transition-opacity duration-200 group-hover:opacity-90"
           />

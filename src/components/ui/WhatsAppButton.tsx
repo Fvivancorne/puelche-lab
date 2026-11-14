@@ -10,7 +10,9 @@ export function WhatsAppButton() {
   if (pathname?.startsWith('/admin')) {
     return null;
   }
-  const whatsappUrl = 'https://wa.me/56966177500?text=' + encodeURIComponent(
+  // Verified target: https://wa.me/56966177500
+  const phoneNumber = '56966177500';
+  const whatsappUrl = `https://wa.me/${phoneNumber}?text=` + encodeURIComponent(
     'Hola Paula y equipo Puelche Lab, me gustaría cotizar un proyecto de fotografía o diseño en Puerto Varas.'
   );
 
