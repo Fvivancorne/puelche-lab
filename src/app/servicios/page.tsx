@@ -559,7 +559,7 @@ export default function ServiciosPage() {
                 key={s.id}
                 type="button"
                 onClick={() => navigateTo(i)}
-                className={`px-3.5 py-1.5 rounded-full font-mono text-[11px] uppercase tracking-wider transition-all border ${
+                className={`px-3.5 py-1.5 rounded-full font-mono text-[11px] uppercase tracking-wider transition-all border whitespace-nowrap shrink-0 ${
                   activeIndex === i
                     ? 'bg-[#59BFD6]/15 text-[#59BFD6] border-[#59BFD6]/50 font-bold shadow-[0_0_15px_rgba(89,191,214,0.2)]'
                     : 'bg-white/[0.03] text-white/60 border-white/10 hover:text-white hover:border-white/25'
@@ -909,41 +909,51 @@ export default function ServiciosPage() {
           </div>
 
           {/* ── DUAL CONTROLS & TIMELINE SCRUBBER HUD ── */}
-          <div className="relative z-30 mt-6 w-full max-w-2xl px-4 flex flex-col items-center gap-3">
-            {/* Timeline Nodes */}
-            <div className="w-full flex items-center justify-between gap-2 p-2 rounded-full bg-white/[0.04] border border-white/10 backdrop-blur-md">
+          <div className="relative z-30 mt-6 w-full max-w-xl px-4 flex flex-col items-center gap-3">
+            {/* Timeline Kinetic Island */}
+            <div className="flex items-center justify-between gap-1 sm:gap-2 p-1.5 sm:p-2 rounded-full bg-[#101216]/90 border border-white/15 backdrop-blur-xl shadow-2xl">
               <button
                 type="button"
                 onClick={prevService}
                 aria-label="Servicio anterior"
-                className="p-2 rounded-full hover:bg-white/10 text-white/70 hover:text-white transition-colors"
+                className="w-8 h-8 sm:w-9 sm:h-9 rounded-full flex items-center justify-center hover:bg-white/10 text-white/70 hover:text-[#59BFD6] transition-colors shrink-0"
               >
                 <ChevronLeft className="w-4 h-4" />
               </button>
 
-              <div className="flex items-center gap-1 sm:gap-2">
-                {SERVICES_LIST.map((s, i) => (
-                  <button
-                    key={s.id}
-                    type="button"
-                    onClick={() => navigateTo(i)}
-                    className={`group relative flex items-center gap-2 px-3 py-1.5 rounded-full transition-all duration-300 font-mono text-[11px] ${
-                      activeIndex === i
-                        ? 'bg-white/10 text-[#59BFD6] border border-[#59BFD6]/40 font-bold shadow-[0_0_12px_rgba(89,191,214,0.3)]'
-                        : 'text-white/40 hover:text-white hover:bg-white/5 border border-transparent'
-                    }`}
-                  >
-                    <span>0{i + 1}</span>
-                    <span className="hidden sm:inline font-sans font-normal text-xs">{s.title}</span>
-                  </button>
-                ))}
+              <div className="flex items-center gap-1 sm:gap-1.5">
+                {SERVICES_LIST.map((s, i) => {
+                  const isActive = activeIndex === i;
+                  return (
+                    <button
+                      key={s.id}
+                      type="button"
+                      onClick={() => navigateTo(i)}
+                      title={`0${i + 1}. ${s.title}`}
+                      className={`group relative flex items-center justify-center rounded-full transition-all duration-300 select-none ${
+                        isActive
+                          ? 'bg-[#59BFD6]/15 text-[#59BFD6] border border-[#59BFD6] font-bold shadow-[0_0_16px_rgba(89,191,214,0.35)] px-3.5 py-1.5 gap-2'
+                          : 'w-7 h-7 sm:w-8 sm:h-8 text-white/40 hover:text-white hover:bg-white/10 border border-transparent font-mono text-xs'
+                      }`}
+                    >
+                      <span className={`font-mono text-xs ${isActive ? 'text-[#59BFD6] font-bold' : ''}`}>
+                        0{i + 1}
+                      </span>
+                      {isActive && (
+                        <span className="font-sans font-semibold text-xs tracking-wider uppercase text-white whitespace-nowrap">
+                          {s.title}
+                        </span>
+                      )}
+                    </button>
+                  );
+                })}
               </div>
 
               <button
                 type="button"
                 onClick={nextService}
                 aria-label="Siguiente servicio"
-                className="p-2 rounded-full hover:bg-white/10 text-white/70 hover:text-white transition-colors"
+                className="w-8 h-8 sm:w-9 sm:h-9 rounded-full flex items-center justify-center hover:bg-white/10 text-white/70 hover:text-[#59BFD6] transition-colors shrink-0"
               >
                 <ChevronRight className="w-4 h-4" />
               </button>

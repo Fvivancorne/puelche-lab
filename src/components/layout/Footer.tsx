@@ -43,62 +43,94 @@ export function Footer() {
 
           {/* Subtitle / Manifesto Tag */}
           <div className="inline-block mb-4">
-            <span className="px-3.5 py-1.5 rounded-full bg-[#59BFD6]/15 border border-[#59BFD6]/30 text-[#59BFD6] font-mono uppercase tracking-widest text-xs font-semibold">
+            <span className="px-4 py-1.5 rounded-full bg-[#59BFD6]/10 border border-[#59BFD6]/30 text-[#59BFD6] font-mono uppercase tracking-[0.2em] text-[11px] font-semibold backdrop-blur-sm shadow-[0_0_15px_rgba(89,191,214,0.15)]">
               EL MANIFIESTO DEL PUELCHE &bull; VIENTO CREATIVO
             </span>
           </div>
 
-          {/* Heading */}
-          <h2 className="font-condensed text-4xl sm:text-6xl md:text-7xl font-bold tracking-wider uppercase text-white mb-6">
-            CONTACTANOS
+          {/* Heading with Optical Letter-spacing & Grammatical Precision */}
+          <h2
+            aria-label="CONTACTANOS"
+            data-text="CONTACTANOS"
+            className="font-condensed text-4xl sm:text-6xl md:text-7xl font-bold tracking-[0.06em] uppercase text-transparent bg-clip-text bg-gradient-to-b from-white via-white to-white/80 mb-6 drop-shadow-sm"
+          >
+            CONTÁCTANOS
           </h2>
 
-          {/* Subtitle */}
-          <p className="font-sans text-base sm:text-lg md:text-xl text-white/80 max-w-2xl mx-auto mb-8 leading-relaxed font-light">
+          {/* Subtitle with Optimal Saccadic Line Length */}
+          <p className="font-sans text-base sm:text-lg md:text-xl text-white/75 max-w-xl mx-auto mb-10 leading-relaxed font-light">
             Lo que necesites saber, lo que necesites cotizar, lo que necesites hacer,
             <span className="block font-medium text-white pt-1">contáctanos y conversemos sobre tu territorio.</span>
           </p>
 
-          {/* Verified Studio Contact Details */}
-          <div className="text-xs sm:text-sm font-mono text-white/90 space-y-4 mb-10 max-w-xl mx-auto border-y border-white/10 py-6">
-            <div>
-              <p className="font-semibold text-white uppercase tracking-wider text-xs">
-                Alejandro Lattes Corona &bull; Fundador &bull; Dirección Creativa & Fotografía
-              </p>
-              <p className="text-white/70 pt-1">
-                <a href="mailto:alejandro@puelchelab.cl" className="underline hover:text-[#59BFD6] transition-colors">
-                  alejandro@puelchelab.cl
-                </a>
-                {' '}&bull;{' '}
-                <a href="tel:+56999363705" className="underline hover:text-[#59BFD6] transition-colors">
-                  +56 9 9936 3705
-                </a>
-              </p>
+          {/* Verified Studio Contact Cards (Gestalt Common Region & Human Connection) */}
+          <div className="max-w-2xl mx-auto mb-10 border-y border-white/10 py-6 sm:py-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 text-left mb-6">
+              {/* Alejandro Card */}
+              <div className="p-4 sm:p-5 rounded-2xl bg-white/[0.03] border border-white/10 hover:border-[#59BFD6]/40 transition-colors">
+                <p className="font-condensed text-base font-bold text-white uppercase tracking-wider mb-1">
+                  Alejandro Lattes Corona
+                </p>
+                <p className="font-mono text-[11px] text-[#59BFD6] uppercase tracking-wider mb-3">
+                  Fundador &bull; Dirección Creativa & Fotografía
+                </p>
+                <div className="space-y-1.5 font-mono text-xs text-white/80">
+                  <a
+                    href="mailto:alejandro@puelchelab.cl"
+                    className="flex items-center gap-2 hover:text-[#59BFD6] transition-colors group"
+                  >
+                    <Mail className="w-3.5 h-3.5 text-white/40 group-hover:text-[#59BFD6] shrink-0" />
+                    <span className="underline decoration-white/20 underline-offset-2">alejandro@puelchelab.cl</span>
+                  </a>
+                  <a
+                    href="tel:+56999363705"
+                    className="flex items-center gap-2 hover:text-[#59BFD6] transition-colors group"
+                  >
+                    <Phone className="w-3.5 h-3.5 text-white/40 group-hover:text-[#59BFD6] shrink-0" />
+                    <span className="underline decoration-white/20 underline-offset-2">+56 9 9936 3705</span>
+                  </a>
+                </div>
+              </div>
+
+              {/* Paula Card */}
+              <div className="p-4 sm:p-5 rounded-2xl bg-white/[0.03] border border-white/10 hover:border-[#59BFD6]/40 transition-colors">
+                <p className="font-condensed text-base font-bold text-white uppercase tracking-wider mb-1">
+                  Paula Valdivieso
+                </p>
+                <p className="font-mono text-[11px] text-[#59BFD6] uppercase tracking-wider mb-3">
+                  Directora de Arte y Fotografía
+                </p>
+                <div className="space-y-1.5 font-mono text-xs text-white/80">
+                  <a
+                    href="mailto:paula.valdivieso@puelchelab.cl"
+                    className="flex items-center gap-2 hover:text-[#59BFD6] transition-colors group"
+                  >
+                    <Mail className="w-3.5 h-3.5 text-white/40 group-hover:text-[#59BFD6] shrink-0" />
+                    <span className="underline decoration-white/20 underline-offset-2">paula.valdivieso@puelchelab.cl</span>
+                  </a>
+                  <a
+                    href="tel:+56966177500"
+                    className="flex items-center gap-2 hover:text-[#59BFD6] transition-colors group"
+                  >
+                    <Phone className="w-3.5 h-3.5 text-white/40 group-hover:text-[#59BFD6] shrink-0" />
+                    <span className="underline decoration-white/20 underline-offset-2">+56 9 6617 7500</span>
+                  </a>
+                </div>
+              </div>
             </div>
-            <div>
-              <p className="font-semibold text-white uppercase tracking-wider text-xs">
-                Paula Valdivieso &bull; Directora de Arte y Fotografía
-              </p>
-              <p className="text-white/70 pt-1">
-                <a href="mailto:paula.valdivieso@puelchelab.cl" className="underline hover:text-[#59BFD6] transition-colors">
-                  paula.valdivieso@puelchelab.cl
-                </a>
-                {' '}&bull;{' '}
-                <a href="tel:+56966177500" className="underline hover:text-[#59BFD6] transition-colors">
-                  +56 9 6617 7500
-                </a>
-              </p>
+
+            {/* Geographical Anchor */}
+            <div className="flex items-center justify-center gap-2 font-mono text-xs text-[#59BFD6] tracking-wider pt-2">
+              <MapPin className="w-3.5 h-3.5 text-[#59BFD6]" />
+              <span>Puerto Varas, Región de Los Lagos, Chile &bull; 41°19′S 72°59′W</span>
             </div>
-            <p className="text-[#59BFD6] text-xs pt-1 tracking-wide">
-              Puerto Varas, Región de Los Lagos, Chile &bull; 41°19′S 72°59′W
-            </p>
           </div>
 
           {/* Action Button */}
           <div className="inline-block mb-10">
             <Link
               href="/contacto"
-              className="inline-flex items-center justify-center gap-2 px-10 py-4 rounded-full bg-[#59BFD6] text-puelche-dark font-condensed uppercase tracking-widest text-base sm:text-lg font-bold hover:bg-white hover:text-puelche-dark transition-all duration-300 shadow-[0_0_25px_rgba(89,191,214,0.4)] hover:scale-105"
+              className="inline-flex items-center justify-center gap-2.5 px-8 sm:px-10 py-3.5 sm:py-4 rounded-full bg-gradient-to-r from-[#59BFD6] to-[#45A8BF] text-[#08090b] font-condensed uppercase tracking-widest text-base sm:text-lg font-bold hover:from-white hover:to-white hover:text-[#08090b] transition-all duration-300 shadow-[0_0_25px_rgba(89,191,214,0.35)] hover:shadow-[0_0_35px_rgba(89,191,214,0.55)] hover:scale-105 active:scale-95"
             >
               <span>INICIAR CONVERSACIÓN</span>
               <ArrowUpRight className="w-5 h-5" />
