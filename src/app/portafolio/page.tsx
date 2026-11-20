@@ -23,6 +23,28 @@ function PortfolioContent() {
   const [currentImageIndex, setCurrentImageIndex] = useState<number>(0);
   const [navDirection, setNavDirection] = useState<'next' | 'prev' | 'idle'>('idle');
   const [viewMode, setViewMode] = useState<'river' | 'grid' | 'latitud' | 'dynamo'>('river');
+  const [portfolioList, setPortfolioList] = useState<ProjectItem[]>(PORTFOLIO_PROJECTS);
+
+  useEffect(() => {
+    try {
+      const cached = localStorage.getItem('puelche_custom_projects');
+      if (cached) {
+        const parsed = JSON.parse(cached);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          setPortfolioList(parsed);
+        }
+      }
+    } catch {}
+
+    fetch('/api/admin/portfolio')
+      .then((r) => r.json())
+      .then((data) => {
+        if (data?.projects && Array.isArray(data.projects) && data.projects.length > 0) {
+          setPortfolioList(data.projects);
+        }
+      })
+      .catch(() => {});
+  }, []);
 
   // GSAP ScrollTrigger Refs para el Río Cinético Austral (Horizontal Pinned Stream)
   const riverRunwayRef = useRef<HTMLDivElement>(null);
@@ -41,8 +63,8 @@ function PortfolioContent() {
   }, [modoParam]);
 
   const filteredProjects = selectedCategory === 'Todos'
-    ? PORTFOLIO_PROJECTS
-    : PORTFOLIO_PROJECTS.filter((p) => p.category === selectedCategory);
+    ? portfolioList
+    : portfolioList.filter((p) => p.category === selectedCategory);
 
   const currentProjectIndex = activeModalProject
     ? filteredProjects.findIndex((p) => p.id === activeModalProject.id)
@@ -126,7 +148,7 @@ function PortfolioContent() {
 
   const nextProject = useCallback((e?: React.MouseEvent) => {
     if (e) e.stopPropagation();
-    const list = filteredProjects.length > 0 ? filteredProjects : PORTFOLIO_PROJECTS;
+    const list = filteredProjects.length > 0 ? filteredProjects : portfolioList;
     const currIdx = activeModalProject ? list.findIndex((p) => p.id === activeModalProject.id) : 0;
     const nextIdx = (currIdx + 1) % list.length;
     const nextItem = list[nextIdx];
@@ -138,11 +160,11 @@ function PortfolioContent() {
       url.searchParams.set('proyecto', nextItem.slug);
       window.history.replaceState(null, '', url.pathname + (url.search ? url.search : ''));
     }
-  }, [activeModalProject, filteredProjects]);
+  }, [activeModalProject, filteredProjects, portfolioList]);
 
   const prevProject = useCallback((e?: React.MouseEvent) => {
     if (e) e.stopPropagation();
-    const list = filteredProjects.length > 0 ? filteredProjects : PORTFOLIO_PROJECTS;
+    const list = filteredProjects.length > 0 ? filteredProjects : portfolioList;
     const currIdx = activeModalProject ? list.findIndex((p) => p.id === activeModalProject.id) : 0;
     const prevIdx = (currIdx - 1 + list.length) % list.length;
     const prevItem = list[prevIdx];
@@ -154,7 +176,7 @@ function PortfolioContent() {
       url.searchParams.set('proyecto', prevItem.slug);
       window.history.replaceState(null, '', url.pathname + (url.search ? url.search : ''));
     }
-  }, [activeModalProject, filteredProjects]);
+  }, [activeModalProject, filteredProjects, portfolioList]);
 
   const activeProjectList = filteredProjects.length > 0 ? filteredProjects : PORTFOLIO_PROJECTS;
   const activeProjectIndex = activeModalProject ? activeProjectList.findIndex((p) => p.id === activeModalProject.id) : 0;
@@ -228,7 +250,7 @@ function PortfolioContent() {
   // Auto-open project modal if ?proyecto= query param is provided
   useEffect(() => {
     if (projectParam) {
-      const match = PORTFOLIO_PROJECTS.find(
+      const match = portfolioList.find(
         (p) =>
           p.slug === projectParam ||
           p.id === projectParam ||
@@ -239,7 +261,7 @@ function PortfolioContent() {
         setCurrentImageIndex(0);
       }
     }
-  }, [projectParam]);
+  }, [projectParam, portfolioList]);
 
   // Pause Lenis, lock body scroll and block macOS swipe-history-navigation when modal is active
   useEffect(() => {
@@ -589,8 +611,8 @@ function PortfolioContent() {
         <div className={`flex flex-wrap items-center gap-2 pb-4 ${viewMode === 'latitud' || viewMode === 'dynamo' ? 'hidden' : ''}`}>
           {CATEGORIES.map((category) => {
             const count = category === 'Todos'
-              ? PORTFOLIO_PROJECTS.length
-              : PORTFOLIO_PROJECTS.filter((p) => p.category === category).length;
+              ? portfolioList.length
+              : portfolioList.filter((p) => p.category === category).length;
             const isSelected = selectedCategory === category;
 
             return (

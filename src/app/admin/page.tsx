@@ -104,6 +104,7 @@ export default function AdminCmsHubPage() {
   const [isCreatingProject, setIsCreatingProject] = useState<boolean>(false);
   const [portfolioSaveSuccess, setPortfolioSaveSuccess] = useState<boolean>(false);
   const [newDeliverableInput, setNewDeliverableInput] = useState<string>('');
+  const [newGalleryImgInput, setNewGalleryImgInput] = useState<string>('');
 
   // ── ESTADO DE CLIENTES / ALIANZAS AUTOADMINISTRABLE ──
   const [clients, setClients] = useState<ClientLogo[]>(ADMIN_CLIENT_LOGOS);
@@ -330,11 +331,61 @@ export default function AdminCmsHubPage() {
       summary: 'Breve resumen visual del encargo...',
       description: 'Descripción completa del proceso de producción...',
       image: '/images/real/bg-portafolios-fotografia-a-min.jpg',
+      gallery: ['/images/real/bg-portafolios-fotografia-a-min.jpg'],
       deliverables: ['Fotografía de Autor', 'Revelado RAW 16-Bit'],
       featured: true,
     };
     setEditingProject(newProj);
     setIsCreatingProject(true);
+    setNewDeliverableInput('');
+    setNewGalleryImgInput('');
+  };
+
+  // ── GESTIÓN DE TIERS Y SERVICIOS COMPLEMENTARIOS (ADD-ONS) ──
+  const handleAddTier = () => {
+    const lastTier = pricingConfig.tiers[pricingConfig.tiers.length - 1];
+    const nextMaxPages = (lastTier?.maxPages || 20) + 10;
+    const newTier: Tier = {
+      maxPages: nextMaxPages,
+      basePrice: (lastTier?.basePrice || 5400000) + 1500000,
+      pricePerPage: 250000,
+      baseWeeks: (lastTier?.baseWeeks || 10) + 2,
+    };
+    setPricingConfig((prev) => ({
+      ...prev,
+      tiers: [...prev.tiers, newTier],
+    }));
+  };
+
+  const handleDeleteTier = (idx: number) => {
+    if (pricingConfig.tiers.length <= 1) return;
+    setPricingConfig((prev) => ({
+      ...prev,
+      tiers: prev.tiers.filter((_, i) => i !== idx),
+    }));
+  };
+
+  const handleAddAddon = () => {
+    const newId = `servicio-${Date.now()}`;
+    const newAddon: AddonItem = {
+      id: newId,
+      name: 'Nuevo Servicio Complementario',
+      price: 500000,
+      description: 'Definición del alcance, especificaciones y entregables del servicio.',
+      category: 'Especialidad',
+      active: true,
+    };
+    setPricingConfig((prev) => ({
+      ...prev,
+      addons: [...prev.addons, newAddon],
+    }));
+  };
+
+  const handleDeleteAddon = (id: string) => {
+    setPricingConfig((prev) => ({
+      ...prev,
+      addons: prev.addons.filter((a) => a.id !== id),
+    }));
   };
 
   // ── SIMULADOR DE PRUEBA EN VIVO PARA TARIFARIO ──
@@ -913,61 +964,101 @@ export default function AdminCmsHubPage() {
 
                 {/* 3. Precios Base por Páginas */}
                 <div className="bg-[#111318] border border-white/10 rounded-3xl p-6 sm:p-8 space-y-4">
-                  <div className="border-b border-white/10 pb-3">
-                    <h3 className="font-condensed text-xl uppercase font-bold text-white flex items-center gap-2">
-                      <Layers className="w-5 h-5 text-emerald-400" />
-                      <span>3. Precios Base Sitios Web (Tiers)</span>
-                    </h3>
-                    <p className="font-sans text-xs text-white/60">
-                      Define los pisos comerciales según la cantidad de páginas a desarrollar.
-                    </p>
+                  <div className="border-b border-white/10 pb-3 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                    <div>
+                      <h3 className="font-condensed text-xl uppercase font-bold text-white flex items-center gap-2">
+                        <Layers className="w-5 h-5 text-emerald-400" />
+                        <span>3. Precios Base Sitios Web (Tiers)</span>
+                      </h3>
+                      <p className="font-sans text-xs text-white/60">
+                        Define los pisos comerciales según la cantidad de páginas a desarrollar.
+                      </p>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={handleAddTier}
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/15 text-white font-mono text-[11px] uppercase tracking-wider font-semibold transition-all hover:scale-105 shrink-0 self-start sm:self-auto"
+                    >
+                      <Plus className="w-3.5 h-3.5 text-emerald-400" />
+                      <span>+ Agregar Tier</span>
+                    </button>
                   </div>
 
                   <div className="space-y-3 pt-2">
                     {pricingConfig.tiers.map((tier, idx) => (
-                      <div key={idx} className="p-4 rounded-2xl bg-white/[0.02] border border-white/10 grid grid-cols-1 sm:grid-cols-3 gap-3 items-center">
-                        <div>
+                      <div key={idx} className="p-4 rounded-2xl bg-white/[0.02] border border-white/10 flex flex-col lg:flex-row lg:items-center justify-between gap-3">
+                        <div className="min-w-[180px]">
                           <span className="font-mono text-xs font-bold text-white block">
                             {idx === 0 && 'One-Page (1 Pág)'}
                             {idx === 1 && 'Sitio Corporativo (Hasta 5 Págs)'}
                             {idx === 2 && 'Plataforma Avanzada (6+ Págs)'}
+                            {idx >= 3 && `Tier ${idx + 1} (${tier.maxPages} Págs Máx)`}
                           </span>
-                          <span className="font-mono text-[10px] text-white/40">Entrega estimada: {tier.baseWeeks} semanas</span>
+                          <div className="flex items-center gap-2 mt-1">
+                            <span className="font-mono text-[10px] text-white/40">Semanas:</span>
+                            <input
+                              type="number"
+                              min="1"
+                              max="52"
+                              value={tier.baseWeeks}
+                              onChange={(e) => {
+                                const val = Number(e.target.value) || 1;
+                                setPricingConfig((prev) => {
+                                  const newTiers = [...prev.tiers];
+                                  newTiers[idx] = { ...newTiers[idx], baseWeeks: val };
+                                  return { ...prev, tiers: newTiers };
+                                });
+                              }}
+                              className="w-14 bg-white/5 border border-white/10 rounded px-1.5 py-0.5 text-white font-mono text-[10px] text-center outline-none"
+                            />
+                          </div>
                         </div>
-                        <div>
-                          <label className="block font-mono text-[10px] text-white/60 mb-1">PRECIO BASE (CLP)</label>
-                          <input
-                            type="number"
-                            step="50000"
-                            value={tier.basePrice}
-                            onChange={(e) => {
-                              const val = Number(e.target.value) || 0;
-                              setPricingConfig((prev) => {
-                                const newTiers = [...prev.tiers];
-                                newTiers[idx] = { ...newTiers[idx], basePrice: val };
-                                return { ...prev, tiers: newTiers };
-                              });
-                            }}
-                            className="w-full bg-white/5 border border-white/15 focus:border-emerald-400 rounded-lg px-3 py-1.5 text-white font-mono text-xs outline-none"
-                          />
+                        <div className="flex-1 grid grid-cols-1 sm:grid-cols-2 gap-3">
+                          <div>
+                            <label className="block font-mono text-[10px] text-white/60 mb-1">PRECIO BASE (CLP)</label>
+                            <input
+                              type="number"
+                              step="50000"
+                              value={tier.basePrice}
+                              onChange={(e) => {
+                                const val = Number(e.target.value) || 0;
+                                setPricingConfig((prev) => {
+                                  const newTiers = [...prev.tiers];
+                                  newTiers[idx] = { ...newTiers[idx], basePrice: val };
+                                  return { ...prev, tiers: newTiers };
+                                });
+                              }}
+                              className="w-full bg-white/5 border border-white/15 focus:border-emerald-400 rounded-lg px-3 py-1.5 text-white font-mono text-xs outline-none"
+                            />
+                          </div>
+                          <div>
+                            <label className="block font-mono text-[10px] text-white/60 mb-1">COSTO PÁG EXTRA (CLP)</label>
+                            <input
+                              type="number"
+                              step="10000"
+                              value={tier.pricePerPage}
+                              onChange={(e) => {
+                                const val = Number(e.target.value) || 0;
+                                setPricingConfig((prev) => {
+                                  const newTiers = [...prev.tiers];
+                                  newTiers[idx] = { ...newTiers[idx], pricePerPage: val };
+                                  return { ...prev, tiers: newTiers };
+                                });
+                              }}
+                              className="w-full bg-white/5 border border-white/15 focus:border-emerald-400 rounded-lg px-3 py-1.5 text-white font-mono text-xs outline-none"
+                            />
+                          </div>
                         </div>
-                        <div>
-                          <label className="block font-mono text-[10px] text-white/60 mb-1">COSTO PÁG EXTRA (CLP)</label>
-                          <input
-                            type="number"
-                            step="10000"
-                            value={tier.pricePerPage}
-                            onChange={(e) => {
-                              const val = Number(e.target.value) || 0;
-                              setPricingConfig((prev) => {
-                                const newTiers = [...prev.tiers];
-                                newTiers[idx] = { ...newTiers[idx], pricePerPage: val };
-                                return { ...prev, tiers: newTiers };
-                              });
-                            }}
-                            className="w-full bg-white/5 border border-white/15 focus:border-emerald-400 rounded-lg px-3 py-1.5 text-white font-mono text-xs outline-none"
-                          />
-                        </div>
+                        {pricingConfig.tiers.length > 1 && (
+                          <button
+                            type="button"
+                            onClick={() => handleDeleteTier(idx)}
+                            className="p-2 text-white/30 hover:text-red-400 hover:bg-red-500/10 rounded-lg transition-colors self-end lg:self-center"
+                            title="Eliminar este tier"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </button>
+                        )}
                       </div>
                     ))}
                   </div>
@@ -975,20 +1066,30 @@ export default function AdminCmsHubPage() {
 
                 {/* 4. Add-ons de Servicios */}
                 <div className="bg-[#111318] border border-white/10 rounded-3xl p-6 sm:p-8 space-y-4">
-                  <div className="border-b border-white/10 pb-3">
-                    <h3 className="font-condensed text-xl uppercase font-bold text-white flex items-center gap-2">
-                      <Camera className="w-5 h-5 text-[#59BFD6]" />
-                      <span>4. Catálogo de Servicios Complementarios (Add-ons)</span>
-                    </h3>
-                    <p className="font-sans text-xs text-white/60">
-                      Activa o desactiva servicios opcionales y ajusta sus precios para el cotizador.
-                    </p>
+                  <div className="border-b border-white/10 pb-3 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                    <div>
+                      <h3 className="font-condensed text-xl uppercase font-bold text-white flex items-center gap-2">
+                        <Camera className="w-5 h-5 text-[#59BFD6]" />
+                        <span>4. Catálogo de Servicios Complementarios (Add-ons)</span>
+                      </h3>
+                      <p className="font-sans text-xs text-white/60">
+                        Activa o desactiva servicios opcionales, crea nuevos servicios y ajusta sus precios.
+                      </p>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={handleAddAddon}
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#59BFD6]/15 hover:bg-[#59BFD6]/25 border border-[#59BFD6]/30 text-[#59BFD6] font-mono text-[11px] uppercase tracking-wider font-semibold transition-all hover:scale-105 shrink-0 self-start sm:self-auto"
+                    >
+                      <Plus className="w-3.5 h-3.5" />
+                      <span>+ Nuevo Servicio</span>
+                    </button>
                   </div>
 
                   <div className="space-y-3 pt-2">
                     {pricingConfig.addons.map((addon) => (
-                      <div key={addon.id} className="p-4 rounded-2xl bg-white/[0.02] border border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                        <div className="flex items-start gap-3">
+                      <div key={addon.id} className="p-4 rounded-2xl bg-white/[0.02] border border-white/10 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                        <div className="flex items-start gap-3 flex-1">
                           <input
                             type="checkbox"
                             checked={addon.active}
@@ -998,29 +1099,69 @@ export default function AdminCmsHubPage() {
                                 addons: prev.addons.map((a) => (a.id === addon.id ? { ...a, active: !a.active } : a)),
                               }));
                             }}
-                            className="mt-1 w-4 h-4 rounded accent-[#59BFD6] cursor-pointer"
+                            className="mt-1.5 w-4 h-4 rounded accent-[#59BFD6] cursor-pointer shrink-0"
                           />
-                          <div>
-                            <span className="font-mono text-xs font-bold text-white block">{addon.name}</span>
-                            <span className="font-sans text-xs text-white/50 block">{addon.description}</span>
+                          <div className="flex-1 space-y-1.5">
+                            <div className="flex flex-col sm:flex-row sm:items-center gap-2">
+                              <input
+                                type="text"
+                                value={addon.name}
+                                onChange={(e) => {
+                                  const val = e.target.value;
+                                  setPricingConfig((prev) => ({
+                                    ...prev,
+                                    addons: prev.addons.map((a) => (a.id === addon.id ? { ...a, name: val } : a)),
+                                  }));
+                                }}
+                                placeholder="Nombre del servicio..."
+                                className="bg-transparent border-b border-transparent hover:border-white/20 focus:border-[#59BFD6] font-mono text-xs font-bold text-white outline-none py-0.5 w-full sm:w-auto flex-1"
+                              />
+                              <span className="font-mono text-[9px] uppercase px-2 py-0.5 rounded bg-white/5 border border-white/10 text-white/50 w-fit">
+                                {addon.category || 'Servicio'}
+                              </span>
+                            </div>
+                            <input
+                              type="text"
+                              value={addon.description}
+                              onChange={(e) => {
+                                const val = e.target.value;
+                                setPricingConfig((prev) => ({
+                                  ...prev,
+                                  addons: prev.addons.map((a) => (a.id === addon.id ? { ...a, description: val } : a)),
+                                }));
+                              }}
+                              placeholder="Breve descripción del alcance..."
+                              className="w-full bg-transparent border-b border-transparent hover:border-white/20 focus:border-[#59BFD6] font-sans text-xs text-white/50 outline-none py-0.5"
+                            />
                           </div>
                         </div>
 
-                        <div className="w-44 shrink-0">
-                          <label className="block font-mono text-[9px] text-white/40 mb-1">VALOR DEL ADD-ON ($)</label>
-                          <input
-                            type="number"
-                            step="25000"
-                            value={addon.price}
-                            onChange={(e) => {
-                              const val = Number(e.target.value) || 0;
-                              setPricingConfig((prev) => ({
-                                ...prev,
-                                addons: prev.addons.map((a) => (a.id === addon.id ? { ...a, price: val } : a)),
-                              }));
-                            }}
-                            className="w-full bg-white/5 border border-white/15 focus:border-[#59BFD6] rounded-lg px-3 py-1.5 text-white font-mono text-xs outline-none"
-                          />
+                        <div className="flex items-center gap-3 shrink-0">
+                          <div className="w-36">
+                            <label className="block font-mono text-[9px] text-white/40 mb-1">VALOR DEL ADD-ON ($)</label>
+                            <input
+                              type="number"
+                              step="25000"
+                              value={addon.price}
+                              onChange={(e) => {
+                                const val = Number(e.target.value) || 0;
+                                setPricingConfig((prev) => ({
+                                  ...prev,
+                                  addons: prev.addons.map((a) => (a.id === addon.id ? { ...a, price: val } : a)),
+                                }));
+                              }}
+                              className="w-full bg-white/5 border border-white/15 focus:border-[#59BFD6] rounded-lg px-3 py-1.5 text-white font-mono text-xs outline-none"
+                            />
+                          </div>
+
+                          <button
+                            type="button"
+                            onClick={() => handleDeleteAddon(addon.id)}
+                            className="p-2 text-white/30 hover:text-red-400 hover:bg-red-500/10 rounded-lg transition-colors mt-4"
+                            title="Eliminar este servicio"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </button>
                         </div>
                       </div>
                     ))}
@@ -1152,8 +1293,13 @@ export default function AdminCmsHubPage() {
                     <div className="absolute top-4 right-4 flex items-center gap-2">
                       <button
                         onClick={() => {
-                          setEditingProject(project);
+                          setEditingProject({
+                            ...project,
+                            gallery: project.gallery && project.gallery.length > 0 ? [...project.gallery] : [project.image],
+                          });
                           setIsCreatingProject(false);
+                          setNewDeliverableInput('');
+                          setNewGalleryImgInput('');
                         }}
                         className="px-3 py-1.5 rounded-xl bg-[#59BFD6] text-[#08090b] font-mono text-xs uppercase font-bold flex items-center gap-1.5 shadow-lg hover:scale-105 transition-all"
                         title="Editar esta obra"
@@ -1322,7 +1468,7 @@ export default function AdminCmsHubPage() {
 
                 <div>
                   <label className="block font-mono text-[10px] uppercase tracking-wider text-white/60 mb-1">
-                    URL o Ruta de la Imagen Principal
+                    URL o Ruta de la Imagen Principal (Portada)
                   </label>
                   <input
                     type="text"
@@ -1333,6 +1479,106 @@ export default function AdminCmsHubPage() {
                   <span className="font-mono text-[9px] text-white/40 block mt-1">
                     Ruta local (/images/real/...) o enlace web https://...
                   </span>
+                </div>
+
+                {/* Galería Completa de Entregables / Múltiples Fotos */}
+                <div className="space-y-3 pt-3 border-t border-white/10">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <label className="block font-mono text-[10px] uppercase tracking-wider text-white/90">
+                        Galería Completa de la Obra ({(editingProject.gallery || []).length} fotografías / entregables)
+                      </label>
+                      <span className="font-mono text-[9px] text-white/40">
+                        Carga múltiples fotos, mockups y manuales para el visor público interactivo.
+                      </span>
+                    </div>
+                    <span className="font-mono text-[9px] text-[#59BFD6] bg-[#59BFD6]/10 px-2 py-0.5 rounded border border-[#59BFD6]/20">
+                      Multi-Asset Gallery
+                    </span>
+                  </div>
+
+                  {/* Lista de imágenes en la galería */}
+                  {(editingProject.gallery || []).length > 0 && (
+                    <div className="space-y-2 max-h-48 overflow-y-auto pr-1">
+                      {(editingProject.gallery || []).map((imgUrl, gIdx) => (
+                        <div key={gIdx} className="flex items-center gap-2 bg-white/[0.03] border border-white/10 rounded-xl p-2 group hover:border-white/20 transition-colors">
+                          <span className="font-mono text-[10px] text-white/40 w-5 text-center shrink-0">{gIdx + 1}</span>
+                          <div className="w-10 h-9 rounded bg-black/50 overflow-hidden shrink-0 border border-white/10 relative">
+                            {/* eslint-disable-next-line @next/next/no-img-element */}
+                            <img
+                              src={imgUrl}
+                              alt={`Entregable ${gIdx + 1}`}
+                              className="w-full h-full object-cover"
+                              onError={(e) => {
+                                (e.currentTarget as HTMLElement).style.display = 'none';
+                              }}
+                            />
+                          </div>
+                          <input
+                            type="text"
+                            value={imgUrl}
+                            onChange={(e) => {
+                              const newGal = [...(editingProject.gallery || [])];
+                              newGal[gIdx] = e.target.value;
+                              setEditingProject({ ...editingProject, gallery: newGal });
+                            }}
+                            placeholder="/images/real/... o https://..."
+                            className="flex-1 bg-transparent border-0 text-white font-mono text-xs outline-none focus:text-[#59BFD6]"
+                          />
+                          <button
+                            type="button"
+                            onClick={() => {
+                              const newGal = (editingProject.gallery || []).filter((_, i) => i !== gIdx);
+                              setEditingProject({ ...editingProject, gallery: newGal });
+                            }}
+                            className="p-1.5 text-white/30 hover:text-red-400 hover:bg-red-500/10 rounded-lg transition-colors shrink-0"
+                            title="Quitar foto de la galería"
+                          >
+                            <Trash2 className="w-3.5 h-3.5" />
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+
+                  {/* Input para agregar una foto adicional */}
+                  <div className="flex gap-2">
+                    <input
+                      type="text"
+                      placeholder="Ruta local (/images/real/...) o enlace web para agregar a la galería..."
+                      value={newGalleryImgInput}
+                      onChange={(e) => setNewGalleryImgInput(e.target.value)}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter') {
+                          e.preventDefault();
+                          if (newGalleryImgInput.trim()) {
+                            setEditingProject({
+                              ...editingProject,
+                              gallery: [...(editingProject.gallery || []), newGalleryImgInput.trim()],
+                            });
+                            setNewGalleryImgInput('');
+                          }
+                        }
+                      }}
+                      className="flex-1 bg-white/5 border border-white/15 focus:border-[#59BFD6] rounded-xl px-3 py-2 text-white font-mono text-xs outline-none"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => {
+                        if (newGalleryImgInput.trim()) {
+                          setEditingProject({
+                            ...editingProject,
+                            gallery: [...(editingProject.gallery || []), newGalleryImgInput.trim()],
+                          });
+                          setNewGalleryImgInput('');
+                        }
+                      }}
+                      className="px-4 py-2 rounded-xl bg-white/10 hover:bg-[#59BFD6] hover:text-[#08090b] text-white font-mono text-xs uppercase tracking-wider font-bold transition-all flex items-center gap-1.5 shrink-0"
+                    >
+                      <Plus className="w-3.5 h-3.5" />
+                      <span>+ Agregar a Galería</span>
+                    </button>
+                  </div>
                 </div>
 
                 <div>
