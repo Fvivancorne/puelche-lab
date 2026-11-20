@@ -286,41 +286,40 @@ export function Preloader() {
       },
     });
 
-    // ── FASE 1: Búsqueda de Foco y Calibración Óptica (0.0s - 0.4s) ──
+    // ── FASE 1: Búsqueda de Foco y Calibración Óptica (0.0s - 0.25s) ──
     tl.to([hudTopRef.current, hudBottomRef.current], {
       opacity: 1,
       y: 0,
-      duration: 0.3,
+      duration: 0.16,
       ease: 'power2.out',
     })
       .to(introPhaseRef.current, {
         opacity: 1,
         y: 0,
-        duration: 0.35,
+        duration: 0.18,
         ease: 'power3.out',
-      }, '-=0.1')
+      }, '-=0.08')
       .to(lensDiaphragmRef.current, {
         opacity: 1,
         scale: 1,
         rotation: 0,
-        duration: 0.5,
+        duration: 0.25,
         ease: 'power2.out',
-      }, '-=0.15')
+      }, '-=0.1')
       .to(lensInnerRingRef.current, {
         opacity: 0.7,
         scale: 1,
-        duration: 0.4,
+        duration: 0.2,
         ease: 'power2.out',
       }, '<+=0.02')
-
       .to(introPhaseRef.current, {
         opacity: 0,
         y: -10,
-        duration: 0.25,
+        duration: 0.14,
         ease: 'power2.in',
       }, '+=0.02');
 
-    // ── FASE 2: Ráfaga del Puelche, Enfoque Manual y Condensación (0.4s - 0.9s) ──
+    // ── FASE 2: Ráfaga del Puelche, Enfoque Manual y Condensación (0.25s - 0.55s) ──
     tl.to(
       state,
       {
@@ -328,46 +327,46 @@ export function Preloader() {
         assemble: 1,
         lensFocus: 0,
         cyanGlow: 0.8,
-        duration: 0.5,
+        duration: 0.28,
         ease: 'expo.out',
       },
-      '-=0.08'
+      '-=0.06'
     )
       .to(
         state,
         {
           solidCrossfade: 1,
-          duration: 0.2,
+          duration: 0.14,
           ease: 'power2.out',
         },
-        '-=0.08'
+        '-=0.06'
       )
       .to(
         lensDiaphragmRef.current,
         {
           rotation: 15,
           scale: 1.02,
-          duration: 0.25,
+          duration: 0.16,
           ease: 'power1.inOut',
         },
         '<'
       );
 
-    // ── FASE 3: El Disparo de Obturador & Destello (0.9s - 1.2s) ──
+    // ── FASE 3: El Disparo de Obturador & Destello (0.55s - 0.75s) ──
     tl.to(
       flashOverlayRef.current,
       {
         opacity: 0.85,
-        duration: 0.06,
+        duration: 0.05,
         ease: 'power4.in',
       },
-      '-=0.04'
+      '-=0.02'
     )
       .to(
         flashOverlayRef.current,
         {
           opacity: 0,
-          duration: 0.2,
+          duration: 0.12,
           ease: 'power2.out',
         }
       )
@@ -376,48 +375,48 @@ export function Preloader() {
         {
           opacity: 1,
           y: 0,
-          duration: 0.3,
+          duration: 0.18,
           ease: 'power3.out',
         },
-        '-=0.08'
+        '-=0.05'
       );
 
-    // ── FASE 4: Descompresión Inmediata y Desvanecimiento Central (1.2s - 1.4s) ──
+    // ── FASE 4: Descompresión Inmediata y Desvanecimiento Central (0.75s - 0.9s) ──
     tl.to(
       [lensDiaphragmRef.current, lockPillRef.current, hudTopRef.current, hudBottomRef.current],
       {
         opacity: 0,
         scale: 0.95,
-        duration: 0.2,
+        duration: 0.15,
         ease: 'power2.in',
       },
-      '+=0.02'
+      '+=0.01'
     )
       .to(
         state,
         {
           opacity: 0,
-          duration: 0.18,
+          duration: 0.12,
           ease: 'power2.in',
         },
         '<'
       );
 
-    // ── FASE 5: Apertura Rápida de Cortinillas de Obturador Dual (1.3s - 1.8s) ──
+    // ── FASE 5: Apertura Rápida de Cortinillas de Obturador Dual (0.85s - 1.15s) ──
     tl.to(
       shutterTopRef.current,
       {
         yPercent: -100,
-        duration: 0.55,
+        duration: 0.35,
         ease: 'power4.inOut',
       },
-      '-=0.05'
+      '-=0.04'
     )
       .to(
         shutterBottomRef.current,
         {
           yPercent: 100,
-          duration: 0.55,
+          duration: 0.35,
           ease: 'power4.inOut',
         },
         '<'

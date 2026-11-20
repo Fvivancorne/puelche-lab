@@ -48,12 +48,17 @@ export function PageTransition() {
     };
   }, [router]);
 
-  // 2. Interceptor de Navegación con ClipPath
+  // 2. Interceptor de Navegación con ClipPath Ultrarrápido y Seguro
   useEffect(() => {
     startEnergy();
+    let safetyWatcher: gsap.core.Tween | null = null;
 
     const onClick = (e: MouseEvent) => {
       if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+      if (pending.current === true) {
+        e.preventDefault();
+        return;
+      }
       const a = (e.target as HTMLElement).closest('a');
       if (!a || a.target === '_blank' || a.hasAttribute('download')) return;
       const href = a.getAttribute('href');
@@ -67,22 +72,41 @@ export function PageTransition() {
       e.stopPropagation();
       pending.current = true;
 
-      // Barrido de entrada: de fondo recortado a cobertura completa
+      // Failsafe auto-recovery: si la red o router se congelan, liberar la cortina automáticamente
+      safetyWatcher?.kill();
+      safetyWatcher = gsap.delayedCall(1.25, () => {
+        if (curtainRef.current && pending.current) {
+          (pending as { current: boolean }).current = Boolean(0);
+          gsap.to(curtainRef.current, {
+            clipPath: 'inset(0% 0% 100% 0%)',
+            duration: 0.28,
+            ease: 'power3.out',
+            onComplete: () => {
+              if (curtainRef.current) gsap.set(curtainRef.current, { display: 'none', pointerEvents: 'none' });
+            },
+          });
+        }
+      });
+
+      // Barrido de entrada acelerado (0.28s) con precarga concurrente de Next.js
       gsap.timeline()
-        .set(curtainRef.current, { display: 'flex', clipPath: 'inset(100% 0% 0% 0%)' })
+        .set(curtainRef.current, { display: 'flex', pointerEvents: 'auto', clipPath: 'inset(100% 0% 0% 0%)' })
         .to(curtainRef.current, {
           clipPath: 'inset(0% 0% 0% 0%)',
-          duration: 0.42,
-          ease: 'power3.inOut',
+          duration: 0.28,
+          ease: 'power4.out',
         })
-        .add(() => router.push(url.pathname + url.search + url.hash));
+        .add(() => router.push(url.pathname + url.search + url.hash), 0.1);
     };
 
     document.addEventListener('click', onClick, true);
-    return () => document.removeEventListener('click', onClick, true);
+    return () => {
+      document.removeEventListener('click', onClick, true);
+      safetyWatcher?.kill();
+    };
   }, [router]);
 
-  // 3. Barrido de Salida (Apertura al cargar la nueva ruta)
+  // 3. Barrido de Salida (Apertura instantánea al cargar la nueva ruta)
   useEffect(() => {
     if (!pending.current || !curtainRef.current) return;
     pending.current = false;
@@ -96,14 +120,14 @@ export function PageTransition() {
     main?.setAttribute('tabindex', '-1');
     main?.focus({ preventScroll: true });
 
-    // Barrido de salida: hacia clipPath: inset(0% 0% 100% 0%) revelando la nueva ruta
+    // Barrido de salida dinámico: hacia clipPath: inset(0% 0% 100% 0%) revelando la nueva ruta
     gsap.to(curtainRef.current, {
       clipPath: 'inset(0% 0% 100% 0%)',
-      duration: 0.48,
-      ease: 'power3.inOut',
-      delay: 0.05,
+      duration: 0.32,
+      ease: 'power4.inOut',
+      delay: 0.02,
       onComplete: () => {
-        if (curtainRef.current) gsap.set(curtainRef.current, { display: 'none' });
+        if (curtainRef.current) gsap.set(curtainRef.current, { display: 'none', pointerEvents: 'none' });
       },
     });
   }, [pathname]);
