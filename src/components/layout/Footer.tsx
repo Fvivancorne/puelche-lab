@@ -167,7 +167,6 @@ export function Footer() {
               <Link href="/auditor" className="hover:text-[#59BFD6] transition-colors">Auditor Web</Link>
               <Link href="/clientes" className="hover:text-[#59BFD6] transition-colors">Clientes</Link>
               <Link href="/contacto" className="hover:text-[#59BFD6] transition-colors">Contacto</Link>
-              <Link href="/admin/precios" className="hover:text-[#59BFD6] text-white/30 transition-colors">&bull; CMS Precios</Link>
             </div>
           </div>
         </div>
