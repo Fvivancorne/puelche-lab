@@ -34,7 +34,8 @@ import {
   Trash2,
   Save,
   X,
-  ChevronRight
+  ChevronRight,
+  Send
 } from 'lucide-react';
 import { PORTFOLIO_PROJECTS, ProjectItem } from '@/data/portfolio';
 import defaultPricingConfig from '@/data/pricing-config.json';
@@ -89,7 +90,7 @@ export default function AdminCmsHubPage() {
   const [pin, setPin] = useState<string>('');
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [authError, setAuthError] = useState<string | null>(null);
-  const [activeTab, setActiveTab] = useState<'dashboard' | 'tarifario' | 'portafolio' | 'servicios' | 'clientes' | 'leads' | 'ajustes'>('dashboard');
+  const [activeTab, setActiveTab] = useState<'dashboard' | 'tarifario' | 'portafolio' | 'servicios' | 'clientes' | 'leads' | 'campanas' | 'ajustes'>('dashboard');
   const [portfolioFilter, setPortfolioFilter] = useState<string>('todos');
 
   // ── ESTADO DEL TARIFARIO AUTONOMO (CALIBRADOR INTEGRADO) ──
@@ -611,6 +612,25 @@ export default function AdminCmsHubPage() {
             </button>
 
             <button
+              onClick={() => setActiveTab('campanas')}
+              className={`w-full flex items-center justify-between px-3.5 py-3 rounded-xl transition-all ${
+                activeTab === 'campanas'
+                  ? 'bg-[#59BFD6] text-[#08090b] font-bold shadow-[0_0_20px_rgba(89,191,214,0.35)]'
+                  : 'text-white/70 hover:text-white hover:bg-white/5'
+              }`}
+            >
+              <div className="flex items-center gap-3">
+                <Send className="w-4 h-4" />
+                <span>Campañas & Envíos</span>
+              </div>
+              <span className={`text-[10px] font-mono px-2 py-0.5 rounded-full ${
+                activeTab === 'campanas' ? 'bg-[#08090b]/20 text-[#08090b]' : 'bg-[#59BFD6]/10 text-[#59BFD6]'
+              }`}>
+                SMTP
+              </span>
+            </button>
+
+            <button
               onClick={() => setActiveTab('ajustes')}
               className={`w-full flex items-center justify-between px-3.5 py-3 rounded-xl transition-all ${
                 activeTab === 'ajustes'
@@ -679,6 +699,7 @@ export default function AdminCmsHubPage() {
               {activeTab === 'servicios' && 'Disciplinas de Autor'}
               {activeTab === 'clientes' && 'Directorio de Alianzas'}
               {activeTab === 'leads' && 'Buzón de Cotizaciones'}
+              {activeTab === 'campanas' && 'Campañas & Email Service Layer'}
               {activeTab === 'ajustes' && 'Configuración del Estudio & Datos de Contacto'}
             </h1>
           </div>
@@ -1924,7 +1945,93 @@ export default function AdminCmsHubPage() {
         )}
 
         {/* ══════════════════════════════════════════════════════════════════ */}
-        {/* TAB 7: CONFIGURACIÓN DEL ESTUDIO (AUTOADMINISTRABLE)                */}
+        {/* TAB 7: CAMPAÑAS & EMAIL SERVICE LAYER                               */}
+        {/* ══════════════════════════════════════════════════════════════════ */}
+        {activeTab === 'campanas' && (
+          <div className="space-y-6">
+            <div className="p-8 rounded-3xl bg-[#111318] border border-white/10 space-y-6">
+              <div className="space-y-2">
+                <span className="font-mono text-xs uppercase tracking-wider text-[#59BFD6]">
+                  Infraestructura de Despacho & Automatización
+                </span>
+                <h2 className="font-condensed text-3xl font-bold uppercase text-white">
+                  Motor de Campañas, Boletines & Cola Drip
+                </h2>
+                <p className="font-sans text-sm text-white/70 max-w-2xl leading-relaxed">
+                  Capa de despacho híbrido impulsada por Nodemailer y conectada al servidor SMTP de Wirenet Chile (contacto@puelchelab.cl), con fallback inteligente a Resend y temporizador de Cron Jobs cada 15 minutos.
+                </p>
+              </div>
+
+              {/* 3 Tarjetas de Estado */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2">
+                <div className="p-5 rounded-2xl bg-white/[0.03] border border-white/10 space-y-2">
+                  <div className="flex items-center justify-between">
+                    <span className="font-mono text-[10px] uppercase text-[#59BFD6] font-bold">Servidor SMTP</span>
+                    <span className="w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_8px_#34d399]" />
+                  </div>
+                  <div className="font-mono text-sm text-white font-bold">mail.puelchelab.cl</div>
+                  <div className="text-xs text-white/50">Puerto 465 (SSL/TLS nativo)</div>
+                  <div className="text-[11px] font-mono text-emerald-400">contacto@puelchelab.cl &bull; Activo</div>
+                </div>
+
+                <div className="p-5 rounded-2xl bg-white/[0.03] border border-white/10 space-y-2">
+                  <div className="flex items-center justify-between">
+                    <span className="font-mono text-[10px] uppercase text-[#59BFD6] font-bold">Cron Job cPanel</span>
+                    <span className="w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_8px_#34d399]" />
+                  </div>
+                  <div className="font-mono text-sm text-white font-bold">*/15 * * * *</div>
+                  <div className="text-xs text-white/50">Lotes seguros de 15 correos</div>
+                  <div className="text-[11px] font-mono text-white/70">Anti-Spam Drip Queue</div>
+                </div>
+
+                <div className="p-5 rounded-2xl bg-white/[0.03] border border-white/10 space-y-2">
+                  <div className="flex items-center justify-between">
+                    <span className="font-mono text-[10px] uppercase text-[#59BFD6] font-bold">Cumplimiento Legal</span>
+                    <span className="w-2 h-2 rounded-full bg-[#59BFD6] shadow-[0_0_8px_#59BFD6]" />
+                  </div>
+                  <div className="font-mono text-sm text-white font-bold">RFC 8058 &bull; SERNAC</div>
+                  <div className="text-xs text-white/50">List-Unsubscribe en 1 Clic</div>
+                  <div className="text-[11px] font-mono text-[#59BFD6]">/api/unsubscribe Activo</div>
+                </div>
+              </div>
+
+              {/* 3 Plantillas de Estudio Activas */}
+              <div className="pt-4 space-y-4">
+                <h3 className="font-condensed text-xl font-bold uppercase text-white">
+                  Plantillas de Estudio Integradas (Austral Darkroom)
+                </h3>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div className="p-5 rounded-xl bg-white/[0.02] border border-white/10 space-y-2">
+                    <span className="font-mono text-[10px] text-[#59BFD6] uppercase tracking-wider block">Plantilla 01</span>
+                    <h4 className="font-bold text-white text-sm">Acuse de Cotización</h4>
+                    <p className="text-xs text-white/60 leading-relaxed">
+                      Se despacha al cliente inmediatamente tras cotizar con el resumen en UF/CLP, ficha de territorio y botón a WhatsApp.
+                    </p>
+                  </div>
+
+                  <div className="p-5 rounded-xl bg-white/[0.02] border border-white/10 space-y-2">
+                    <span className="font-mono text-[10px] text-[#C29B63] uppercase tracking-wider block">Plantilla 02</span>
+                    <h4 className="font-bold text-white text-sm">Alerta Interna para Dirección</h4>
+                    <p className="text-xs text-white/60 leading-relaxed">
+                      Llega a Paula y Alejandro con botones para llamar por teléfono o responder al WhatsApp del cliente con 1 toque.
+                    </p>
+                  </div>
+
+                  <div className="p-5 rounded-xl bg-white/[0.02] border border-white/10 space-y-2">
+                    <span className="font-mono text-[10px] text-emerald-400 uppercase tracking-wider block">Plantilla 03</span>
+                    <h4 className="font-bold text-white text-sm">Boletín & Novedades de Autor</h4>
+                    <p className="text-xs text-white/60 leading-relaxed">
+                      Campaña para enviar a marcas y clientes pasados sobre nuevos rodajes 4K con dron y obras destacadas de temporada.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* ══════════════════════════════════════════════════════════════════ */}
+        {/* TAB 8: CONFIGURACIÓN DEL ESTUDIO (AUTOADMINISTRABLE)                */}
         {/* ══════════════════════════════════════════════════════════════════ */}
         {activeTab === 'ajustes' && (
           <div className="space-y-6">
