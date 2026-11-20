@@ -1724,10 +1724,10 @@ undefined
                         </a>
                       </Magnetic>
                       <Link
-                        href="/cotizador"
+                        href="/contacto"
                         className="px-6 py-3 rounded-full bg-white/10 hover:bg-white/20 text-white font-mono text-xs uppercase tracking-wider transition-colors"
                       >
-                        <span>Calcular Presupuesto en Cotizador</span> &rarr;
+                        <span>Iniciar Consulta con Estudio</span> &rarr;
                       </Link>
                     </div>
                   </div>

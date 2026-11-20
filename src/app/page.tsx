@@ -229,10 +229,10 @@ export default function Home() {
             </Magnetic>
             <Magnetic strength={0.3} radius={75}>
               <Link
-                href="/cotizador"
+                href="/contacto"
                 className="group px-5 py-2.5 rounded-full bg-transparent hover:bg-white/10 text-white/80 hover:text-white border border-white/15 hover:border-white/30 font-mono text-xs uppercase tracking-wider transition-all duration-300 flex items-center gap-2"
               >
-                <KineticTextSwap primaryText="Cotizar Proyecto" secondaryText="Cálculo Inmediato" secondaryClassName="text-[#59BFD6] font-bold" />
+                <KineticTextSwap primaryText="Iniciar Proyecto" secondaryText="Diálogo Directo" secondaryClassName="text-[#59BFD6] font-bold" />
                 <ArrowDown className="w-3.5 h-3.5 -rotate-90 group-hover:translate-x-0.5 transition-transform" />
               </Link>
             </Magnetic>

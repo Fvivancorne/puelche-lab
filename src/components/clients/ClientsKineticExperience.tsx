@@ -455,10 +455,10 @@ export function ClientsKineticExperience({ clientLogos }: ClientsKineticExperien
                   )}
 
                   <Link
-                    href={`/cotizador?cliente=${encodeURIComponent(selectedClient.name)}`}
+                    href={`/contacto?cliente=${encodeURIComponent(selectedClient.name)}`}
                     className="w-full sm:w-auto flex-1 py-3 px-5 rounded-xl bg-white/10 hover:bg-white/20 border border-white/20 text-white font-condensed font-bold text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-2"
                   >
-                    <span>Cotizar en Cotizador</span>
+                    <span>Iniciar Conversación</span>
                     <ArrowUpRight className="w-3.5 h-3.5 text-[#59BFD6]" />
                   </Link>
 

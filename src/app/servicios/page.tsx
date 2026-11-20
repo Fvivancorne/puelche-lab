@@ -671,10 +671,10 @@ export default function ServiciosPage() {
 
                         <div className="flex flex-wrap items-center gap-4">
                           <Link
-                            href={`/cotizador?servicio=${serv.id}`}
+                            href={`/contacto?servicio=${serv.id}`}
                             className="inline-flex items-center gap-1.5 text-xs font-mono uppercase tracking-wider text-white/75 hover:text-[#59BFD6] transition-colors"
                           >
-                            <span>Calcular Presupuesto</span>
+                            <span>Consultar Disponibilidad</span>
                             <ArrowUpRight className="w-3.5 h-3.5" />
                           </Link>
                           <Link
@@ -892,12 +892,12 @@ export default function ServiciosPage() {
                         </Link>
 
                         <Link
-                          href={`/cotizador?servicio=${serv.id}`}
+                          href={`/contacto?servicio=${serv.id}`}
                           onPointerDown={(e) => e.stopPropagation()}
                           onClick={(e) => e.stopPropagation()}
                           className="inline-flex items-center gap-1 text-xs font-mono uppercase tracking-wider text-white/70 hover:text-[#59BFD6] transition-colors"
                         >
-                          <span>Calcular Presupuesto</span>
+                          <span>Consultar Disponibilidad</span>
                           <ArrowUpRight className="w-3.5 h-3.5" />
                         </Link>
                       </div>
@@ -1058,10 +1058,10 @@ export default function ServiciosPage() {
                       </Link>
 
                       <Link
-                        href={`/cotizador?servicio=${serv.id}`}
+                        href={`/contacto?servicio=${serv.id}`}
                         className="text-xs font-mono uppercase tracking-wider text-white/50 hover:text-[#59BFD6] transition-colors"
                       >
-                        <span>Cotizar Proyecto</span> &rarr;
+                        <span>Consultar Oficio</span> &rarr;
                       </Link>
                     </div>
                   </div>

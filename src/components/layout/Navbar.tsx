@@ -158,7 +158,7 @@ export function Navbar() {
           <SoundscapeToggle />
 
           <Link
-            href="/cotizador"
+            href="/contacto"
             className="hidden sm:inline-flex items-center gap-2 px-5 py-2 rounded-sm bg-puelche-cyan text-white hover:bg-puelche-cyan-dark font-condensed uppercase tracking-wider text-xs font-bold transition-all duration-200 shadow"
           >
             <span>Cotizar Proyecto</span>
@@ -258,17 +258,6 @@ export function Navbar() {
               </span>
             </Link>
 
-            <Link
-              href="/cotizador"
-              onClick={() => setMobileOpen(false)}
-              className={cn(
-                'py-2 border-b border-white/10 font-bold flex items-center justify-between text-[#59BFD6]',
-                pathname === '/cotizador' && 'font-bold'
-              )}
-            >
-              <span>COTIZADOR PARAMÉTRICO</span>
-              <ArrowUpRight className="w-4 h-4" />
-            </Link>
 
             <Link
               href="/clientes"

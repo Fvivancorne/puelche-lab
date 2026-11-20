@@ -605,9 +605,11 @@ export default function ContactoPage() {
             </div>
           </Link>
 
-          {/* Puente a Cotizador con UF */}
-          <Link
-            href="/cotizador"
+          {/* Puente a Cotización Asistida por WhatsApp */}
+          <a
+            href="https://wa.me/56966177500?text=Hola%20Puelche%20Lab,%20me%20gustar%C3%ADa%20solicitar%20un%20presupuesto%20a%20medida%20para%20un%20proyecto."
+            target="_blank"
+            rel="noopener noreferrer"
             className="group p-6 rounded-2xl bg-[#14171B]/80 hover:bg-[#181c22] border border-white/10 hover:border-[#C29B63]/50 transition-all duration-300 flex items-start gap-4 backdrop-blur-md hover:-translate-y-1 shadow-lg"
           >
             <div className="w-12 h-12 rounded-xl bg-[#C29B63]/10 border border-[#C29B63]/30 flex items-center justify-center text-[#C29B63] shrink-0 group-hover:scale-110 transition-transform">
@@ -616,19 +618,19 @@ export default function ContactoPage() {
             <div className="space-y-1.5 flex-1">
               <div className="flex items-center justify-between">
                 <span className="font-condensed text-lg uppercase font-bold text-white tracking-wide group-hover:text-[#C29B63] transition-colors">
-                  Calculadora de Inversión (UF)
+                  Presupuesto a Medida
                 </span>
                 <ArrowUpRight className="w-4 h-4 text-[#C29B63] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
               </div>
               <p className="font-sans text-xs text-white/70 font-light leading-relaxed">
-                ¿Requieres una estimación previa? Calcula el valor de tu producción fotográfica o desarrollo web con referencia en UF chilena y USD.
+                ¿Requieres una propuesta técnica? Diseñamos el plan de producción fotográfica o desarrollo web según los objetivos exactos de tu marca.
               </p>
               <div className="pt-1 flex items-center gap-2 font-mono text-[10px] uppercase text-[#C29B63]">
                 <span className="w-1.5 h-1.5 rounded-full bg-[#C29B63]" />
-                <span>Valores transparentes &bull; Desglose por entregables</span>
+                <span>Atención directa de autor &bull; Respuesta &lt; 24h</span>
               </div>
             </div>
-          </Link>
+          </a>
         </div>
       </section>
     </div>
