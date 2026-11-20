@@ -20,10 +20,10 @@ const nextConfig: NextConfig = {
   },
   async redirects() {
     return [
-      { source: '/cpanel', destination: 'https://host7.wirenetchile.com:2083', permanent: false },
-      { source: '/cpanel/', destination: 'https://host7.wirenetchile.com:2083', permanent: false },
-      { source: '/webmail', destination: 'https://host7.wirenetchile.com:2096', permanent: false },
-      { source: '/webmail/', destination: 'https://host7.wirenetchile.com:2096', permanent: false },
+      { source: '/cpanel', destination: 'https://cpanel.puelchelab.cl', permanent: false },
+      { source: '/cpanel/', destination: 'https://cpanel.puelchelab.cl', permanent: false },
+      { source: '/webmail', destination: 'https://webmail.puelchelab.cl', permanent: false },
+      { source: '/webmail/', destination: 'https://webmail.puelchelab.cl', permanent: false },
       { source: '/diseno-de-marca', destination: '/servicios/branding', permanent: true },
       { source: '/diseno-de-marca/', destination: '/servicios/branding', permanent: true },
       { source: '/fotografia-y-edicion-2', destination: '/servicios/fotografia', permanent: true },
