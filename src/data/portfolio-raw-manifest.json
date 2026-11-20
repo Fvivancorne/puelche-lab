@@ -1,0 +1,442 @@
+{
+  "producto/general": {
+    "category": "producto",
+    "client_raw": "general",
+    "client_slug": "general",
+    "images": []
+  },
+  "producto/aqua-chile": {
+    "category": "producto",
+    "client_raw": "AQUA CHILE",
+    "client_slug": "aqua-chile",
+    "images": [
+      "/images/real/portfolio/producto/aqua-chile/producto_aqua1.webp",
+      "/images/real/portfolio/producto/aqua-chile/producto_aqua2.webp",
+      "/images/real/portfolio/producto/aqua-chile/producto_aqua3.webp",
+      "/images/real/portfolio/producto/aqua-chile/producto_aqua4.webp",
+      "/images/real/portfolio/producto/aqua-chile/producto_aqua5.webp",
+      "/images/real/portfolio/producto/aqua-chile/producto_aqua6.webp",
+      "/images/real/portfolio/producto/aqua-chile/producto_aqua7.webp"
+    ]
+  },
+  "producto/co-hosting": {
+    "category": "producto",
+    "client_raw": "Co-Hosting",
+    "client_slug": "co-hosting",
+    "images": [
+      "/images/real/portfolio/producto/co-hosting/producto_cohosting1.webp",
+      "/images/real/portfolio/producto/co-hosting/producto_cohosting2.webp",
+      "/images/real/portfolio/producto/co-hosting/producto_cohosting3.webp",
+      "/images/real/portfolio/producto/co-hosting/producto_cohosting4.webp",
+      "/images/real/portfolio/producto/co-hosting/producto_cohosting5.webp",
+      "/images/real/portfolio/producto/co-hosting/producto_cohosting6.webp"
+    ]
+  },
+  "producto/cala-meli": {
+    "category": "producto",
+    "client_raw": "CALA MELI",
+    "client_slug": "cala-meli",
+    "images": [
+      "/images/real/portfolio/producto/cala-meli/producto_calameli1.webp",
+      "/images/real/portfolio/producto/cala-meli/producto_calameli2.webp",
+      "/images/real/portfolio/producto/cala-meli/producto_calameli3.webp",
+      "/images/real/portfolio/producto/cala-meli/producto_calameli4.webp"
+    ]
+  },
+  "producto/estancia-rilan": {
+    "category": "producto",
+    "client_raw": "Estancia Rilan",
+    "client_slug": "estancia-rilan",
+    "images": [
+      "/images/real/portfolio/producto/estancia-rilan/producto_estancia1.webp",
+      "/images/real/portfolio/producto/estancia-rilan/producto_estancia2.webp",
+      "/images/real/portfolio/producto/estancia-rilan/producto_estancia3.webp",
+      "/images/real/portfolio/producto/estancia-rilan/producto_estancia4.webp",
+      "/images/real/portfolio/producto/estancia-rilan/producto_estancia5.webp",
+      "/images/real/portfolio/producto/estancia-rilan/producto_estancia6.webp"
+    ]
+  },
+  "editorial/general": {
+    "category": "editorial",
+    "client_raw": "general",
+    "client_slug": "general",
+    "images": [
+      "/images/real/portfolio/editorial/general/disenoeditorialportada.webp"
+    ]
+  },
+  "editorial/bomberos-20-cia": {
+    "category": "editorial",
+    "client_raw": "Bomberos 20 CIA",
+    "client_slug": "bomberos-20-cia",
+    "images": [
+      "/images/real/portfolio/editorial/bomberos-20-cia/editorial_1_bomberos20.webp",
+      "/images/real/portfolio/editorial/bomberos-20-cia/editorial_2_bomberos20.webp",
+      "/images/real/portfolio/editorial/bomberos-20-cia/editorial_3_bomberos20.webp",
+      "/images/real/portfolio/editorial/bomberos-20-cia/editorial_4_bomberos20.webp"
+    ]
+  },
+  "editorial/ministerio-medio-ambiente": {
+    "category": "editorial",
+    "client_raw": "Ministerio Medio Ambiente",
+    "client_slug": "ministerio-medio-ambiente",
+    "images": [
+      "/images/real/portfolio/editorial/ministerio-medio-ambiente/ilustracionespdc11.webp",
+      "/images/real/portfolio/editorial/ministerio-medio-ambiente/ilustracionespdc12.webp",
+      "/images/real/portfolio/editorial/ministerio-medio-ambiente/ilustracionespdc13.webp"
+    ]
+  },
+  "editorial/falabella": {
+    "category": "editorial",
+    "client_raw": "Falabella",
+    "client_slug": "falabella",
+    "images": [
+      "/images/real/portfolio/editorial/falabella/editorial_falabella1.webp",
+      "/images/real/portfolio/editorial/falabella/editorial_falabella2.webp",
+      "/images/real/portfolio/editorial/falabella/editorial_falabella3.webp",
+      "/images/real/portfolio/editorial/falabella/editorial_falabella4.webp"
+    ]
+  },
+  "editorial/anasac": {
+    "category": "editorial",
+    "client_raw": "ANASAC",
+    "client_slug": "anasac",
+    "images": [
+      "/images/real/portfolio/editorial/anasac/editorial_anasac1.webp",
+      "/images/real/portfolio/editorial/anasac/editorial_anasac2.webp"
+    ]
+  },
+  "brochure/general": {
+    "category": "brochure",
+    "client_raw": "general",
+    "client_slug": "general",
+    "images": []
+  },
+  "brochure/frecuencia-rock": {
+    "category": "brochure",
+    "client_raw": "FRECUENCIA ROCK",
+    "client_slug": "frecuencia-rock",
+    "images": [
+      "/images/real/portfolio/brochure/frecuencia-rock/frecrock1.webp",
+      "/images/real/portfolio/brochure/frecuencia-rock/frecrock2.webp",
+      "/images/real/portfolio/brochure/frecuencia-rock/frecrock3.webp",
+      "/images/real/portfolio/brochure/frecuencia-rock/frecrock4.webp",
+      "/images/real/portfolio/brochure/frecuencia-rock/frecrock5.webp",
+      "/images/real/portfolio/brochure/frecuencia-rock/frecrock6.webp"
+    ]
+  },
+  "brochure/impacto-local": {
+    "category": "brochure",
+    "client_raw": "IMPACTO LOCAL",
+    "client_slug": "impacto-local",
+    "images": [
+      "/images/real/portfolio/brochure/impacto-local/brochure1.webp",
+      "/images/real/portfolio/brochure/impacto-local/brochure2.webp",
+      "/images/real/portfolio/brochure/impacto-local/brochure3.webp",
+      "/images/real/portfolio/brochure/impacto-local/brochure4.webp"
+    ]
+  },
+  "branding/general": {
+    "category": "branding",
+    "client_raw": "general",
+    "client_slug": "general",
+    "images": [
+      "/images/real/portfolio/branding/general/portada_branding.webp"
+    ]
+  },
+  "branding/casa-golondrina": {
+    "category": "branding",
+    "client_raw": "CASA GOLONDRINA",
+    "client_slug": "casa-golondrina",
+    "images": [
+      "/images/real/portfolio/branding/casa-golondrina/manualnormas1_casagolondrina.webp",
+      "/images/real/portfolio/branding/casa-golondrina/manualnormas2_casagolondrina.webp",
+      "/images/real/portfolio/branding/casa-golondrina/mockup_casagolondrina.webp"
+    ]
+  },
+  "branding/bomberos-20-cia": {
+    "category": "branding",
+    "client_raw": "BOMBEROS 20 CIA",
+    "client_slug": "bomberos-20-cia",
+    "images": [
+      "/images/real/portfolio/branding/bomberos-20-cia/bomberos20_1.webp",
+      "/images/real/portfolio/branding/bomberos-20-cia/bomberos20_2.webp",
+      "/images/real/portfolio/branding/bomberos-20-cia/bomberos20_3.webp"
+    ]
+  },
+  "branding/don-benedicto": {
+    "category": "branding",
+    "client_raw": "DON BENEDICTO",
+    "client_slug": "don-benedicto",
+    "images": [
+      "/images/real/portfolio/branding/don-benedicto/donbenedicto_mockup.webp",
+      "/images/real/portfolio/branding/don-benedicto/manualnormas_donbenedicto.webp",
+      "/images/real/portfolio/branding/don-benedicto/mockup_donbenedicto2.webp"
+    ]
+  },
+  "branding/neuroenciende": {
+    "category": "branding",
+    "client_raw": "NEUROENCIENDE",
+    "client_slug": "neuroenciende",
+    "images": [
+      "/images/real/portfolio/branding/neuroenciende/neuroenciende.webp",
+      "/images/real/portfolio/branding/neuroenciende/manual_marca1_neuroenciende.webp",
+      "/images/real/portfolio/branding/neuroenciende/manual_marca2_neuroenciende.webp"
+    ]
+  },
+  "branding/chiloe-wine-fest": {
+    "category": "branding",
+    "client_raw": "Chiloe Wine Fest",
+    "client_slug": "chiloe-wine-fest",
+    "images": [
+      "/images/real/portfolio/branding/chiloe-wine-fest/invitacion_chwf.webp",
+      "/images/real/portfolio/branding/chiloe-wine-fest/manualnormas1_chwf.webp",
+      "/images/real/portfolio/branding/chiloe-wine-fest/manualnormas2_chwf.webp",
+      "/images/real/portfolio/branding/chiloe-wine-fest/mockup_festival_vino_chiloe.webp"
+    ]
+  },
+  "branding/blue-seal": {
+    "category": "branding",
+    "client_raw": "BLUE SEAL",
+    "client_slug": "blue-seal",
+    "images": [
+      "/images/real/portfolio/branding/blue-seal/blueseal_mockup2.webp",
+      "/images/real/portfolio/branding/blue-seal/blueseal_mockup3.webp",
+      "/images/real/portfolio/branding/blue-seal/manualnormas_blueseal.webp",
+      "/images/real/portfolio/branding/blue-seal/portada_blueseal.webp"
+    ]
+  },
+  "branding/hote-estancia-rilan": {
+    "category": "branding",
+    "client_raw": "HOTE ESTANCIA RILAN",
+    "client_slug": "hote-estancia-rilan",
+    "images": [
+      "/images/real/portfolio/branding/hote-estancia-rilan/estanciarilan_cartavinos.webp",
+      "/images/real/portfolio/branding/hote-estancia-rilan/estanciarilan_logoentrada.webp",
+      "/images/real/portfolio/branding/hote-estancia-rilan/branding_estanciarilan.webp",
+      "/images/real/portfolio/branding/hote-estancia-rilan/nomolestar_estanciarilan.webp"
+    ]
+  },
+  "branding/transforma": {
+    "category": "branding",
+    "client_raw": "TRANSFORMA",
+    "client_slug": "transforma",
+    "images": [
+      "/images/real/portfolio/branding/transforma/eddicion_foto_transforma1.webp",
+      "/images/real/portfolio/branding/transforma/manual_trsansforma.webp",
+      "/images/real/portfolio/branding/transforma/manual_trsansforma2.webp",
+      "/images/real/portfolio/branding/transforma/invitacion_transforma.webp"
+    ]
+  },
+  "branding/hotel-arrebol": {
+    "category": "branding",
+    "client_raw": "HOTEL ARREBOL",
+    "client_slug": "hotel-arrebol",
+    "images": [
+      "/images/real/portfolio/branding/hotel-arrebol/arrebol_portada.webp",
+      "/images/real/portfolio/branding/hotel-arrebol/manualnormas_arrebol.webp",
+      "/images/real/portfolio/branding/hotel-arrebol/hotelarrebol1.webp",
+      "/images/real/portfolio/branding/hotel-arrebol/mockup_arrebol.webp"
+    ]
+  },
+  "branding/rmh": {
+    "category": "branding",
+    "client_raw": "RMH",
+    "client_slug": "rmh",
+    "images": [
+      "/images/real/portfolio/branding/rmh/mockup_rmh.webp",
+      "/images/real/portfolio/branding/rmh/tarjetasrmh.webp",
+      "/images/real/portfolio/branding/rmh/tarjetasrmh2.webp"
+    ]
+  },
+  "branding/salusmed": {
+    "category": "branding",
+    "client_raw": "SALUSMED",
+    "client_slug": "salusmed",
+    "images": [
+      "/images/real/portfolio/branding/salusmed/img_6078.webp",
+      "/images/real/portfolio/branding/salusmed/mockup1_salusmed.webp",
+      "/images/real/portfolio/branding/salusmed/mockup_salusmed.webp",
+      "/images/real/portfolio/branding/salusmed/papeleria_salusmed.webp"
+    ]
+  },
+  "postproduccion/general": {
+    "category": "postproduccion",
+    "client_raw": "general",
+    "client_slug": "general",
+    "images": [
+      "/images/real/portfolio/postproduccion/general/montaje_parawebalejo.webp",
+      "/images/real/portfolio/postproduccion/general/montaje_firesafe.webp",
+      "/images/real/portfolio/postproduccion/general/montaje_puelche.webp",
+      "/images/real/portfolio/postproduccion/general/montaje_puelche2.webp"
+    ]
+  },
+  "postproduccion/transforma": {
+    "category": "postproduccion",
+    "client_raw": "TRANSFORMA",
+    "client_slug": "transforma",
+    "images": [
+      "/images/real/portfolio/postproduccion/transforma/montaje_transforma.webp",
+      "/images/real/portfolio/postproduccion/transforma/montaje_transforma2.webp",
+      "/images/real/portfolio/postproduccion/transforma/montaje_transforma3.webp"
+    ]
+  },
+  "postproduccion/estancia-rilan": {
+    "category": "postproduccion",
+    "client_raw": "Estancia Rilan",
+    "client_slug": "estancia-rilan",
+    "images": [
+      "/images/real/portfolio/postproduccion/estancia-rilan/montaje_er1.webp",
+      "/images/real/portfolio/postproduccion/estancia-rilan/montaje_er2.webp",
+      "/images/real/portfolio/postproduccion/estancia-rilan/montaje_er3.webp",
+      "/images/real/portfolio/postproduccion/estancia-rilan/montaje_er4.webp",
+      "/images/real/portfolio/postproduccion/estancia-rilan/montaje_er5.webp",
+      "/images/real/portfolio/postproduccion/estancia-rilan/montaje_er6.webp"
+    ]
+  },
+  "postproduccion/carnaval-del-sur": {
+    "category": "postproduccion",
+    "client_raw": "Carnaval del Sur",
+    "client_slug": "carnaval-del-sur",
+    "images": [
+      "/images/real/portfolio/postproduccion/carnaval-del-sur/montaje_cds1.webp",
+      "/images/real/portfolio/postproduccion/carnaval-del-sur/montaje_cds2.webp",
+      "/images/real/portfolio/postproduccion/carnaval-del-sur/montaje_cds3.webp",
+      "/images/real/portfolio/postproduccion/carnaval-del-sur/montaje_cds4.webp",
+      "/images/real/portfolio/postproduccion/carnaval-del-sur/montaje_carnaval.webp"
+    ]
+  },
+  "postproduccion/doosan": {
+    "category": "postproduccion",
+    "client_raw": "Doosan",
+    "client_slug": "doosan",
+    "images": [
+      "/images/real/portfolio/postproduccion/doosan/montaje_doosan12.webp",
+      "/images/real/portfolio/postproduccion/doosan/montaje_doosan1.webp",
+      "/images/real/portfolio/postproduccion/doosan/montaje_doosan21.webp",
+      "/images/real/portfolio/postproduccion/doosan/montaje_doosan2.webp",
+      "/images/real/portfolio/postproduccion/doosan/montaje_doosan_bruto1.webp",
+      "/images/real/portfolio/postproduccion/doosan/montaje_doosan_bruto22.webp",
+      "/images/real/portfolio/postproduccion/doosan/montaje_doosan_bruto2.webp"
+    ]
+  },
+  "inmobiliario/general": {
+    "category": "inmobiliario",
+    "client_raw": "general",
+    "client_slug": "general",
+    "images": [
+      "/images/real/portfolio/inmobiliario/general/portada_interioreseinmob.webp"
+    ]
+  },
+  "inmobiliario/muebles-yunge": {
+    "category": "inmobiliario",
+    "client_raw": "Muebles Yunge",
+    "client_slug": "muebles-yunge",
+    "images": [
+      "/images/real/portfolio/inmobiliario/muebles-yunge/interiores_yunge1.webp",
+      "/images/real/portfolio/inmobiliario/muebles-yunge/interiores_yunge2.webp",
+      "/images/real/portfolio/inmobiliario/muebles-yunge/interiores_yunge3.webp",
+      "/images/real/portfolio/inmobiliario/muebles-yunge/interiores_yunge4.webp",
+      "/images/real/portfolio/inmobiliario/muebles-yunge/interiores_yunge5.webp",
+      "/images/real/portfolio/inmobiliario/muebles-yunge/interiores_yunge6.webp"
+    ]
+  },
+  "inmobiliario/hotel-costaustralis-y-cabo-de-hornos": {
+    "category": "inmobiliario",
+    "client_raw": "HOTEL COSTAUSTRALIS Y CABO DE HORNOS",
+    "client_slug": "hotel-costaustralis-y-cabo-de-hornos",
+    "images": [
+      "/images/real/portfolio/inmobiliario/hotel-costaustralis-y-cabo-de-hornos/img_7257.webp",
+      "/images/real/portfolio/inmobiliario/hotel-costaustralis-y-cabo-de-hornos/img_7556.webp",
+      "/images/real/portfolio/inmobiliario/hotel-costaustralis-y-cabo-de-hornos/img_7641.webp",
+      "/images/real/portfolio/inmobiliario/hotel-costaustralis-y-cabo-de-hornos/img_7654.webp",
+      "/images/real/portfolio/inmobiliario/hotel-costaustralis-y-cabo-de-hornos/img_7656.webp",
+      "/images/real/portfolio/inmobiliario/hotel-costaustralis-y-cabo-de-hornos/img_7689.webp",
+      "/images/real/portfolio/inmobiliario/hotel-costaustralis-y-cabo-de-hornos/img_7816.webp",
+      "/images/real/portfolio/inmobiliario/hotel-costaustralis-y-cabo-de-hornos/img_7888.webp",
+      "/images/real/portfolio/inmobiliario/hotel-costaustralis-y-cabo-de-hornos/img_7919.webp"
+    ]
+  },
+  "inmobiliario/aura-laser": {
+    "category": "inmobiliario",
+    "client_raw": "Aura Laser",
+    "client_slug": "aura-laser",
+    "images": [
+      "/images/real/portfolio/inmobiliario/aura-laser/img_2156.webp",
+      "/images/real/portfolio/inmobiliario/aura-laser/img_2165.webp",
+      "/images/real/portfolio/inmobiliario/aura-laser/img_2177.webp",
+      "/images/real/portfolio/inmobiliario/aura-laser/img_2179.webp",
+      "/images/real/portfolio/inmobiliario/aura-laser/img_2185.webp",
+      "/images/real/portfolio/inmobiliario/aura-laser/img_2202.webp",
+      "/images/real/portfolio/inmobiliario/aura-laser/img_2261.webp",
+      "/images/real/portfolio/inmobiliario/aura-laser/img_2262.webp"
+    ]
+  },
+  "inmobiliario/co-hosting": {
+    "category": "inmobiliario",
+    "client_raw": "Co-Hosting",
+    "client_slug": "co-hosting",
+    "images": [
+      "/images/real/portfolio/inmobiliario/co-hosting/interiores_coh1.webp",
+      "/images/real/portfolio/inmobiliario/co-hosting/interiores_coh2.webp",
+      "/images/real/portfolio/inmobiliario/co-hosting/interiores_coh3.webp",
+      "/images/real/portfolio/inmobiliario/co-hosting/interiores_coh4.webp",
+      "/images/real/portfolio/inmobiliario/co-hosting/interiores_coh5.webp",
+      "/images/real/portfolio/inmobiliario/co-hosting/interiores_coh6.webp",
+      "/images/real/portfolio/inmobiliario/co-hosting/interiores_coh7.webp",
+      "/images/real/portfolio/inmobiliario/co-hosting/interiores_coh8.webp"
+    ]
+  },
+  "inmobiliario/cala-meli": {
+    "category": "inmobiliario",
+    "client_raw": "CALA MELI",
+    "client_slug": "cala-meli",
+    "images": [
+      "/images/real/portfolio/inmobiliario/cala-meli/interiores_cala1.webp",
+      "/images/real/portfolio/inmobiliario/cala-meli/interiores_cala2.webp",
+      "/images/real/portfolio/inmobiliario/cala-meli/interiores_cala3.webp",
+      "/images/real/portfolio/inmobiliario/cala-meli/interiores_cala4.webp",
+      "/images/real/portfolio/inmobiliario/cala-meli/interiores_cala5.webp",
+      "/images/real/portfolio/inmobiliario/cala-meli/interiores_cala6.webp"
+    ]
+  },
+  "inmobiliario/estancia-rilan": {
+    "category": "inmobiliario",
+    "client_raw": "Estancia Rilan",
+    "client_slug": "estancia-rilan",
+    "images": [
+      "/images/real/portfolio/inmobiliario/estancia-rilan/interiores_estancia1.webp",
+      "/images/real/portfolio/inmobiliario/estancia-rilan/interiores_estancia2.webp",
+      "/images/real/portfolio/inmobiliario/estancia-rilan/interiores_estancia3.webp",
+      "/images/real/portfolio/inmobiliario/estancia-rilan/interiores_estancia4.webp",
+      "/images/real/portfolio/inmobiliario/estancia-rilan/interiores_estancia5.webp",
+      "/images/real/portfolio/inmobiliario/estancia-rilan/interiores_estancia6.webp",
+      "/images/real/portfolio/inmobiliario/estancia-rilan/interiores_estancia7.webp"
+    ]
+  },
+  "inmobiliario/ohana": {
+    "category": "inmobiliario",
+    "client_raw": "Ohana",
+    "client_slug": "ohana",
+    "images": [
+      "/images/real/portfolio/inmobiliario/ohana/interiores_eohana1.webp",
+      "/images/real/portfolio/inmobiliario/ohana/interiores_eohana2.webp",
+      "/images/real/portfolio/inmobiliario/ohana/interiores_eohana3.webp",
+      "/images/real/portfolio/inmobiliario/ohana/interiores_eohana4.webp",
+      "/images/real/portfolio/inmobiliario/ohana/interiores_eohana5.webp"
+    ]
+  },
+  "inmobiliario/tagua-tagua-lodge": {
+    "category": "inmobiliario",
+    "client_raw": "TAGUA TAGUA LODGE",
+    "client_slug": "tagua-tagua-lodge",
+    "images": [
+      "/images/real/portfolio/inmobiliario/tagua-tagua-lodge/img_2343.webp",
+      "/images/real/portfolio/inmobiliario/tagua-tagua-lodge/img_2345.webp",
+      "/images/real/portfolio/inmobiliario/tagua-tagua-lodge/img_2360.webp",
+      "/images/real/portfolio/inmobiliario/tagua-tagua-lodge/img_2375.webp",
+      "/images/real/portfolio/inmobiliario/tagua-tagua-lodge/img_2472.webp",
+      "/images/real/portfolio/inmobiliario/tagua-tagua-lodge/img_2561.webp",
+      "/images/real/portfolio/inmobiliario/tagua-tagua-lodge/img_3003.webp"
+    ]
+  }
+}

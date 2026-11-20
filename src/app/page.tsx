@@ -13,6 +13,7 @@ import { BrutalistCrossMedia } from '@/components/home/BrutalistCrossMedia';
 import { WindParticleCanvas } from '@/components/ui/WindParticleCanvas';
 import { BeforeAfterSlider } from '@/components/ui/BeforeAfterSlider';
 import { OrganicStoriesSection } from '@/components/home/OrganicStoriesSection';
+import { AuthorDirectionSection } from '@/components/home/AuthorDirectionSection';
 import { Magnetic } from '@/components/ui/Magnetic';
 import { KineticTextSwap } from '@/components/ui/KineticTextSwap';
 
@@ -292,6 +293,14 @@ export default function Home() {
         ======================================================================
       */}
       <BrutalistProjectList />
+
+      {/* 
+        ======================================================================
+        SECCIÓN AWWWARDS: DIRECCIÓN CREATIVA & AUTORÍA AUSTRAL
+        Alejandro Lattes (en terreno) & Paula Valdivieso (producción de arte)
+        ======================================================================
+      */}
+      <AuthorDirectionSection />
 
       {/* 
         ======================================================================
