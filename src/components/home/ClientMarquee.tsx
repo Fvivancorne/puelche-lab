@@ -90,7 +90,7 @@ export function ClientMarquee() {
           </span>
         </div>
         <h2 className="font-condensed text-3xl sm:text-4xl md:text-5xl font-bold uppercase tracking-wide text-white">
-          +50 Clientes en la Patagonia
+          20 Marcas Destacadas de +50 Proyectos Australes
         </h2>
       </div>
 

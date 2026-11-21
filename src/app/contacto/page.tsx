@@ -288,6 +288,7 @@ function ContactFormInner() {
               </label>
               <input
                 id="nombre"
+                name="name"
                 type="text"
                 required
                 value={name}
@@ -307,6 +308,7 @@ function ContactFormInner() {
                 </label>
                 <input
                   id="telefono"
+                  name="phone"
                   type="tel"
                   required
                   value={phone}
@@ -325,6 +327,7 @@ function ContactFormInner() {
                 </label>
                 <input
                   id="correo"
+                  name="email"
                   type="email"
                   required
                   value={email}
@@ -431,6 +434,7 @@ function ContactFormInner() {
               </label>
               <textarea
                 id="mensaje"
+                name="message"
                 rows={3}
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}

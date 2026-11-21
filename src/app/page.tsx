@@ -208,13 +208,13 @@ export default function Home() {
               className="font-condensed text-4xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl uppercase tracking-[0.06em] font-bold text-white drop-shadow-2xl leading-[0.95]"
             />
 
-            <h2 id="hero-discipline-title" className="font-condensed text-sm sm:text-lg md:text-xl lg:text-2xl uppercase tracking-[0.2em] font-light text-white/90 pt-0.5 will-change-transform">
-              Diseño Cross Media &bull; Fotografía de Autor
+            <h2 id="hero-discipline-title" className="font-condensed text-base sm:text-xl md:text-2xl lg:text-3xl uppercase tracking-[0.16em] font-normal text-white pt-1 will-change-transform">
+              Fotografía, Diseño &bull; Experiencias Digitales
             </h2>
           </div>
 
-          <p id="hero-description" className="font-sans text-xs sm:text-sm md:text-base lg:text-lg font-light text-white/85 max-w-2xl mx-auto tracking-wide leading-relaxed drop-shadow-md px-2 will-change-transform">
-            Marcas del sur con presencia sin fronteras. Estudio de diseño cross media y fotografía de autor esculpido bajo el rigor y la luz de la Patagonia austral.
+          <p id="hero-description" className="font-sans text-xs sm:text-sm md:text-base lg:text-lg font-light text-white/90 max-w-3xl mx-auto tracking-wide leading-relaxed drop-shadow-md px-2 will-change-transform">
+            Estudio creativo y expediciones visuales por la Patagonia. Diseñamos identidades de marca, producción fotográfica en terreno austral y plataformas digitales para proyectos con carácter y presencia sin fronteras.
           </p>
 
           {/* Quick Primary Actions with Magnetic Spring & Kinetic Roll */}
@@ -224,7 +224,7 @@ export default function Home() {
                 href="/auditor"
                 className="group px-5 py-2.5 rounded-full bg-white/10 hover:bg-[#59BFD6] text-white hover:text-[#0b0d10] border border-white/20 hover:border-[#59BFD6] font-mono text-xs uppercase tracking-wider transition-all duration-300 flex items-center gap-2 shadow-lg"
               >
-                <KineticTextSwap primaryText="Auditar Plataforma" secondaryText="Autopsia Forense" secondaryClassName="text-[#0b0d10] font-bold" />
+                <KineticTextSwap primaryText="Auditoría Web" secondaryText="Diagnóstico 20s" secondaryClassName="text-[#0b0d10] font-bold" />
                 <ArrowUpRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
               </Link>
             </Magnetic>
@@ -233,7 +233,7 @@ export default function Home() {
                 href="/contacto"
                 className="group px-5 py-2.5 rounded-full bg-transparent hover:bg-white/10 text-white/80 hover:text-white border border-white/15 hover:border-white/30 font-mono text-xs uppercase tracking-wider transition-all duration-300 flex items-center gap-2"
               >
-                <KineticTextSwap primaryText="Iniciar Proyecto" secondaryText="Diálogo Directo" secondaryClassName="text-[#59BFD6] font-bold" />
+                <KineticTextSwap primaryText="Iniciar Proyecto" secondaryText="Cotizar Brief" secondaryClassName="text-[#59BFD6] font-bold" />
                 <ArrowDown className="w-3.5 h-3.5 -rotate-90 group-hover:translate-x-0.5 transition-transform" />
               </Link>
             </Magnetic>
