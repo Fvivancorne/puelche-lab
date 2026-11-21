@@ -46,21 +46,36 @@ export function renderBaseEmailLayout({
       <td align="center" style="padding: 32px 12px 48px 12px;">
         <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="600" class="container" style="max-width: 600px; width: 100%; background-color: #111215; border-radius: 16px; border: 1px solid rgba(255,255,255,0.08); overflow: hidden; box-shadow: 0 20px 40px rgba(0,0,0,0.6);">
           
-          <!-- CABECERA EDITORIAL DE ESTUDIO -->
+          <!-- CABECERA EDITORIAL DE ESTUDIO CON LOGOTIPO OFICIAL -->
           <tr>
-            <td style="padding: 32px 36px 24px 36px; border-bottom: 1px solid rgba(255,255,255,0.06); background: linear-gradient(180deg, rgba(89,191,214,0.05) 0%, rgba(17,18,21,0) 100%);">
+            <td style="padding: 28px 36px 22px 36px; border-bottom: 1px solid rgba(255,255,255,0.06); background: linear-gradient(180deg, rgba(89,191,214,0.06) 0%, rgba(17,18,21,0) 100%);">
               <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%">
                 <tr>
-                  <td>
-                    <div style="font-size: 11px; font-weight: 700; letter-spacing: 0.25em; text-transform: uppercase; color: #59BFD6; margin-bottom: 4px;">
-                      PUELCHE LAB &bull; PUERTO VARAS &bull; 41°19&apos;S 72°59&apos;W
+                  <td style="vertical-align: middle;">
+                    <a href="https://puelchelab.cl" target="_blank" style="text-decoration: none; display: inline-block;">
+                      <img 
+                        src="https://puelchelab.cl/images/real/logo-top.png" 
+                        alt="Puelche Lab — Estudio de Diseño Cross Media &amp; Fotografía" 
+                        width="168" 
+                        style="display: block; width: 168px; max-width: 168px; height: auto; border: 0; outline: none; margin-bottom: 10px;" 
+                      />
+                    </a>
+                    <div style="font-size: 10px; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; color: #59BFD6; margin-bottom: 3px;">
+                      PUERTO VARAS &bull; 41°19&apos;S 72°59&apos;W
                     </div>
-                    <div style="font-size: 13px; color: rgba(255,255,255,0.5); font-style: italic;">
+                    <div style="font-size: 12px; color: rgba(255,255,255,0.5); font-style: italic;">
                       Luz de estudio &bull; Territorio austral
                     </div>
                   </td>
                   <td align="right" style="vertical-align: middle;">
-                    <span style="display: inline-block; width: 8px; height: 8px; border-radius: 50%; background-color: #59BFD6; box-shadow: 0 0 10px #59BFD6;"></span>
+                    <a href="https://puelchelab.cl" target="_blank" style="text-decoration: none; display: inline-block;">
+                      <img 
+                        src="https://puelchelab.cl/images/real/logo-puelche.png" 
+                        alt="Puelche Lab Monograma" 
+                        width="48" 
+                        style="display: block; width: 48px; height: auto; border: 0; outline: none; opacity: 0.9;" 
+                      />
+                    </a>
                   </td>
                 </tr>
               </table>
@@ -74,15 +89,25 @@ export function renderBaseEmailLayout({
             </td>
           </tr>
 
-          <!-- FIRMA DE AUTORES -->
+          <!-- FIRMA DE AUTORES CON EMBLEMA DE ESTUDIO -->
           <tr>
             <td style="padding: 24px 36px 28px 36px; background-color: rgba(255,255,255,0.02); border-top: 1px solid rgba(255,255,255,0.06);">
               <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%">
                 <tr>
-                  <td style="font-size: 13px; color: rgba(255,255,255,0.7); line-height: 1.6;">
-                    <strong style="color: #FFFFFF;">Alejandro Lattes & Paula Valdivieso</strong><br/>
-                    Dirección Creativa, Fotografía de Autor & Producción Cross Media<br/>
-                    <a href="https://puelchelab.cl" style="color: #59BFD6; text-decoration: none; font-size: 12px; letter-spacing: 0.05em;">puelchelab.cl</a> &bull; 
+                  <td style="vertical-align: middle; width: 50px; padding-right: 16px;">
+                    <a href="https://puelchelab.cl" target="_blank" style="text-decoration: none; display: inline-block;">
+                      <img 
+                        src="https://puelchelab.cl/images/real/logo-puelche.png" 
+                        alt="Puelche Lab" 
+                        width="46" 
+                        style="display: block; width: 46px; height: auto; border: 0; outline: none; opacity: 0.9;" 
+                      />
+                    </a>
+                  </td>
+                  <td style="font-size: 13px; color: rgba(255,255,255,0.7); line-height: 1.6; vertical-align: middle;">
+                    <strong style="color: #FFFFFF; font-size: 14px;">Alejandro Lattes &amp; Paula Valdivieso</strong><br/>
+                    <span style="color: rgba(255,255,255,0.55); font-size: 12px;">Dirección Creativa, Fotografía de Autor &amp; Producción Cross Media</span><br/>
+                    <a href="https://puelchelab.cl" style="color: #59BFD6; text-decoration: none; font-size: 12px; letter-spacing: 0.05em; font-weight: 600;">puelchelab.cl</a> &bull; 
                     <a href="https://wa.me/56966177500" style="color: rgba(255,255,255,0.6); text-decoration: none; font-size: 12px;">+56 9 6617 7500</a>
                   </td>
                 </tr>

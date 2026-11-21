@@ -2257,12 +2257,21 @@ export default function AdminCmsHubPage() {
 
                       <div className="p-5 rounded-xl bg-[#111215] border border-white/10 space-y-4 text-left">
                         <div className="flex items-center justify-between border-b border-white/10 pb-3">
-                          <span className="font-condensed font-bold tracking-widest text-xs uppercase text-[#59BFD6]">
-                            PUELCHE LAB
-                          </span>
-                          <span className="font-mono text-[9px] text-white/40">
-                            41°19&apos;S 72°59&apos;W
-                          </span>
+                          <div className="space-y-1">
+                            <img 
+                              src="/images/real/logo-top.png" 
+                              alt="Puelche Lab" 
+                              className="h-6 w-auto object-contain" 
+                            />
+                            <div className="font-mono text-[9px] text-[#59BFD6] tracking-wider uppercase">
+                              41°19&apos;S 72°59&apos;W &bull; Puerto Varas
+                            </div>
+                          </div>
+                          <img 
+                            src="/images/real/logo-puelche.png" 
+                            alt="Monograma" 
+                            className="h-7 w-auto object-contain opacity-85" 
+                          />
                         </div>
 
                         <div className="space-y-1">
