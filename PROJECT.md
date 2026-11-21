@@ -85,6 +85,11 @@
 | 18 | Skill de Agencia: GEO/LLM Readiness & llms.txt Architect | Enhanced AI audit & llms.txt generator skills | M7 | R3 | DONE |
 | 19 | Catálogo de Workflows Prioritarios n8n | Top workflows for lead enrichment, WhatsApp RAG bot, and content factory | M7 | R3 | DONE |
 | 20 | Certificación E2E, Clean Build & Lint, Review, Challenger & Audit | 100% pass on all test harnesses, clean lint, clean build, review, challenger and forensic audit | M8 | Gate | DONE |
+| 21 | Capa de Correo Híbrida Open Source | Nodemailer en cPanel Wirenet Chile (mail.puelchelab.cl:465 SSL), fallback Resend y Cron Job */15 * * * * | M9 | R8 | DONE |
+| 22 | Consola de Campañas & Despacho en Vivo en CMS | /admin tab campanas con compositor, previsualizador Austral Darkroom y botón de prueba SMTP | M9 | R8 | DONE |
+| 23 | Háptica y Micro-Acústica en Revelado | BeforeAfterSlider con data-lenis-prevent anti-bloqueo touch y micro-click procedural en Web Audio API | M9 | R8 | DONE |
+| 24 | Blindaje GEO Territorial y Coordenadas GPS | Inyección en layout.tsx de geo.region, geo.placename, geo.position y Schema.org @graph extendido | M9 | R8 | DONE |
+| 25 | Suite de Estrés de Campañas de Email | tests/email_campaign_stress.ts alcanzando 270/270 tests PASS (100% cobertura) | M9 | Gate | DONE |
 
 ## Milestones
 | # | Name | Scope | Dependencies | Status | Evidence |
@@ -97,6 +102,7 @@
 | M6 | Integración de GEO / LLM Readiness y Cinemática en Puelche Lab | Upgrade de /auditor/page.tsx, /llms.txt, Magnetic.tsx, KineticTextSwap.tsx, corrección de tests | M5 | DONE | Verified 22/22 static pages, clean lint |
 | M7 | Empaquetado de Skills en Ecosistema de Agencia | Creación de agencia-motion-video-arsenal, agencia-geo-llm-readiness-master, agencia-llm-txt-architect, y workflows n8n | M5 | DONE | Syntax & spec verified by Challenger 2 |
 | M8 | Verificación E2E, Clean Build & Lint, Review, Challenger & Forensic Audit | Validación integral de builds, lints, runners, revisión independiente, challengers y auditor forense | M6, M7 | DONE | 222/222 checks passing (E2E + Challengers), Verdict CLEAN |
+| M9 | Soberanía de Correo cPanel, Consola CMS, Háptica & Certificación 270 Tests | Capa SMTP Wirenet, Cron drip, consola interactiva en /admin, audio táctil en revelado, 270 tests PASS y deploy producción | M8 | Gate | DONE |
 
 ## Interface Contracts
 ### SmoothScrollProvider ↔ GSAP
