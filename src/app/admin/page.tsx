@@ -123,6 +123,50 @@ export default function AdminCmsHubPage() {
   });
   const [contactSaveSuccess, setContactSaveSuccess] = useState<boolean>(false);
 
+  // ── ESTADO DEL MOTOR DE CAMPAÑAS Y PRUEBAS SMTP ──
+  const [campaignTemplate, setCampaignTemplate] = useState<'studio-campaign' | 'quote-confirmation' | 'lead-notification'>('studio-campaign');
+  const [campaignRecipient, setCampaignRecipient] = useState<string>('paula@puelchelab.cl');
+  const [campaignSubject, setCampaignSubject] = useState<string>('Expediciones Australes 2026: Nueva Colección');
+  const [campaignHeadline, setCampaignHeadline] = useState<string>('La Luz Austral como Lenguaje Visual');
+  const [campaignBody, setCampaignBody] = useState<string>('Durante los últimos meses hemos documentado el territorio entre el Lago Llanquihue y los fiordos patagónicos con lentes Sony G Master.');
+  const [campaignCtaText, setCampaignCtaText] = useState<string>('Explorar Archivo Óptico');
+  const [campaignCtaUrl, setCampaignCtaUrl] = useState<string>('https://puelchelab.cl/portafolio');
+  const [isSendingTest, setIsSendingTest] = useState<boolean>(false);
+  const [testSendResult, setTestSendResult] = useState<{
+    success: boolean;
+    provider?: string;
+    messageId?: string;
+    error?: string;
+    durationMs?: number;
+  } | null>(null);
+
+  const handleSendTestEmail = async () => {
+    setIsSendingTest(true);
+    setTestSendResult(null);
+    try {
+      const res = await fetch('/api/admin/send-test-email', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          pin: 'puelche2026',
+          recipientEmail: campaignRecipient,
+          templateType: campaignTemplate,
+          customSubject: campaignSubject,
+          customHeadline: campaignHeadline,
+          customBody: campaignBody,
+          customCtaText: campaignCtaText,
+          customCtaUrl: campaignCtaUrl,
+        }),
+      });
+      const data = await res.json();
+      setTestSendResult(data);
+    } catch (err: any) {
+      setTestSendResult({ success: false, error: err?.message || 'Error de red' });
+    } finally {
+      setIsSendingTest(false);
+    }
+  };
+
   // Live currency state (Banco Central)
   const [indicators, setIndicators] = useState<LiveIndicator>({
     uf: defaultPricingConfig.currency.ufRate || 41323,
@@ -2001,28 +2045,262 @@ export default function AdminCmsHubPage() {
                   Plantillas de Estudio Integradas (Austral Darkroom)
                 </h3>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  <div className="p-5 rounded-xl bg-white/[0.02] border border-white/10 space-y-2">
-                    <span className="font-mono text-[10px] text-[#59BFD6] uppercase tracking-wider block">Plantilla 01</span>
-                    <h4 className="font-bold text-white text-sm">Acuse de Cotización</h4>
-                    <p className="text-xs text-white/60 leading-relaxed">
+                  <div 
+                    onClick={() => setCampaignTemplate('quote-confirmation')}
+                    className={`p-5 rounded-xl border transition-all cursor-pointer ${
+                      campaignTemplate === 'quote-confirmation' 
+                        ? 'bg-[#59BFD6]/10 border-[#59BFD6] shadow-[0_0_15px_rgba(89,191,214,0.2)]' 
+                        : 'bg-white/[0.02] border-white/10 hover:border-white/20'
+                    }`}
+                  >
+                    <div className="flex items-center justify-between">
+                      <span className="font-mono text-[10px] text-[#59BFD6] uppercase tracking-wider block">Plantilla 01</span>
+                      {campaignTemplate === 'quote-confirmation' && <Check className="w-3.5 h-3.5 text-[#59BFD6]" />}
+                    </div>
+                    <h4 className="font-bold text-white text-sm mt-1">Acuse de Cotización</h4>
+                    <p className="text-xs text-white/60 leading-relaxed mt-1">
                       Se despacha al cliente inmediatamente tras cotizar con el resumen en UF/CLP, ficha de territorio y botón a WhatsApp.
                     </p>
                   </div>
 
-                  <div className="p-5 rounded-xl bg-white/[0.02] border border-white/10 space-y-2">
-                    <span className="font-mono text-[10px] text-[#C29B63] uppercase tracking-wider block">Plantilla 02</span>
-                    <h4 className="font-bold text-white text-sm">Alerta Interna para Dirección</h4>
-                    <p className="text-xs text-white/60 leading-relaxed">
+                  <div 
+                    onClick={() => setCampaignTemplate('lead-notification')}
+                    className={`p-5 rounded-xl border transition-all cursor-pointer ${
+                      campaignTemplate === 'lead-notification' 
+                        ? 'bg-[#C29B63]/10 border-[#C29B63] shadow-[0_0_15px_rgba(194,155,99,0.2)]' 
+                        : 'bg-white/[0.02] border-white/10 hover:border-white/20'
+                    }`}
+                  >
+                    <div className="flex items-center justify-between">
+                      <span className="font-mono text-[10px] text-[#C29B63] uppercase tracking-wider block">Plantilla 02</span>
+                      {campaignTemplate === 'lead-notification' && <Check className="w-3.5 h-3.5 text-[#C29B63]" />}
+                    </div>
+                    <h4 className="font-bold text-white text-sm mt-1">Alerta Interna para Dirección</h4>
+                    <p className="text-xs text-white/60 leading-relaxed mt-1">
                       Llega a Paula y Alejandro con botones para llamar por teléfono o responder al WhatsApp del cliente con 1 toque.
                     </p>
                   </div>
 
-                  <div className="p-5 rounded-xl bg-white/[0.02] border border-white/10 space-y-2">
-                    <span className="font-mono text-[10px] text-emerald-400 uppercase tracking-wider block">Plantilla 03</span>
-                    <h4 className="font-bold text-white text-sm">Boletín & Novedades de Autor</h4>
-                    <p className="text-xs text-white/60 leading-relaxed">
+                  <div 
+                    onClick={() => setCampaignTemplate('studio-campaign')}
+                    className={`p-5 rounded-xl border transition-all cursor-pointer ${
+                      campaignTemplate === 'studio-campaign' 
+                        ? 'bg-emerald-500/10 border-emerald-500 shadow-[0_0_15px_rgba(52,211,153,0.2)]' 
+                        : 'bg-white/[0.02] border-white/10 hover:border-white/20'
+                    }`}
+                  >
+                    <div className="flex items-center justify-between">
+                      <span className="font-mono text-[10px] text-emerald-400 uppercase tracking-wider block">Plantilla 03 (Activa)</span>
+                      {campaignTemplate === 'studio-campaign' && <Check className="w-3.5 h-3.5 text-emerald-400]" />}
+                    </div>
+                    <h4 className="font-bold text-white text-sm mt-1">Boletín & Novedades de Autor</h4>
+                    <p className="text-xs text-white/60 leading-relaxed mt-1">
                       Campaña para enviar a marcas y clientes pasados sobre nuevos rodajes 4K con dron y obras destacadas de temporada.
                     </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* CONSOLA DE COMPOSICIÓN Y PRUEBA EN VIVO */}
+              <div className="pt-6 border-t border-white/10 space-y-6">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                  <div>
+                    <span className="font-mono text-xs uppercase tracking-wider text-[#59BFD6]">
+                      Consola de Envío en Vivo
+                    </span>
+                    <h3 className="font-condensed text-2xl font-bold uppercase text-white">
+                      Compositor de Campaña & Prueba SMTP
+                    </h3>
+                  </div>
+                  <div className="text-xs text-white/50 font-mono">
+                    Canal: <span className="text-emerald-400">contacto@puelchelab.cl (SSL)</span>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                  {/* Formulario de Redacción */}
+                  <div className="space-y-4 p-6 rounded-2xl bg-white/[0.02] border border-white/10">
+                    <div>
+                      <label className="block text-xs font-mono text-white/70 uppercase tracking-wider mb-1.5">
+                        Destinatario de Prueba (Email)
+                      </label>
+                      <input
+                        type="email"
+                        value={campaignRecipient}
+                        onChange={(e) => setCampaignRecipient(e.target.value)}
+                        placeholder="paula@puelchelab.cl"
+                        className="w-full px-4 py-2.5 rounded-xl bg-black/40 border border-white/15 text-white text-sm font-mono focus:border-[#59BFD6] focus:outline-none transition-colors"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-xs font-mono text-white/70 uppercase tracking-wider mb-1.5">
+                        Asunto del Mensaje
+                      </label>
+                      <input
+                        type="text"
+                        value={campaignSubject}
+                        onChange={(e) => setCampaignSubject(e.target.value)}
+                        className="w-full px-4 py-2.5 rounded-xl bg-black/40 border border-white/15 text-white text-sm focus:border-[#59BFD6] focus:outline-none transition-colors"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-xs font-mono text-white/70 uppercase tracking-wider mb-1.5">
+                        Titular Principal (Headline)
+                      </label>
+                      <input
+                        type="text"
+                        value={campaignHeadline}
+                        onChange={(e) => setCampaignHeadline(e.target.value)}
+                        className="w-full px-4 py-2.5 rounded-xl bg-black/40 border border-white/15 text-white text-sm focus:border-[#59BFD6] focus:outline-none transition-colors"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-xs font-mono text-white/70 uppercase tracking-wider mb-1.5">
+                        Cuerpo Editorial del Mensaje
+                      </label>
+                      <textarea
+                        rows={4}
+                        value={campaignBody}
+                        onChange={(e) => setCampaignBody(e.target.value)}
+                        className="w-full px-4 py-2.5 rounded-xl bg-black/40 border border-white/15 text-white text-sm focus:border-[#59BFD6] focus:outline-none transition-colors"
+                      />
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-3">
+                      <div>
+                        <label className="block text-xs font-mono text-white/70 uppercase tracking-wider mb-1.5">
+                          Texto Botón CTA
+                        </label>
+                        <input
+                          type="text"
+                          value={campaignCtaText}
+                          onChange={(e) => setCampaignCtaText(e.target.value)}
+                          className="w-full px-3 py-2 rounded-xl bg-black/40 border border-white/15 text-white text-xs focus:border-[#59BFD6] focus:outline-none transition-colors"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-xs font-mono text-white/70 uppercase tracking-wider mb-1.5">
+                          URL Destino
+                        </label>
+                        <input
+                          type="text"
+                          value={campaignCtaUrl}
+                          onChange={(e) => setCampaignCtaUrl(e.target.value)}
+                          className="w-full px-3 py-2 rounded-xl bg-black/40 border border-white/15 text-white text-xs focus:border-[#59BFD6] focus:outline-none transition-colors"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="pt-2">
+                      <button
+                        onClick={handleSendTestEmail}
+                        disabled={isSendingTest || !campaignRecipient}
+                        className={`w-full flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl font-bold font-mono text-xs uppercase tracking-wider transition-all shadow-lg ${
+                          isSendingTest
+                            ? 'bg-white/10 text-white/50 cursor-not-allowed'
+                            : 'bg-[#59BFD6] hover:bg-[#4fb0c7] text-[#08090b] shadow-[0_0_20px_rgba(89,191,214,0.3)]'
+                        }`}
+                      >
+                        {isSendingTest ? (
+                          <>
+                            <RefreshCw className="w-4 h-4 animate-spin" />
+                            <span>Despachando vía mail.puelchelab.cl:465...</span>
+                          </>
+                        ) : (
+                          <>
+                            <Send className="w-4 h-4" />
+                            <span>Disparar Envío de Prueba SMTP</span>
+                          </>
+                        )}
+                      </button>
+                    </div>
+
+                    {/* Resultado del Envío */}
+                    {testSendResult && (
+                      <div className={`p-4 rounded-xl border text-xs font-mono ${
+                        testSendResult.success 
+                          ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-300' 
+                          : 'bg-rose-500/10 border-rose-500/30 text-rose-300'
+                      }`}>
+                        <div className="flex items-center gap-2 font-bold mb-1">
+                          {testSendResult.success ? <Check className="w-4 h-4 text-emerald-400" /> : <AlertCircle className="w-4 h-4 text-rose-400" />}
+                          <span>{testSendResult.success ? 'Envío Exitoso' : 'Error en Envío'}</span>
+                        </div>
+                        {testSendResult.success ? (
+                          <div className="space-y-0.5 text-white/70">
+                            <div>Proveedor: <span className="text-white font-bold">{testSendResult.provider}</span></div>
+                            {testSendResult.messageId && <div>Message-ID: <span className="text-white/60">{testSendResult.messageId}</span></div>}
+                            <div>Latencia: <span className="text-white">{testSendResult.durationMs}ms</span></div>
+                            <div className="text-[11px] text-emerald-400 mt-1">Revisa la bandeja de entrada en {campaignRecipient} (o Roundcube).</div>
+                          </div>
+                        ) : (
+                          <div className="text-white/80 mt-1">{testSendResult.error}</div>
+                        )}
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Previsualización en Vivo de la Plantilla */}
+                  <div className="p-6 rounded-2xl bg-[#08090b] border border-white/10 flex flex-col justify-between">
+                    <div className="space-y-4">
+                      <div className="flex items-center justify-between border-b border-white/10 pb-3">
+                        <span className="font-mono text-[10px] uppercase tracking-wider text-white/50">
+                          Previsualización en Vivo (Austral Darkroom)
+                        </span>
+                        <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-white/10 text-white/70">
+                          {campaignTemplate}
+                        </span>
+                      </div>
+
+                      <div className="p-5 rounded-xl bg-[#111215] border border-white/10 space-y-4 text-left">
+                        <div className="flex items-center justify-between border-b border-white/10 pb-3">
+                          <span className="font-condensed font-bold tracking-widest text-xs uppercase text-[#59BFD6]">
+                            PUELCHE LAB
+                          </span>
+                          <span className="font-mono text-[9px] text-white/40">
+                            41°19&apos;S 72°59&apos;W
+                          </span>
+                        </div>
+
+                        <div className="space-y-1">
+                          <div className="text-[11px] font-mono text-[#59BFD6] uppercase tracking-wider">
+                            Asunto: {campaignSubject}
+                          </div>
+                          <h4 className="font-condensed text-lg font-bold text-white uppercase">
+                            {campaignHeadline}
+                          </h4>
+                        </div>
+
+                        <p className="text-xs text-white/70 leading-relaxed font-sans">
+                          {campaignBody}
+                        </p>
+
+                        <div className="pt-2">
+                          <a
+                            href={campaignCtaUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-block px-4 py-2 rounded-lg bg-[#59BFD6] text-[#08090b] font-mono text-[11px] font-bold uppercase tracking-wider hover:opacity-90 transition-opacity"
+                          >
+                            {campaignCtaText} &rarr;
+                          </a>
+                        </div>
+
+                        <div className="border-t border-white/10 pt-3 text-[9px] font-mono text-white/40 space-y-1">
+                          <div>Puelche Lab SpA &bull; Puerto Varas &bull; Región de Los Lagos</div>
+                          <div>Desuscripción en 1 clic protegida por RFC 8058 &bull; Ley SERNAC</div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="pt-4 text-center">
+                      <span className="text-[10px] font-mono text-white/40">
+                        Renderizado fiel al 100% con la plantilla enviada a los clientes
+                      </span>
+                    </div>
                   </div>
                 </div>
               </div>

@@ -4,6 +4,35 @@ import React, { useState, useRef, useCallback } from 'react';
 import Image from 'next/image';
 import { Sliders, Sparkles, Eye, ArrowLeftRight, CheckCircle2, Flame, Sun, RotateCw } from 'lucide-react';
 
+// Micro-háptica auditiva procedural análoga (0 KB de red) para retroalimentación táctil de cuarto oscuro
+function playTactileClick() {
+  if (typeof window === 'undefined') return;
+  try {
+    const AudioContextClass = window.AudioContext || (window as any).webkitAudioContext;
+    if (!AudioContextClass) return;
+    const ctx = new AudioContextClass();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(800, ctx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(120, ctx.currentTime + 0.015);
+    
+    gain.gain.setValueAtTime(0.025, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.015);
+    
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.start();
+    osc.stop(ctx.currentTime + 0.016);
+    setTimeout(() => {
+      ctx.close().catch(() => {});
+    }, 100);
+  } catch {
+    // Graceful fallback
+  }
+}
+
 export interface BeforeAfterProject {
   id: string;
   title: string;
@@ -162,7 +191,11 @@ function DarkroomRotaryDial({
     if (deg < 0) deg += 360;
     // Mapear 45deg a 315deg (rango de 270deg) hacia 0 - 100%
     const clamped = Math.max(0, Math.min(100, ((deg - 45) / 270) * 100));
-    onChange(Math.round(clamped));
+    const rounded = Math.round(clamped);
+    if (Math.abs(rounded - Math.round(value)) >= 5) {
+      playTactileClick();
+    }
+    onChange(rounded);
   };
 
   const handlePointerUp = (e: React.PointerEvent) => {
@@ -175,7 +208,10 @@ function DarkroomRotaryDial({
   };
 
   return (
-    <div className="flex items-center gap-3 bg-[#111215]/80 px-4 py-2 rounded-2xl border border-white/10 select-none backdrop-blur-md">
+    <div 
+      data-lenis-prevent="true"
+      className="flex items-center gap-3 bg-[#111215]/80 px-4 py-2 rounded-2xl border border-white/10 select-none backdrop-blur-md"
+    >
       <div
         ref={dialRef}
         onPointerDown={handlePointerDown}
@@ -402,6 +438,7 @@ export function BeforeAfterSlider({ initialCaseId = 'doosan', className = '' }: 
           aria-valuemin={0}
           aria-valuemax={100}
           tabIndex={0}
+          data-lenis-prevent="true"
           onKeyDown={handleKeyDown}
           onPointerDown={handlePointerDown}
           onPointerMove={handlePointerMove}

@@ -37,7 +37,7 @@ export function buildInternalLeadEmail(data: InternalLeadData): { subject: strin
         </tr>
         <tr>
           <td style="color: rgba(255,255,255,0.45);">Teléfono / Móvil:</td>
-          <td><a href="tel:${data.phone}" style="color: #59BFD6; font-weight: 600; text-decoration: none;">${data.phone}</a></td>
+          <td><a href="tel:${cleanPhone}" style="color: #59BFD6; font-weight: 600; text-decoration: none;">${data.phone}</a></td>
         </tr>
         <tr>
           <td style="color: rgba(255,255,255,0.45);">Correo Electrónico:</td>

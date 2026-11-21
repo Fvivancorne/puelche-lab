@@ -53,7 +53,7 @@ export function renderBaseEmailLayout({
                 <tr>
                   <td>
                     <div style="font-size: 11px; font-weight: 700; letter-spacing: 0.25em; text-transform: uppercase; color: #59BFD6; margin-bottom: 4px;">
-                      PUELCHE LAB &bull; PUERTO VARAS
+                      PUELCHE LAB &bull; PUERTO VARAS &bull; 41°19&apos;S 72°59&apos;W
                     </div>
                     <div style="font-size: 13px; color: rgba(255,255,255,0.5); font-style: italic;">
                       Luz de estudio &bull; Territorio austral

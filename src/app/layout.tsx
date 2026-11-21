@@ -53,8 +53,14 @@ export const metadata: Metadata = {
     'Puerto Varas',
     'Región de Los Lagos',
   ],
-  authors: [{ name: 'Puelche Lab' }],
+  authors: [{ name: 'Puelche Lab' }, { name: 'Paula Valdivieso' }, { name: 'Alejandro Lattes' }],
   creator: 'Puelche Lab',
+  other: {
+    'geo.region': 'CL-LL',
+    'geo.placename': 'Puerto Varas, Región de Los Lagos, Chile',
+    'geo.position': '-41.3195;-72.9854',
+    'ICBM': '-41.3195, -72.9854',
+  },
   openGraph: {
     type: 'website',
     locale: 'es_CL',
@@ -136,12 +142,20 @@ const jsonLd = {
     'Next.js Web Development',
     'Architecture Photography',
   ],
-  founder: {
-    '@type': 'Person',
-    name: 'Paula Valdivieso',
-    jobTitle: 'Directora Creativa',
-    email: 'paula.valdivieso@puelchelab.cl',
-  },
+  founder: [
+    {
+      '@type': 'Person',
+      name: 'Paula Valdivieso',
+      jobTitle: 'Directora Creativa & Producción de Arte',
+      email: 'paula.valdivieso@puelchelab.cl',
+    },
+    {
+      '@type': 'Person',
+      name: 'Alejandro Lattes',
+      jobTitle: 'Director de Fotografía & Expediciones',
+      email: 'alejandro@puelchelab.cl',
+    },
+  ],
   contactPoint: {
     '@type': 'ContactPoint',
     telephone: '+56966177500',
