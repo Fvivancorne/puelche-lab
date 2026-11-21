@@ -180,41 +180,49 @@ export default function Home() {
         {/* Center: Asimetría Editorial Suiza — Espacio Negativo Monumental */}
         <div className="relative z-10 max-w-5xl mx-auto w-full my-auto flex flex-col items-center justify-center py-2 sm:py-4 md:py-6 space-y-3 sm:space-y-4 md:space-y-5">
           {/* Subtle Studio Mark / Monogram */}
-          <div id="hero-monogram" className="relative w-28 sm:w-36 md:w-44 lg:w-48 aspect-[412/282] drop-shadow-2xl opacity-90 transition-transform duration-700 hover:scale-105 will-change-transform">
-            <Image
-              src="/images/real/logo-puelche.png"
-              alt="Puelche Lab — Viento Creativo"
-              fill
-              priority
-              className="object-contain"
-            />
+          <div id="hero-monogram" className="relative flex flex-col items-center gap-2 will-change-transform">
+            <div className="relative w-28 sm:w-36 md:w-44 lg:w-48 aspect-[412/282] drop-shadow-2xl opacity-90 transition-transform duration-700 hover:scale-105">
+              <Image
+                src="/images/real/logo-puelche.png"
+                alt="Puelche Lab — Viento Creativo"
+                fill
+                priority
+                className="object-contain"
+              />
+            </div>
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 border border-white/15 backdrop-blur-md">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#59BFD6] animate-pulse shadow-[0_0_8px_#59BFD6]" />
+              <span className="font-mono text-[10px] sm:text-xs uppercase tracking-[0.25em] text-[#59BFD6] font-semibold">
+                VIENTO CREATIVO &bull; MONOGRAMA DE AUTOR
+              </span>
+            </div>
           </div>
 
           <div
             ref={heroWipeRef}
             data-wipe-title="true"
-            className="flex flex-col items-center justify-center space-y-2 sm:space-y-3 max-w-4xl text-center"
+            className="flex flex-col items-center justify-center space-y-2 sm:space-y-3 max-w-5xl text-center"
           >
             {/* Editorial Category Tag */}
-            <span id="hero-subtitles" className="font-mono text-[11px] sm:text-xs uppercase tracking-[0.35em] text-[#59BFD6] font-medium will-change-transform">
-              ESTUDIO DE AUTOR &bull; EXPEDICIONES VISUALES
+            <span id="hero-subtitles" className="font-mono text-[11px] sm:text-xs uppercase tracking-[0.32em] text-white/70 font-medium will-change-transform">
+              PUERTO VARAS &bull; EXPEDICIONES VISUALES &bull; 41°S
             </span>
 
-            {/* SplitText Headline: VIENTO CREATIVO with pristine kerning & breathing room */}
+            {/* SplitText Headline: Propuesta Comercial Directa */}
             <SplitText
-              text="VIENTO CREATIVO"
+              text="FOTOGRAFÍA, DISEÑO & EXPERIENCIAS DIGITALES"
               as="h1"
               animation="scatter"
-              className="font-condensed text-4xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl uppercase tracking-[0.06em] font-bold text-white drop-shadow-2xl leading-[0.95]"
+              className="font-condensed text-3xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl uppercase tracking-[0.03em] font-bold text-white drop-shadow-2xl leading-[0.96]"
             />
 
-            <h2 id="hero-discipline-title" className="font-condensed text-base sm:text-xl md:text-2xl lg:text-3xl uppercase tracking-[0.16em] font-normal text-white pt-1 will-change-transform">
-              Fotografía, Diseño &bull; Experiencias Digitales
+            <h2 id="hero-discipline-title" className="font-condensed text-base sm:text-xl md:text-2xl lg:text-3xl uppercase tracking-[0.14em] font-semibold text-[#59BFD6] pt-1 will-change-transform">
+              Para marcas con identidad austral
             </h2>
           </div>
 
           <p id="hero-description" className="font-sans text-xs sm:text-sm md:text-base lg:text-lg font-light text-white/90 max-w-3xl mx-auto tracking-wide leading-relaxed drop-shadow-md px-2 will-change-transform">
-            Estudio creativo y expediciones visuales por la Patagonia. Diseñamos identidades de marca, producción fotográfica en terreno austral y plataformas digitales para proyectos con carácter y presencia sin fronteras.
+            Un Estudio de Diseño Cross Media y Fotografía de Puerto Varas. Diseñamos identidades de marca, producción fotográfica en terreno austral y plataformas digitales de alto impacto para proyectos con carácter y presencia sin fronteras.
           </p>
 
           {/* Quick Primary Actions with Magnetic Spring & Kinetic Roll */}
@@ -224,7 +232,7 @@ export default function Home() {
                 href="/auditor"
                 className="group px-5 py-2.5 rounded-full bg-white/10 hover:bg-[#59BFD6] text-white hover:text-[#0b0d10] border border-white/20 hover:border-[#59BFD6] font-mono text-xs uppercase tracking-wider transition-all duration-300 flex items-center gap-2 shadow-lg"
               >
-                <KineticTextSwap primaryText="Auditoría Web" secondaryText="Diagnóstico 20s" secondaryClassName="text-[#0b0d10] font-bold" />
+                <KineticTextSwap primaryText="Auditoría Web Gratuita" secondaryText="Diagnóstico 20s" secondaryClassName="text-[#0b0d10] font-bold" />
                 <ArrowUpRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
               </Link>
             </Magnetic>

@@ -247,6 +247,8 @@ function CotizadorContent() {
             <div className="space-y-3 pt-2">
               <input
                 type="range"
+                name="pageCount"
+                aria-label="Cantidad de páginas"
                 min={1}
                 max={30}
                 value={pageCount}

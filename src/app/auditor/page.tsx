@@ -1739,8 +1739,10 @@ undefined
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <div className="space-y-1">
-                        <label className="font-mono text-[10px] uppercase text-white/50 block">Nombre Completo *</label>
+                        <label htmlFor="lead-name" className="font-mono text-[10px] uppercase text-white/50 block">Nombre Completo *</label>
                         <input
+                          id="lead-name"
+                          name="leadName"
                           type="text"
                           required
                           value={leadName}
@@ -1750,8 +1752,10 @@ undefined
                         />
                       </div>
                       <div className="space-y-1">
-                        <label className="font-mono text-[10px] uppercase text-white/50 block">Empresa *</label>
+                        <label htmlFor="lead-company" className="font-mono text-[10px] uppercase text-white/50 block">Empresa *</label>
                         <input
+                          id="lead-company"
+                          name="leadCompany"
                           type="text"
                           required
                           value={leadCompany}
@@ -1761,8 +1765,10 @@ undefined
                         />
                       </div>
                       <div className="space-y-1">
-                        <label className="font-mono text-[10px] uppercase text-white/50 block">Email Corporativo *</label>
+                        <label htmlFor="lead-email" className="font-mono text-[10px] uppercase text-white/50 block">Email Corporativo *</label>
                         <input
+                          id="lead-email"
+                          name="leadEmail"
                           type="email"
                           required
                           value={leadEmail}
@@ -1772,8 +1778,10 @@ undefined
                         />
                       </div>
                       <div className="space-y-1">
-                        <label className="font-mono text-[10px] uppercase text-white/50 block">Teléfono / WhatsApp *</label>
+                        <label htmlFor="lead-phone" className="font-mono text-[10px] uppercase text-white/50 block">Teléfono / WhatsApp *</label>
                         <input
+                          id="lead-phone"
+                          name="leadPhone"
                           type="tel"
                           required
                           value={leadPhone}

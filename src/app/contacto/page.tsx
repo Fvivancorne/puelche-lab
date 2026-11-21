@@ -279,23 +279,43 @@ function ContactFormInner() {
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="space-y-6">
-            <div>
-              <label
-                htmlFor="nombre"
-                className="block font-mono uppercase tracking-widest text-[11px] text-white/70 mb-2"
-              >
-                Nombre y Apellido *
-              </label>
-              <input
-                id="nombre"
-                name="name"
-                type="text"
-                required
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                placeholder="Tu nombre completo"
-                className="w-full px-5 py-3.5 bg-white/[0.04] border border-white/15 rounded-xl text-sm text-white placeholder-white/35 focus:outline-none focus:border-[#59BFD6] focus:bg-white/[0.07] transition-all"
-              />
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label
+                  htmlFor="nombre"
+                  className="block font-mono uppercase tracking-widest text-[11px] text-white/70 mb-2"
+                >
+                  Nombre y Apellido *
+                </label>
+                <input
+                  id="nombre"
+                  name="name"
+                  type="text"
+                  required
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  placeholder="Tu nombre completo"
+                  className="w-full px-5 py-3.5 bg-white/[0.04] border border-white/15 rounded-xl text-sm text-white placeholder-white/35 focus:outline-none focus:border-[#59BFD6] focus:bg-white/[0.07] transition-all"
+                />
+              </div>
+
+              <div>
+                <label
+                  htmlFor="empresa"
+                  className="block font-mono uppercase tracking-widest text-[11px] text-white/70 mb-2"
+                >
+                  Empresa u Organización
+                </label>
+                <input
+                  id="empresa"
+                  name="company"
+                  type="text"
+                  value={company}
+                  onChange={(e) => setCompany(e.target.value)}
+                  placeholder="Nombre de tu empresa u hotel"
+                  className="w-full px-5 py-3.5 bg-white/[0.04] border border-white/15 rounded-xl text-sm text-white placeholder-white/35 focus:outline-none focus:border-[#59BFD6] focus:bg-white/[0.07] transition-all"
+                />
+              </div>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -351,6 +371,8 @@ function ContactFormInner() {
                   >
                     <input
                       type="checkbox"
+                      name="services"
+                      value={service}
                       checked={isServiceSelected(service)}
                       onChange={() => handleCheckboxChange(service)}
                       className="w-4 h-4 text-[#59BFD6] accent-[#59BFD6] rounded border-white/20"
@@ -374,6 +396,8 @@ function ContactFormInner() {
                   >
                     <input
                       type="checkbox"
+                      name="detailedServices"
+                      value={service}
                       checked={isServiceSelected(service)}
                       onChange={() => handleCheckboxChange(service)}
                       className="w-3.5 h-3.5 text-[#59BFD6] accent-[#59BFD6] rounded border-white/20"
@@ -395,6 +419,7 @@ function ContactFormInner() {
                 </label>
                 <select
                   id="projectScale"
+                  name="projectScale"
                   value={projectScale}
                   onChange={(e) => setProjectScale(e.target.value)}
                   className="w-full px-4 py-3.5 bg-[#14161a] border border-white/15 rounded-xl text-xs text-white focus:outline-none focus:border-[#59BFD6]"
@@ -414,6 +439,7 @@ function ContactFormInner() {
                 </label>
                 <select
                   id="region"
+                  name="region"
                   value={selectedRegion}
                   onChange={(e) => setSelectedRegion(e.target.value)}
                   className="w-full px-4 py-3.5 bg-[#14161a] border border-white/15 rounded-xl text-xs text-white focus:outline-none focus:border-[#59BFD6]"

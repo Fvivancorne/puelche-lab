@@ -126,9 +126,9 @@ export function Navbar() {
               pathname === '/auditor' ? 'text-puelche-cyan font-semibold' : 'text-white'
             )}
           >
-            <span>AUDITORÍA WEB</span>
-            <span className="px-1.5 py-0.2 rounded-full bg-[#59BFD6]/20 text-[#59BFD6] font-mono text-[9px] uppercase tracking-normal">
-              Gratis &bull; 20s
+            <span>AUDITORÍA WEB GRATUITA</span>
+            <span className="px-1.5 py-0.5 rounded-full bg-[#59BFD6]/20 text-[#59BFD6] font-mono text-[9px] uppercase tracking-normal">
+              Diagnóstico 20s
             </span>
           </Link>
 
@@ -254,7 +254,7 @@ export function Navbar() {
             >
               <span>AUDITORÍA WEB GRATUITA</span>
               <span className="px-2 py-0.5 rounded-full bg-[#59BFD6]/20 text-[#59BFD6] font-mono text-[10px]">
-                20s
+                Diagnóstico 20s
               </span>
             </Link>
 

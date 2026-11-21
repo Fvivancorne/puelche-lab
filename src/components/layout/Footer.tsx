@@ -164,7 +164,7 @@ export function Footer() {
             <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 font-condensed uppercase tracking-wider text-xs text-white/60 pt-2">
               <Link href="/servicios" className="hover:text-[#59BFD6] transition-colors">Servicios</Link>
               <Link href="/portafolio" className="hover:text-[#59BFD6] transition-colors">Portafolio</Link>
-              <Link href="/auditor" className="hover:text-[#59BFD6] transition-colors">Auditor Web</Link>
+              <Link href="/auditor" className="hover:text-[#59BFD6] transition-colors">Auditoría Web Gratuita</Link>
               <Link href="/clientes" className="hover:text-[#59BFD6] transition-colors">Clientes</Link>
               <Link href="/contacto" className="hover:text-[#59BFD6] transition-colors">Contacto</Link>
             </div>

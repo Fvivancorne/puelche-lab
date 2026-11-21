@@ -18,64 +18,69 @@ interface Capability {
   alt: string;
   spec: string;
   meta: string;
+  href: string;
   icon: React.ComponentType<{ className?: string }>;
 }
 
 const CAPABILITIES: Capability[] = [
   {
-    id: 'estudio',
+    id: 'fotografia',
     num: '01',
-    tag: 'ESPACIO & SET',
-    title: 'Luz de Estudio',
-    subtitle: 'En Puerto Varas',
+    tag: 'FOTOGRAFÍA EN TERRENO & DRON',
+    title: 'Fotografía de Autor',
+    subtitle: 'Arquitectura, Hotelería & Dron 4K',
     description:
-      'Set propio de fotografía y dirección de arte en el centro de Puerto Varas. Un espacio cálido y controlado para bodegones de autor, producto noble, retratos corporativos y sesiones editoriales.',
+      'Set propio de fotografía en Puerto Varas y producción en terreno por toda la Patagonia. Interiores de hotel boutique, arquitectura bioclimática, faenas industriales y perspectivas aéreas certificadas DGAC.',
     image: '/images/real/bg-portafolios-fotografia-d-min.jpg',
-    alt: 'Estudio de fotografía y set de trabajo Puelche Lab en Puerto Varas',
-    spec: 'Maderas nativas • Luz suave • Bodegón de autor',
-    meta: 'Sede Puerto Varas • Cuenca Llanquihue',
+    alt: 'Fotografía de autor, hotelería y faenas en terreno — Puelche Lab',
+    spec: 'Sony Alpha 61MP • Dron 4K Certificado • Óptica G-Master',
+    meta: 'Especialidad: Fotografía Austral',
+    href: '/servicios/fotografia',
     icon: Camera,
   },
   {
-    id: 'aereo',
+    id: 'branding',
     num: '02',
-    tag: 'PAISAJE & ESCALA',
-    title: 'Tierra y Aire',
-    subtitle: 'Mirada Territorial',
+    tag: 'IDENTIDAD CON RAÍZ AUSTRAL',
+    title: 'Diseño de Marca',
+    subtitle: 'Branding & Sistemas Visuales',
     description:
-      'Captura integral a ras de suelo y desde las alturas. Retratamos la inmensidad de la Patagonia: arquitectura bioclimática, campos agropecuarios, hoteles de madera y el silencio de los fiordos.',
-    image: '/images/real/bg-fotografia-9-min.jpg',
-    alt: 'Fotografía aérea y de territorio austral — Puelche Lab',
-    spec: 'Perspectiva aérea • Escala de paisaje • Luz natural',
-    meta: 'Los Lagos, Chiloé & Fiordos Australes',
-    icon: Wind,
-  },
-  {
-    id: 'iluminacion',
-    num: '03',
-    tag: 'OFICIO & MATERIA',
-    title: 'Modelado de Luz',
-    subtitle: 'Texturas Nobles',
-    description:
-      'Esculpimos la atmósfera con iluminación de alta fidelidad, diseñando contrastes suaves que honran la veta de las maderas, la frescura gastronómica, la arquitectura y la identidad viva de tu marca.',
-    image: '/images/real/bg-portafolios-fotografia-a-min.jpg',
-    alt: 'Set de iluminación profesional y modelado óptico Puelche Lab',
-    spec: 'Atmósfera envolvente • Fidelidad cromática • Detalle táctil',
-    meta: 'Dirección de Arte de Autor',
+      'Identidades visuales con arraigo territorial patagónico, manuales de normas bajo retícula suiza, packaging noble y sistemas tipográficos que comunican distinción, solidez y longevidad comercial.',
+    image: '/images/real/bg-portafolios-marca-blue-seal-min.jpg',
+    alt: 'Diseño de marca, identidad visual y manual de normas — Puelche Lab',
+    spec: 'Retícula Suiza • Proporción Áurea • Manual de Normas',
+    meta: 'Especialidad: Identidad de Marca',
+    href: '/servicios/branding',
     icon: Sparkles,
   },
   {
-    id: 'crossmedia',
-    num: '04',
-    tag: 'SISTEMAS VIVOS',
-    title: 'Cross-Media',
-    subtitle: 'Digital, Impreso & Cine',
+    id: 'desarrollo-web',
+    num: '03',
+    tag: 'INGENIERÍA WEB DE AUTOR',
+    title: 'Desarrollo Web Next.js',
+    subtitle: 'Plataformas Digitales Cinemáticas',
     description:
-      'Concebimos sistemas visuales completos con raíz en el territorio: plataformas web interactivas en Next.js, memorias editoriales en papeles finos, piezas audiovisuales y relatos para redes.',
-    image: '/images/real/bg-portafolios-fotografia-b-min.jpg',
-    alt: 'Diseño Cross Media: digital, impreso y audiovisual Puelche Lab',
-    spec: 'Diseño editorial fine art • Web artesanal • Piezas cinematográficas',
-    meta: 'Ecosistema de Marca Integral',
+      'Sitios web de alta costura digital desarrollados en Next.js App Router, fluidez interactiva GSAP a 120 FPS, optimización GEO para motores de IA y 100% Core Web Vitals sin plantillas genéricas.',
+    image: '/images/real/bg-portafolios-web-rilan-min.jpg',
+    alt: 'Desarrollo web Next.js artesanal y micro-interacciones cinemáticas — Puelche Lab',
+    spec: 'Next.js App Router • GSAP 120 FPS • Optimización GEO',
+    meta: 'Especialidad: Arquitectura Web',
+    href: '/servicios/desarrollo-web',
+    icon: Wind,
+  },
+  {
+    id: 'editorial',
+    num: '04',
+    tag: 'PUBLICACIONES & REVELADO',
+    title: 'Editorial & Fine-Art',
+    subtitle: 'Memorias, Libros & Retoque RAW',
+    description:
+      'Memorias corporativas impresas en papeles finos, libros fotográficos de autor, dirección de imprenta y revelado digital RAW calibrado a 16 bits pliego por pliego para imprenta y pantalla.',
+    image: '/images/real/bg-portafolios-editorial-libro-min.jpg',
+    alt: 'Diseño editorial corporativo, libros fotográficos y revelado RAW — Puelche Lab',
+    spec: 'Papeles Finos • Perfiles CMYK • Revelado RAW 16-Bit',
+    meta: 'Especialidades: Editorial & Revelado RAW',
+    href: '/servicios/editorial',
     icon: Layers,
   },
 ];
@@ -508,7 +513,17 @@ export function BrutalistCrossMedia() {
                   {/* Micro-Metadata Editorial al pie */}
                   <div className="pt-4 mt-4 border-t border-white/10 text-xs text-white/60 space-y-1">
                     <div className="text-white/85 font-medium truncate font-sans text-[11px]">{cap.spec}</div>
-                    <div className="text-puelche-cyan font-serif italic text-[11px]">{cap.meta}</div>
+                    <div className="flex items-center justify-between pt-1">
+                      <span className="text-puelche-cyan font-serif italic text-[11px]">{cap.meta}</span>
+                      <Link
+                        href={cap.href}
+                        className="inline-flex items-center gap-1 font-mono text-[10px] uppercase tracking-wider text-white/70 hover:text-puelche-cyan transition-colors"
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        <span>Ver</span>
+                        <ArrowUpRight className="w-3 h-3" />
+                      </Link>
+                    </div>
                   </div>
                 </div>
               );

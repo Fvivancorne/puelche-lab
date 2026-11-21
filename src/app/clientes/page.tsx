@@ -274,7 +274,7 @@ export default function ClientesPage() {
           </h1>
 
           <p className="font-sans text-sm sm:text-base md:text-lg text-white/80 max-w-2xl mx-auto font-light leading-relaxed pt-2">
-            20 empresas, industrias, hoteles e instituciones que han encomendado su imagen, relatos y plataformas digitales al rigor visual y la luz austral de Puelche Lab.
+            20 marcas destacadas de más de 50 proyectos y expediciones en terreno por Los Lagos, Chiloé, Aysén y Magallanes. Un archivo vivo de empresas, hoteles e industrias que han encomendado su narrativa visual y plataformas digitales a Puelche Lab.
           </p>
 
           {/* Interactive Navigation Anchor Strip */}

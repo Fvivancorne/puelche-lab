@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 
 // Verified authentic client names matching public/images/real/clients/cliente1-1.png to cliente20-1.png
 const CLIENT_NAMES = [
@@ -92,6 +93,9 @@ export function ClientMarquee() {
         <h2 className="font-condensed text-3xl sm:text-4xl md:text-5xl font-bold uppercase tracking-wide text-white">
           20 Marcas Destacadas de +50 Proyectos Australes
         </h2>
+        <p className="font-sans text-sm md:text-base text-white/70 max-w-2xl font-light leading-relaxed pt-2">
+          Selección de 20 marcas líderes extraídas de un archivo vivo de más de 50 proyectos y expediciones en terreno por Los Lagos, Chiloé y Patagonia profunda. Rigor visual certificado sin bancos de stock.
+        </p>
       </div>
 
       {/* Double Marquee — opposite directions */}
@@ -101,6 +105,69 @@ export function ClientMarquee() {
       {/* Gradient fades on edges */}
       <div className="absolute inset-y-0 left-0 w-24 md:w-40 bg-gradient-to-r from-puelche-dark to-transparent pointer-events-none z-10" />
       <div className="absolute inset-y-0 right-0 w-24 md:w-40 bg-gradient-to-l from-puelche-dark to-transparent pointer-events-none z-10" />
+
+      {/* Behind The Scenes & Field Proof Strip */}
+      <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-16 mt-12 pt-8 border-t border-white/10 relative z-10">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="bg-white/[0.03] border border-white/10 rounded-2xl p-5 space-y-2">
+            <div className="flex items-center justify-between text-[#59BFD6] font-mono text-[11px] uppercase tracking-wider">
+              <span>01 &bull; Faena Industrial</span>
+              <span className="w-1.5 h-1.5 rounded-full bg-[#59BFD6]" />
+            </div>
+            <div className="font-condensed text-lg font-bold text-white uppercase">Puerto Montt & Fiordos</div>
+            <p className="font-sans text-xs text-white/60 leading-relaxed font-light">
+              Producción fotográfica a bordo de embarcaciones y faenas marítimas para AquaChile y Soldasur.
+            </p>
+          </div>
+
+          <div className="bg-white/[0.03] border border-white/10 rounded-2xl p-5 space-y-2">
+            <div className="flex items-center justify-between text-[#59BFD6] font-mono text-[11px] uppercase tracking-wider">
+              <span>02 &bull; Hotelería Vernácula</span>
+              <span className="w-1.5 h-1.5 rounded-full bg-[#59BFD6]" />
+            </div>
+            <div className="font-condensed text-lg font-bold text-white uppercase">Chiloé & Cava</div>
+            <p className="font-sans text-xs text-white/60 leading-relaxed font-light">
+              Registro de luz rasante y maderas nobles en Estancia Rilán y Hotel Quilquico en la península chilota.
+            </p>
+          </div>
+
+          <div className="bg-white/[0.03] border border-white/10 rounded-2xl p-5 space-y-2">
+            <div className="flex items-center justify-between text-[#59BFD6] font-mono text-[11px] uppercase tracking-wider">
+              <span>03 &bull; Dron & Aislamiento</span>
+              <span className="w-1.5 h-1.5 rounded-full bg-[#59BFD6]" />
+            </div>
+            <div className="font-condensed text-lg font-bold text-white uppercase">Río Puelo & Cochamó</div>
+            <p className="font-sans text-xs text-white/60 leading-relaxed font-light">
+              Vuelos 4K a baja cota y navegación fluvial cordillerana para documentar Tagua Tagua Lodge sin señal telefónica.
+            </p>
+          </div>
+
+          <div className="bg-white/[0.03] border border-white/10 rounded-2xl p-5 space-y-2">
+            <div className="flex items-center justify-between text-[#59BFD6] font-mono text-[11px] uppercase tracking-wider">
+              <span>04 &bull; Confín Austral</span>
+              <span className="w-1.5 h-1.5 rounded-full bg-[#59BFD6]" />
+            </div>
+            <div className="font-condensed text-lg font-bold text-white uppercase">Punta Arenas & Natales</div>
+            <p className="font-sans text-xs text-white/60 leading-relaxed font-light">
+              Dirección de arte e interiores patrimoniales en Hotel Cabo de Hornos y Costaustralis frente al Estrecho de Magallanes.
+            </p>
+          </div>
+        </div>
+
+        {/* Pacto de Autoría & Enlace */}
+        <div className="mt-8 flex flex-wrap items-center justify-between gap-4 pt-4 border-t border-white/5 text-xs font-mono text-white/60">
+          <div className="flex items-center gap-2">
+            <span className="w-2 h-2 rounded-full bg-emerald-400" />
+            <span className="text-white/80">Evidencia 100% Verificable en Terreno &bull; Cero Imágenes de Stock</span>
+          </div>
+          <Link
+            href="/clientes"
+            className="text-[#59BFD6] hover:text-white transition-colors flex items-center gap-1 uppercase tracking-wider font-semibold"
+          >
+            <span>Ver Archivo Territorial Completo &rarr;</span>
+          </Link>
+        </div>
+      </div>
     </section>
   );
 }
