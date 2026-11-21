@@ -19,18 +19,18 @@ export function buildStudioCampaignEmail(data: StudioCampaignData): { subject: s
   const unsubscribeUrl = `https://puelchelab.cl/api/unsubscribe?email=${encodeURIComponent(data.recipientEmail)}&token=${data.unsubscribeToken || 'std'}`;
 
   const paragraphsHtml = data.bodyParagraphs
-    .map((p) => `<p style="margin: 0 0 16px 0; font-size: 15px; line-height: 1.7; color: rgba(255,255,255,0.8);">${p}</p>`)
+    .map((p) => `<p style="margin: 0 0 18px 0; font-size: 16px; line-height: 1.75; color: rgba(255,255,255,0.85);">${p}</p>`)
     .join('');
 
   const contentHtml = `
-    <div style="font-size: 11px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: #59BFD6; margin-bottom: 8px;">
+    <div style="font-size: 11px; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; color: #59BFD6; margin-bottom: 10px;">
       Crónicas de Estudio & Territorio
     </div>
-    <h1 class="hero-title" style="margin: 0 0 20px 0; font-size: 26px; line-height: 32px; color: #FFFFFF; font-weight: 700; letter-spacing: -0.02em;">
+    <h1 class="hero-title" style="margin: 0 0 22px 0; font-size: 28px; line-height: 36px; color: #FFFFFF; font-weight: 700; letter-spacing: -0.02em;">
       ${data.headline}
     </h1>
 
-    <div style="margin-bottom: 28px;">
+    <div style="margin-bottom: 32px;">
       ${paragraphsHtml}
     </div>
 

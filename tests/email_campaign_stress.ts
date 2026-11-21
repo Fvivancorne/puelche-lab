@@ -35,8 +35,8 @@ async function runEmailCampaignStressSuite() {
     assert(html.includes('#59BFD6'), 'EMAIL-03', 'Base layout uses surgical Puelche Cyan accent (#59BFD6)');
     assert(html.includes('https://puelchelab.cl/api/unsubscribe'), 'EMAIL-04', 'Base layout renders legal RFC 8058 unsubscribe link');
     assert(html.includes('41°19') && html.includes('72°59'), 'EMAIL-05', 'Base layout includes Puerto Varas geographic coordinates in header');
-    assert(html.includes('logo-top.png'), 'EMAIL-05b', 'Base layout embeds official Puelche Lab header logo (logo-top.png)');
-    assert(html.includes('logo-puelche.png'), 'EMAIL-05c', 'Base layout embeds official Puelche Lab brand emblem (logo-puelche.png)');
+    assert(html.includes('logo-top.png'), 'EMAIL-05b', 'Base layout embeds single official Puelche Lab header logo (logo-top.png)');
+    assert(html.includes('width="680"') || html.includes('max-width: 680px'), 'EMAIL-05c', 'Base layout uses expanded 680px editorial container width');
   }
 
   // ── TEST CATEGORY 2: QUOTE CONFIRMATION TEMPLATE ──
