@@ -362,10 +362,10 @@ export function BeforeAfterSlider({ initialCaseId = 'doosan', className = '' }: 
           <button
             type="button"
             onClick={() => setSafelightActive(!safelightActive)}
-            className={`flex items-center gap-2 px-3.5 py-2.5 rounded-2xl border font-mono text-[11px] uppercase tracking-wider transition-all duration-300 ${
+            className={`flex items-center gap-2 px-3.5 py-2.5 rounded-2xl border font-mono text-[11px] uppercase tracking-wider transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] ${
               safelightActive
                 ? 'bg-[#B91C1C]/30 text-[#FCA5A5] border-[#B91C1C] shadow-[0_0_15px_rgba(185,28,28,0.5)]'
-                : 'bg-white/5 text-white/70 border-white/10 hover:border-white/30 hover:text-white'
+                : 'bg-white/5 text-white/80 border-white/10 hover:bg-white/15 hover:border-white/30 hover:text-white'
             }`}
             title="Alternar entre luz blanca y luz inactínica de cuarto oscuro (590nm)"
           >
@@ -397,14 +397,14 @@ export function BeforeAfterSlider({ initialCaseId = 'doosan', className = '' }: 
                 setActiveCaseId(item.id);
                 setSliderPosition(50);
               }}
-              className={`px-4 py-2 rounded-full font-mono text-xs uppercase tracking-wider transition-all duration-300 flex items-center gap-2 border ${
+              className={`px-4 py-2 rounded-full font-mono text-xs uppercase tracking-wider transition-all duration-300 flex items-center gap-2 border hover:scale-[1.02] active:scale-[0.98] ${
                 isActive
                   ? 'bg-[#C29B63] text-[#18191B] border-[#C29B63] font-semibold shadow-lg shadow-[#C29B63]/20 scale-105'
-                  : 'bg-white/5 text-white/70 border-white/10 hover:border-white/30 hover:text-white'
+                  : 'bg-white/5 text-white/80 border-white/10 hover:bg-white/15 hover:border-white/30 hover:text-white'
               }`}
             >
               <span>{item.title.split(' ')[0]}</span>
-              <span className="text-[10px] opacity-70">
+              <span className={`text-[10px] ${isActive ? 'text-black/85 font-medium' : 'text-white/60'}`}>
                 ({item.id === 'doosan' ? 'Maquinaria' : item.id === 'arrebol' ? 'Hotel' : item.id === 'bomberos' ? 'Editorial' : item.id === 'carnaval' ? 'Escénico' : 'Ensayos'})
               </span>
             </button>
@@ -533,7 +533,7 @@ export function BeforeAfterSlider({ initialCaseId = 'doosan', className = '' }: 
             <ul className="space-y-2">
               {activeCase.rawNotes.map((note, idx) => (
                 <li key={idx} className="flex items-start gap-2 text-xs sm:text-sm text-white/70">
-                  <span className="text-white/40 font-mono select-none">0{idx + 1}.</span>
+                  <span className="text-white/70 font-mono select-none">0{idx + 1}.</span>
                   <span>{note}</span>
                 </li>
               ))}

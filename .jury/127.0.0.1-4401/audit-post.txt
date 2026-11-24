@@ -1,0 +1,38 @@
+WARN  /                             8 em/en dash(es) in visible text (read as AI tell; rewrite)
+WARN  /                             sentence repeated 2x: "“ En la Patagonia profunda, la distancia no es un obstáculo: es el fil"
+WARN  /                             sentence repeated 2x: "“ La técnica más sofisticada carece de sentido si detrás no se siente "
+WARN  /                             sentence repeated 2x: "La Casa del Lago y el Silencio"
+WARN  /                             sentence repeated 2x: "“ Un buen retrato de interiores no muestra cómo es un espacio: transmi"
+WARN  /                             sentence repeated 2x: "“ En el extremo sur, un refugio no es un lujo decorativo: es la difere"
+WARN  /servicios                    missing og:image
+WARN  /servicios                    sentence repeated 2x: "Interiores, hotelería, arquitectura y procesos industriales en el sur "
+WARN  /servicios                    sentence repeated 2x: "Óptica fija, rango dinámico de 15+ EV y luz patagónica natural."
+WARN  /servicios                    sentence repeated 2x: "Identidades visuales, manuales de normas y branding integral con arrai"
+WARN  /servicios                    sentence repeated 2x: "Naming, paleta cromática orgánica y tipografía suiza."
+WARN  /servicios                    sentence repeated 2x: "Sitios web modernos, ultra-rápidos y adaptables a dispositivos móviles"
+WARN  /servicios                    sentence repeated 2x: "Next.js App Router, GSAP cinemático y 100% Core Web Vitals."
+WARN  /servicios                    sentence repeated 2x: "Memorias corporativas, libros fotográficos y catálogos comerciales imp"
+WARN  /servicios                    sentence repeated 2x: "Maquetación reticular, selección de papeles y dirección de imprenta."
+WARN  /servicios                    sentence repeated 2x: "Estrategia de contenidos, fotografía genuina y dirección de arte digit"
+WARN  /servicios                    sentence repeated 2x: "Narrativa visual que posiciona a tu marca lejos de la mediocridad de s"
+WARN  /portafolio                   missing og:image
+WARN  /auditor                      missing og:image
+WARN  /clientes                     1 em/en dash(es) in visible text (read as AI tell; rewrite)
+WARN  /contacto                     missing og:image
+WARN  /servicios/fotografia         missing og:image
+WARN  /servicios/fotografia         1 em/en dash(es) in visible text (read as AI tell; rewrite)
+WARN  /servicios/branding           missing og:image
+WARN  /servicios/branding           3 em/en dash(es) in visible text (read as AI tell; rewrite)
+WARN  /servicios/branding           sentence repeated 2x: "Diseño de marca e identidad visual para hotelería boutique en Castro ("
+WARN  /servicios/desarrollo-web     missing og:image
+WARN  /servicios/desarrollo-web     1 em/en dash(es) in visible text (read as AI tell; rewrite)
+WARN  /servicios/editorial          missing og:image
+WARN  /servicios/editorial          6 em/en dash(es) in visible text (read as AI tell; rewrite)
+WARN  /servicios/edicion-fotografica  missing og:image
+WARN  /servicios/redes-sociales     missing og:image
+WARN  /servicios/redes-sociales     15 em/en dash(es) in visible text (read as AI tell; rewrite)
+WARN  /                             page weight ~3563 KB (aim < 3 MB)
+
+12 pages crawled from http://127.0.0.1:4401/
+heaviest page /: ~3563 KB | html 31 | JS 282 (gz) | CSS 18 (gz) | fonts 207 | images 3025
+0 FAIL, 34 WARN

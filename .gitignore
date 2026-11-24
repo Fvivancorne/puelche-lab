@@ -31,3 +31,7 @@ yarn-error.log*
 .agents/
 repomix*.xml
 
+# Jury audit runs
+.jury/**/shots*/
+.jury/**/shots-post*/
+

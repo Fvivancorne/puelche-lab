@@ -20,8 +20,33 @@ import {
   Sliders, 
   Cpu, 
   BookOpen, 
-  ShieldCheck 
+  ShieldCheck,
+  Copy,
+  CheckCheck,
+  Lock,
+  Award
 } from 'lucide-react';
+
+function playTactileTick() {
+  if (typeof window === 'undefined') return;
+  try {
+    const AudioContextClass = window.AudioContext || (window as any).webkitAudioContext;
+    if (!AudioContextClass) return;
+    const ctx = new AudioContextClass();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(600, ctx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(160, ctx.currentTime + 0.012);
+    gain.gain.setValueAtTime(0.02, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.012);
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.start();
+    osc.stop(ctx.currentTime + 0.013);
+    setTimeout(() => { ctx.close().catch(() => {}); }, 80);
+  } catch {}
+}
 
 interface AddonItem {
   id: string;
@@ -140,6 +165,7 @@ function CotizadorContent() {
   const [pageCount, setPageCount] = useState<number>(Math.max(1, Math.min(30, isNaN(initialPages) ? 5 : initialPages)));
   const [selectedSizeId, setSelectedSizeId] = useState<string>('pyme');
   const [selectedAddons, setSelectedAddons] = useState<string[]>(['geo-seo']);
+  const [copied, setCopied] = useState<boolean>(false);
 
   const activeSize = COMPANY_SIZES.find((s) => s.id === selectedSizeId) || COMPANY_SIZES[1];
 
@@ -167,9 +193,41 @@ function CotizadorContent() {
   }, [pageCount, activeSize.multiplier, selectedAddons]);
 
   const toggleAddon = (id: string) => {
+    playTactileTick();
     setSelectedAddons((prev) =>
       prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]
     );
+  };
+
+  const handleSizeChange = (id: string) => {
+    playTactileTick();
+    setSelectedSizeId(id);
+  };
+
+  const handlePageChange = (val: number) => {
+    playTactileTick();
+    setPageCount(val);
+  };
+
+  const copyProposal = () => {
+    playTactileTick();
+    const text = `ESTIMACIÓN FORMAL PUELCHE LAB (Puerto Varas)
+Alcance: ${pageCount} página(s) / pliegos interactivos
+Escala: ${activeSize.label} (${activeSize.desc})
+Módulos Especializados:
+${selectedAddons.map(id => {
+  const a = ADDONS_CATALOG.find(x => x.id === id);
+  return ` • ${a?.name} (${new Intl.NumberFormat('es-CL', { style: 'currency', currency: 'CLP', maximumFractionDigits: 0 }).format(a?.price || 0)})`;
+}).join('\n') || ' • Sin add-ons seleccionados'}
+Plazo Estimado: ${pricing.weeks} semanas
+Inversión Estimada: ${formattedClp} CLP (~${Math.round(pricing.totalClp / 39200).toLocaleString('es-CL')} UF / ${formattedUsd} USD)
+Modalidad: 50% anticipo al iniciar expedición | 50% contra entrega final y despliegue a producción.
+Contacto directo: paula.valdivieso@puelchelab.cl | +56 9 6617 7500`;
+    if (typeof navigator !== 'undefined' && navigator.clipboard) {
+      navigator.clipboard.writeText(text);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 3000);
+    }
   };
 
   const formattedClp = new Intl.NumberFormat('es-CL', {
@@ -196,22 +254,6 @@ function CotizadorContent() {
 
   return (
     <div className="w-full max-w-6xl mx-auto space-y-12">
-      {/* ── HEADER ── */}
-      <div className="text-center space-y-4">
-        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-[#59BFD6] font-mono text-xs uppercase tracking-widest">
-          <Calculator className="w-3.5 h-3.5 text-[#59BFD6]" />
-          <span>PUELCHE LAB &bull; ESTIMADOR DETERMINISTA DE INVERSIÓN</span>
-        </div>
-
-        <h1 className="font-condensed text-4xl sm:text-6xl md:text-7xl uppercase font-bold text-white tracking-tight">
-          Cotizador Paramétrico de Proyectos
-        </h1>
-
-        <p className="font-sans text-sm sm:text-base text-white/70 max-w-2xl mx-auto font-light leading-relaxed">
-          Cálculo transparente basado en complejidad arquitectónica, escala de empresa y servicios modulares especializados.
-        </p>
-      </div>
-
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         {/* ── COLUMNA IZQUIERDA: CONFIGURADOR PARAMÉTRICO (7 COLS) ── */}
         <div className="lg:col-span-7 space-y-8">
@@ -252,7 +294,7 @@ function CotizadorContent() {
                 min={1}
                 max={30}
                 value={pageCount}
-                onChange={(e) => setPageCount(parseInt(e.target.value, 10))}
+                onChange={(e) => handlePageChange(parseInt(e.target.value, 10))}
                 className="w-full h-2 bg-white/10 rounded-lg appearance-none cursor-pointer accent-[#59BFD6]"
               />
               <div className="flex justify-between font-mono text-[10px] text-white/40">
@@ -288,7 +330,7 @@ function CotizadorContent() {
                   <button
                     key={size.id}
                     type="button"
-                    onClick={() => setSelectedSizeId(size.id)}
+                    onClick={() => handleSizeChange(size.id)}
                     className={`p-4 rounded-2xl border text-left transition-all duration-300 ${
                       isSelected
                         ? 'bg-[#C29B63]/10 border-[#C29B63] shadow-[0_0_15px_rgba(194,155,99,0.2)]'
@@ -467,6 +509,40 @@ function CotizadorContent() {
                 <PhoneCall className="w-4 h-4" />
                 <span>Cotizar por WhatsApp Directo</span>
               </a>
+
+              <button
+                type="button"
+                onClick={copyProposal}
+                className="w-full py-3 rounded-2xl bg-white/[0.04] hover:bg-white/[0.08] text-white/80 hover:text-white border border-white/10 font-mono text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-2"
+              >
+                {copied ? (
+                  <>
+                    <CheckCheck className="w-4 h-4 text-emerald-400" />
+                    <span className="text-emerald-400 font-bold">¡Resumen Copiado al Portapapeles!</span>
+                  </>
+                ) : (
+                  <>
+                    <Copy className="w-4 h-4 text-[#59BFD6]" />
+                    <span>Copiar Ficha de Inversión</span>
+                  </>
+                )}
+              </button>
+            </div>
+
+            {/* Reassurance & Direct Security Guarantees */}
+            <div className="pt-4 border-t border-white/10 space-y-2.5 text-[11px] font-mono text-white/60">
+              <div className="flex items-center gap-2.5">
+                <ShieldCheck className="w-4 h-4 text-[#59BFD6] shrink-0" />
+                <span>Propiedad intelectual 100% transferida al cliente</span>
+              </div>
+              <div className="flex items-center gap-2.5">
+                <Award className="w-4 h-4 text-[#C29B63] shrink-0" />
+                <span>Dirección personal de Paula Valdivieso & Alejandro Lattes</span>
+              </div>
+              <div className="flex items-center gap-2.5">
+                <Lock className="w-4 h-4 text-emerald-400 shrink-0" />
+                <span>Indexación a UF oficial del Banco Central &bull; Cero costos ocultos</span>
+              </div>
             </div>
           </div>
         </div>
@@ -483,7 +559,32 @@ export default function CotizadorPage() {
       <AtmosphericBackground intensity="medium" showParticles={true} />
 
       <section className="relative z-10 max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 pt-32 pb-24 md:pt-40 md:pb-32 w-full">
-        <Suspense fallback={<div className="p-12 text-center font-mono text-white/60">Cargando cotizador paramétrico...</div>}>
+        {/* Encabezado Editorial SSR con H1 Garantizado */}
+        <div className="text-center space-y-4 mb-12 max-w-4xl mx-auto">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-[#59BFD6] font-mono text-xs uppercase tracking-widest">
+            <Calculator className="w-3.5 h-3.5 text-[#59BFD6]" />
+            <span>PUELCHE LAB &bull; ESTIMADOR DETERMINISTA DE INVERSIÓN</span>
+          </div>
+
+          <h1 className="font-condensed text-4xl sm:text-6xl md:text-7xl uppercase font-bold text-white tracking-tight">
+            Cotizador Paramétrico de Proyectos
+          </h1>
+
+          <p className="font-sans text-sm sm:text-base text-white/70 max-w-2xl mx-auto font-light leading-relaxed">
+            Cálculo transparente basado en complejidad arquitectónica, escala de empresa y servicios modulares especializados.
+          </p>
+        </div>
+
+        <Suspense
+          fallback={
+            <div className="bg-[#121316] border border-white/10 rounded-3xl p-8 sm:p-12 h-[500px] max-w-6xl mx-auto flex items-center justify-center">
+              <div className="text-center space-y-3">
+                <div className="w-8 h-8 border-2 border-[#59BFD6] border-t-transparent rounded-full animate-spin mx-auto" />
+                <span className="font-mono text-xs uppercase tracking-widest text-white/70">Cargando cotizador paramétrico...</span>
+              </div>
+            </div>
+          }
+        >
           <CotizadorContent />
         </Suspense>
 

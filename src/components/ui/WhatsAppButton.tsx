@@ -22,8 +22,8 @@ export function WhatsAppButton() {
         href={whatsappUrl}
         target="_blank"
         rel="noopener noreferrer"
-        aria-label="Contactar a Puelche Lab por WhatsApp"
-        className="group flex items-center gap-3 px-4 py-3 rounded-full bg-puelche-slate text-white border border-white/20 shadow-2xl hover:bg-puelche-cyan hover:text-white hover:scale-105 transition-all duration-300"
+        aria-label="Conversemos — Contactar a Puelche Lab por WhatsApp"
+        className="group flex items-center gap-3 px-4 py-3 rounded-full bg-puelche-slate text-white border border-white/20 shadow-2xl hover:bg-puelche-cyan hover:text-[#0b0d10] hover:scale-105 transition-all duration-300"
       >
         <span className="relative flex h-3 w-3">
           <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-puelche-cyan opacity-75" />

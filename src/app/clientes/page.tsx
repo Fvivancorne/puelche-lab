@@ -7,9 +7,15 @@ import { AtmosphericBackground } from '@/components/ui/AtmosphericBackground';
 import { ClientsKineticExperience } from '@/components/clients/ClientsKineticExperience';
 
 export const metadata: Metadata = {
-  title: 'Clientes | Puelche Lab Puerto Varas — Clientes & Territorio Austral',
+  title: 'Clientes & Territorio Austral | Puelche Lab Puerto Varas',
   description:
-    'Empresas, instituciones y proyectos que confían en Puelche Lab a lo largo de Los Lagos, Chiloé, Aysén y Magallanes. Archivo territorial y cinematográfico de alianzas.',
+    'Empresas y marcas que confían en Puelche Lab en Los Lagos, Chiloé y Patagonia. Archivo territorial y cinematográfico de alianzas genuinas.',
+  openGraph: {
+    title: 'Clientes & Territorio Austral | Puelche Lab',
+    description:
+      'Empresas y marcas que confían en Puelche Lab en Los Lagos, Chiloé y Patagonia. Archivo territorial y cinematográfico de alianzas genuinas.',
+    images: ['/opengraph-image'],
+  },
 };
 
 export interface ClientLogo {

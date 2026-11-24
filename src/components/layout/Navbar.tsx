@@ -159,33 +159,23 @@ export function Navbar() {
 
           <Link
             href="/contacto"
-            className="hidden sm:inline-flex items-center gap-2 px-5 py-2 rounded-sm bg-puelche-cyan text-white hover:bg-puelche-cyan-dark font-condensed uppercase tracking-wider text-xs font-bold transition-all duration-200 shadow"
+            className="hidden sm:inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#59BFD6] text-[#0b0d10] hover:bg-white font-condensed uppercase tracking-wider text-xs font-bold transition-all duration-200 shadow-md hover:scale-[1.02]"
           >
             <span>Cotizar Proyecto</span>
             <ArrowUpRight className="w-3.5 h-3.5" />
           </Link>
 
-          {/* Mobile menu toggle */}
+          {/* Mobile menu toggle aria-label="Abrir menú" */}
           <button
             type="button"
             onClick={() => setMobileOpen(!mobileOpen)}
-            aria-label="Abrir menú"
+            aria-label={mobileOpen ? 'Cerrar menú' : 'Abrir menú'}
             aria-expanded={mobileOpen}
-            className="lg:hidden p-2 text-white hover:text-puelche-cyan focus:outline-none"
+            className="lg:hidden p-2 text-white hover:text-puelche-cyan focus:outline-none min-h-[44px] min-w-[44px] flex items-center justify-center"
           >
             {mobileOpen ? <X className="w-7 h-7" /> : <Menu className="w-7 h-7" />}
           </button>
         </div>
-      </div>
-
-      {/* Hidden SEO navigation anchors */}
-      <div className="sr-only">
-        <Link href="/servicios/fotografia">Fotografía</Link>
-        <Link href="/servicios/branding">Branding</Link>
-        <Link href="/servicios/desarrollo-web">Desarrollo Web</Link>
-        <Link href="/servicios/editorial">Editorial</Link>
-        <Link href="/clientes">Clientes</Link>
-        <Link href="/contacto">Cotizar Proyecto</Link>
       </div>
 
       {/* Mobile Drawer */}

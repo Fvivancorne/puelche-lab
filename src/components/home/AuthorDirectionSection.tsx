@@ -15,7 +15,7 @@ export function AuthorDirectionSection() {
       className="relative w-full bg-[#0a0c10] py-24 md:py-36 px-6 md:px-12 lg:px-16 border-t border-white/10 overflow-hidden text-white"
     >
       {/* Kinetic Watermark Typography */}
-      <div className="absolute -top-12 left-1/2 -translate-x-1/2 select-none pointer-events-none opacity-[0.02] whitespace-nowrap font-condensed text-[14vw] font-black uppercase text-white leading-none">
+      <div aria-hidden="true" className="absolute -top-12 left-1/2 -translate-x-1/2 select-none pointer-events-none opacity-[0.02] whitespace-nowrap font-condensed text-[14vw] font-black uppercase text-white leading-none">
         DIRECCIÓN DE AUTOR
       </div>
 

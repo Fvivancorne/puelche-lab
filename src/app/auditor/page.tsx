@@ -406,22 +406,6 @@ function AuditorContent() {
 
   return (
     <div className="w-full max-w-6xl mx-auto space-y-12">
-      {/* ── HEADER EDITORIAL DE DIAGNÓSTICO DIGITAL ── */}
-      <div className="text-center space-y-4">
-        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-[#59BFD6] font-mono text-xs uppercase tracking-widest">
-          <Compass className="w-3.5 h-3.5 text-[#59BFD6]" />
-          <span>PUELCHE LAB &bull; MOTOR AUDITOR EN TIEMPO REAL</span>
-        </div>
-
-        <h1 className="font-condensed text-4xl sm:text-6xl md:text-7xl uppercase font-bold text-white tracking-tight">
-          Diagnóstico Digital & Autopsia Forense de Plataforma Web
-        </h1>
-
-        <p className="font-sans text-sm sm:text-base text-white/70 max-w-2xl mx-auto font-light leading-relaxed">
-          Diagnóstico de carga cognitiva, Core Web Vitals, jerarquía SEO y autoridad GEO frente a los estándares de clase mundial Awwwards.
-        </p>
-      </div>
-
       {/* ── ESTADO 1: ENTRADA / IDLE ── */}
       {simulationState === 'IDLE' && (
         <div className="bg-white/[0.035] backdrop-blur-2xl border border-white/10 rounded-[32px] p-8 sm:p-12 shadow-[0_20px_60px_rgba(0,0,0,0.5)] space-y-8 max-w-3xl mx-auto">
@@ -1820,7 +1804,32 @@ export default function AuditorPage() {
       <AtmosphericBackground intensity="vibrant" showParticles={true} />
 
       <section className="relative z-10 max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 pt-32 pb-24 md:pt-40 md:pb-32 w-full">
-        <Suspense fallback={<div className="p-12 text-center font-mono text-white/60">Cargando motor auditor...</div>}>
+        {/* Encabezado Editorial SSR con H1 Garantizado */}
+        <div className="text-center space-y-4 mb-12">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-[#59BFD6] font-mono text-xs uppercase tracking-widest">
+            <Compass className="w-3.5 h-3.5 text-[#59BFD6]" />
+            <span>PUELCHE LAB &bull; MOTOR AUDITOR EN TIEMPO REAL</span>
+          </div>
+
+          <h1 className="font-condensed text-4xl sm:text-6xl md:text-7xl uppercase font-bold text-white tracking-tight">
+            Diagnóstico Digital & Autopsia Forense de Plataforma Web
+          </h1>
+
+          <p className="font-sans text-sm sm:text-base text-white/70 max-w-2xl mx-auto font-light leading-relaxed">
+            Diagnóstico de carga cognitiva, Core Web Vitals, jerarquía SEO y autoridad GEO frente a los estándares de clase mundial Awwwards.
+          </p>
+        </div>
+
+        <Suspense
+          fallback={
+            <div className="bg-white/[0.035] backdrop-blur-2xl border border-white/10 rounded-[32px] p-8 sm:p-12 h-[380px] max-w-3xl mx-auto flex items-center justify-center">
+              <div className="text-center space-y-3">
+                <div className="w-8 h-8 border-2 border-[#59BFD6] border-t-transparent rounded-full animate-spin mx-auto" />
+                <span className="font-mono text-xs uppercase tracking-widest text-white/70">Cargando motor auditor...</span>
+              </div>
+            </div>
+          }
+        >
           <AuditorContent />
         </Suspense>
       </section>

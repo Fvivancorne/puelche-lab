@@ -84,8 +84,8 @@ export function SplitText({
   const words = text.split(' ');
 
   return (
-    <div ref={containerRef} className="inline-block" aria-label={text}>
-      <Tag className={className}>
+    <div ref={containerRef} className="inline-block">
+      <Tag className={className} aria-label={text}>
         {words.map((word, wi) => (
           <span key={wi} className="inline-block whitespace-nowrap">
             {word.split('').map((char, ci) => (

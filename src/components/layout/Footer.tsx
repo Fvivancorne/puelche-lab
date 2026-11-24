@@ -50,8 +50,6 @@ export function Footer() {
 
           {/* Heading with Optical Letter-spacing & Grammatical Precision */}
           <h2
-            aria-label="CONTACTANOS"
-            data-text="CONTACTANOS"
             className="font-condensed text-4xl sm:text-6xl md:text-7xl font-bold tracking-[0.06em] uppercase text-transparent bg-clip-text bg-gradient-to-b from-white via-white to-white/80 mb-6 drop-shadow-sm"
           >
             CONTÁCTANOS
@@ -79,14 +77,14 @@ export function Footer() {
                     href="mailto:alejandro@puelchelab.cl"
                     className="flex items-center gap-2 hover:text-[#59BFD6] transition-colors group"
                   >
-                    <Mail className="w-3.5 h-3.5 text-white/40 group-hover:text-[#59BFD6] shrink-0" />
+                    <Mail className="w-3.5 h-3.5 text-white/60 group-hover:text-[#59BFD6] shrink-0" />
                     <span className="underline decoration-white/20 underline-offset-2">alejandro@puelchelab.cl</span>
                   </a>
                   <a
                     href="tel:+56999363705"
                     className="flex items-center gap-2 hover:text-[#59BFD6] transition-colors group"
                   >
-                    <Phone className="w-3.5 h-3.5 text-white/40 group-hover:text-[#59BFD6] shrink-0" />
+                    <Phone className="w-3.5 h-3.5 text-white/60 group-hover:text-[#59BFD6] shrink-0" />
                     <span className="underline decoration-white/20 underline-offset-2">+56 9 9936 3705</span>
                   </a>
                 </div>
@@ -105,14 +103,14 @@ export function Footer() {
                     href="mailto:paula.valdivieso@puelchelab.cl"
                     className="flex items-center gap-2 hover:text-[#59BFD6] transition-colors group"
                   >
-                    <Mail className="w-3.5 h-3.5 text-white/40 group-hover:text-[#59BFD6] shrink-0" />
+                    <Mail className="w-3.5 h-3.5 text-white/60 group-hover:text-[#59BFD6] shrink-0" />
                     <span className="underline decoration-white/20 underline-offset-2">paula.valdivieso@puelchelab.cl</span>
                   </a>
                   <a
                     href="tel:+56966177500"
                     className="flex items-center gap-2 hover:text-[#59BFD6] transition-colors group"
                   >
-                    <Phone className="w-3.5 h-3.5 text-white/40 group-hover:text-[#59BFD6] shrink-0" />
+                    <Phone className="w-3.5 h-3.5 text-white/60 group-hover:text-[#59BFD6] shrink-0" />
                     <span className="underline decoration-white/20 underline-offset-2">+56 9 6617 7500</span>
                   </a>
                 </div>
@@ -183,7 +181,7 @@ export function Footer() {
       <div className="w-full bg-[#08090b] py-5 px-6 border-t border-white/10 text-center text-xs font-mono uppercase tracking-widest text-white/50">
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
           <span>&copy; {new Date().getFullYear()} Puelche Lab &bull; Puerto Varas, Región de Los Lagos, Chile</span>
-          <span className="text-white/40">Estudio de Diseño Cross Media & Fotografía de Autor</span>
+          <span className="text-white/70">Estudio de Diseño Cross Media & Fotografía de Autor</span>
         </div>
       </div>
     </footer>

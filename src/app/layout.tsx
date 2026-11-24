@@ -38,9 +38,9 @@ const serifFont = Newsreader({
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://www.puelchelab.cl'),
-  title: 'Puelche Lab — Estudio de Diseño Cross Media y Fotografía de Puerto Varas',
+  title: 'Puelche Lab | Diseño Cross Media y Fotografía en Puerto Varas',
   description:
-    'Somos un Estudio de Diseño Cross Media y Fotografía en Puerto Varas. Piezas gráficas para todos los medios: digitales, impresos y audiovisuales.',
+    'Estudio de diseño cross media, fotografía de autor y desarrollo web Next.js en Puerto Varas, Región de Los Lagos. Viento creativo en la Patagonia.',
   keywords: [
     'Puelche Lab',
     'Estudio de Diseño Puerto Varas',
@@ -55,6 +55,9 @@ export const metadata: Metadata = {
   ],
   authors: [{ name: 'Puelche Lab' }, { name: 'Paula Valdivieso' }, { name: 'Alejandro Lattes' }],
   creator: 'Puelche Lab',
+  alternates: {
+    canonical: './',
+  },
   other: {
     'geo.region': 'CL-LL',
     'geo.placename': 'Puerto Varas, Región de Los Lagos, Chile',
@@ -66,9 +69,24 @@ export const metadata: Metadata = {
     locale: 'es_CL',
     url: 'https://www.puelchelab.cl',
     siteName: 'Puelche Lab',
-    title: 'Puelche Lab — Estudio de Diseño Cross Media y Fotografía',
+    title: 'Puelche Lab | Diseño Cross Media y Fotografía Austral',
     description:
-      'Somos un Estudio de Diseño Cross Media y Fotografía en Puerto Varas. Viento creativo en la Patagonia.',
+      'Estudio de diseño cross media, fotografía de autor y desarrollo web Next.js en Puerto Varas, Patagonia.',
+    images: [
+      {
+        url: '/opengraph-image',
+        width: 1200,
+        height: 630,
+        alt: 'Puelche Lab — Estudio de Diseño Cross Media y Fotografía',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Puelche Lab | Diseño Cross Media y Fotografía Austral',
+    description:
+      'Estudio de diseño cross media, fotografía de autor y desarrollo web Next.js en Puerto Varas.',
+    images: ['/opengraph-image'],
   },
 };
 
@@ -228,13 +246,19 @@ export default function RootLayout({
         />
       </head>
       <body className="min-h-screen bg-[#111215] text-white font-sans antialiased flex flex-col selection:bg-puelche-cyan selection:text-white">
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[9999] focus:px-5 focus:py-2.5 focus:bg-[#59BFD6] focus:text-[#0b0d10] focus:font-mono focus:text-xs focus:uppercase focus:font-bold focus:rounded-full focus:shadow-2xl focus:ring-2 focus:ring-white"
+        >
+          Saltar al contenido principal (#content)
+        </a>
         <Preloader />
         <PageTransition />
         <AwwwardsCursor />
         <FilmGrain />
         <SmoothScrollProvider>
           <Navbar />
-          <main className="flex-1 w-full relative pt-20">{children}</main>
+          <main id="main-content" tabIndex={-1} className="flex-1 w-full relative pt-20 outline-none">{children}</main>
           <Footer />
           <WhatsAppButton />
         </SmoothScrollProvider>

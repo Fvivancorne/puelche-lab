@@ -1270,13 +1270,17 @@ export default function PortfolioPage() {
   return (
     <Suspense
       fallback={
-        <div className="w-full min-h-screen bg-puelche-dark flex items-center justify-center text-white">
-          <div className="text-center space-y-3">
-            <div className="w-8 h-8 border-2 border-[#59BFD6] border-t-transparent rounded-full animate-spin mx-auto" />
-            <p className="font-condensed text-xs uppercase tracking-widest text-[#59BFD6]">
-              Cargando Portafolio Puelche...
-            </p>
-          </div>
+        <div className="w-full min-h-screen bg-puelche-dark text-white flex flex-col -mt-20">
+          <section className="relative w-full h-screen min-h-[640px] overflow-hidden border-b border-white/10 bg-black">
+            <div className="absolute bottom-12 left-6 sm:left-12 md:left-16 max-w-xl z-20">
+              <h1 className="font-condensed text-5xl sm:text-7xl md:text-8xl font-black uppercase tracking-tight text-[#59BFD6] leading-none mb-3 drop-shadow-md">
+                PORTAFOLIO
+              </h1>
+              <p className="font-condensed uppercase tracking-wider text-sm sm:text-base md:text-lg text-white font-medium max-w-md leading-relaxed drop-shadow-md">
+                Fotografía de autor, plataformas web e identidades visuales con arraigo territorial austral.
+              </p>
+            </div>
+          </section>
         </div>
       }
     >

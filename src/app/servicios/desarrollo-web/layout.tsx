@@ -1,9 +1,9 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Desarrollo Web Next.js & Experiencias Awwwards | Puelche Lab Puerto Varas',
+  title: 'Desarrollo Web Next.js de Autor | Puelche Lab Puerto Varas',
   description:
-    'Desarrollo web SSR y Static Generation con Next.js App Router, Turbopack, GSAP 120Hz y optimización GEO para motores de IA. Sitios corporativos veloces, seguros y de clase mundial.',
+    'Desarrollo web SSR con Next.js App Router, GSAP 120Hz y optimización GEO para motores de IA. Plataformas digitales veloces, seguras y cinematográficas.',
   keywords: [
     'Desarrollo Web Puerto Varas',
     'Páginas Web Next.js Chile',
@@ -12,13 +12,14 @@ export const metadata: Metadata = {
     'Desarrollo Web Patagonia',
   ],
   openGraph: {
-    title: 'Desarrollo Web SSR & Experiencias Awwwards — Puelche Lab',
+    title: 'Desarrollo Web SSR & Experiencias Awwwards | Puelche Lab',
     description:
       'Plataformas web de alto rendimiento en Next.js, optimizadas para Core Web Vitals y motores de búsqueda generativa (GEO).',
     url: 'https://www.puelchelab.cl/servicios/desarrollo-web',
     siteName: 'Puelche Lab',
     locale: 'es_CL',
     type: 'article',
+    images: ['/opengraph-image'],
   },
 };
 

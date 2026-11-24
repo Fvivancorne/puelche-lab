@@ -1,0 +1,68 @@
+FAIL  /portafolio                   0 <h1> elements (want exactly 1)
+FAIL  /auditor                      0 <h1> elements (want exactly 1)
+FAIL  /contacto                     0 <h1> elements (want exactly 1)
+WARN  /                             title is 72 chars (keep <= 70)
+WARN  /                             no canonical link
+WARN  /                             8 em/en dash(es) in visible text (read as AI tell; rewrite)
+WARN  /                             sentence repeated 2x: "“ En la Patagonia profunda, la distancia no es un obstáculo: es el fil"
+WARN  /                             sentence repeated 2x: "“ La técnica más sofisticada carece de sentido si detrás no se siente "
+WARN  /                             sentence repeated 2x: "La Casa del Lago y el Silencio"
+WARN  /                             sentence repeated 2x: "“ Un buen retrato de interiores no muestra cómo es un espacio: transmi"
+WARN  /                             sentence repeated 2x: "“ En el extremo sur, un refugio no es un lujo decorativo: es la difere"
+WARN  /servicios                    meta description is 172 chars (aim 50-160)
+WARN  /servicios                    no canonical link
+WARN  /servicios                    missing og:image
+WARN  /servicios                    sentence repeated 2x: "Interiores, hotelería, arquitectura y procesos industriales en el sur "
+WARN  /servicios                    sentence repeated 2x: "Óptica fija, rango dinámico de 15+ EV y luz patagónica natural."
+WARN  /servicios                    sentence repeated 2x: "Identidades visuales, manuales de normas y branding integral con arrai"
+WARN  /servicios                    sentence repeated 2x: "Naming, paleta cromática orgánica y tipografía suiza."
+WARN  /servicios                    sentence repeated 2x: "Sitios web modernos, ultra-rápidos y adaptables a dispositivos móviles"
+WARN  /servicios                    sentence repeated 2x: "Next.js App Router, GSAP cinemático y 100% Core Web Vitals."
+WARN  /servicios                    sentence repeated 2x: "Memorias corporativas, libros fotográficos y catálogos comerciales imp"
+WARN  /servicios                    sentence repeated 2x: "Maquetación reticular, selección de papeles y dirección de imprenta."
+WARN  /servicios                    sentence repeated 2x: "Estrategia de contenidos, fotografía genuina y dirección de arte digit"
+WARN  /servicios                    sentence repeated 2x: "Narrativa visual que posiciona a tu marca lejos de la mediocridad de s"
+WARN  /portafolio                   meta description is 176 chars (aim 50-160)
+WARN  /portafolio                   no canonical link
+WARN  /portafolio                   missing og:image
+WARN  /auditor                      meta description is 177 chars (aim 50-160)
+WARN  /auditor                      no canonical link
+WARN  /auditor                      missing og:image
+WARN  /clientes                     title is 71 chars (keep <= 70)
+WARN  /clientes                     no canonical link
+WARN  /clientes                     1 em/en dash(es) in visible text (read as AI tell; rewrite)
+WARN  /contacto                     meta description is 171 chars (aim 50-160)
+WARN  /contacto                     no canonical link
+WARN  /contacto                     missing og:image
+WARN  /servicios/fotografia         meta description is 182 chars (aim 50-160)
+WARN  /servicios/fotografia         no canonical link
+WARN  /servicios/fotografia         missing og:image
+WARN  /servicios/fotografia         1 em/en dash(es) in visible text (read as AI tell; rewrite)
+WARN  /servicios/branding           meta description is 184 chars (aim 50-160)
+WARN  /servicios/branding           no canonical link
+WARN  /servicios/branding           missing og:image
+WARN  /servicios/branding           3 em/en dash(es) in visible text (read as AI tell; rewrite)
+WARN  /servicios/branding           sentence repeated 2x: "Diseño de marca e identidad visual para hotelería boutique en Castro ("
+WARN  /servicios/desarrollo-web     title is 77 chars (keep <= 70)
+WARN  /servicios/desarrollo-web     meta description is 180 chars (aim 50-160)
+WARN  /servicios/desarrollo-web     no canonical link
+WARN  /servicios/desarrollo-web     missing og:image
+WARN  /servicios/desarrollo-web     heading level skips h1 -> h3
+WARN  /servicios/desarrollo-web     1 em/en dash(es) in visible text (read as AI tell; rewrite)
+WARN  /servicios/editorial          title is 76 chars (keep <= 70)
+WARN  /servicios/editorial          meta description is 185 chars (aim 50-160)
+WARN  /servicios/editorial          no canonical link
+WARN  /servicios/editorial          missing og:image
+WARN  /servicios/editorial          heading level skips h1 -> h3
+WARN  /servicios/editorial          6 em/en dash(es) in visible text (read as AI tell; rewrite)
+WARN  /servicios/edicion-fotografica  meta description is 175 chars (aim 50-160)
+WARN  /servicios/edicion-fotografica  no canonical link
+WARN  /servicios/edicion-fotografica  missing og:image
+WARN  /servicios/redes-sociales     no canonical link
+WARN  /servicios/redes-sociales     missing og:image
+WARN  /servicios/redes-sociales     15 em/en dash(es) in visible text (read as AI tell; rewrite)
+WARN  /                             page weight ~3563 KB (aim < 3 MB)
+
+12 pages crawled from http://127.0.0.1:4401/
+heaviest page /: ~3563 KB | html 31 | JS 282 (gz) | CSS 18 (gz) | fonts 207 | images 3025
+3 FAIL, 61 WARN

@@ -3,7 +3,7 @@ import type { Metadata } from 'next';
 export const metadata: Metadata = {
   title: 'Portafolio & Archivo Óptico Austral | Puelche Lab Puerto Varas',
   description:
-    'Explora 34 casos documentados de autor: fotografía de arquitectura, interiorismo boutique, expediciones en alta mar, diseño editorial y plataformas web en la Patagonia Austral.',
+    'Explora 34 casos documentados de autor: fotografía de arquitectura, hotelería boutique, faenas en alta mar, diseño editorial y desarrollo web en la Patagonia.',
   keywords: [
     'Portafolio Puelche Lab',
     'Fotografía Arquitectura Puerto Varas',
@@ -12,13 +12,14 @@ export const metadata: Metadata = {
     'Archivo Óptico Austral',
   ],
   openGraph: {
-    title: 'Portafolio & Archivo Óptico Austral — Puelche Lab',
+    title: 'Portafolio & Archivo Óptico Austral | Puelche Lab',
     description:
       '34 casos documentados de autor a través de la geografía del sur de Chile.',
     url: 'https://www.puelchelab.cl/portafolio',
     siteName: 'Puelche Lab',
     locale: 'es_CL',
     type: 'website',
+    images: ['/opengraph-image'],
   },
 };
 

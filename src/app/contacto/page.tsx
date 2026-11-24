@@ -233,21 +233,6 @@ function ContactFormInner() {
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
       {/* Left Column: Formulario de Solicitud de Expedición */}
       <div className="lg:col-span-7 space-y-8">
-        <div className="space-y-3">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/[0.04] border border-white/10 text-[11px] font-mono tracking-[0.25em] uppercase text-[#59BFD6]">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#59BFD6] animate-pulse shadow-[0_0_8px_#59BFD6]" />
-            <span>41°19′S 72°59′W &bull; PUERTO VARAS &bull; MESA DE DESPACHO</span>
-          </div>
-
-          <h1 className="font-condensed text-5xl sm:text-6xl lg:text-7xl font-bold uppercase tracking-tight text-white leading-[0.95] drop-shadow-2xl">
-            SOLICITUD DE EXPEDICIÓN
-          </h1>
-
-          <p className="font-sans text-sm sm:text-base text-white/75 font-light leading-relaxed pt-1">
-            Inicia el brief para tu próximo encargo de fotografía territorial, desarrollo web Next.js o diseño de marca. Respondemos en menos de 24 horas hábiles desde Puerto Varas.
-          </p>
-        </div>
-
         {submitted ? (
           <div className="bg-[#121418] border border-[#59BFD6]/40 rounded-3xl p-8 sm:p-10 text-center space-y-4 shadow-2xl">
             <CheckCircle2 className="w-14 h-14 text-[#59BFD6] mx-auto animate-bounce" />
@@ -604,7 +589,32 @@ export default function ContactoPage() {
 
       {/* ── CONTENIDO PRINCIPAL: FORMULARIO & DETALLES DE DESPACHO ── */}
       <section className="relative z-10 max-w-6xl mx-auto px-6 sm:px-8 lg:px-12 pt-28 pb-16 md:pt-36 md:pb-24 w-full">
-        <Suspense fallback={<div className="p-8 text-center font-condensed text-white">Cargando mesa de despacho...</div>}>
+        {/* Encabezado Editorial SSR con H1 Garantizado */}
+        <div className="space-y-3 mb-10 max-w-4xl">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/[0.04] border border-white/10 text-[11px] font-mono tracking-[0.25em] uppercase text-[#59BFD6]">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#59BFD6] animate-pulse shadow-[0_0_8px_#59BFD6]" />
+            <span>41°19′S 72°59′W &bull; PUERTO VARAS &bull; MESA DE DESPACHO</span>
+          </div>
+
+          <h1 className="font-condensed text-5xl sm:text-6xl lg:text-7xl font-bold uppercase tracking-tight text-white leading-[0.95] drop-shadow-2xl">
+            SOLICITUD DE EXPEDICIÓN
+          </h1>
+
+          <p className="font-sans text-sm sm:text-base text-white/75 font-light leading-relaxed pt-1">
+            Inicia el brief para tu próximo encargo de fotografía territorial, desarrollo web Next.js o diseño de marca. Respondemos en menos de 24 horas hábiles desde Puerto Varas.
+          </p>
+        </div>
+
+        <Suspense
+          fallback={
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start min-h-[640px] animate-pulse">
+              <div className="lg:col-span-7 bg-white/[0.02] border border-white/10 rounded-3xl p-8 h-[600px] flex items-center justify-center">
+                <span className="font-mono text-xs uppercase tracking-widest text-white/70">Cargando mesa de despacho...</span>
+              </div>
+              <div className="lg:col-span-5 bg-white/[0.02] border border-white/10 rounded-3xl p-8 h-[400px]" />
+            </div>
+          }
+        >
           <ContactFormInner />
         </Suspense>
 

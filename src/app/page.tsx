@@ -280,9 +280,11 @@ export default function Home() {
       */}
       <section className="relative w-full bg-[#18191B] py-20 md:py-32 px-6 md:px-12 lg:px-16 border-t border-b border-white/10 overflow-hidden">
         {/* Kinetic Watermark Typography */}
-        <div className="absolute -top-10 left-1/2 -translate-x-1/2 select-none pointer-events-none opacity-[0.03] whitespace-nowrap font-condensed text-[14vw] font-black uppercase text-white leading-none">
-          REVELADO PUELCHE
-        </div>
+        <svg aria-hidden="true" className="absolute -top-10 left-1/2 -translate-x-1/2 select-none pointer-events-none opacity-[0.03] w-[140vw] h-auto overflow-visible" viewBox="0 0 1200 140">
+          <text x="600" y="105" textAnchor="middle" fill="white" className="font-condensed font-black text-[120px] uppercase">
+            REVELADO PUELCHE
+          </text>
+        </svg>
         <BeforeAfterSlider />
       </section>
 

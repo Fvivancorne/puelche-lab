@@ -301,7 +301,14 @@ export default function EditorialPage() {
 
       {/* ── 2. EDITORIAL PILLARS ── */}
       <section className="bg-[#0e1014] py-16 px-6 sm:px-8 border-b border-white/10">
-        <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="max-w-6xl mx-auto space-y-8">
+          <div className="text-center space-y-2">
+            <span className="font-mono text-xs uppercase tracking-widest text-[#59BFD6]">Pilares de Publicación Fina</span>
+            <h2 className="font-condensed text-2xl sm:text-3xl uppercase font-bold text-white tracking-wide">
+              Diseño Editorial & Producción Impresa
+            </h2>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div className="p-6 bg-[#141519] border border-white/10 rounded-sm space-y-3 shadow-lg hover:border-[#59BFD6]/40 transition-colors">
             <div className="w-10 h-10 rounded-full bg-[#59BFD6]/15 flex items-center justify-center text-[#59BFD6]">
               <BookOpen className="w-5 h-5" />
@@ -338,7 +345,8 @@ export default function EditorialPage() {
             </p>
           </div>
         </div>
-      </section>
+      </div>
+    </section>
 
       {/* ── 3. PANORAMIC EDITORIAL PROJECT STRIPES ── */}
       <section id="obras" className="w-full flex flex-col" aria-label="Proyectos de Diseño Editorial">

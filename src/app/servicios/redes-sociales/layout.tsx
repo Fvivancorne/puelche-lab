@@ -11,13 +11,14 @@ export const metadata: Metadata = {
     'Estrategia Digital Los Lagos',
   ],
   openGraph: {
-    title: 'Estrategia de Redes Sociales de Autor — Puelche Lab',
+    title: 'Estrategia de Redes Sociales de Autor | Puelche Lab',
     description:
       'Narrativa visual contemporánea y presencia digital sin clichés para marcas con raíz territorial.',
     url: 'https://www.puelchelab.cl/servicios/redes-sociales',
     siteName: 'Puelche Lab',
     locale: 'es_CL',
     type: 'article',
+    images: ['/opengraph-image'],
   },
 };
 
