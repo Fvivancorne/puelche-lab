@@ -111,21 +111,21 @@ export function AwwwardsCursor() {
     >
       {/* Default State: Small precision optic point with mix-blend-difference */}
       {cursorState === 'default' && (
-        <div className="w-4 h-4 -translate-x-1/2 -translate-y-1/2 rounded-full border border-white/80 bg-white/20 flex items-center justify-center transition-all duration-300 ease-out mix-blend-difference">
+        <div className="w-4 h-4 -translate-x-1/2 -translate-y-1/2 rounded-full border border-white/80 bg-white/20 flex items-center justify-center transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] mix-blend-difference">
           <div className="w-1 h-1 rounded-full bg-white" />
         </div>
       )}
 
       {/* Button Hover State: Magnetic subtle ring */}
       {cursorState === 'button' && (
-        <div className="w-10 h-10 -translate-x-1/2 -translate-y-1/2 rounded-full border border-white/90 bg-white/10 scale-110 flex items-center justify-center transition-all duration-300 ease-out shadow-[0_0_15px_rgba(255,255,255,0.4)] mix-blend-difference">
+        <div className="w-10 h-10 -translate-x-1/2 -translate-y-1/2 rounded-full border border-white/90 bg-white/10 scale-110 flex items-center justify-center transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] shadow-[0_0_15px_rgba(255,255,255,0.4)] mix-blend-difference">
           <div className="w-1.5 h-1.5 rounded-full bg-white" />
         </div>
       )}
 
       {/* Drag State: Minimal optic dial with dual lateral chevrons (zero text) */}
       {cursorState === 'drag' && (
-        <div className="w-8 h-8 -translate-x-1/2 -translate-y-1/2 rounded-full border border-[#C29B63]/80 bg-[#141518]/90 backdrop-blur-md flex items-center justify-center gap-0.5 transition-all duration-200 ease-out shadow-[0_4px_20px_rgba(0,0,0,0.8),0_0_12px_rgba(194,155,99,0.3)]">
+        <div className="w-8 h-8 -translate-x-1/2 -translate-y-1/2 rounded-full border border-[#C29B63]/80 bg-[#141518]/90 backdrop-blur-md flex items-center justify-center gap-0.5 transition-all duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] shadow-[0_4px_20px_rgba(0,0,0,0.8),0_0_12px_rgba(194,155,99,0.3)]">
           <span className="text-[#C29B63] text-xs font-mono select-none">‹</span>
           <span className="text-[#C29B63] text-xs font-mono select-none">›</span>
         </div>
@@ -133,7 +133,7 @@ export function AwwwardsCursor() {
 
       {/* Explore / Photo State: High-End Optical Lens Viewfinder */}
       {cursorState === 'explore' && (
-        <div className="relative -translate-x-1/2 -translate-y-1/2 w-20 h-20 rounded-full border border-white/80 bg-black/50 backdrop-blur-[2px] flex items-center justify-center transition-all duration-300 ease-out shadow-2xl">
+        <div className="relative -translate-x-1/2 -translate-y-1/2 w-20 h-20 rounded-full border border-white/80 bg-black/50 backdrop-blur-[2px] flex items-center justify-center transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] shadow-2xl">
           {/* Viewfinder crosshairs */}
           <div className="absolute top-1 left-1/2 -translate-x-1/2 w-[1px] h-2 bg-white/80" />
           <div className="absolute bottom-1 left-1/2 -translate-x-1/2 w-[1px] h-2 bg-white/80" />

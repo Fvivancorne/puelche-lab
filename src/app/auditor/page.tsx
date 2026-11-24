@@ -1823,9 +1823,9 @@ export default function AuditorPage() {
         <Suspense
           fallback={
             <div className="bg-white/[0.035] backdrop-blur-2xl border border-white/10 rounded-[32px] p-8 sm:p-12 h-[380px] max-w-3xl mx-auto flex items-center justify-center">
-              <div className="text-center space-y-3">
-                <div className="w-8 h-8 border-2 border-[#59BFD6] border-t-transparent rounded-full animate-spin mx-auto" />
-                <span className="font-mono text-xs uppercase tracking-widest text-white/70">Cargando motor auditor...</span>
+              <div className="text-center space-y-4">
+                <div className="puelche-aperture-loader mx-auto" />
+                <span className="font-mono text-xs uppercase tracking-widest text-white/70 block">Cargando motor auditor...</span>
               </div>
             </div>
           }

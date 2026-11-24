@@ -24,8 +24,9 @@ export function Magnetic({
 
     const media = gsap.matchMedia();
     media.add('(pointer: fine) and (prefers-reduced-motion: no-preference)', () => {
-      const xTo = gsap.quickTo(el, 'x', { duration: 0.8, ease: 'elastic.out(1, 0.3)' });
-      const yTo = gsap.quickTo(el, 'y', { duration: 0.8, ease: 'elastic.out(1, 0.3)' });
+      // Franco Beltramella (OFFMADE): Entrada fluida con power3.out y salida con back.out(1.7) overshoot elástico
+      const xTo = gsap.quickTo(el, 'x', { duration: 0.35, ease: 'power3.out' });
+      const yTo = gsap.quickTo(el, 'y', { duration: 0.35, ease: 'power3.out' });
 
       const onMouseMove = (e: MouseEvent) => {
         const rect = el.getBoundingClientRect();
@@ -39,14 +40,12 @@ export function Magnetic({
           xTo(distX * strength);
           yTo(distY * strength);
         } else {
-          xTo(0);
-          yTo(0);
+          gsap.to(el, { x: 0, y: 0, duration: 0.6, ease: 'back.out(1.7)', overwrite: 'auto' });
         }
       };
 
       const onMouseLeave = () => {
-        xTo(0);
-        yTo(0);
+        gsap.to(el, { x: 0, y: 0, duration: 0.6, ease: 'back.out(1.7)', overwrite: 'auto' });
       };
 
       window.addEventListener('mousemove', onMouseMove, { passive: true });

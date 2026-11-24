@@ -171,108 +171,112 @@ export function Navbar() {
             onClick={() => setMobileOpen(!mobileOpen)}
             aria-label={mobileOpen ? 'Cerrar menú' : 'Abrir menú'}
             aria-expanded={mobileOpen}
-            className="lg:hidden p-2 text-white hover:text-puelche-cyan focus:outline-none min-h-[44px] min-w-[44px] flex items-center justify-center"
+            className="lg:hidden p-2 text-white hover:text-puelche-cyan active:scale-90 transition-all duration-200 focus:outline-none min-h-[44px] min-w-[44px] flex items-center justify-center"
           >
             {mobileOpen ? <X className="w-7 h-7" /> : <Menu className="w-7 h-7" />}
           </button>
         </div>
       </div>
 
-      {/* Mobile Drawer */}
-      {mobileOpen && (
-        <div className="lg:hidden fixed inset-x-0 top-[70px] bg-puelche-slate border-b border-puelche-slate-dark shadow-2xl py-6 px-6 font-condensed uppercase tracking-wider text-base z-50 max-h-[calc(100vh-70px)] overflow-y-auto">
-          <div className="flex flex-col space-y-4">
-            <Link
-              href="/"
-              onClick={() => setMobileOpen(false)}
-              className={cn(
-                'py-2 border-b border-white/10 font-bold',
-                pathname === '/' ? 'text-puelche-cyan font-semibold' : 'text-white'
-              )}
-            >
-              HOME
-            </Link>
+      {/* Mobile Drawer — Animado con expo.out para entrada y power2.in para salida (Franco Beltramella) */}
+      <div
+        className={cn(
+          'lg:hidden fixed inset-x-0 top-[70px] bg-puelche-slate bg-[#16171B]/95 backdrop-blur-2xl border-b border-white/10 shadow-[0_30px_90px_rgba(0,0,0,0.9)] py-6 px-6 font-condensed uppercase tracking-wider text-base z-50 max-h-[calc(100vh-70px)] overflow-y-auto transition-all duration-300 will-change-transform',
+          mobileOpen
+            ? 'opacity-100 translate-y-0 pointer-events-auto ease-[cubic-bezier(0.16,1,0.3,1)]'
+            : 'opacity-0 -translate-y-4 pointer-events-none ease-[cubic-bezier(0.7,0,0.84,0)]'
+        )}
+      >
+        <div className="flex flex-col space-y-4">
+          <Link
+            href="/"
+            onClick={() => setMobileOpen(false)}
+            className={cn(
+              'py-2 border-b border-white/10 font-bold transition-colors hover:text-puelche-cyan',
+              pathname === '/' ? 'text-puelche-cyan font-semibold' : 'text-white'
+            )}
+          >
+            HOME
+          </Link>
 
-            <Link
-              href="/servicios"
-              onClick={() => setMobileOpen(false)}
-              className={cn(
-                'py-2 border-b border-white/10 font-bold',
-                pathname === '/servicios' ? 'text-puelche-cyan font-semibold' : 'text-white'
-              )}
-            >
-              SERVICIOS
-            </Link>
+          <Link
+            href="/servicios"
+            onClick={() => setMobileOpen(false)}
+            className={cn(
+              'py-2 border-b border-white/10 font-bold transition-colors hover:text-puelche-cyan',
+              pathname === '/servicios' ? 'text-puelche-cyan font-semibold' : 'text-white'
+            )}
+          >
+            SERVICIOS
+          </Link>
 
-            <div className="py-2 border-b border-white/10 space-y-2">
-              <div className="flex items-center justify-between">
+          <div className="py-2 border-b border-white/10 space-y-2">
+            <div className="flex items-center justify-between">
+              <Link
+                href="/portafolio"
+                onClick={() => setMobileOpen(false)}
+                className={cn(
+                  'text-xs font-bold hover:text-puelche-cyan transition-colors',
+                  pathname === '/portafolio' ? 'text-puelche-cyan' : 'text-white'
+                )}
+              >
+                PORTAFOLIO COMPLETO &rarr;
+              </Link>
+            </div>
+            <div className="pl-3 space-y-2 text-sm pt-1">
+              {PORTFOLIO_DROPDOWN.map((item) => (
                 <Link
-                  href="/portafolio"
+                  key={item.href}
+                  href={item.href}
                   onClick={() => setMobileOpen(false)}
                   className={cn(
-                    'text-xs font-bold hover:text-puelche-cyan transition-colors',
-                    pathname === '/portafolio' ? 'text-puelche-cyan' : 'text-white'
+                    'block py-1 text-white/90 hover:text-puelche-cyan text-xs transition-colors',
+                    pathname === item.href && 'text-puelche-cyan font-semibold'
                   )}
                 >
-                  PORTAFOLIO COMPLETO &rarr;
+                  {item.label}
                 </Link>
-              </div>
-              <div className="pl-3 space-y-2 text-sm pt-1">
-                {PORTFOLIO_DROPDOWN.map((item) => (
-                  <Link
-                    key={item.href}
-                    href={item.href}
-                    onClick={() => setMobileOpen(false)}
-                    className={cn(
-                      'block py-1 text-white/90 hover:text-puelche-cyan text-xs',
-                      pathname === item.href && 'text-puelche-cyan font-semibold'
-                    )}
-                  >
-                    {item.label}
-                  </Link>
-                ))}
-              </div>
+              ))}
             </div>
-
-            <Link
-              href="/auditor"
-              onClick={() => setMobileOpen(false)}
-              className={cn(
-                'py-2 border-b border-white/10 font-bold flex items-center justify-between',
-                pathname === '/auditor' ? 'text-puelche-cyan font-semibold' : 'text-white'
-              )}
-            >
-              <span>AUDITORÍA WEB GRATUITA</span>
-              <span className="px-2 py-0.5 rounded-full bg-[#59BFD6]/20 text-[#59BFD6] font-mono text-[10px]">
-                Diagnóstico 20s
-              </span>
-            </Link>
-
-
-            <Link
-              href="/clientes"
-              onClick={() => setMobileOpen(false)}
-              className={cn(
-                'py-2 border-b border-white/10 font-bold',
-                pathname === '/clientes' ? 'text-puelche-cyan font-semibold' : 'text-white'
-              )}
-            >
-              CLIENTES
-            </Link>
-
-            <Link
-              href="/contacto"
-              onClick={() => setMobileOpen(false)}
-              className={cn(
-                'py-2 font-bold',
-                pathname === '/contacto' ? 'text-puelche-cyan font-semibold' : 'text-white'
-              )}
-            >
-              CONTACTO
-            </Link>
           </div>
+
+          <Link
+            href="/auditor"
+            onClick={() => setMobileOpen(false)}
+            className={cn(
+              'py-2 border-b border-white/10 font-bold flex items-center justify-between transition-colors hover:text-puelche-cyan',
+              pathname === '/auditor' ? 'text-puelche-cyan font-semibold' : 'text-white'
+            )}
+          >
+            <span>AUDITORÍA WEB GRATUITA</span>
+            <span className="px-2 py-0.5 rounded-full bg-[#59BFD6]/20 text-[#59BFD6] font-mono text-[10px]">
+              Diagnóstico 20s
+            </span>
+          </Link>
+
+          <Link
+            href="/clientes"
+            onClick={() => setMobileOpen(false)}
+            className={cn(
+              'py-2 border-b border-white/10 font-bold transition-colors hover:text-puelche-cyan',
+              pathname === '/clientes' ? 'text-puelche-cyan font-semibold' : 'text-white'
+            )}
+          >
+            CLIENTES
+          </Link>
+
+          <Link
+            href="/contacto"
+            onClick={() => setMobileOpen(false)}
+            className={cn(
+              'py-2 font-bold transition-colors hover:text-puelche-cyan',
+              pathname === '/contacto' ? 'text-puelche-cyan font-semibold' : 'text-white'
+            )}
+          >
+            CONTACTO
+          </Link>
         </div>
-      )}
+      </div>
     </header>
   );
 }

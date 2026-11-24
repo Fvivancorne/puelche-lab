@@ -966,7 +966,7 @@ function PortfolioContent() {
       */}
       {activeModalProject && (
         <div
-          className="fixed inset-0 z-[100] flex items-center justify-center p-3 sm:p-6 lg:p-10 bg-black/85 bg-black/70 backdrop-blur-sm backdrop-blur-md animate-in fade-in duration-200 overscroll-none select-none"
+          className="fixed inset-0 z-[100] flex items-center justify-center p-3 sm:p-6 lg:p-10 bg-black/70 backdrop-blur-sm bg-black/90 backdrop-blur-xl animate-in fade-in duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] overscroll-none select-none"
           onClick={handleCloseModal}
           data-lenis-prevent="true"
           style={{ overscrollBehavior: 'none', overscrollBehaviorX: 'none' }}
@@ -978,7 +978,7 @@ function PortfolioContent() {
           <button
             type="button"
             onClick={prevProject}
-            className="hidden md:flex fixed left-3 lg:left-6 2xl:left-8 top-1/2 -translate-y-1/2 z-[110] w-12 h-12 rounded-full bg-[#16171B]/95 hover:bg-[#59BFD6] text-white hover:text-puelche-dark border border-white/20 hover:border-[#59BFD6] shadow-[0_0_30px_rgba(0,0,0,0.85)] backdrop-blur-md transition-all duration-300 hover:scale-110 active:scale-95 items-center justify-center group"
+            className="hidden md:flex fixed left-3 lg:left-6 2xl:left-8 top-1/2 -translate-y-1/2 z-[110] w-12 h-12 rounded-full bg-[#16171B]/95 hover:bg-[#59BFD6] text-white hover:text-puelche-dark border border-white/20 hover:border-[#59BFD6] shadow-[0_0_30px_rgba(0,0,0,0.85)] backdrop-blur-md transition-all duration-200 hover:scale-110 active:scale-90 items-center justify-center group ease-[cubic-bezier(0.16,1,0.3,1)]"
             aria-label="Proyecto anterior"
             title={`Anterior: ${prevProjectItem?.title || ''} (Tecla ←, A, Scroll o Pad hacia la derecha)`}
           >
@@ -988,16 +988,16 @@ function PortfolioContent() {
           <button
             type="button"
             onClick={nextProject}
-            className="hidden md:flex fixed right-3 lg:right-6 2xl:right-8 top-1/2 -translate-y-1/2 z-[110] w-12 h-12 rounded-full bg-[#16171B]/95 hover:bg-[#59BFD6] text-white hover:text-puelche-dark border border-white/20 hover:border-[#59BFD6] shadow-[0_0_30px_rgba(0,0,0,0.85)] backdrop-blur-md transition-all duration-300 hover:scale-110 active:scale-95 items-center justify-center group"
+            className="hidden md:flex fixed right-3 lg:right-6 2xl:right-8 top-1/2 -translate-y-1/2 z-[110] w-12 h-12 rounded-full bg-[#16171B]/95 hover:bg-[#59BFD6] text-white hover:text-puelche-dark border border-white/20 hover:border-[#59BFD6] shadow-[0_0_30px_rgba(0,0,0,0.85)] backdrop-blur-md transition-all duration-200 hover:scale-110 active:scale-90 items-center justify-center group ease-[cubic-bezier(0.16,1,0.3,1)]"
             aria-label="Siguiente proyecto"
             title={`Siguiente: ${nextProjectItem?.title || ''} (Tecla →, D, Scroll o Pad hacia la izquierda)`}
           >
             <ChevronRight className="w-6 h-6 group-hover:translate-x-0.5 transition-transform" />
           </button>
 
-          {/* ── CONTENEDOR MODAL SPLIT EDITORIAL ── */}
+          {/* ── CONTENEDOR MODAL SPLIT EDITORIAL (Apertura expo.out Franco Beltramella) ── */}
           <div
-            className="relative w-full max-w-6xl max-h-[90vh] bg-[#111215] border border-white/20 rounded-[28px] sm:rounded-[36px] overflow-hidden shadow-[0_25px_90px_rgba(0,0,0,0.95)] flex flex-col z-10"
+            className="relative w-full max-w-6xl max-h-[90vh] bg-[#111215] border border-white/20 rounded-[28px] sm:rounded-[36px] overflow-hidden shadow-[0_25px_90px_rgba(0,0,0,0.95)] flex flex-col z-10 animate-in fade-in zoom-in-[0.98] duration-350 ease-[cubic-bezier(0.16,1,0.3,1)] will-change-transform"
             onClick={(e) => e.stopPropagation()}
             role="dialog"
             aria-modal="true"
