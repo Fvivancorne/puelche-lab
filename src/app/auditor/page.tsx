@@ -408,19 +408,19 @@ function AuditorContent() {
     <div className="w-full max-w-6xl mx-auto space-y-12">
       {/* ── ESTADO 1: ENTRADA / IDLE ── */}
       {simulationState === 'IDLE' && (
-        <div className="bg-white/[0.035] backdrop-blur-2xl border border-white/10 rounded-[32px] p-8 sm:p-12 shadow-[0_20px_60px_rgba(0,0,0,0.5)] space-y-8 max-w-3xl mx-auto">
+        <div className="bg-white/[0.035] backdrop-blur-2xl border border-white/10 rounded-[28px] sm:rounded-[32px] p-5 sm:p-8 md:p-12 shadow-[0_20px_60px_rgba(0,0,0,0.5)] space-y-6 sm:space-y-8 max-w-3xl mx-auto">
           <div className="space-y-4">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
               <label htmlFor="target-url" className="font-mono text-xs uppercase tracking-wider text-white/80 block">
                 URL del Sitio Web a Evaluar
               </label>
-              <div className="flex items-center gap-1.5 p-1 bg-white/5 rounded-xl border border-white/10">
+              <div className="flex items-center gap-1.5 p-1 bg-white/5 rounded-xl border border-white/10 overflow-x-auto no-scrollbar">
                 {(['both', 'mobile', 'desktop'] as const).map((strat) => (
                   <button
                     key={strat}
                     type="button"
                     onClick={() => setAuditStrategy(strat)}
-                    className={`px-2.5 py-1 rounded-lg font-mono text-[10px] uppercase tracking-wider transition-colors ${
+                    className={`px-2.5 py-1.5 sm:py-1 rounded-lg font-mono text-[10px] uppercase tracking-wider transition-colors min-h-[36px] sm:min-h-0 touch-manipulation whitespace-nowrap shrink-0 ${
                       auditStrategy === strat
                         ? 'bg-[#59BFD6] text-[#0b0d10] font-bold shadow-sm'
                         : 'text-white/60 hover:text-white'
@@ -446,7 +446,7 @@ function AuditorContent() {
                 <button
                   type="button"
                   onClick={startSimulation}
-                  className="rb-link-glanz px-8 py-4 rounded-2xl bg-[#59BFD6] hover:bg-[#4eaac0] text-[#0b0d10] font-mono text-xs uppercase tracking-wider font-bold shadow-lg transition-all flex items-center justify-center gap-2"
+                  className="rb-link-glanz w-full sm:w-auto px-8 py-4 rounded-2xl bg-[#59BFD6] hover:bg-[#4eaac0] text-[#0b0d10] font-mono text-xs uppercase tracking-wider font-bold shadow-lg transition-all flex items-center justify-center gap-2 min-h-[44px] touch-manipulation"
                 >
                   <span>Auditar en Tiempo Real</span>
                   <ArrowRight className="w-4 h-4" />
@@ -481,7 +481,7 @@ function AuditorContent() {
 
       {/* ── ESTADO 2: SIMULACIÓN EN TIEMPO REAL (20 SEGUNDOS) ── */}
       {simulationState === 'RUNNING' && (
-        <div className="bg-white/[0.035] backdrop-blur-2xl border border-white/10 rounded-[32px] p-8 sm:p-12 shadow-[0_20px_60px_rgba(0,0,0,0.5)] space-y-8 max-w-4xl mx-auto">
+        <div className="bg-white/[0.035] backdrop-blur-2xl border border-white/10 rounded-[28px] sm:rounded-[32px] p-5 sm:p-8 md:p-12 shadow-[0_20px_60px_rgba(0,0,0,0.5)] space-y-6 sm:space-y-8 max-w-4xl mx-auto">
           {/* Header de Telemetría */}
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-white/10">
             <div className="flex items-center gap-3">
@@ -513,7 +513,7 @@ function AuditorContent() {
                     setProgress(100);
                     setSimulationState('DIAGNOSTIC_READY');
                   }}
-                  className="px-3.5 py-2 rounded-xl bg-[#59BFD6]/20 hover:bg-[#59BFD6] text-[#59BFD6] hover:text-[#0b0d10] border border-[#59BFD6]/40 font-mono text-[11px] uppercase tracking-wider font-semibold transition-all"
+                  className="px-3.5 py-2 rounded-xl bg-[#59BFD6]/20 hover:bg-[#59BFD6] text-[#59BFD6] hover:text-[#0b0d10] border border-[#59BFD6]/40 font-mono text-[11px] uppercase tracking-wider font-semibold transition-all min-h-[40px] touch-manipulation"
                 >
                   Ver Diagnóstico en Vivo &rarr;
                 </button>
@@ -535,7 +535,8 @@ function AuditorContent() {
                   key={p.id}
                   className={activePhaseIndex === i ? 'text-[#59BFD6] font-bold' : ''}
                 >
-                  {p.id}: {p.name}
+                  <span className="sm:hidden">{p.id}</span>
+                  <span className="hidden sm:inline">{p.id}: {p.name}</span>
                 </span>
               ))}
             </div>
@@ -1780,9 +1781,9 @@ undefined
                       <button
                         type="submit"
                         disabled={isSubmitting}
-                        className="rb-link-glanz w-full py-4 rounded-2xl bg-[#59BFD6] hover:bg-[#4eaac0] text-[#0b0d10] font-mono text-xs uppercase tracking-wider font-bold shadow-xl transition-all flex items-center justify-center gap-2 mt-2"
+                        className="rb-link-glanz w-full py-4 px-4 rounded-2xl bg-[#59BFD6] hover:bg-[#4eaac0] text-[#0b0d10] font-mono text-xs uppercase tracking-wider font-bold shadow-xl transition-all flex items-center justify-center gap-2 mt-2 min-h-[48px] touch-manipulation text-center leading-normal"
                       >
-                        <Send className="w-4 h-4" />
+                        <Send className="w-4 h-4 shrink-0" />
                         <span>{isSubmitting ? 'Enviando...' : 'Desbloquear Informe Forense y Solicitar Video Loom de 5 Minutos'}</span>
                       </button>
                     </Magnetic>
@@ -1803,7 +1804,7 @@ export default function AuditorPage() {
       {/* Background dinámico con auroras patagónicas en movimiento suave */}
       <AtmosphericBackground intensity="vibrant" showParticles={true} />
 
-      <section className="relative z-10 max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 pt-32 pb-24 md:pt-40 md:pb-32 w-full">
+      <section className="relative z-10 max-w-7xl mx-auto px-4 sm:px-8 lg:px-12 pt-28 pb-20 md:pt-40 md:pb-32 w-full">
         {/* Encabezado Editorial SSR con H1 Garantizado */}
         <div className="text-center space-y-4 mb-12">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-[#59BFD6] font-mono text-xs uppercase tracking-widest">

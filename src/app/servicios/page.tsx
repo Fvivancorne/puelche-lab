@@ -568,13 +568,13 @@ export default function ServiciosPage() {
       {viewMode === 'sticky' && (
         <section className="relative z-20 max-w-6xl mx-auto w-full px-4 sm:px-8 lg:px-12 py-12 md:py-20">
           {/* Barra superior rápida de acceso a cada especialidad */}
-          <div className="flex flex-wrap items-center justify-center gap-2 mb-12">
+          <div className="w-full overflow-x-auto no-scrollbar -mx-4 px-4 flex sm:flex-wrap items-center sm:justify-center justify-start gap-2 mb-8 md:mb-12">
             {SERVICES_LIST.map((s, i) => (
               <button
                 key={s.id}
                 type="button"
                 onClick={() => navigateTo(i)}
-                className={`px-3.5 py-1.5 rounded-full font-mono text-[11px] uppercase tracking-wider transition-all border whitespace-nowrap shrink-0 ${
+                className={`px-3.5 py-1.5 rounded-full font-mono text-[11px] uppercase tracking-wider transition-all border whitespace-nowrap shrink-0 min-h-[40px] sm:min-h-0 touch-manipulation ${
                   activeIndex === i
                     ? 'bg-[#59BFD6]/15 text-[#59BFD6] border-[#59BFD6]/50 font-bold shadow-[0_0_15px_rgba(89,191,214,0.2)]'
                     : 'bg-white/[0.03] text-white/60 border-white/10 hover:text-white hover:border-white/25'
@@ -632,7 +632,7 @@ export default function ServiciosPage() {
                     </div>
 
                     {/* Columna de Especificaciones y Botones 100% Activos */}
-                    <div className="md:col-span-7 p-6 sm:p-8 md:p-10 flex flex-col justify-between space-y-6">
+                    <div className="md:col-span-7 p-5 sm:p-8 md:p-10 flex flex-col justify-between space-y-5 sm:space-y-6">
                       <div className="space-y-4">
                         <div className="flex items-center justify-between gap-2 border-b border-white/10 pb-3.5">
                           <div className="inline-flex items-center gap-2 text-xs font-mono text-[#59BFD6] uppercase tracking-widest">
@@ -675,26 +675,26 @@ export default function ServiciosPage() {
                         </div>
                       </div>
 
-                      <div className="flex flex-wrap items-center justify-between gap-4 pt-4 border-t border-white/10">
+                      <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 pt-4 border-t border-white/10">
                         <Link
                           href={serv.href}
-                          className="rb-link-glanz inline-flex items-center gap-2.5 px-6 py-3 rounded-full bg-[#59BFD6] hover:bg-white text-[#08090b] font-mono text-xs uppercase tracking-wider font-bold shadow-[0_0_25px_rgba(89,191,214,0.35)] transition-all hover:scale-105"
+                          className="rb-link-glanz inline-flex items-center justify-center gap-2.5 px-6 py-3 rounded-full bg-[#59BFD6] hover:bg-white text-[#08090b] font-mono text-xs uppercase tracking-wider font-bold shadow-[0_0_25px_rgba(89,191,214,0.35)] transition-all hover:scale-105 min-h-[44px] touch-manipulation"
                         >
                           <span>Explorar Oficio</span>
                           <ArrowRight className="w-4 h-4" />
                         </Link>
 
-                        <div className="flex flex-wrap items-center gap-4">
+                        <div className="flex flex-wrap items-center justify-between sm:justify-start gap-4">
                           <Link
                             href={`/contacto?servicio=${serv.id}`}
-                            className="inline-flex items-center gap-1.5 text-xs font-mono uppercase tracking-wider text-white/75 hover:text-[#59BFD6] transition-colors"
+                            className="inline-flex items-center gap-1.5 text-xs font-mono uppercase tracking-wider text-white/75 hover:text-[#59BFD6] transition-colors min-h-[44px] touch-manipulation"
                           >
                             <span>Consultar Disponibilidad</span>
                             <ArrowUpRight className="w-3.5 h-3.5" />
                           </Link>
                           <Link
                             href={`/contacto?servicio=${serv.id}`}
-                            className="inline-flex items-center gap-1.5 text-xs font-mono uppercase tracking-wider text-[#C29B63] hover:text-white transition-colors"
+                            className="inline-flex items-center gap-1.5 text-xs font-mono uppercase tracking-wider text-[#C29B63] hover:text-white transition-colors min-h-[44px] touch-manipulation"
                           >
                             <span>Cotizar Directo</span>
                             <ArrowUpRight className="w-3.5 h-3.5" />
@@ -793,7 +793,7 @@ export default function ServiciosPage() {
                     // Clicking any side card navigates gracefully to it
                     if (Math.abs(offset) > 0.25) navigateTo(idx);
                   }}
-                  className="absolute w-[330px] sm:w-[460px] md:w-[680px] rounded-3xl overflow-hidden cursor-pointer"
+                  className="absolute w-[calc(100vw-32px)] max-w-[330px] sm:max-w-[460px] md:max-w-[680px] sm:w-[460px] md:w-[680px] rounded-3xl overflow-hidden cursor-pointer"
                   style={{
                     transform: `translate3d(${translateX}px, 0, ${translateZ}px) rotateY(${rotateY}deg) scale(${scale})`,
                     opacity,
@@ -900,7 +900,7 @@ export default function ServiciosPage() {
                           href={serv.href}
                           onPointerDown={(e) => e.stopPropagation()}
                           onClick={(e) => e.stopPropagation()}
-                          className="rb-link-glanz inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#59BFD6] text-[#08090b] font-mono text-xs uppercase tracking-wider font-bold shadow-[0_0_20px_rgba(89,191,214,0.3)] hover:brightness-110 transition-all"
+                          className="rb-link-glanz inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#59BFD6] text-[#08090b] font-mono text-xs uppercase tracking-wider font-bold shadow-[0_0_20px_rgba(89,191,214,0.3)] hover:brightness-110 transition-all min-h-[44px] touch-manipulation"
                         >
                           <span>Explorar Oficio</span>
                           <ArrowRight className="w-3.5 h-3.5" />
@@ -910,7 +910,7 @@ export default function ServiciosPage() {
                           href={`/contacto?servicio=${serv.id}`}
                           onPointerDown={(e) => e.stopPropagation()}
                           onClick={(e) => e.stopPropagation()}
-                          className="inline-flex items-center gap-1 text-xs font-mono uppercase tracking-wider text-white/70 hover:text-[#59BFD6] transition-colors"
+                          className="inline-flex items-center gap-1 text-xs font-mono uppercase tracking-wider text-white/70 hover:text-[#59BFD6] transition-colors min-h-[44px] touch-manipulation"
                         >
                           <span>Consultar Disponibilidad</span>
                           <ArrowUpRight className="w-3.5 h-3.5" />
@@ -955,7 +955,7 @@ export default function ServiciosPage() {
                         0{i + 1}
                       </span>
                       {isActive && (
-                        <span className="font-sans font-semibold text-xs tracking-wider uppercase text-white whitespace-nowrap">
+                        <span className="hidden sm:inline font-sans font-semibold text-xs tracking-wider uppercase text-white whitespace-nowrap">
                           {s.title}
                         </span>
                       )}
@@ -1066,7 +1066,7 @@ export default function ServiciosPage() {
                       {/* Interactive Pill Button with rb-link-glanz sheen effect */}
                       <Link
                         href={serv.href}
-                        className="rb-link-glanz inline-flex items-center gap-2.5 px-6 py-2.5 rounded-full bg-white/5 hover:bg-[#59BFD6] text-white hover:text-[#08090b] border border-white/20 hover:border-[#59BFD6] font-mono text-xs uppercase tracking-wider font-semibold transition-all duration-300 shadow-md"
+                        className="rb-link-glanz inline-flex items-center gap-2.5 px-6 py-2.5 rounded-full bg-white/5 hover:bg-[#59BFD6] text-white hover:text-[#08090b] border border-white/20 hover:border-[#59BFD6] font-mono text-xs uppercase tracking-wider font-semibold transition-all duration-300 shadow-md min-h-[44px] touch-manipulation"
                       >
                         <span>Explorar Oficio</span>
                         <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" />
@@ -1074,7 +1074,7 @@ export default function ServiciosPage() {
 
                       <Link
                         href={`/contacto?servicio=${serv.id}`}
-                        className="text-xs font-mono uppercase tracking-wider text-white/50 hover:text-[#59BFD6] transition-colors"
+                        className="inline-flex items-center text-xs font-mono uppercase tracking-wider text-white/50 hover:text-[#59BFD6] transition-colors min-h-[44px] touch-manipulation"
                       >
                         <span>Consultar Oficio</span> &rarr;
                       </Link>

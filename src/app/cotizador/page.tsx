@@ -259,8 +259,8 @@ Contacto directo: paula.valdivieso@puelchelab.cl | +56 9 6617 7500`;
         <div className="lg:col-span-7 space-y-8">
           
           {/* Parámetro 1: Cantidad de Páginas / Arquitectura */}
-          <div className="bg-[#121316] border border-white/10 rounded-3xl p-6 sm:p-8 space-y-6">
-            <div className="flex items-center justify-between">
+          <div className="bg-[#121316] border border-white/10 rounded-3xl p-5 sm:p-8 space-y-6">
+            <div className="flex flex-wrap sm:flex-nowrap items-center justify-between gap-3">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-[#59BFD6]">
                   <Layers className="w-5 h-5" />
@@ -308,7 +308,7 @@ Contacto directo: paula.valdivieso@puelchelab.cl | +56 9 6617 7500`;
           </div>
 
           {/* Parámetro 2: Tamaño y Complejidad de la Empresa */}
-          <div className="bg-[#121316] border border-white/10 rounded-3xl p-6 sm:p-8 space-y-6">
+          <div className="bg-[#121316] border border-white/10 rounded-3xl p-5 sm:p-8 space-y-6">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-[#C29B63]">
                 <Building2 className="w-5 h-5" />
@@ -355,7 +355,7 @@ Contacto directo: paula.valdivieso@puelchelab.cl | +56 9 6617 7500`;
           </div>
 
           {/* Parámetro 3: Catálogo de Add-ons Especializados */}
-          <div className="bg-[#121316] border border-white/10 rounded-3xl p-6 sm:p-8 space-y-6">
+          <div className="bg-[#121316] border border-white/10 rounded-3xl p-5 sm:p-8 space-y-6">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-[#59BFD6]">
@@ -429,8 +429,8 @@ Contacto directo: paula.valdivieso@puelchelab.cl | +56 9 6617 7500`;
         </div>
 
         {/* ── COLUMNA DERECHA: RESUMEN FLOTANTE DETERMINISTA (5 COLS) ── */}
-        <div className="lg:col-span-5 sticky top-28 space-y-6">
-          <div className="bg-gradient-to-br from-[#181a20] to-[#121316] border-2 border-[#59BFD6]/40 rounded-[32px] p-6 sm:p-8 shadow-[0_25px_70px_rgba(0,0,0,0.8)] space-y-6">
+        <div className="lg:col-span-5 lg:sticky lg:top-28 space-y-6">
+          <div className="bg-gradient-to-br from-[#181a20] to-[#121316] border-2 border-[#59BFD6]/40 rounded-[28px] sm:rounded-[32px] p-5 sm:p-8 shadow-[0_25px_70px_rgba(0,0,0,0.8)] space-y-6">
             
             <div className="flex items-center justify-between pb-4 border-b border-white/10">
               <span className="font-mono text-xs uppercase tracking-wider text-white/50">
@@ -443,10 +443,10 @@ Contacto directo: paula.valdivieso@puelchelab.cl | +56 9 6617 7500`;
 
             {/* Total Prominente en CLP, UF Nacional y USD Referencial */}
             <div className="space-y-1.5">
-              <div className="font-condensed text-4xl sm:text-5xl font-black text-white tracking-tight">
+              <div className="font-condensed text-3xl sm:text-5xl font-black text-white tracking-tight break-words">
                 {formattedClp}
               </div>
-              <div className="flex items-center gap-2 font-mono text-xs sm:text-sm text-[#59BFD6] font-semibold">
+              <div className="flex flex-wrap items-center gap-2 font-mono text-xs sm:text-sm text-[#59BFD6] font-semibold">
                 <span className="px-2 py-0.5 rounded-md bg-[#59BFD6]/10 border border-[#59BFD6]/20 text-[#59BFD6]">
                   &asymp; {Math.round(pricing.totalClp / 39200).toLocaleString('es-CL')} UF
                 </span>
@@ -494,7 +494,7 @@ Contacto directo: paula.valdivieso@puelchelab.cl | +56 9 6617 7500`;
             <div className="space-y-3 pt-2">
               <Link
                 href={`/contacto?presupuesto=${encodeURIComponent(formattedClp)}&paginas=${pageCount}&empresa=${encodeURIComponent(activeSize.label)}&addons=${encodeURIComponent(selectedAddons.join(','))}`}
-                className="rb-link-glanz w-full py-4 rounded-2xl bg-[#59BFD6] hover:bg-[#4eaac0] text-[#0b0d10] font-mono text-xs uppercase tracking-wider font-bold shadow-lg transition-all flex items-center justify-center gap-2"
+                className="rb-link-glanz w-full min-h-[44px] py-4 rounded-2xl bg-[#59BFD6] hover:bg-[#4eaac0] text-[#0b0d10] font-mono text-xs uppercase tracking-wider font-bold shadow-lg transition-all flex items-center justify-center gap-2 touch-manipulation"
               >
                 <span>Solicitar Propuesta Formal</span>
                 <ArrowRight className="w-4 h-4" />
@@ -558,7 +558,7 @@ export default function CotizadorPage() {
       {/* Dynamic Patagonian atmospheric background with floating light and micro-particles */}
       <AtmosphericBackground intensity="medium" showParticles={true} />
 
-      <section className="relative z-10 max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 pt-32 pb-24 md:pt-40 md:pb-32 w-full">
+      <section className="relative z-10 max-w-7xl mx-auto px-4 sm:px-8 lg:px-12 pt-28 pb-20 md:pt-40 md:pb-32 w-full">
         {/* Encabezado Editorial SSR con H1 Garantizado */}
         <div className="text-center space-y-4 mb-12 max-w-4xl mx-auto">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-[#59BFD6] font-mono text-xs uppercase tracking-widest">
