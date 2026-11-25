@@ -19,7 +19,7 @@ const REAL_SOCIAL_PROJECTS: SocialProject[] = [
   {
     id: 'blue-seal-social',
     client: 'BlueSeal.SPA',
-    location: 'Puerto Montt & Océano Pacífico',
+    location: 'Puerto Montt & Seno de Reloncaví',
     specialty: 'Estrategia de contenidos, comunidad digital y difusión técnica submarina',
     image: '/images/real/bg-redes-1-min.jpg',
     gallery: [

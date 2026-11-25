@@ -20,7 +20,7 @@ const FEATURED_EXPEDITIONS: PhotoProject[] = [
   {
     id: 'nazca-oceanografia',
     client: 'Nazca Oceanografía & Robótica Submarina',
-    location: 'Puerto Montt & Océano Pacífico',
+    location: 'Puerto Montt & Seno de Reloncaví',
     specialty: 'Servicios oceanográficos, batimetría y robot submarino DEFENDER.',
     image: '/images/real/facebook/fb-nazca-1.jpg',
     gallery: [
@@ -77,7 +77,7 @@ const REAL_PHOTO_PROJECTS: PhotoProject[] = [
   {
     id: 'nazca-oceanografia-grid',
     client: 'Nazca Oceanografía & Robótica Submarina',
-    location: 'Puerto Montt & Océano Pacífico.',
+    location: 'Puerto Montt & Seno de Reloncaví',
     specialty: 'Faena marítima, batimetría y robot submarino DEFENDER.',
     image: '/images/real/facebook/fb-nazca-1.jpg',
     gallery: [

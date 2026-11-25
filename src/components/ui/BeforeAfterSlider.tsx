@@ -57,7 +57,7 @@ export const BEFORE_AFTER_CASES: BeforeAfterProject[] = [
     rawImage: '/images/real/before-after/doosan-raw.jpg',
     masterImage: '/images/real/before-after/doosan-master.jpg',
     rawLabel: 'Captura RAW',
-    masterLabel: 'Revelado Fine Art',
+    masterLabel: 'Revelado Digital',
     rawNotes: [
       'Perfil neutro sin gradación de contraste',
       'Reflejos de lluvia y barro sin compensación óptica',
@@ -65,8 +65,8 @@ export const BEFORE_AFTER_CASES: BeforeAfterProject[] = [
     ],
     masterNotes: [
       'Modelado de luz en acero y texturas mecánicas',
-      'Aislamiento de microtexturas en terreno hostil',
-      'Gradación cromática de alta fidelidad para catálogo corporativo',
+      'Definición de texturas y materiales en faena',
+      'Gradación cromática equilibrada para catálogo corporativo',
     ],
   },
   {
@@ -78,7 +78,7 @@ export const BEFORE_AFTER_CASES: BeforeAfterProject[] = [
     rawImage: '/images/real/before-after/arrebol-raw.jpg',
     masterImage: '/images/real/before-after/arrebol-master.jpg',
     rawLabel: 'Exposición Sensor Base',
-    masterLabel: 'Revelado Arquitectónico de Autor',
+    masterLabel: 'Revelado Arquitectónico',
     rawNotes: [
       'Pérdida de calidez en tejuelas de alerce nativo',
       'Diferencial de contraste excesivo entre interior y exterior',
@@ -99,7 +99,7 @@ export const BEFORE_AFTER_CASES: BeforeAfterProject[] = [
     rawImage: '/images/real/before-after/bomberos-raw.jpg',
     masterImage: '/images/real/before-after/bomberos-master.jpg',
     rawLabel: 'Toma Directa sin Procesar',
-    masterLabel: 'Gradación Cinemática Puelche',
+    masterLabel: 'Gradación Cromática',
     rawNotes: [
       'Luz solar dura del mediodía con sombras densas',
       'Dominancia fría en uniformes y equipos de rescate',
@@ -107,8 +107,8 @@ export const BEFORE_AFTER_CASES: BeforeAfterProject[] = [
     ],
     masterNotes: [
       'Aislamiento y riqueza del tono rojo emblemático',
-      'Escultura luminosa en rostros y cascos tácticos',
-      'Atmósfera heroica con grano cinematográfico suave',
+      'Equilibrio de iluminación en rostros y uniformes',
+      'Ajuste tonal con fidelidad en texturas',
     ],
   },
   {
@@ -120,16 +120,16 @@ export const BEFORE_AFTER_CASES: BeforeAfterProject[] = [
     rawImage: '/images/real/edicion/bg-edit-fotografica-4-min.jpg',
     masterImage: '/images/real/edicion/bg-edit-fotografica-9-min.jpg',
     rawLabel: 'Toma de Ensayo en Bosque',
-    masterLabel: 'Master Revelado Mágico',
+    masterLabel: 'Revelado Escénico',
     rawNotes: [
       'Sombras densas en follaje del bosque templado',
       'Tono de piel descalibrado por luz difusa de nubes',
       'Pérdida de tridimensionalidad en máscaras teatrales',
     ],
     masterNotes: [
-      'Color grading escénico con atmósfera fantástica',
-      'Micro-contraste en bordados y plumas de autor',
-      'Luminosidad volumétrica en claro-oscuro austral',
+      'Color grading escénico respetando el vestuario',
+      'Detalle y contraste en vestuario y máscaras',
+      'Balance de iluminación entre personajes y entorno',
     ],
   },
   {
@@ -141,7 +141,7 @@ export const BEFORE_AFTER_CASES: BeforeAfterProject[] = [
     rawImage: '/images/real/edicion/bg-edit-fotografica-6-min.jpg',
     masterImage: '/images/real/edicion/bg-edit-fotografica-5-min.jpg',
     rawLabel: 'Captura Plana de Neblina',
-    masterLabel: 'Gradación Fine-Art de Galería',
+    masterLabel: 'Calibración Tonal',
     rawNotes: [
       'Gama tonal comprimida en tonos medios grises',
       'Ausencia de punto blanco definido en el horizonte',
@@ -150,7 +150,7 @@ export const BEFORE_AFTER_CASES: BeforeAfterProject[] = [
     masterNotes: [
       'Separación de planos espaciales de neblina matutina',
       'Curva S suave con negros profundos sin empastar',
-      'Acento cromático cian/oro patagónico',
+      'Acento cromático equilibrado en tonos fríos y cálidos',
     ],
   },
 ];
