@@ -533,59 +533,61 @@ function PortfolioContent() {
         </div>
 
         {/* Selector de Modo de Visualización (Río Cinético vs Archivo en Grilla vs Regla de Latitud) */}
-        <div className="flex flex-wrap items-center justify-between gap-4 pb-6 mb-6 border-b border-white/10">
-          <div className="inline-flex p-1 rounded-full bg-white/[0.04] border border-white/10 backdrop-blur-md">
-            <button
-              type="button"
-              onClick={() => setViewMode('river')}
-              className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-condensed uppercase tracking-wider transition-all duration-300 ${
-                viewMode === 'river'
-                  ? 'bg-[#59BFD6] text-puelche-dark font-bold shadow-md'
-                  : 'text-white/70 hover:text-white'
-              }`}
-            >
-              <Waves className="w-3.5 h-3.5" />
-              <span>Río Cinético (Scroll)</span>
-            </button>
-            <button
-              type="button"
-              onClick={() => setViewMode('grid')}
-              className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-condensed uppercase tracking-wider transition-all duration-300 ${
-                viewMode === 'grid'
-                  ? 'bg-[#59BFD6] text-puelche-dark font-bold shadow-md'
-                  : 'text-white/70 hover:text-white'
-              }`}
-            >
-              <LayoutGrid className="w-3.5 h-3.5" />
-              <span>Archivo en Grilla ({filteredProjects.length})</span>
-            </button>
-            <button
-              type="button"
-              onClick={() => setViewMode('latitud')}
-              className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-condensed uppercase tracking-wider transition-all duration-300 ${
-                viewMode === 'latitud'
-                  ? 'bg-[#59BFD6] text-puelche-dark font-bold shadow-md'
-                  : 'text-white/70 hover:text-white'
-              }`}
-            >
-              <Compass className="w-3.5 h-3.5" />
-              <span>Regla de Latitud Austral (41°S — 53°S)</span>
-            </button>
-            <button
-              type="button"
-              onClick={() => setViewMode('dynamo')}
-              className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-condensed uppercase tracking-wider transition-all duration-300 ${
-                viewMode === 'dynamo'
-                  ? 'bg-[#59BFD6] text-puelche-dark font-bold shadow-md'
-                  : 'text-white/70 hover:text-white'
-              }`}
-            >
-              <Film className="w-3.5 h-3.5" />
-              <span>DynamoList (3 Columnas)</span>
-            </button>
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 mb-6 border-b border-white/10">
+          <div className="w-full sm:w-auto overflow-x-auto no-scrollbar -mx-2 px-2 sm:mx-0 sm:px-0">
+            <div className="inline-flex p-1 rounded-2xl sm:rounded-full bg-white/[0.04] border border-white/10 backdrop-blur-md shrink-0 gap-1 sm:gap-0">
+              <button
+                type="button"
+                onClick={() => setViewMode('river')}
+                className={`inline-flex items-center gap-2 px-3.5 sm:px-4 py-2 rounded-xl sm:rounded-full text-xs font-condensed uppercase tracking-wider transition-all duration-300 shrink-0 touch-manipulation min-h-[40px] sm:min-h-0 ${
+                  viewMode === 'river'
+                    ? 'bg-[#59BFD6] text-puelche-dark font-bold shadow-md'
+                    : 'text-white/70 hover:text-white'
+                }`}
+              >
+                <Waves className="w-3.5 h-3.5" />
+                <span>Río Cinético</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => setViewMode('grid')}
+                className={`inline-flex items-center gap-2 px-3.5 sm:px-4 py-2 rounded-xl sm:rounded-full text-xs font-condensed uppercase tracking-wider transition-all duration-300 shrink-0 touch-manipulation min-h-[40px] sm:min-h-0 ${
+                  viewMode === 'grid'
+                    ? 'bg-[#59BFD6] text-puelche-dark font-bold shadow-md'
+                    : 'text-white/70 hover:text-white'
+                }`}
+              >
+                <LayoutGrid className="w-3.5 h-3.5" />
+                <span>Grilla ({filteredProjects.length})</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => setViewMode('latitud')}
+                className={`inline-flex items-center gap-2 px-3.5 sm:px-4 py-2 rounded-xl sm:rounded-full text-xs font-condensed uppercase tracking-wider transition-all duration-300 shrink-0 touch-manipulation min-h-[40px] sm:min-h-0 ${
+                  viewMode === 'latitud'
+                    ? 'bg-[#59BFD6] text-puelche-dark font-bold shadow-md'
+                    : 'text-white/70 hover:text-white'
+                }`}
+              >
+                <Compass className="w-3.5 h-3.5" />
+                <span>Latitud Austral</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => setViewMode('dynamo')}
+                className={`inline-flex items-center gap-2 px-3.5 sm:px-4 py-2 rounded-xl sm:rounded-full text-xs font-condensed uppercase tracking-wider transition-all duration-300 shrink-0 touch-manipulation min-h-[40px] sm:min-h-0 ${
+                  viewMode === 'dynamo'
+                    ? 'bg-[#59BFD6] text-puelche-dark font-bold shadow-md'
+                    : 'text-white/70 hover:text-white'
+                }`}
+              >
+                <Film className="w-3.5 h-3.5" />
+                <span>DynamoList</span>
+              </button>
+            </div>
           </div>
 
-          <span className="font-mono text-xs text-white/50">
+          <span className="font-mono text-xs text-white/50 shrink-0">
             {viewMode === 'latitud' ? '6 estaciones territoriales' : viewMode === 'dynamo' ? '6 obras sincronizadas' : `${filteredProjects.length} obras documentadas`}
           </span>
         </div>
@@ -608,32 +610,34 @@ function PortfolioContent() {
         )}
 
         {/* Category Filters (Activos en Modo Río y Modo Grilla) */}
-        <div className={`flex flex-wrap items-center gap-2 pb-4 ${viewMode === 'latitud' || viewMode === 'dynamo' ? 'hidden' : ''}`}>
-          {CATEGORIES.map((category) => {
-            const count = category === 'Todos'
-              ? portfolioList.length
-              : portfolioList.filter((p) => p.category === category).length;
-            const isSelected = selectedCategory === category;
+        <div className={`w-full overflow-x-auto no-scrollbar -mx-2 px-2 pb-4 ${viewMode === 'latitud' || viewMode === 'dynamo' ? 'hidden' : ''}`}>
+          <div className="flex items-center gap-2 w-max">
+            {CATEGORIES.map((category) => {
+              const count = category === 'Todos'
+                ? portfolioList.length
+                : portfolioList.filter((p) => p.category === category).length;
+              const isSelected = selectedCategory === category;
 
-            return (
-              <button
-                key={category}
-                onClick={() => setSelectedCategory(category)}
-                className={`px-4 py-2 rounded-full text-xs font-condensed uppercase tracking-wider transition-all duration-300 flex items-center gap-2 border ${
-                  isSelected
-                    ? 'bg-[#59BFD6] border-[#59BFD6] text-puelche-dark font-bold shadow-[0_0_15px_rgba(89,191,214,0.3)]'
-                    : 'bg-white/5 border-white/10 text-white/70 hover:border-white/30 hover:text-white'
-                }`}
-              >
-                <span>{category}</span>
-                <span className={`text-[10px] px-1.5 py-0.5 rounded-full ${
-                  isSelected ? 'bg-puelche-dark/20 text-puelche-dark' : 'bg-white/10 text-white/60'
-                }`}>
-                  {count}
-                </span>
-              </button>
-            );
-          })}
+              return (
+                <button
+                  key={category}
+                  onClick={() => setSelectedCategory(category)}
+                  className={`px-4 py-2 rounded-full text-xs font-condensed uppercase tracking-wider transition-all duration-300 flex items-center gap-2 border shrink-0 touch-manipulation min-h-[40px] ${
+                    isSelected
+                      ? 'bg-[#59BFD6] border-[#59BFD6] text-puelche-dark font-bold shadow-[0_0_15px_rgba(89,191,214,0.3)]'
+                      : 'bg-white/5 border-white/10 text-white/70 hover:border-white/30 hover:text-white'
+                  }`}
+                >
+                  <span>{category}</span>
+                  <span className={`text-[10px] px-1.5 py-0.5 rounded-full ${
+                    isSelected ? 'bg-puelche-dark/20 text-puelche-dark' : 'bg-white/10 text-white/60'
+                  }`}>
+                    {count}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
         </div>
       </div>
 
@@ -1004,36 +1008,36 @@ function PortfolioContent() {
             aria-labelledby="modal-title"
           >
             {/* Header del Modal con Datos de Campo y Botón Cerrar */}
-            <div className="flex items-center justify-between px-6 py-4 sm:px-8 sm:py-5 border-b border-white/10 bg-[#16171B]/90 backdrop-blur-md shrink-0">
-              <div className="flex items-center gap-3">
-                <span className="w-2.5 h-2.5 rounded-full bg-[#59BFD6] animate-pulse"></span>
-                <span className="font-condensed uppercase tracking-wider text-xs sm:text-sm text-white/70 font-semibold">
-                  PLIEGO DE LABORATORIO FOTOGRÁFICO &bull; CASO DE ESTUDIO
+            <div className="flex items-center justify-between px-4 py-3.5 sm:px-8 sm:py-5 border-b border-white/10 bg-[#16171B]/90 backdrop-blur-md shrink-0">
+              <div className="flex items-center gap-2 sm:gap-3 min-w-0">
+                <span className="w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full bg-[#59BFD6] animate-pulse shrink-0"></span>
+                <span className="font-condensed uppercase tracking-wider text-xs sm:text-sm text-white/70 font-semibold truncate">
+                  <span className="hidden sm:inline">PLIEGO DE LABORATORIO &bull; </span>CASO DE ESTUDIO
                 </span>
-                <span className="hidden md:inline-block font-mono text-[11px] text-white/40">
+                <span className="hidden md:inline-block font-mono text-[11px] text-white/40 shrink-0">
                   [{currentProjectIndex + 1} de {filteredProjects.length}]
                 </span>
               </div>
 
               {/* Controles de Navegación Rápida & Botón Cerrar */}
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
                 <div className="flex items-center bg-white/5 rounded-full border border-white/10 p-0.5">
                   <button
                     type="button"
                     onClick={prevProject}
-                    className="p-1.5 rounded-full text-white/70 hover:text-white hover:bg-white/10 transition-colors"
+                    className="p-2 sm:p-1.5 rounded-full text-white/70 hover:text-white hover:bg-white/10 transition-colors touch-manipulation min-h-[36px] min-w-[36px] flex items-center justify-center"
                     aria-label="Proyecto anterior"
                     title="Anterior (←)"
                   >
                     <ChevronLeft className="w-4 h-4" />
                   </button>
-                  <span className="px-2 font-mono text-xs text-white/60 select-none">
+                  <span className="px-1.5 sm:px-2 font-mono text-xs text-white/60 select-none">
                     {currentProjectIndex + 1}/{filteredProjects.length}
                   </span>
                   <button
                     type="button"
                     onClick={nextProject}
-                    className="p-1.5 rounded-full text-white/70 hover:text-white hover:bg-white/10 transition-colors"
+                    className="p-2 sm:p-1.5 rounded-full text-white/70 hover:text-white hover:bg-white/10 transition-colors touch-manipulation min-h-[36px] min-w-[36px] flex items-center justify-center"
                     aria-label="Siguiente proyecto"
                     title="Siguiente (→)"
                   >
@@ -1044,7 +1048,7 @@ function PortfolioContent() {
                 <button
                   type="button"
                   onClick={handleCloseModal}
-                  className="z-20 w-9 h-9 rounded-full bg-white/10 hover:bg-[#59BFD6] text-white hover:text-puelche-dark flex items-center justify-center transition-all duration-200 border border-white/10 hover:scale-105 ml-1"
+                  className="z-20 w-10 h-10 rounded-full bg-white/10 hover:bg-[#59BFD6] text-white hover:text-puelche-dark flex items-center justify-center transition-all duration-200 border border-white/10 hover:scale-105 ml-1 touch-manipulation"
                   aria-label="Cerrar modal"
                 >
                   <X className="w-4 h-4" />

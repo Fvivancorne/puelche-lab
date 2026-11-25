@@ -348,11 +348,11 @@ function ContactFormInner() {
               <span className="block font-mono uppercase tracking-widest text-[11px] text-[#59BFD6] mb-3">
                 Disciplinas de Interés *
               </span>
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-3">
                 {GENUINE_SERVICES.map((service) => (
                   <label
                     key={service}
-                    className="flex items-center space-x-2.5 text-xs text-white/85 cursor-pointer font-sans select-none p-3 rounded-xl bg-white/[0.03] border border-white/10 hover:border-white/20 transition-colors"
+                    className="flex items-center space-x-2.5 text-xs text-white/85 cursor-pointer font-sans select-none p-3 rounded-xl bg-white/[0.03] border border-white/10 hover:border-white/20 transition-colors min-h-[44px] touch-manipulation"
                   >
                     <input
                       type="checkbox"
@@ -377,7 +377,7 @@ function ContactFormInner() {
                 {DETAILED_SERVICES.map((service) => (
                   <label
                     key={service}
-                    className="flex items-center space-x-2 text-xs text-white/70 cursor-pointer font-sans select-none p-2 rounded-lg bg-white/[0.02] hover:bg-white/[0.04] transition-colors"
+                    className="flex items-center space-x-2 text-xs text-white/70 cursor-pointer font-sans select-none p-2.5 rounded-lg bg-white/[0.02] hover:bg-white/[0.04] transition-colors min-h-[40px] touch-manipulation"
                   >
                     <input
                       type="checkbox"

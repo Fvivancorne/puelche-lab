@@ -45,11 +45,11 @@ export const SERVICES_LIST: ServiceDetail[] = [
   {
     id: 'fotografia',
     title: 'Fotografía',
-    tag: 'FOTOGRAFÍA DE AUTOR',
+    tag: 'FOTOGRAFÍA EN TERRENO',
     desc: 'Interiores, hotelería, arquitectura y procesos industriales en el sur de Chile. Óptica fija, rango dinámico de 15+ EV y luz patagónica natural.',
     mobileDesc: 'Cobertura en terreno para interiores, arquitectura y faena industrial con iluminación natural austral y ópticas fijas de alta gama.',
     directorySummary: 'Producción fotográfica de espacios interiores, arquitectura y faenas industriales en la cuenca del lago Llanquihue y Chiloé con óptica fija y calibración tonal.',
-    focal: 'Sony FE 85mm f/1.4 GM II • 1/250s • ISO 100',
+    focal: 'Producción en Terreno • Formato Completo 61MP',
     coords: '41°19′S 72°59′W',
     territory: 'Puerto Varas & Seno de Reloncaví',
     clients: 'AquaChile • Turistour • CoHosting Chile • Nazca Oceanografía',
@@ -62,11 +62,11 @@ export const SERVICES_LIST: ServiceDetail[] = [
   {
     id: 'branding',
     title: 'Diseño de Marca',
-    tag: 'IDENTIDAD CON ARRAIGO AUSTRAL',
+    tag: 'IDENTIDAD CON RAÍZ AUSTRAL',
     desc: 'Identidades visuales, manuales de normas y branding integral con arraigo territorial. Naming, paleta cromática orgánica y tipografía suiza.',
     mobileDesc: 'Construcción de marcas con identidad territorial: naming, paletas cromáticas orgánicas y manuales de marca para el sur austral.',
     directorySummary: 'Desarrollo integral de identidad visual, tipografía y manuales de aplicación concebidos desde la geografía y nobleza de los materiales del sur.',
-    focal: 'Sony FE 50mm f/1.2 GM • Vector & Proporción Áurea',
+    focal: 'Sistemas Visuales • Tipografía de Autor',
     coords: '41°45′S 72°50′W',
     territory: 'Puerto Montt & Archipiélago de Chiloé',
     clients: 'Blue Seal Subsea • RMH • Gallo Negro • Andesmaq',
@@ -79,15 +79,15 @@ export const SERVICES_LIST: ServiceDetail[] = [
   {
     id: 'desarrollo-web',
     title: 'Desarrollo Web',
-    tag: 'ARQUITECTURA DIGITAL SOTD',
-    desc: 'Sitios web modernos, ultra-rápidos y adaptables a dispositivos móviles. Next.js App Router, GSAP cinemático y 100% Core Web Vitals.',
-    mobileDesc: 'Sitios web de alta ingeniería técnica con Next.js App Router, fluidez interactiva y optimización completa en Core Web Vitals.',
-    directorySummary: 'Plataformas web de ingeniería Next.js con animaciones fluidas a 120 FPS, optimizadas para alta conversión y máxima velocidad de carga móvil.',
-    focal: 'Next.js Turbopack • GSAP 120 FPS • Latencia Cero',
+    tag: 'PLATAFORMAS DIGITALES A MEDIDA',
+    desc: 'Sitios web modernos, ultra-rápidos y adaptables a dispositivos móviles. Next.js App Router, fluidez interactiva y 100% Core Web Vitals sin plantillas genéricas.',
+    mobileDesc: 'Sitios web desarrollados a la medida con alto rendimiento móvil, diseño editorial y optimización técnica para motores de búsqueda.',
+    directorySummary: 'Plataformas web artesanales con animaciones fluidas, optimizadas para alta conversión y máxima velocidad de carga en teléfonos móviles.',
+    focal: 'Ingeniería a Medida • Máxima Velocidad Móvil',
     coords: '42°30′S 73°45′W',
     territory: 'Península de Rilán & Puerto Varas',
     clients: 'Estancia Rilán • Tierra Sur • Maqui Propiedades',
-    deliverables: ['Next.js Turbopack', 'Micro-Interacciones GSAP', 'Zero-Latency UX', 'SEO Semántico GEO'],
+    deliverables: ['Diseño Responsivo', 'Animaciones Fluidas', 'Optimización Móvil', 'SEO Técnico Semántico'],
     href: '/servicios/desarrollo-web',
     image: '/images/real/bg-portafolios-web-rilan-min.jpg',
     icon: Monitor,
@@ -96,13 +96,13 @@ export const SERVICES_LIST: ServiceDetail[] = [
   {
     id: 'edicion-fotografica',
     title: 'Edición Fotográfica',
-    tag: 'REVELADO FINE-ART',
-    desc: 'Revelado de archivos RAW, retoque digital de precisión y color grading cinematográfico. Calibración tonal pliego por pliego para imprenta y pantalla.',
-    mobileDesc: 'Post-producción de laboratorio digital para archivos RAW, etalonaje cinematográfico y calibración de color pliego a pliego.',
-    directorySummary: 'Tratamiento y revelado digital de negativos digitales RAW pliego a pliego, estandarizando perfiles de color cromáticos para impresión fine-art.',
-    focal: 'Sony FE 100mm f/2.8 STF GM • Perfiles Adobe RGB & DCI-P3',
+    tag: 'REVELADO & RETOQUE DIGITAL',
+    desc: 'Revelado de archivos RAW, retoque digital de precisión y gradación cromática fina. Calibración tonal para imprenta y pantallas de alta resolución.',
+    mobileDesc: 'Post-producción digital para archivos RAW, etalonaje equilibrado y calibración de color precisa para publicaciones y catálogos.',
+    directorySummary: 'Tratamiento y revelado digital de negativos RAW pliego a pliego, estandarizando perfiles de color cromáticos para impresión fine-art.',
+    focal: 'Revelado Digital RAW • Calibración Cromática',
     coords: '41°28′S 72°56′W',
-    territory: 'Mesa de Revelado Digital • Llanquihue',
+    territory: 'Puerto Varas & Cuenca del Llanquihue',
     clients: 'Colecciones de Autor • Ediciones Fine-Art • Catálogos de Lujo',
     deliverables: ['Revelado RAW 16-bit', 'Separación de Frecuencias', 'Color Grading Editorial', 'Limpieza Microtexturas'],
     href: '/servicios/edicion-fotografica',
@@ -117,7 +117,7 @@ export const SERVICES_LIST: ServiceDetail[] = [
     desc: 'Memorias corporativas, libros fotográficos y catálogos comerciales impresos. Maquetación reticular, selección de papeles y dirección de imprenta.',
     mobileDesc: 'Edición de libros de autor, memorias y catálogos impresos bajo retícula editorial suiza y acabados de estándar fine-art.',
     directorySummary: 'Diseño de publicaciones de colección, memorias institucionales y catálogos comerciales impresos con estricta retícula y selección de papeles.',
-    focal: 'Sony FE 35mm f/1.4 GM • Grilla Suiza 12 Columnas',
+    focal: 'Libros & Catálogos • Retícula Suiza',
     coords: '45°34′S 72°04′W',
     territory: 'Patagonia Austral & Carretera Austral',
     clients: 'Libro Fotográfico Alejo Lattes • Phyllum • Corporación de Turismo',
@@ -130,11 +130,11 @@ export const SERVICES_LIST: ServiceDetail[] = [
   {
     id: 'redes-sociales',
     title: 'Redes Sociales',
-    tag: 'DIRECCIÓN DE ARTE DIGITAL',
+    tag: 'DIRECCIÓN VISUAL & CONTENIDO',
     desc: 'Estrategia de contenidos, fotografía genuina y dirección de arte digital. Narrativa visual que posiciona a tu marca lejos de la mediocridad de stock.',
     mobileDesc: 'Estrategia y curaduría de contenidos fotográficos reales para marcas que buscan diferenciarse de la fotografía genérica.',
     directorySummary: 'Dirección de arte y curaduría visual para plataformas sociales, combinando relato genuino y fotografía de autor alejada del stock.',
-    focal: 'Sony FE 16-35mm f/2.8 GM • Micro-Narrativas Territoriales',
+    focal: 'Contenido Visual • Producción en Terreno',
     coords: '41°19′S 72°59′W',
     territory: 'Llanquihue, Los Lagos & Alcance Global',
     clients: 'Hotelería Boutique • Gastronomía Austral • Turismo Aventura',
@@ -498,58 +498,59 @@ export default function ServiciosPage() {
         </div>
 
         <div className="relative z-10 max-w-4xl mx-auto space-y-3">
-          <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-white/[0.04] border border-white/10 text-[#59BFD6] font-mono text-[11px] uppercase tracking-[0.25em]">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#59BFD6] animate-pulse shadow-[0_0_8px_#59BFD6]" />
-            <span>41°S &bull; DISCIPLINA TÉCNICA &amp; DANZA ÓPTICA 3D</span>
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/[0.04] border border-white/10 text-[#59BFD6] text-xs uppercase tracking-wider font-medium">
+            <span>Servicios de Estudio &bull; Puerto Varas</span>
           </div>
 
           <h1 className="font-condensed text-5xl sm:text-6xl md:text-7xl uppercase tracking-tight text-white font-bold leading-[0.95] drop-shadow-2xl">
-            PLIEGOS DE OFICIO
+            SERVICIOS DEL ESTUDIO
           </h1>
 
           <p className="font-sans text-sm sm:text-base text-white/75 max-w-2xl mx-auto font-light leading-relaxed pt-1">
-            Diseño Cross Media y Fotografía de autor esculpidos bajo el clima y las distancias de la Patagonia austral. Haz scroll hacia abajo o desliza horizontalmente para recorrer cada especialidad.
+            Diseño Cross Media y Fotografía desarrollados bajo las exigencias y distancias del sur de Chile. Explora cada disciplina a través de nuestros diferentes formatos de visualización.
           </p>
 
           {/* ── VIEW MODE TOGGLE & STATUS HUD ── */}
-          <div className="flex flex-wrap items-center justify-center gap-4 pt-2">
-            <div className="inline-flex flex-wrap justify-center p-1 rounded-2xl sm:rounded-full bg-white/[0.05] border border-white/10 backdrop-blur-md">
-              <button
-                type="button"
-                onClick={() => setViewMode('3d')}
-                className={`inline-flex items-center gap-2 px-4 sm:px-5 py-2 rounded-full font-mono text-xs uppercase tracking-wider transition-colors duration-200 ${
-                  viewMode === '3d'
-                    ? 'bg-[#59BFD6] text-[#08090b] font-bold shadow-[0_0_20px_rgba(89,191,214,0.4)]'
-                    : 'text-white/70 hover:text-white'
-                }`}
-              >
-                <Layers className="w-3.5 h-3.5" />
-                <span>Danza Óptica 3D</span>
-              </button>
-              <button
-                type="button"
-                onClick={() => setViewMode('sticky')}
-                className={`inline-flex items-center gap-2 px-4 sm:px-5 py-2 rounded-full font-mono text-xs uppercase tracking-wider transition-colors duration-200 ${
-                  viewMode === 'sticky'
-                    ? 'bg-[#59BFD6] text-[#08090b] font-bold shadow-[0_0_20px_rgba(89,191,214,0.4)]'
-                    : 'text-white/70 hover:text-white'
-                }`}
-              >
-                <Sparkles className="w-3.5 h-3.5" />
-                <span>Recorrido Vertical</span>
-              </button>
-              <button
-                type="button"
-                onClick={() => setViewMode('reticular')}
-                className={`inline-flex items-center gap-2 px-4 sm:px-5 py-2 rounded-full font-mono text-xs uppercase tracking-wider transition-colors duration-200 ${
-                  viewMode === 'reticular'
-                    ? 'bg-[#59BFD6] text-[#08090b] font-bold shadow-[0_0_20px_rgba(89,191,214,0.4)]'
-                    : 'text-white/70 hover:text-white'
-                }`}
-              >
-                <LayoutGrid className="w-3.5 h-3.5" />
-                <span>Pliegos Reticulares</span>
-              </button>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-2">
+            <div className="w-full sm:w-auto overflow-x-auto no-scrollbar -mx-2 px-2 sm:mx-0 sm:px-0 flex justify-center">
+              <div className="inline-flex p-1 rounded-2xl sm:rounded-full bg-white/[0.05] border border-white/10 backdrop-blur-md shrink-0 gap-1 sm:gap-0">
+                <button
+                  type="button"
+                  onClick={() => setViewMode('3d')}
+                  className={`inline-flex items-center gap-2 px-4 sm:px-5 py-2 rounded-xl sm:rounded-full font-mono text-xs uppercase tracking-wider transition-colors duration-200 shrink-0 touch-manipulation min-h-[40px] sm:min-h-0 ${
+                    viewMode === '3d'
+                      ? 'bg-[#59BFD6] text-[#08090b] font-bold shadow-[0_0_20px_rgba(89,191,214,0.4)]'
+                      : 'text-white/70 hover:text-white'
+                  }`}
+                >
+                  <Layers className="w-3.5 h-3.5" />
+                  <span>Vista 3D</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setViewMode('sticky')}
+                  className={`inline-flex items-center gap-2 px-4 sm:px-5 py-2 rounded-xl sm:rounded-full font-mono text-xs uppercase tracking-wider transition-colors duration-200 shrink-0 touch-manipulation min-h-[40px] sm:min-h-0 ${
+                    viewMode === 'sticky'
+                      ? 'bg-[#59BFD6] text-[#08090b] font-bold shadow-[0_0_20px_rgba(89,191,214,0.4)]'
+                      : 'text-white/70 hover:text-white'
+                  }`}
+                >
+                  <Sparkles className="w-3.5 h-3.5" />
+                  <span>Recorrido Continuo</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setViewMode('reticular')}
+                  className={`inline-flex items-center gap-2 px-4 sm:px-5 py-2 rounded-xl sm:rounded-full font-mono text-xs uppercase tracking-wider transition-colors duration-200 shrink-0 touch-manipulation min-h-[40px] sm:min-h-0 ${
+                    viewMode === 'reticular'
+                      ? 'bg-[#59BFD6] text-[#08090b] font-bold shadow-[0_0_20px_rgba(89,191,214,0.4)]'
+                      : 'text-white/70 hover:text-white'
+                  }`}
+                >
+                  <LayoutGrid className="w-3.5 h-3.5" />
+                  <span>Directorio</span>
+                </button>
+              </div>
             </div>
 
             {/* Optical HUD Indicator */}

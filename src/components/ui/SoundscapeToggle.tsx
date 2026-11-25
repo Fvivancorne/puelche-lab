@@ -305,7 +305,7 @@ export function SoundscapeToggle({ className = '' }: { className?: string }) {
       onMouseLeave={() => setIsHovered(false)}
       data-testid="soundscape-toggle"
       aria-label={isPlaying ? (isHovered ? 'MUTE: Desactivar sonido ambiental' : 'SOUND: Desactivar sonido ambiental') : 'SOUND: Activar sonido ambiental'}
-      className={`relative inline-flex items-center gap-2.5 h-8 px-3 rounded-full bg-white/[0.05] hover:bg-white/[0.1] hover:scale-[1.03] active:scale-[0.98] border border-white/10 hover:border-white/20 backdrop-blur-md transition-all duration-300 select-none group focus:outline-none focus:ring-1 focus:ring-[#59BFD6]/50 ${
+      className={`relative inline-flex items-center gap-2.5 h-8 px-3 rounded-full bg-white/[0.05] hover:bg-white/[0.1] hover:scale-[1.03] active:scale-[0.98] border border-white/10 hover:border-white/20 backdrop-blur-md transition-all duration-300 select-none group focus:outline-none focus:ring-1 focus:ring-[#59BFD6]/50 touch-manipulation before:absolute before:-inset-2 before:content-[''] ${
         isPlaying ? 'border-[#59BFD6]/30 bg-white/[0.08]' : ''
       } ${className}`}
     >

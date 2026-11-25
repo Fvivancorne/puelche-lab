@@ -331,7 +331,7 @@ Contacto directo: paula.valdivieso@puelchelab.cl | +56 9 6617 7500`;
                     key={size.id}
                     type="button"
                     onClick={() => handleSizeChange(size.id)}
-                    className={`p-4 rounded-2xl border text-left transition-all duration-300 ${
+                    className={`p-4 rounded-2xl border text-left transition-all duration-300 min-h-[44px] touch-manipulation ${
                       isSelected
                         ? 'bg-[#C29B63]/10 border-[#C29B63] shadow-[0_0_15px_rgba(194,155,99,0.2)]'
                         : 'bg-white/[0.02] border-white/10 hover:border-white/20'
@@ -389,7 +389,7 @@ Contacto directo: paula.valdivieso@puelchelab.cl | +56 9 6617 7500`;
                   <div
                     key={addon.id}
                     onClick={() => toggleAddon(addon.id)}
-                    className={`p-4 rounded-2xl border cursor-pointer transition-all duration-300 flex items-start gap-4 ${
+                    className={`p-4 rounded-2xl border cursor-pointer transition-all duration-300 flex items-start gap-4 min-h-[44px] touch-manipulation ${
                       isChecked
                         ? 'bg-white/[0.06] border-[#59BFD6] shadow-md'
                         : 'bg-white/[0.02] border-white/10 hover:border-white/20'
@@ -504,7 +504,7 @@ Contacto directo: paula.valdivieso@puelchelab.cl | +56 9 6617 7500`;
                 href={`https://wa.me/56966177500?text=${whatsappMessage}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full py-3.5 rounded-2xl bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-400 border border-emerald-500/30 font-mono text-xs uppercase tracking-wider font-semibold transition-all flex items-center justify-center gap-2"
+                className="w-full min-h-[44px] py-3.5 rounded-2xl bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-400 border border-emerald-500/30 font-mono text-xs uppercase tracking-wider font-semibold transition-all flex items-center justify-center gap-2 touch-manipulation"
               >
                 <PhoneCall className="w-4 h-4" />
                 <span>Cotizar por WhatsApp Directo</span>
@@ -513,7 +513,7 @@ Contacto directo: paula.valdivieso@puelchelab.cl | +56 9 6617 7500`;
               <button
                 type="button"
                 onClick={copyProposal}
-                className="w-full py-3 rounded-2xl bg-white/[0.04] hover:bg-white/[0.08] text-white/80 hover:text-white border border-white/10 font-mono text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-2"
+                className="w-full min-h-[44px] py-3 rounded-2xl bg-white/[0.04] hover:bg-white/[0.08] text-white/80 hover:text-white border border-white/10 font-mono text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-2 touch-manipulation"
               >
                 {copied ? (
                   <>

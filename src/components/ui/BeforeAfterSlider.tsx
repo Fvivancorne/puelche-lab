@@ -339,15 +339,15 @@ export function BeforeAfterSlider({ initialCaseId = 'doosan', className = '' }: 
       {/* Header Selector: Case Tabs & Darkroom Controls */}
       <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-8 border-b border-white/10 pb-6">
         <div>
-          <div className="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-[#59BFD6] mb-2">
+          <div className="inline-flex items-center gap-2 text-xs uppercase tracking-wider text-[#59BFD6] mb-2">
             <Sliders className="w-3.5 h-3.5" />
-            <span>Mesa de Revelado & Retoque Fine Art</span>
+            <span className="font-sans font-medium">Revelado Fotográfico Digital</span>
           </div>
           <h2 className="font-condensed text-3xl sm:text-4xl md:text-5xl font-bold uppercase tracking-wider text-[#F9F9F6]">
-            Antes & Después de Autor
+            Antes y Después
           </h2>
-          <p className="font-sans text-sm sm:text-base text-white/70 max-w-xl mt-2 font-light">
-            Esculpido tonal, balance térmico y microtexturas que diferencian una captura directa sin procesar de una gradación cinemática terminada.
+          <p className="font-sans text-sm sm:text-base text-white/75 max-w-xl mt-2 font-light leading-relaxed">
+            El archivo directo del sensor es solo el inicio del trabajo. En nuestro laboratorio calibramos color, contraste y texturas para que cada fotografía comunique con la fuerza y naturalidad que el proyecto necesita.
           </p>
         </div>
 
@@ -385,7 +385,7 @@ export function BeforeAfterSlider({ initialCaseId = 'doosan', className = '' }: 
       </div>
 
       {/* Case Switcher Tabs */}
-      <div className="flex flex-wrap gap-2 mb-6" role="tablist" aria-label="Casos de Retoque">
+      <div className="overflow-x-auto no-scrollbar -mx-2 px-2 pb-2 flex sm:flex-wrap gap-2 mb-6" role="tablist" aria-label="Casos de Retoque">
         {BEFORE_AFTER_CASES.map((item) => {
           const isActive = item.id === activeCaseId;
           const displayNames: Record<string, string> = {
@@ -405,7 +405,7 @@ export function BeforeAfterSlider({ initialCaseId = 'doosan', className = '' }: 
                 setActiveCaseId(item.id);
                 setSliderPosition(50);
               }}
-              className={`px-4 py-2 rounded-full font-mono text-xs uppercase tracking-wider transition-all duration-300 flex items-center gap-2 border hover:scale-[1.02] active:scale-[0.98] ${
+              className={`min-h-[44px] px-4 py-2 rounded-full font-mono text-xs uppercase tracking-wider transition-all duration-300 flex items-center gap-2 border hover:scale-[1.02] active:scale-[0.98] shrink-0 touch-manipulation ${
                 isActive
                   ? 'bg-[#C29B63] text-[#18191B] border-[#C29B63] font-semibold shadow-lg shadow-[#C29B63]/20 scale-105'
                   : 'bg-white/5 text-white/80 border-white/10 hover:bg-white/15 hover:border-white/30 hover:text-white'
@@ -520,7 +520,7 @@ export function BeforeAfterSlider({ initialCaseId = 'doosan', className = '' }: 
           <div className="space-y-3 md:pr-6 pb-4 md:pb-0">
             <div className="flex items-center gap-2 text-white/60 font-mono text-xs uppercase tracking-widest">
               <span className="w-2 h-2 rounded-full bg-white/40" />
-              <span>Condiciones de Captura (Sensor Plano)</span>
+              <span>Captura Inicial (Cámara RAW)</span>
             </div>
             <ul className="space-y-2">
               {activeCase.rawNotes.map((note, idx) => (
@@ -536,7 +536,7 @@ export function BeforeAfterSlider({ initialCaseId = 'doosan', className = '' }: 
           <div className="space-y-3 md:pl-6 pt-4 md:pt-0">
             <div className="flex items-center gap-2 text-[#C29B63] font-mono text-xs uppercase tracking-widest">
               <Sparkles className="w-3.5 h-3.5 text-[#C29B63]" />
-              <span>Intervención de Autor (Sello Puelche)</span>
+              <span>Tratamiento en Estudio</span>
             </div>
             <ul className="space-y-2">
               {activeCase.masterNotes.map((note, idx) => (

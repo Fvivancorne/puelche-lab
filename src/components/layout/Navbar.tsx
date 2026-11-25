@@ -181,18 +181,18 @@ export function Navbar() {
       {/* Mobile Drawer — Animado con expo.out para entrada y power2.in para salida (Franco Beltramella) */}
       <div
         className={cn(
-          'lg:hidden fixed inset-x-0 top-[70px] bg-puelche-slate bg-[#16171B]/95 backdrop-blur-2xl border-b border-white/10 shadow-[0_30px_90px_rgba(0,0,0,0.9)] py-6 px-6 font-condensed uppercase tracking-wider text-base z-50 max-h-[calc(100vh-70px)] overflow-y-auto transition-all duration-300 will-change-transform',
+          'lg:hidden fixed inset-x-0 top-[70px] bg-puelche-slate bg-[#16171B]/95 backdrop-blur-2xl border-b border-white/10 shadow-[0_30px_90px_rgba(0,0,0,0.9)] py-6 px-6 pb-[calc(2rem+env(safe-area-inset-bottom))] font-condensed uppercase tracking-wider text-base z-50 max-h-[calc(100dvh-70px)] overflow-y-auto overscroll-contain transition-all duration-300 will-change-transform',
           mobileOpen
             ? 'opacity-100 translate-y-0 pointer-events-auto ease-[cubic-bezier(0.16,1,0.3,1)]'
             : 'opacity-0 -translate-y-4 pointer-events-none ease-[cubic-bezier(0.7,0,0.84,0)]'
         )}
       >
-        <div className="flex flex-col space-y-4">
+        <div className="flex flex-col space-y-2">
           <Link
             href="/"
             onClick={() => setMobileOpen(false)}
             className={cn(
-              'py-2 border-b border-white/10 font-bold transition-colors hover:text-puelche-cyan',
+              'min-h-[44px] flex items-center py-2.5 border-b border-white/10 font-bold transition-colors hover:text-puelche-cyan touch-manipulation',
               pathname === '/' ? 'text-puelche-cyan font-semibold' : 'text-white'
             )}
           >
@@ -203,34 +203,34 @@ export function Navbar() {
             href="/servicios"
             onClick={() => setMobileOpen(false)}
             className={cn(
-              'py-2 border-b border-white/10 font-bold transition-colors hover:text-puelche-cyan',
+              'min-h-[44px] flex items-center py-2.5 border-b border-white/10 font-bold transition-colors hover:text-puelche-cyan touch-manipulation',
               pathname === '/servicios' ? 'text-puelche-cyan font-semibold' : 'text-white'
             )}
           >
             SERVICIOS
           </Link>
 
-          <div className="py-2 border-b border-white/10 space-y-2">
+          <div className="py-2.5 border-b border-white/10 space-y-2">
             <div className="flex items-center justify-between">
               <Link
                 href="/portafolio"
                 onClick={() => setMobileOpen(false)}
                 className={cn(
-                  'text-xs font-bold hover:text-puelche-cyan transition-colors',
+                  'min-h-[40px] flex items-center text-xs font-bold hover:text-puelche-cyan transition-colors touch-manipulation',
                   pathname === '/portafolio' ? 'text-puelche-cyan' : 'text-white'
                 )}
               >
                 PORTAFOLIO COMPLETO &rarr;
               </Link>
             </div>
-            <div className="pl-3 space-y-2 text-sm pt-1">
+            <div className="pl-3 space-y-1 pt-1">
               {PORTFOLIO_DROPDOWN.map((item) => (
                 <Link
                   key={item.href}
                   href={item.href}
                   onClick={() => setMobileOpen(false)}
                   className={cn(
-                    'block py-1 text-white/90 hover:text-puelche-cyan text-xs transition-colors',
+                    'min-h-[40px] flex items-center py-1 text-white/90 hover:text-puelche-cyan text-xs transition-colors touch-manipulation',
                     pathname === item.href && 'text-puelche-cyan font-semibold'
                   )}
                 >
@@ -244,7 +244,7 @@ export function Navbar() {
             href="/auditor"
             onClick={() => setMobileOpen(false)}
             className={cn(
-              'py-2 border-b border-white/10 font-bold flex items-center justify-between transition-colors hover:text-puelche-cyan',
+              'min-h-[44px] py-2.5 border-b border-white/10 font-bold flex items-center justify-between transition-colors hover:text-puelche-cyan touch-manipulation',
               pathname === '/auditor' ? 'text-puelche-cyan font-semibold' : 'text-white'
             )}
           >
@@ -258,7 +258,7 @@ export function Navbar() {
             href="/clientes"
             onClick={() => setMobileOpen(false)}
             className={cn(
-              'py-2 border-b border-white/10 font-bold transition-colors hover:text-puelche-cyan',
+              'min-h-[44px] flex items-center py-2.5 border-b border-white/10 font-bold transition-colors hover:text-puelche-cyan touch-manipulation',
               pathname === '/clientes' ? 'text-puelche-cyan font-semibold' : 'text-white'
             )}
           >
@@ -269,7 +269,7 @@ export function Navbar() {
             href="/contacto"
             onClick={() => setMobileOpen(false)}
             className={cn(
-              'py-2 font-bold transition-colors hover:text-puelche-cyan',
+              'min-h-[44px] flex items-center py-2.5 font-bold transition-colors hover:text-puelche-cyan touch-manipulation',
               pathname === '/contacto' ? 'text-puelche-cyan font-semibold' : 'text-white'
             )}
           >
