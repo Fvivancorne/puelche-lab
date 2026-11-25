@@ -149,12 +149,12 @@ export default function Home() {
         aria-label="Puelche Lab Portada"
         className="relative w-full min-h-[100svh] min-h-screen flex flex-col justify-between items-center px-6 md:px-12 lg:px-16 pt-20 sm:pt-24 pb-6 overflow-hidden text-center will-change-transform origin-center"
       >
-        {/* Backdrop: bg-agencia.jpg (Bosque patagónico con niebla) — Pantalla Completa 100% Full-Bleed */}
+        {/* Backdrop: bg-agencia.jpg (Bosque patagónico con niebla): Pantalla Completa 100% Full-Bleed */}
         <div id="hero-bg-wrapper" className="absolute inset-0 z-0 pointer-events-none will-change-transform overflow-hidden">
           <Image
             id="hero-bg-img"
             src="/images/real/bg-agencia.jpg"
-            alt="Puelche Lab — Bosque Patagónico con Niebla"
+            alt="Puelche Lab: Bosque Patagónico con Niebla"
             fill
             priority
             className="object-cover pointer-events-none scale-105 will-change-transform origin-center transition-transform duration-1000 ease-out"
@@ -177,14 +177,14 @@ export default function Home() {
           </span>
         </div>
 
-        {/* Center: Asimetría Editorial Suiza — Espacio Negativo Monumental */}
+        {/* Center: Asimetría Editorial Suiza: Espacio Negativo Monumental */}
         <div className="relative z-10 max-w-5xl mx-auto w-full my-auto flex flex-col items-center justify-center py-2 sm:py-4 md:py-6 space-y-3 sm:space-y-4 md:space-y-5">
           {/* Subtle Studio Mark / Monogram */}
           <div id="hero-monogram" className="relative flex flex-col items-center gap-2 will-change-transform">
             <div className="relative w-28 sm:w-36 md:w-44 lg:w-48 aspect-[412/282] drop-shadow-2xl opacity-90 transition-transform duration-700 hover:scale-105">
               <Image
                 src="/images/real/logo-puelche.png"
-                alt="Puelche Lab — Viento Creativo"
+                alt="Puelche Lab: Viento Creativo"
                 fill
                 priority
                 className="object-contain"
@@ -264,7 +264,7 @@ export default function Home() {
 
       {/* 
         ======================================================================
-        SECCIÓN 2: NARRATIVA DE MARCA — ¿QUÉ ES CROSS MEDIA?
+        SECCIÓN 2: NARRATIVA DE MARCA: ¿QUÉ ES CROSS MEDIA?
         Experiencia Inmersiva Brutalista Awwwards con Convergencia Direccional
         ======================================================================
       */}

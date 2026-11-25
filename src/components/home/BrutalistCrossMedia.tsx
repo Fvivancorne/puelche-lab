@@ -32,7 +32,7 @@ const CAPABILITIES: Capability[] = [
     description:
       'Set propio de fotografía en Puerto Varas y producción en terreno por toda la Patagonia. Interiores de hotel boutique, arquitectura bioclimática, faenas industriales y perspectivas aéreas certificadas DGAC.',
     image: '/images/real/bg-portafolios-fotografia-d-min.jpg',
-    alt: 'Fotografía de autor, hotelería y faenas en terreno — Puelche Lab',
+    alt: 'Fotografía de autor, hotelería y faenas en terreno: Puelche Lab',
     spec: 'Sony Alpha 61MP • Dron 4K Certificado • Óptica G-Master',
     meta: 'Especialidad: Fotografía Austral',
     href: '/servicios/fotografia',
@@ -47,7 +47,7 @@ const CAPABILITIES: Capability[] = [
     description:
       'Identidades visuales con arraigo territorial patagónico, manuales de normas bajo retícula suiza, packaging noble y sistemas tipográficos que comunican distinción, solidez y longevidad comercial.',
     image: '/images/real/bg-portafolios-marca-blue-seal-min.jpg',
-    alt: 'Diseño de marca, identidad visual y manual de normas — Puelche Lab',
+    alt: 'Diseño de marca, identidad visual y manual de normas: Puelche Lab',
     spec: 'Retícula Suiza • Proporción Áurea • Manual de Normas',
     meta: 'Especialidad: Identidad de Marca',
     href: '/servicios/branding',
@@ -62,7 +62,7 @@ const CAPABILITIES: Capability[] = [
     description:
       'Sitios web de alta costura digital desarrollados en Next.js App Router, fluidez interactiva GSAP a 120 FPS, optimización GEO para motores de IA y 100% Core Web Vitals sin plantillas genéricas.',
     image: '/images/real/bg-portafolios-web-rilan-min.jpg',
-    alt: 'Desarrollo web Next.js artesanal y micro-interacciones cinemáticas — Puelche Lab',
+    alt: 'Desarrollo web Next.js artesanal y micro-interacciones cinemáticas: Puelche Lab',
     spec: 'Next.js App Router • GSAP 120 FPS • Optimización GEO',
     meta: 'Especialidad: Arquitectura Web',
     href: '/servicios/desarrollo-web',
@@ -77,7 +77,7 @@ const CAPABILITIES: Capability[] = [
     description:
       'Memorias corporativas impresas en papeles finos, libros fotográficos de autor, dirección de imprenta y revelado digital RAW calibrado a 16 bits pliego por pliego para imprenta y pantalla.',
     image: '/images/real/bg-portafolios-editorial-libro-min.jpg',
-    alt: 'Diseño editorial corporativo, libros fotográficos y revelado RAW — Puelche Lab',
+    alt: 'Diseño editorial corporativo, libros fotográficos y revelado RAW: Puelche Lab',
     spec: 'Papeles Finos • Perfiles CMYK • Revelado RAW 16-Bit',
     meta: 'Especialidades: Editorial & Revelado RAW',
     href: '/servicios/editorial',
@@ -295,7 +295,7 @@ export function BrutalistCrossMedia() {
         >
           <Image
             src="/images/real/bg-home-2.jpg"
-            alt="Patagonia Austral — Pastizal y Lago Puelche Lab"
+            alt="Patagonia Austral: Pastizal y Lago Puelche Lab"
             fill
             priority={false}
             className="object-cover"

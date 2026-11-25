@@ -320,7 +320,7 @@ export function BrutalistProjectList() {
                   <div className="relative aspect-[16/10] sm:aspect-[21/9] w-full overflow-hidden bg-black/80">
                     <Image
                       src={project.image}
-                      alt={project.title}
+                      alt={project.title.replace(' — ', ': ')}
                       fill
                       draggable={false}
                       className="object-cover object-center scale-105 group-hover:scale-110 transition-transform duration-1000 ease-out select-none pointer-events-none"
@@ -364,7 +364,7 @@ export function BrutalistProjectList() {
                     </div>
 
                     <h3 className="font-condensed text-2xl sm:text-3xl lg:text-4xl font-bold uppercase tracking-tight text-white group-hover:text-[#59BFD6] transition-colors leading-[1.05]">
-                      {project.title}
+                      {project.title.replace(' — ', ': ')}
                     </h3>
 
                     <p className="text-sm text-white/70 font-sans font-light leading-relaxed line-clamp-2 max-w-xl">

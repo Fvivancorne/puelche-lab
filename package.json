@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "tsc --noEmit",
-    "test": "npx tsx tests/api_auditor.test.ts && npx tsx tests/e2e/runner.ts && npx tsx tests/gen3_challenger_math.ts && npx tsx tests/gen3_challenger_visual.ts"
+    "test": "NODE_OPTIONS=\"--dns-result-order=ipv4first\" npx tsx tests/api_auditor.test.ts && npx tsx tests/e2e/runner.ts && npx tsx tests/gen3_challenger_math.ts && npx tsx tests/gen3_challenger_visual.ts"
   },
   "dependencies": {
     "@types/node": "^22.10.0",

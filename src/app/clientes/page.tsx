@@ -272,7 +272,7 @@ export default function ClientesPage() {
         <div className="relative z-10 max-w-4xl mx-auto space-y-4">
           <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-white/[0.04] border border-white/10 text-[11px] font-mono tracking-[0.25em] uppercase text-[#59BFD6] shadow-sm">
             <span className="w-1.5 h-1.5 rounded-full bg-[#59BFD6] animate-pulse shadow-[0_0_8px_#59BFD6]" />
-            <span>41°S &mdash; 53°S &bull; ARCHIVO TERRITORIAL DE MARCAS</span>
+            <span>LATITUD 41°S A 53°S &bull; ARCHIVO TERRITORIAL DE MARCAS</span>
           </div>
 
           <h1 className="font-condensed text-5xl sm:text-7xl md:text-8xl uppercase tracking-tight text-white font-bold drop-shadow-2xl leading-[0.95]">

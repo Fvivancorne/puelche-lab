@@ -38,7 +38,7 @@ export function Navbar() {
         <Link href="/" className="flex items-center py-1 group shrink-0" aria-label="Puelche Lab Inicio">
           <Image
             src="/images/real/logo-top.png"
-            alt="Puelche Lab — Estudio de Diseño Cross Media y Fotografía"
+            alt="Puelche Lab: Estudio de Diseño Cross Media y Fotografía"
             width={250}
             height={63}
             priority

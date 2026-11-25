@@ -31,7 +31,7 @@ const CLIENT_NAMES = [
 // Generate the list of 20 client logo filenames
 const LOGOS = Array.from({ length: 20 }, (_, i) => ({
   src: `/images/real/clients/cliente${i + 1}-1.png`,
-  alt: `Logo oficial ${CLIENT_NAMES[i]} — Cliente Puelche Lab`,
+  alt: `Logo oficial ${CLIENT_NAMES[i]}: Cliente Puelche Lab`,
   name: CLIENT_NAMES[i],
 }));
 

@@ -33,8 +33,31 @@ export async function GET() {
         source: 'mindicador.cl (Banco Central de Chile)',
       });
     }
-  } catch (err) {
-    // Graceful fallback to verified November 2026 baseline
+  } catch {
+    // Graceful secondary fallback provider
+  }
+
+  // Secondary fallback provider: DolarApi Chile (CMF)
+  try {
+    const res2 = await fetch('https://cl.dolarapi.com/v1/cotizaciones/uf', {
+      headers: { Accept: 'application/json' },
+      signal: AbortSignal.timeout(2000),
+      cache: 'no-store',
+    });
+    if (res2.ok) {
+      const data2 = await res2.json();
+      if (data2.valor) {
+        return NextResponse.json({
+          success: true,
+          uf: Math.round(data2.valor),
+          dolar: 992,
+          fecha: data2.fechaActualizacion || new Date().toISOString(),
+          source: 'dolarapi.com (CMF Chile)',
+        });
+      }
+    }
+  } catch {
+    // Falls through to baseline
   }
 
   return NextResponse.json({

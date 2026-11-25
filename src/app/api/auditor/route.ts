@@ -616,9 +616,16 @@ async function queryPageSpeedWithFallback(
     psiUrl += `&key=${apiKey}`;
   }
 
+  // Use a dedicated 2000ms abort controller for PageSpeed so that slow/throttled external PSI calls
+  // fall back quickly to empirical telemetry without exceeding the route budget.
+  const psiController = new AbortController();
+  const psiTimeout = setTimeout(() => psiController.abort(), 2000);
+  const onParentAbort = () => psiController.abort();
+  signal.addEventListener('abort', onParentAbort);
+
   try {
     const res = await fetch(psiUrl, {
-      signal,
+      signal: psiController.signal,
       headers: {
         Accept: 'application/json',
       },
@@ -680,6 +687,9 @@ async function queryPageSpeedWithFallback(
     }
   } catch {
     // Falls through to empirical telemetry
+  } finally {
+    clearTimeout(psiTimeout);
+    signal.removeEventListener('abort', onParentAbort);
   }
 
   return computeEmpiricalTelemetry(html, ttfbMs, strategy);
@@ -868,7 +878,7 @@ async function performLiveAudit(
   const startTime = Date.now();
   const targetOrigin = new URL(normalizedUrl).origin;
   const abortController = new AbortController();
-  const timeoutId = setTimeout(() => abortController.abort(), 8500);
+  const timeoutId = setTimeout(() => abortController.abort(), 12000);
 
   const telemetryLogs: TelemetryPhaseLog[] = [];
   const logPhase = (phase: TelemetryPhaseLog['phase'], name: string, message: string) => {
@@ -883,19 +893,30 @@ async function performLiveAudit(
   try {
     logPhase('P1', 'DNS & SSL Handshake', `Iniciando resolución de host y negociación TLS con ${targetOrigin}...`);
 
-    // 1. Concurrent Network Probes with graceful catch blocks
+    // 1. Concurrent Network Probes with graceful catch blocks and transient warmup retry
     const fetchRootPromise = (async () => {
       const probeStart = Date.now();
+      const reqHeaders = {
+        'User-Agent':
+          'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36 (compatible; PuelcheLabAuditor/1.0)',
+        Accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+        'Accept-Language': 'es-CL,es;q=0.9,en;q=0.8',
+      };
       try {
-        const res = await fetch(normalizedUrl, {
-          signal: abortController.signal,
-          headers: {
-            'User-Agent':
-              'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36 (compatible; PuelcheLabAuditor/1.0)',
-            Accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-            'Accept-Language': 'es-CL,es;q=0.9,en;q=0.8',
-          },
-        });
+        let res: Response;
+        try {
+          res = await fetch(normalizedUrl, {
+            signal: abortController.signal,
+            headers: reqHeaders,
+          });
+        } catch (initialErr) {
+          if (abortController.signal.aborted) throw initialErr;
+          // Immediate single retry on transient network/TLS warmup hiccup
+          res = await fetch(normalizedUrl, {
+            signal: abortController.signal,
+            headers: reqHeaders,
+          });
+        }
         const ttfbMs = Math.max(40, Date.now() - probeStart);
         const html = await res.text();
         return { html, ttfbMs, status: res.status, error: undefined };
@@ -914,7 +935,7 @@ async function performLiveAudit(
       try {
         const u = `${targetOrigin}/llms.txt`;
         const res = await fetch(u, {
-          signal: abortController.signal,
+          signal: AbortSignal.timeout(2500),
           headers: { 'User-Agent': 'PuelcheLabAuditor/1.0' },
         });
         const text = res.ok ? await res.text() : '';
@@ -928,7 +949,7 @@ async function performLiveAudit(
       try {
         const u = `${targetOrigin}/llms-full.txt`;
         const res = await fetch(u, {
-          signal: abortController.signal,
+          signal: AbortSignal.timeout(2500),
           headers: { 'User-Agent': 'PuelcheLabAuditor/1.0' },
         });
         const text = res.ok ? await res.text() : '';
@@ -942,7 +963,7 @@ async function performLiveAudit(
       try {
         const u = `${targetOrigin}/robots.txt`;
         const res = await fetch(u, {
-          signal: abortController.signal,
+          signal: AbortSignal.timeout(2500),
           headers: { 'User-Agent': 'PuelcheLabAuditor/1.0' },
         });
         const text = res.ok ? await res.text() : '';

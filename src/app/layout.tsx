@@ -77,7 +77,7 @@ export const metadata: Metadata = {
         url: '/opengraph-image',
         width: 1200,
         height: 630,
-        alt: 'Puelche Lab — Estudio de Diseño Cross Media y Fotografía',
+        alt: 'Puelche Lab: Estudio de Diseño Cross Media y Fotografía',
       },
     ],
   },

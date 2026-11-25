@@ -11,6 +11,7 @@ interface OrganicStory {
   id: string;
   num: string;
   title: string;
+  mobileTitle?: string;
   protagonist: string;
   role: string;
   location: string;
@@ -18,6 +19,7 @@ interface OrganicStory {
   alt: string;
   fieldNote: string;
   curatorQuote: string;
+  mobileQuote?: string;
   quoteAuthor: string;
   chronicle: string;
   expeditionDetails: {
@@ -33,15 +35,18 @@ const STORIES: OrganicStory[] = [
     id: 'tagua-tagua',
     num: '01',
     title: 'El Cruce del Río Puelo',
+    mobileTitle: 'Expedición Fluvial en Río Puelo',
     protagonist: 'Guías & Navegantes Fluviales',
     role: 'Expedición Cordillerana',
     location: 'Río Puelo & Cochamó, Los Lagos',
     image: '/images/real/bg-home-2.jpg',
-    alt: 'Tagua Tagua Lodge — Navegación fluvial y cordillera en Río Puelo',
+    alt: 'Tagua Tagua Lodge: Navegación fluvial y cordillera en Río Puelo',
     fieldNote:
       'El silencio del río solo se interrumpe por el sonido del agua contra el casco. Llegar a este rincón de la cordillera exige navegar dos horas sin señal de teléfono.',
     curatorQuote:
       'En la Patagonia profunda, la distancia no es un obstáculo: es el filtro natural que preserva la pureza del territorio.',
+    mobileQuote:
+      'La distancia patagónica no aísla: resguarda la autenticidad virgen del territorio fluvial.',
     quoteAuthor: 'Paula Valdivieso • Bitácora de Expedición',
     chronicle:
       'Para documentar Tagua Tagua Lodge nos internamos en la cuenca del Puelo en otoño temprano. Esperamos la salida del sol sobre los farellones de granito para captar la barcaza cruzando las aguas color esmeralda, registrando la comunión entre el aislamiento geográfico y la hospitalidad de alta montaña.',
@@ -56,15 +61,18 @@ const STORIES: OrganicStory[] = [
     id: 'nazca-oceanografia',
     num: '02',
     title: 'Ojos en las Profundidades',
+    mobileTitle: 'Robótica Submarina en Altamar',
     protagonist: 'Tripulación de Robótica Submarina',
     role: 'Oceanografía & Buceo Técnico',
     location: 'Seno de Reloncaví & Océano Pacífico',
     image: '/images/real/facebook/fb-nazca-1.jpg',
-    alt: 'Nazca Oceanografía — Robótica submarina y equipo técnico en faena marítima',
+    alt: 'Nazca Oceanografía: Robótica submarina y equipo técnico en faena marítima',
     fieldNote:
       'En la cubierta de un barco de investigación a merced del oleaje, cada segundo cuenta. Buscamos el pulso de concentración del equipo mientras operan en el Pacífico sur.',
     curatorQuote:
       'La técnica más sofisticada carece de sentido si detrás no se siente la templanza humana de quienes desafían el mar.',
+    mobileQuote:
+      'La tecnología robótica cobra verdadero valor en el temple humano de su tripulación.',
     quoteAuthor: 'Dirección de Fotografía Puelche Lab',
     chronicle:
       'Acompañamos las faenas de Nazca Oceanografía para documentar la operación del robot submarino DEFENDER. Combinamos vuelos de dron a baja cota sobre el canal con registro documental a pulso en el puente de mando, capturando la precisión técnica de hombres que trabajan donde la luz del sol ya no llega.',
@@ -79,15 +87,18 @@ const STORIES: OrganicStory[] = [
     id: 'cohosting-chile',
     num: '03',
     title: 'La Casa del Lago y el Silencio',
+    mobileTitle: 'Residencia Austral y Luz Natural en el Lago',
     protagonist: 'Interiorismo Austral Contemporáneo',
     role: 'Arquitectura & Luz Natural',
     location: 'Puerto Varas & Lago Llanquihue',
     image: '/images/real/facebook/fb-cohosting-1.jpg',
-    alt: 'CoHosting Chile — Interiorismo contemporáneo y vistas abiertas en Puerto Varas',
+    alt: 'CoHosting Chile: Interiorismo contemporáneo y vistas abiertas en Puerto Varas',
     fieldNote:
       'Esperamos el momento exacto en que la brisa del lago se calmó por completo. La luz exterior inundó los espacios de doble altura revelando la riqueza de las maderas nativas.',
     curatorQuote:
       'Un buen retrato de interiores no muestra cómo es un espacio: transmite cómo se respira y se descansa en él.',
+    mobileQuote:
+      'Fotografiar arquitectura austral es capturar la calma y calidez con que se habita un refugio.',
     quoteAuthor: 'Dirección de Arte Puelche Lab',
     chronicle:
       'Para CoHosting Chile, documentamos residencias contemporáneas donde el diseño nórdico dialoga con el paisaje austral. Registramos la fluidez entre el interior y la inmensidad del lago Llanquihue, utilizando exclusivamente luz natural indirecta para preservar el balance cromático original de las vigas y pavimentos.',
@@ -102,15 +113,18 @@ const STORIES: OrganicStory[] = [
     id: 'cabo-de-hornos',
     num: '04',
     title: 'El Viento del Estrecho',
+    mobileTitle: 'Patrimonio Austral frente al Estrecho de Magallanes',
     protagonist: 'Punta Arenas & Última Frontera',
     role: 'Arquitectura Antártica',
     location: 'Punta Arenas, Estrecho de Magallanes',
     image: '/images/real/bg-portafolios-fotografia-d-min.jpg',
-    alt: 'Hotel Cabo de Hornos — Arquitectura histórica frente al Estrecho de Magallanes',
+    alt: 'Hotel Cabo de Hornos: Arquitectura histórica frente al Estrecho de Magallanes',
     fieldNote:
       'El viento en Magallanes no amaina. Para registrar los interiores del hotel esperamos la hora azul, cuando las luces cálidas del salón contrastan con la penumbra del estrecho.',
     curatorQuote:
       'En el extremo sur, un refugio no es un lujo decorativo: es la diferencia entre resistir a la intemperie o ser vencido por ella.',
+    mobileQuote:
+      'Frente al viento del sur, la arquitectura noble protege y abraza la memoria del viajero.',
     quoteAuthor: 'Crónica Austral Puelche Lab',
     chronicle:
       'Ubicado en la plaza Muñoz Gamero de Punta Arenas, Hotel Cabo de Hornos es el punto de partida hacia el territorio antártico. Nuestro encargo documentó la sobriedad señorial de sus espacios, la madera labrada y la luz de sus ventanales, ofreciendo un testimonio visual de la hospitalidad más austral del planeta.',
@@ -175,7 +189,7 @@ export function OrganicStoriesSection() {
   return (
     <section
       id="cronicas-de-autor"
-      aria-label="Crónicas del Puelche — Relatos Vivos de Autor"
+      aria-label="Crónicas del Puelche: Relatos Vivos de Autor"
       className="relative w-full bg-[#0d0e12] text-white border-t border-b border-white/[0.08]"
     >
       {/* 
@@ -289,7 +303,7 @@ export function OrganicStoriesSection() {
                         &ldquo;{story.curatorQuote}&rdquo;
                       </p>
                       <span className="font-mono text-[11px] uppercase tracking-widest text-[#C29B63] block">
-                        &mdash; {story.quoteAuthor}
+                        {story.quoteAuthor}
                       </span>
                     </div>
 
@@ -395,13 +409,13 @@ export function OrganicStoriesSection() {
                     <span className="uppercase tracking-wider">{story.location}</span>
                   </div>
                   <h3 className="font-condensed text-2xl uppercase font-bold text-white leading-tight">
-                    {story.title}
+                    {story.mobileTitle || story.title}
                   </h3>
                 </div>
 
                 <div className="p-3 rounded-xl bg-black/40 backdrop-blur-md border-l-2 border-[#C29B63]">
                   <p className="font-serif italic text-xs text-white/95">
-                    &ldquo;{story.curatorQuote}&rdquo;
+                    &ldquo;{story.mobileQuote || story.curatorQuote}&rdquo;
                   </p>
                 </div>
 

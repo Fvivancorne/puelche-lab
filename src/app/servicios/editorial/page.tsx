@@ -18,7 +18,7 @@ interface EditorialProject {
 const REAL_EDITORIAL_PROJECTS: EditorialProject[] = [
   {
     id: 'libro-patagonia',
-    client: 'Alejo Lattes — Letras de la Patagonia (Chile - Argentina)',
+    client: 'Alejo Lattes: Letras de la Patagonia (Chile - Argentina)',
     service: 'Diseño de libro de autor, fotografía fine-art y poesía bilingüe',
     category: 'Libro Fine-Art de Colección & Fotolibro de Autor',
     description: 'Edición en papeles de algodón, encuadernación artesanal de pasta dura sobre tronco nativo, diagramación reposada y pliegos panorámicos de selva fría con lírica bilingüe ("Driven by a force", "¡Hola a todos! yo soy el león").',
@@ -32,7 +32,7 @@ const REAL_EDITORIAL_PROJECTS: EditorialProject[] = [
   {
     id: 'seremi-medio-ambiente',
     client: 'Seremi de Medio Ambiente & FNDR Los Lagos',
-    service: 'Paisaje de Conservación Chiloé Noroeste — Tríptico & Cartografía Ilustrada',
+    service: 'Paisaje de Conservación Chiloé Noroeste: Tríptico & Cartografía Ilustrada',
     category: 'Cartografía Ilustrada & Divulgación Ecológica',
     description: 'Diseño de tríptico e infografía territorial con mapa ilustrado de gran formato sobre humedales de Chepu, cuencas hidrográficas, santuarios naturales y fauna protegida de Chiloé.',
     image: '/images/real/bg-portafolios-editorial-folleto-min.jpg',
@@ -44,7 +44,7 @@ const REAL_EDITORIAL_PROJECTS: EditorialProject[] = [
   },
   {
     id: 'falabella-estudios',
-    client: 'Viajes Falabella — Guía Territorial & Viajes de Estudio',
+    client: 'Viajes Falabella: Guía Territorial & Viajes de Estudio',
     service: 'Diseño de brochure & catálogo de expediciones de gran formato',
     category: 'Guía Turística & Brochure Territorial',
     description: 'Diagramación suiza contemporánea, espacios limpios, mapas de ruta y fotografía de destinos de gran formato (Machu Picchu, Río de Janeiro, Costa Rica).',
@@ -57,7 +57,7 @@ const REAL_EDITORIAL_PROJECTS: EditorialProject[] = [
   },
   {
     id: 'falabella-2x',
-    client: 'Viajes Falabella — Catálogo Comercial 2X Travel Hunters',
+    client: 'Viajes Falabella: Catálogo Comercial 2X Travel Hunters',
     service: 'Diseño y maquetación de catálogo comercial 2014 de alta tirada',
     category: 'Catálogo Comercial Retail',
     description: 'Catálogo promocional de gran formato con retícula editorial rigurosa para retail y agencias turísticas internacionales (República Dominicana, Punta Cana).',
@@ -69,7 +69,7 @@ const REAL_EDITORIAL_PROJECTS: EditorialProject[] = [
   },
   {
     id: 'anasac-agricola',
-    client: 'Anasac / Impagro — Catálogos Agrícolas & Fichas Técnicas',
+    client: 'Anasac / Impagro: Catálogos Agrícolas & Fichas Técnicas',
     service: 'Diseño de brochures técnicos y desarrollo de montajes fotográficos',
     category: 'Biotecnología & Agroindustria',
     description: 'Manuales técnicos y brochures agrícolas de alta fidelidad cromática para bioestimulantes vegetales (Amino-Max y Phyllum Max F) y nutrición de cultivos.',
@@ -81,7 +81,7 @@ const REAL_EDITORIAL_PROJECTS: EditorialProject[] = [
   },
   {
     id: 'pillan-aguas-azules',
-    client: 'Pillán de las Aguas Azules — Ensayos de Naturaleza Viva',
+    client: 'Pillán de las Aguas Azules: Ensayos de Naturaleza Viva',
     service: 'Ensayos de naturaleza viva, volcán Osorno y mitología austral',
     category: 'Libro de Autor & Territorio',
     description: 'Obra editorial que documenta la fuerza de la geografía austral a través de ensayos visuales, poesía territorial e impresión de estándar fine-art.',

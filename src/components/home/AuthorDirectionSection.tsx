@@ -67,7 +67,7 @@ export function AuthorDirectionSection() {
                       ? '/images/real/equipo/alejandro-lattes.jpg'
                       : '/images/real/equipo/alejandro-lattes-field.jpg'
                   }
-                  alt="Alejandro Lattes Corona — Fundador y Director Creativo de Puelche Lab"
+                  alt="Alejandro Lattes Corona: Fundador y Director Creativo de Puelche Lab"
                   fill
                   sizes="(max-width: 768px) 100vw, 300px"
                   className="object-cover transition-transform duration-700 group-hover:scale-105 grayscale contrast-125"

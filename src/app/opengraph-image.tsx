@@ -1,6 +1,6 @@
 import { ImageResponse } from 'next/og';
 
-export const alt = 'Puelche Lab — Estudio de Diseño Cross Media & Fotografía en Puerto Varas';
+export const alt = 'Puelche Lab: Estudio de Diseño Cross Media & Fotografía en Puerto Varas';
 export const size = {
   width: 1200,
   height: 630,

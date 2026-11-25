@@ -28,6 +28,8 @@ export interface ServiceDetail {
   title: string;
   tag: string;
   desc: string;
+  mobileDesc?: string;
+  directorySummary?: string;
   focal: string;
   coords: string;
   territory: string;
@@ -45,6 +47,8 @@ export const SERVICES_LIST: ServiceDetail[] = [
     title: 'Fotografía',
     tag: 'FOTOGRAFÍA DE AUTOR',
     desc: 'Interiores, hotelería, arquitectura y procesos industriales en el sur de Chile. Óptica fija, rango dinámico de 15+ EV y luz patagónica natural.',
+    mobileDesc: 'Cobertura en terreno para interiores, arquitectura y faena industrial con iluminación natural austral y ópticas fijas de alta gama.',
+    directorySummary: 'Producción fotográfica de espacios interiores, arquitectura y faenas industriales en la cuenca del lago Llanquihue y Chiloé con óptica fija y calibración tonal.',
     focal: 'Sony FE 85mm f/1.4 GM II • 1/250s • ISO 100',
     coords: '41°19′S 72°59′W',
     territory: 'Puerto Varas & Seno de Reloncaví',
@@ -60,6 +64,8 @@ export const SERVICES_LIST: ServiceDetail[] = [
     title: 'Diseño de Marca',
     tag: 'IDENTIDAD CON ARRAIGO AUSTRAL',
     desc: 'Identidades visuales, manuales de normas y branding integral con arraigo territorial. Naming, paleta cromática orgánica y tipografía suiza.',
+    mobileDesc: 'Construcción de marcas con identidad territorial: naming, paletas cromáticas orgánicas y manuales de marca para el sur austral.',
+    directorySummary: 'Desarrollo integral de identidad visual, tipografía y manuales de aplicación concebidos desde la geografía y nobleza de los materiales del sur.',
     focal: 'Sony FE 50mm f/1.2 GM • Vector & Proporción Áurea',
     coords: '41°45′S 72°50′W',
     territory: 'Puerto Montt & Archipiélago de Chiloé',
@@ -75,6 +81,8 @@ export const SERVICES_LIST: ServiceDetail[] = [
     title: 'Desarrollo Web',
     tag: 'ARQUITECTURA DIGITAL SOTD',
     desc: 'Sitios web modernos, ultra-rápidos y adaptables a dispositivos móviles. Next.js App Router, GSAP cinemático y 100% Core Web Vitals.',
+    mobileDesc: 'Sitios web de alta ingeniería técnica con Next.js App Router, fluidez interactiva y optimización completa en Core Web Vitals.',
+    directorySummary: 'Plataformas web de ingeniería Next.js con animaciones fluidas a 120 FPS, optimizadas para alta conversión y máxima velocidad de carga móvil.',
     focal: 'Next.js Turbopack • GSAP 120 FPS • Latencia Cero',
     coords: '42°30′S 73°45′W',
     territory: 'Península de Rilán & Puerto Varas',
@@ -90,6 +98,8 @@ export const SERVICES_LIST: ServiceDetail[] = [
     title: 'Edición Fotográfica',
     tag: 'REVELADO FINE-ART',
     desc: 'Revelado de archivos RAW, retoque digital de precisión y color grading cinematográfico. Calibración tonal pliego por pliego para imprenta y pantalla.',
+    mobileDesc: 'Post-producción de laboratorio digital para archivos RAW, etalonaje cinematográfico y calibración de color pliego a pliego.',
+    directorySummary: 'Tratamiento y revelado digital de negativos digitales RAW pliego a pliego, estandarizando perfiles de color cromáticos para impresión fine-art.',
     focal: 'Sony FE 100mm f/2.8 STF GM • Perfiles Adobe RGB & DCI-P3',
     coords: '41°28′S 72°56′W',
     territory: 'Mesa de Revelado Digital • Llanquihue',
@@ -105,6 +115,8 @@ export const SERVICES_LIST: ServiceDetail[] = [
     title: 'Diseño Editorial',
     tag: 'PUBLICACIONES & MEMORIAS',
     desc: 'Memorias corporativas, libros fotográficos y catálogos comerciales impresos. Maquetación reticular, selección de papeles y dirección de imprenta.',
+    mobileDesc: 'Edición de libros de autor, memorias y catálogos impresos bajo retícula editorial suiza y acabados de estándar fine-art.',
+    directorySummary: 'Diseño de publicaciones de colección, memorias institucionales y catálogos comerciales impresos con estricta retícula y selección de papeles.',
     focal: 'Sony FE 35mm f/1.4 GM • Grilla Suiza 12 Columnas',
     coords: '45°34′S 72°04′W',
     territory: 'Patagonia Austral & Carretera Austral',
@@ -120,6 +132,8 @@ export const SERVICES_LIST: ServiceDetail[] = [
     title: 'Redes Sociales',
     tag: 'DIRECCIÓN DE ARTE DIGITAL',
     desc: 'Estrategia de contenidos, fotografía genuina y dirección de arte digital. Narrativa visual que posiciona a tu marca lejos de la mediocridad de stock.',
+    mobileDesc: 'Estrategia y curaduría de contenidos fotográficos reales para marcas que buscan diferenciarse de la fotografía genérica.',
+    directorySummary: 'Dirección de arte y curaduría visual para plataformas sociales, combinando relato genuino y fotografía de autor alejada del stock.',
     focal: 'Sony FE 16-35mm f/2.8 GM • Micro-Narrativas Territoriales',
     coords: '41°19′S 72°59′W',
     territory: 'Llanquihue, Los Lagos & Alcance Global',
@@ -848,7 +862,7 @@ export default function ServiciosPage() {
 
                         {/* Narrative Description */}
                         <p className="font-sans text-xs sm:text-sm text-white/80 font-light leading-relaxed">
-                          {serv.desc}
+                          {serv.mobileDesc || serv.desc}
                         </p>
 
                         {/* Deliverables Checklist */}
@@ -1033,7 +1047,7 @@ export default function ServiciosPage() {
                   {/* Column 3: Description, Deliverables & rb-link-glanz Pill Button (1.2fr) */}
                   <div className="space-y-6">
                     <p className="font-sans text-sm sm:text-base text-white/75 font-light leading-relaxed">
-                      {serv.desc}
+                      {serv.directorySummary || serv.desc}
                     </p>
 
                     <div className="flex flex-wrap gap-2">

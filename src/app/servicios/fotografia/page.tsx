@@ -33,7 +33,7 @@ const FEATURED_EXPEDITIONS: PhotoProject[] = [
   },
   {
     id: 'cohosting-chile',
-    client: 'CoHosting Chile — Interiorismo Austral',
+    client: 'CoHosting Chile: Interiorismo Austral',
     location: 'Puerto Varas & Lago Llanquihue',
     specialty: 'Fotografía de interiores, luz natural y arquitectura residencial contemporánea.',
     image: '/images/real/facebook/fb-cohosting-1.jpg',
@@ -59,7 +59,7 @@ const FEATURED_EXPEDITIONS: PhotoProject[] = [
   },
   {
     id: 'estancia-rilan',
-    client: 'Estancia Rilán — Hotel y Cava',
+    client: 'Estancia Rilán: Hotel y Cava',
     location: 'Península de Rilán, Chiloé',
     specialty: 'Fotografías de interiores, arquitectura vernácula y cava subterránea.',
     image: '/images/real/bg-portafolios-fotografia-a-min.jpg',
@@ -513,7 +513,7 @@ export default function FotografiaPage() {
                   0{idx + 1} • {item.tag}
                 </span>
                 <span className="font-condensed font-bold text-sm sm:text-base uppercase tracking-wider block text-white truncate">
-                  {item.client.split('—')[0]}
+                  {item.client.split(/[:—]/)[0]}
                 </span>
               </button>
             ))}
@@ -593,7 +593,7 @@ export default function FotografiaPage() {
                       &ldquo;{currentExpedition.quote}&rdquo;
                     </p>
                     <span className="text-[11px] font-condensed uppercase tracking-wider text-puelche-cyan block font-semibold">
-                      — Puelche Lab Producciones, Puerto Varas
+                      Puelche Lab Producciones, Puerto Varas
                     </span>
                   </div>
                 )}

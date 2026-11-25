@@ -94,7 +94,7 @@ const REAL_BRAND_PROJECTS: BrandProject[] = [
   {
     id: 'hotel-arrebol-grid',
     client: 'Hotel Boutique Arrebol Chiloé',
-    subtitle: 'Diseño de marca e identidad visual para hotelería boutique en Castro (ex Hotel Veliche)',
+    subtitle: 'Sistema de identidad gráfica, señalética y aplicaciones en maderas nativas para hotelería en Castro (ex Hotel Veliche)',
     category: 'Hotelería Boutique & Arquitectura',
     image: '/images/real/facebook/fb-arrebol-1.jpg',
     gallery: [
@@ -631,7 +631,7 @@ export default function BrandingPage() {
                   0{idx + 1} • {item.tag}
                 </span>
                 <span className="font-condensed font-bold text-sm sm:text-base uppercase tracking-wider block text-white truncate">
-                  {item.client.split('—')[0]}
+                  {item.client.split(/[:—]/)[0]}
                 </span>
               </button>
             ))}
@@ -711,7 +711,7 @@ export default function BrandingPage() {
                       &ldquo;{currentFeatured.quote}&rdquo;
                     </p>
                     <span className="text-[11px] font-condensed uppercase tracking-wider text-[#59BFD6] block font-semibold">
-                      — Puelche Lab Studio, Puerto Varas
+                      Puelche Lab Studio, Puerto Varas
                     </span>
                   </div>
                 )}
@@ -751,7 +751,7 @@ export default function BrandingPage() {
           </blockquote>
           <div className="flex items-center justify-between pt-2">
             <span className="font-condensed uppercase tracking-wider text-xs font-bold text-[#4b5563]">
-              — Equipo Puelche Lab, Puerto Varas
+              Equipo Puelche Lab, Puerto Varas
             </span>
             <button
               onClick={() => openModal(FEATURED_BRAND_SHOWCASE[3])}
@@ -781,7 +781,7 @@ export default function BrandingPage() {
             <div className="flex items-center gap-3">
               <span className="w-2 h-2 rounded-full bg-[#59BFD6] animate-pulse shadow-[0_0_8px_#59BFD6]" />
               <span className="text-white uppercase tracking-wider font-semibold">
-                41°S &mdash; 53°S &bull; PASARELA TRIDIMENSIONAL DE BRANDING
+                LATITUD 41°S A 53°S &bull; PASARELA TRIDIMENSIONAL DE BRANDING
               </span>
             </div>
             <div className="flex items-center gap-4 text-xs font-mono">

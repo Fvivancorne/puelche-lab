@@ -451,7 +451,7 @@ export function BeforeAfterSlider({ initialCaseId = 'doosan', className = '' }: 
           <div className="absolute inset-0 w-full h-full pointer-events-none select-none">
             <Image
               src={activeCase.masterImage}
-              alt={`${activeCase.title} — Retoque Final Puelche`}
+              alt={`${activeCase.title}: Retoque Final Puelche`}
               fill
               priority
               draggable={false}
@@ -478,7 +478,7 @@ export function BeforeAfterSlider({ initialCaseId = 'doosan', className = '' }: 
           >
             <Image
               src={activeCase.rawImage}
-              alt={`${activeCase.title} — Captura RAW Original`}
+              alt={`${activeCase.title}: Captura RAW Original`}
               fill
               priority
               draggable={false}

@@ -18,7 +18,7 @@ interface WebProject {
 const REAL_WEB_PROJECTS: WebProject[] = [
   {
     id: 'web-estancia-rilan',
-    client: 'Estancia Rilán — Hotel & Cava',
+    client: 'Estancia Rilán: Hotel & Cava',
     service: 'Sitio web oficial para Hotel & Cava Chiloé',
     category: 'Hospitalidad & Reservas Boutique',
     description: 'Arquitectura web inmersiva para reservas boutique, integración de motor de contacto directo y recorridos fotográficos a pantalla completa de la península de Rilán.',

@@ -35,11 +35,40 @@ import {
   Save,
   X,
   ChevronRight,
-  Send
+  Send,
+  MessageSquare,
+  Search,
+  Filter,
+  Download
 } from 'lucide-react';
 import { PORTFOLIO_PROJECTS, ProjectItem } from '@/data/portfolio';
 import defaultPricingConfig from '@/data/pricing-config.json';
 import { ADMIN_CLIENT_LOGOS, ClientLogo } from '@/data/clients';
+
+export interface AdminLead {
+  id: string;
+  nombre: string;
+  empresa: string | null;
+  email: string | null;
+  telefono: string;
+  servicios: string[];
+  presupuesto: string;
+  region: string;
+  modalidad: string | null;
+  mensaje: string | null;
+  origen: string;
+  status: 'nuevo' | 'contactado' | 'cotizado' | 'cerrado';
+  created_at: string;
+}
+
+interface LeadMetrics {
+  total: number;
+  nuevos: number;
+  contactados: number;
+  cotizados: number;
+  cerrados: number;
+  totalBudgetClp: number;
+}
 
 interface LiveIndicator {
   uf: number;
@@ -122,6 +151,88 @@ export default function AdminCmsHubPage() {
     instagram: '@puelchelab.cl',
   });
   const [contactSaveSuccess, setContactSaveSuccess] = useState<boolean>(false);
+
+  // ── ESTADO DEL BUZÓN & LEADS (M10 LEAD INTELLIGENCE HUB) ──
+  const [leads, setLeads] = useState<AdminLead[]>([]);
+  const [leadsLoading, setLeadsLoading] = useState<boolean>(false);
+  const [leadStatusFilter, setLeadStatusFilter] = useState<'todos' | 'nuevo' | 'contactado' | 'cotizado' | 'cerrado'>('todos');
+  const [leadSearchQuery, setLeadSearchQuery] = useState<string>('');
+  const [leadMetrics, setLeadMetrics] = useState<LeadMetrics>({
+    total: 0,
+    nuevos: 0,
+    contactados: 0,
+    cotizados: 0,
+    cerrados: 0,
+    totalBudgetClp: 0,
+  });
+  const [updatingLeadId, setUpdatingLeadId] = useState<string | null>(null);
+
+  const fetchLeads = async () => {
+    setLeadsLoading(true);
+    try {
+      const res = await fetch('/api/admin/leads');
+      const data = await res.json();
+      if (data && data.success && Array.isArray(data.leads)) {
+        setLeads(data.leads);
+        if (data.metrics) {
+          setLeadMetrics(data.metrics);
+        }
+      }
+    } catch (err) {
+      console.error('Error fetching leads:', err);
+    } finally {
+      setLeadsLoading(false);
+    }
+  };
+
+  const handleUpdateLeadStatus = async (leadId: string, newStatus: 'nuevo' | 'contactado' | 'cotizado' | 'cerrado') => {
+    setUpdatingLeadId(leadId);
+    // Optimistic update
+    setLeads((prev) => prev.map((l) => (l.id === leadId ? { ...l, status: newStatus } : l)));
+    try {
+      const res = await fetch('/api/admin/leads', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: leadId, status: newStatus }),
+      });
+      const data = await res.json();
+      if (data && data.success) {
+        if (data.metrics) setLeadMetrics(data.metrics);
+      } else {
+        await fetchLeads();
+      }
+    } catch {
+      await fetchLeads();
+    } finally {
+      setUpdatingLeadId(null);
+    }
+  };
+
+  const handleExportLeadsCsv = () => {
+    if (!leads.length) return;
+    const headers = ['ID', 'Nombre', 'Empresa', 'Email', 'Telefono', 'Servicios', 'Presupuesto', 'Region', 'Status', 'Fecha', 'Mensaje'];
+    const rows = leads.map((l) => [
+      `"${l.id}"`,
+      `"${l.nombre.replace(/"/g, '""')}"`,
+      `"${(l.empresa || '').replace(/"/g, '""')}"`,
+      `"${(l.email || '').replace(/"/g, '""')}"`,
+      `"${l.telefono}"`,
+      `"${(l.servicios || []).join('; ')}"`,
+      `"${l.presupuesto}"`,
+      `"${l.region}"`,
+      `"${l.status}"`,
+      `"${new Date(l.created_at).toLocaleString('es-CL')}"`,
+      `"${(l.mensaje || '').replace(/"/g, '""').replace(/\n/g, ' ')}"`,
+    ]);
+    const csvContent = 'data:text/csv;charset=utf-8,\uFEFF' + [headers.join(','), ...rows.map((e) => e.join(','))].join('\n');
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement('a');
+    link.setAttribute('href', encodedUri);
+    link.setAttribute('download', `leads_puelche_lab_${new Date().toISOString().slice(0, 10)}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
 
   // ── ESTADO DEL MOTOR DE CAMPAÑAS Y PRUEBAS SMTP ──
   const [campaignTemplate, setCampaignTemplate] = useState<'studio-campaign' | 'quote-confirmation' | 'lead-notification'>('studio-campaign');
@@ -225,6 +336,7 @@ export default function AdminCmsHubPage() {
   useEffect(() => {
     if (isAuthenticated) {
       fetchIndicators();
+      fetchLeads();
 
       // Load pricing from server API
       fetch('/api/admin/pricing')
@@ -263,6 +375,7 @@ export default function AdminCmsHubPage() {
       setAuthError(null);
       sessionStorage.setItem('puelche_admin_pin', pin);
       fetchIndicators();
+      fetchLeads();
     } else {
       setAuthError('PIN incorrecto. Ingresa la clave maestra de administración.');
     }
@@ -642,7 +755,10 @@ export default function AdminCmsHubPage() {
             </button>
 
             <button
-              onClick={() => setActiveTab('leads')}
+              onClick={() => {
+                setActiveTab('leads');
+                fetchLeads();
+              }}
               className={`w-full flex items-center justify-between px-3.5 py-3 rounded-xl transition-all ${
                 activeTab === 'leads'
                   ? 'bg-[#59BFD6] text-[#08090b] font-bold shadow-[0_0_20px_rgba(89,191,214,0.3)]'
@@ -651,8 +767,19 @@ export default function AdminCmsHubPage() {
             >
               <div className="flex items-center gap-3">
                 <Mail className="w-4 h-4" />
-                <span>Buzón & Expediciones</span>
+                <span>Buzón & Leads</span>
               </div>
+              <span className={`text-[10px] font-mono px-2 py-0.5 rounded-full ${
+                activeTab === 'leads'
+                  ? 'bg-[#08090b]/20 text-[#08090b]'
+                  : leads.filter((l) => l.status === 'nuevo').length > 0
+                  ? 'bg-emerald-500/20 text-emerald-400 font-bold'
+                  : 'bg-white/10 text-white/60'
+              }`}>
+                {leads.filter((l) => l.status === 'nuevo').length > 0
+                  ? `${leads.filter((l) => l.status === 'nuevo').length} nuevos`
+                  : `${leads.length}`}
+              </span>
             </button>
 
             <button
@@ -909,18 +1036,29 @@ export default function AdminCmsHubPage() {
               <div className="p-6 rounded-3xl bg-[#111318] border border-white/10 space-y-4">
                 <div className="flex items-center justify-between border-b border-white/10 pb-3">
                   <span className="font-mono text-xs uppercase tracking-wider text-[#C29B63]">
-                    Buzón Comercial & Cotizaciones
+                    Buzón Comercial & Leads
                   </span>
-                  <Mail className="w-4 h-4 text-[#C29B63]" />
+                  <div className="flex items-center gap-2">
+                    {leads.filter((l) => l.status === 'nuevo').length > 0 && (
+                      <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 font-mono text-[10px]">
+                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                        {leads.filter((l) => l.status === 'nuevo').length} nuevos
+                      </span>
+                    )}
+                    <Mail className="w-4 h-4 text-[#C29B63]" />
+                  </div>
                 </div>
                 <p className="font-sans text-sm text-white/70 leading-relaxed">
-                  Enrutamiento directo e instantáneo de prospectos de alto valor hacia el WhatsApp de Paula Valdivieso y correo de Alejandro Lattes sin intermediarios.
+                  {leads.length} solicitudes en el pipeline comercial con enrutamiento instantáneo a WhatsApp de Paula y correo de Alejandro.
                 </p>
                 <button
-                  onClick={() => setActiveTab('leads')}
+                  onClick={() => {
+                    setActiveTab('leads');
+                    fetchLeads();
+                  }}
                   className="inline-flex items-center gap-2 text-xs font-mono text-[#59BFD6] hover:underline uppercase"
                 >
-                  <span>Ver Canales de Despacho &rarr;</span>
+                  <span>Abrir Mesa de Leads &rarr;</span>
                 </button>
               </div>
             </div>
@@ -1928,18 +2066,325 @@ export default function AdminCmsHubPage() {
         )}
 
         {/* ══════════════════════════════════════════════════════════════════ */}
-        {/* TAB 6: BUZÓN & EXPEDICIONES (LEADS)                                */}
+        {/* TAB 6: BUZÓN & EXPEDICIONES (LEADS INTELLIGENCE HUB)               */}
         {/* ══════════════════════════════════════════════════════════════════ */}
         {activeTab === 'leads' && (
-          <div className="space-y-6">
+          <div className="space-y-8">
+            {/* 1. Header & Quick Actions */}
+            <div className="p-8 rounded-3xl bg-[#111318] border border-white/10 flex flex-col md:flex-row md:items-center justify-between gap-6 shadow-2xl">
+              <div className="space-y-2">
+                <div className="flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                  <span className="font-mono text-xs uppercase tracking-wider text-[#59BFD6] font-bold">
+                    Hub de Inteligencia Comercial & Leads Australes
+                  </span>
+                </div>
+                <h2 className="font-condensed text-3xl font-bold uppercase text-white">
+                  Buzón de Cotizaciones & Gestión de Solicitudes
+                </h2>
+                <p className="font-sans text-sm text-white/70 max-w-2xl leading-relaxed">
+                  Recepción de consultas desde el cotizador web, auditor y formularios de contacto. Enrutamiento directo y trazabilidad comercial sin intermediarios.
+                </p>
+              </div>
+
+              <div className="flex flex-wrap items-center gap-3 shrink-0">
+                <button
+                  onClick={fetchLeads}
+                  disabled={leadsLoading}
+                  className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 font-mono text-xs text-white transition-all disabled:opacity-50"
+                  title="Actualizar listado de leads"
+                >
+                  <RefreshCw className={`w-3.5 h-3.5 ${leadsLoading ? 'animate-spin text-[#59BFD6]' : 'text-white/70'}`} />
+                  <span>{leadsLoading ? 'Sincronizando...' : 'Actualizar'}</span>
+                </button>
+
+                <button
+                  onClick={handleExportLeadsCsv}
+                  disabled={leads.length === 0}
+                  className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#59BFD6]/10 hover:bg-[#59BFD6]/20 border border-[#59BFD6]/30 font-mono text-xs text-[#59BFD6] font-bold transition-all disabled:opacity-50"
+                >
+                  <Download className="w-3.5 h-3.5" />
+                  <span>Exportar CSV</span>
+                </button>
+              </div>
+            </div>
+
+            {/* 2. KPI Metrics Ribbon */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <div className="p-6 rounded-2xl bg-[#111318] border border-white/10 space-y-1">
+                <span className="font-mono text-[10px] uppercase tracking-wider text-white/50 block">Total Solicitudes</span>
+                <div className="flex items-baseline gap-2">
+                  <span className="font-condensed text-4xl font-bold text-white">{leads.length}</span>
+                  <span className="text-xs font-mono text-[#59BFD6]">Registradas</span>
+                </div>
+                <span className="text-[11px] font-sans text-white/40 block">Pipeline de clientes</span>
+              </div>
+
+              <div className="p-6 rounded-2xl bg-[#111318] border border-white/10 space-y-1">
+                <span className="font-mono text-[10px] uppercase tracking-wider text-emerald-400 block font-bold">Nuevos por Contactar</span>
+                <div className="flex items-baseline gap-2">
+                  <span className="font-condensed text-4xl font-bold text-emerald-400">
+                    {leads.filter((l) => l.status === 'nuevo').length}
+                  </span>
+                  {leads.filter((l) => l.status === 'nuevo').length > 0 && (
+                    <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping inline-block" />
+                  )}
+                </div>
+                <span className="text-[11px] font-sans text-white/40 block">Acción comercial inmediata</span>
+              </div>
+
+              <div className="p-6 rounded-2xl bg-[#111318] border border-white/10 space-y-1">
+                <span className="font-mono text-[10px] uppercase tracking-wider text-[#C29B63] block">En Proceso / Cotizados</span>
+                <div className="flex items-baseline gap-2">
+                  <span className="font-condensed text-4xl font-bold text-white">
+                    {leads.filter((l) => l.status === 'contactado' || l.status === 'cotizado').length}
+                  </span>
+                  <span className="text-xs font-mono text-[#C29B63]">Activos</span>
+                </div>
+                <span className="text-[11px] font-sans text-white/40 block">Contactados y en propuesta</span>
+              </div>
+
+              <div className="p-6 rounded-2xl bg-[#111318] border border-white/10 space-y-1">
+                <span className="font-mono text-[10px] uppercase tracking-wider text-purple-400 block">Cerrados / Ganados</span>
+                <div className="flex items-baseline gap-2">
+                  <span className="font-condensed text-4xl font-bold text-white">
+                    {leads.filter((l) => l.status === 'cerrado').length}
+                  </span>
+                  <span className="text-xs font-mono text-purple-400">Acuerdos</span>
+                </div>
+                <span className="text-[11px] font-sans text-white/40 block">Proyectos formalizados</span>
+              </div>
+            </div>
+
+            {/* 3. Search and Filter Bar */}
+            <div className="p-4 rounded-2xl bg-[#111318] border border-white/10 flex flex-col md:flex-row gap-4 items-center justify-between">
+              {/* Search input */}
+              <div className="relative w-full md:w-96">
+                <Search className="w-4 h-4 text-white/40 absolute left-3.5 top-1/2 -translate-y-1/2" />
+                <input
+                  type="text"
+                  value={leadSearchQuery}
+                  onChange={(e) => setLeadSearchQuery(e.target.value)}
+                  placeholder="Buscar por cliente, empresa, servicio..."
+                  className="w-full bg-white/5 border border-white/10 rounded-xl pl-10 pr-8 py-2 font-sans text-xs text-white placeholder-white/40 focus:outline-none focus:border-[#59BFD6] transition-colors"
+                />
+                {leadSearchQuery && (
+                  <button
+                    onClick={() => setLeadSearchQuery('')}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-white/40 hover:text-white text-xs"
+                  >
+                    <X className="w-3.5 h-3.5" />
+                  </button>
+                )}
+              </div>
+
+              {/* Status Filter Pills */}
+              <div className="flex flex-wrap items-center gap-1.5 w-full md:w-auto font-mono text-xs">
+                {(['todos', 'nuevo', 'contactado', 'cotizado', 'cerrado'] as const).map((filterOpt) => {
+                  const count =
+                    filterOpt === 'todos'
+                      ? leads.length
+                      : leads.filter((l) => l.status === filterOpt).length;
+                  const isActive = leadStatusFilter === filterOpt;
+                  return (
+                    <button
+                      key={filterOpt}
+                      onClick={() => setLeadStatusFilter(filterOpt)}
+                      className={`px-3 py-1.5 rounded-lg uppercase tracking-wider text-[11px] transition-all flex items-center gap-1.5 ${
+                        isActive
+                          ? 'bg-[#59BFD6] text-[#08090b] font-bold shadow-[0_0_12px_rgba(89,191,214,0.3)]'
+                          : 'bg-white/5 text-white/70 hover:bg-white/10 hover:text-white'
+                      }`}
+                    >
+                      <span>{filterOpt}</span>
+                      <span className={`px-1.5 py-0.5 rounded text-[10px] ${
+                        isActive ? 'bg-[#08090b]/20 text-[#08090b]' : 'bg-white/10 text-white/60'
+                      }`}>
+                        {count}
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* 4. Leads List / Cards */}
+            <div className="space-y-4">
+              {(() => {
+                const filteredLeads = leads.filter((lead) => {
+                  const matchesStatus = leadStatusFilter === 'todos' || lead.status === leadStatusFilter;
+                  const q = leadSearchQuery.toLowerCase().trim();
+                  const matchesSearch =
+                    !q ||
+                    lead.nombre.toLowerCase().includes(q) ||
+                    (lead.empresa && lead.empresa.toLowerCase().includes(q)) ||
+                    (lead.email && lead.email.toLowerCase().includes(q)) ||
+                    lead.telefono.toLowerCase().includes(q) ||
+                    lead.servicios.some((s) => s.toLowerCase().includes(q)) ||
+                    lead.region.toLowerCase().includes(q);
+                  return matchesStatus && matchesSearch;
+                });
+
+                if (filteredLeads.length === 0) {
+                  return (
+                    <div className="p-12 rounded-3xl bg-[#111318] border border-white/10 text-center space-y-3">
+                      <Mail className="w-8 h-8 text-white/30 mx-auto" />
+                      <h4 className="font-condensed text-xl font-bold uppercase text-white">
+                        No se encontraron registros
+                      </h4>
+                      <p className="font-sans text-xs text-white/50 max-w-md mx-auto">
+                        No hay solicitudes de cotización que coincidan con el filtro seleccionado.
+                      </p>
+                    </div>
+                  );
+                }
+
+                return filteredLeads.map((lead) => {
+                  const cleanPhone = lead.telefono.replace(/[^0-9]/g, '');
+                  const waGreeting = encodeURIComponent(
+                    `Hola ${lead.nombre}, te contactamos desde Puelche Lab respecto a tu solicitud de cotización para ${lead.servicios.join(', ')}. ¿Podemos coordinar una breve llamada?`
+                  );
+                  const isUpdating = updatingLeadId === lead.id;
+
+                  const statusColors: Record<string, string> = {
+                    nuevo: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30',
+                    contactado: 'bg-sky-500/10 text-sky-400 border-sky-500/30',
+                    cotizado: 'bg-purple-500/10 text-purple-400 border-purple-500/30',
+                    cerrado: 'bg-amber-500/10 text-amber-400 border-amber-500/30',
+                  };
+
+                  return (
+                    <div
+                      key={lead.id}
+                      className="p-6 rounded-2xl bg-[#111318] border border-white/10 space-y-5 hover:border-white/20 transition-all shadow-lg"
+                    >
+                      {/* Top Row: Client Info + Status */}
+                      <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 border-b border-white/5 pb-4">
+                        <div className="space-y-1">
+                          <div className="flex items-center gap-3">
+                            <h3 className="font-condensed text-2xl font-bold uppercase text-white tracking-wide">
+                              {lead.nombre}
+                            </h3>
+                            {lead.empresa && (
+                              <span className="font-mono text-xs px-2.5 py-0.5 rounded-md bg-white/5 border border-white/10 text-white/80">
+                                {lead.empresa}
+                              </span>
+                            )}
+                          </div>
+                          <div className="flex flex-wrap items-center gap-3 font-mono text-xs text-white/50">
+                            <span>{lead.region}</span>
+                            <span>&bull;</span>
+                            <span>
+                              {new Date(lead.created_at).toLocaleDateString('es-CL', {
+                                day: '2-digit',
+                                month: 'short',
+                                year: 'numeric',
+                                hour: '2-digit',
+                                minute: '2-digit',
+                              })}
+                            </span>
+                            <span>&bull;</span>
+                            <span className="text-[#59BFD6] uppercase text-[10px]">
+                              {lead.origen.replace(/_/g, ' ')}
+                            </span>
+                          </div>
+                        </div>
+
+                        {/* Current Status Badge + Loading */}
+                        <div className="flex items-center gap-2">
+                          {isUpdating && <RefreshCw className="w-3.5 h-3.5 animate-spin text-[#59BFD6]" />}
+                          <span className={`px-3 py-1 rounded-full font-mono text-xs uppercase tracking-wider border font-bold ${statusColors[lead.status] || 'border-white/20 text-white'}`}>
+                            {lead.status}
+                          </span>
+                        </div>
+                      </div>
+
+                      {/* Middle Row: Services Badges & Budget */}
+                      <div className="flex flex-wrap items-center gap-2">
+                        {lead.servicios.map((srv, idx) => (
+                          <span
+                            key={idx}
+                            className="px-2.5 py-1 rounded-lg bg-white/5 border border-white/10 font-mono text-xs text-white/90"
+                          >
+                            {srv}
+                          </span>
+                        ))}
+                        <span className="px-2.5 py-1 rounded-lg bg-[#C29B63]/10 border border-[#C29B63]/30 font-mono text-xs text-[#C29B63] font-bold">
+                          Presupuesto: {lead.presupuesto}
+                        </span>
+                        {lead.modalidad && (
+                          <span className="px-2.5 py-1 rounded-lg bg-white/[0.03] border border-white/5 font-mono text-xs text-white/60">
+                            {lead.modalidad}
+                          </span>
+                        )}
+                      </div>
+
+                      {/* Message / Brief */}
+                      {lead.mensaje && (
+                        <div className="p-4 rounded-xl bg-white/[0.02] border-l-2 border-[#59BFD6] border-y border-r border-white/5 font-sans text-xs text-white/80 leading-relaxed italic">
+                          &ldquo;{lead.mensaje}&rdquo;
+                        </div>
+                      )}
+
+                      {/* Actions Footer */}
+                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-2 border-t border-white/5">
+                        {/* Direct contact buttons */}
+                        <div className="flex flex-wrap items-center gap-2">
+                          <a
+                            href={`https://wa.me/${cleanPhone}?text=${waGreeting}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/30 font-mono text-xs text-emerald-400 font-bold transition-colors"
+                          >
+                            <MessageSquare className="w-3.5 h-3.5" />
+                            <span>WhatsApp ({lead.telefono})</span>
+                          </a>
+
+                          {lead.email && (
+                            <a
+                              href={`mailto:${lead.email}?subject=${encodeURIComponent(`Puelche Lab: Cotización para ${lead.nombre}`)}`}
+                              className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 font-mono text-xs text-white/80 transition-colors"
+                            >
+                              <Mail className="w-3.5 h-3.5 text-[#59BFD6]" />
+                              <span>{lead.email}</span>
+                            </a>
+                          )}
+                        </div>
+
+                        {/* Status workflow toggles */}
+                        <div className="flex items-center gap-1 font-mono text-[11px]">
+                          <span className="text-white/40 text-[10px] uppercase mr-1">Mover a:</span>
+                          {(['nuevo', 'contactado', 'cotizado', 'cerrado'] as const).map((st) => (
+                            <button
+                              key={st}
+                              disabled={lead.status === st || isUpdating}
+                              onClick={() => handleUpdateLeadStatus(lead.id, st)}
+                              className={`px-2 py-1 rounded transition-colors uppercase text-[10px] ${
+                                lead.status === st
+                                  ? 'bg-white/20 text-white font-bold cursor-default'
+                                  : 'bg-white/5 text-white/50 hover:bg-white/10 hover:text-white'
+                              }`}
+                            >
+                              {st}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  );
+                });
+              })()}
+            </div>
+
+            {/* 5. Direct Dispatch Channels Info */}
             <div className="p-8 rounded-3xl bg-[#111318] border border-white/10 space-y-6">
               <div className="space-y-2">
                 <span className="font-mono text-xs uppercase tracking-wider text-[#59BFD6]">
                   Mesa de Despacho & Expedición
                 </span>
-                <h2 className="font-condensed text-3xl font-bold uppercase text-white">
-                  Enrutamiento Directo de Consultas & Cotizaciones
-                </h2>
+                <h3 className="font-condensed text-2xl font-bold uppercase text-white">
+                  Canales Directos de Notificación
+                </h3>
                 <p className="font-sans text-sm text-white/70 max-w-2xl leading-relaxed">
                   Las solicitudes de cotización generadas por el cotizador y el formulario de contacto se despachan de forma instantánea a los canales de la mesa directiva:
                 </p>
@@ -1950,9 +2395,9 @@ export default function AdminCmsHubPage() {
                   <span className="font-mono text-[10px] uppercase tracking-wider text-[#C29B63] block">
                     Dirección Comercial & Cotizaciones
                   </span>
-                  <h3 className="font-condensed text-xl font-bold uppercase text-white">
+                  <h4 className="font-condensed text-xl font-bold uppercase text-white">
                     Paula Valdivieso
-                  </h3>
+                  </h4>
                   <div className="space-y-1.5 font-mono text-xs text-white/80">
                     <p className="flex items-center gap-2">
                       <Mail className="w-3.5 h-3.5 text-[#59BFD6]" />
@@ -1969,9 +2414,9 @@ export default function AdminCmsHubPage() {
                   <span className="font-mono text-[10px] uppercase tracking-wider text-[#59BFD6] block">
                     Fundador & Dirección Creativa
                   </span>
-                  <h3 className="font-condensed text-xl font-bold uppercase text-white">
+                  <h4 className="font-condensed text-xl font-bold uppercase text-white">
                     Alejandro Lattes Corona
-                  </h3>
+                  </h4>
                   <div className="space-y-1.5 font-mono text-xs text-white/80">
                     <p className="flex items-center gap-2">
                       <Mail className="w-3.5 h-3.5 text-[#59BFD6]" />
