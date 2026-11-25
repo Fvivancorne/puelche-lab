@@ -110,9 +110,8 @@ export function ClientMarquee() {
       <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-16 mt-12 pt-8 border-t border-white/10 relative z-10">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           <div className="bg-white/[0.03] border border-white/10 rounded-2xl p-5 space-y-2">
-            <div className="flex items-center justify-between text-[#59BFD6] font-mono text-[11px] uppercase tracking-wider">
-              <span>01 &bull; Faena Industrial</span>
-              <span className="w-1.5 h-1.5 rounded-full bg-[#59BFD6]" />
+            <div className="text-[#59BFD6] font-mono text-[11px] uppercase tracking-wider">
+              <span>Faena Industrial</span>
             </div>
             <div className="font-condensed text-lg font-bold text-white uppercase">Puerto Montt & Fiordos</div>
             <p className="font-sans text-xs text-white/60 leading-relaxed font-light">
@@ -121,9 +120,8 @@ export function ClientMarquee() {
           </div>
 
           <div className="bg-white/[0.03] border border-white/10 rounded-2xl p-5 space-y-2">
-            <div className="flex items-center justify-between text-[#59BFD6] font-mono text-[11px] uppercase tracking-wider">
-              <span>02 &bull; Hotelería Vernácula</span>
-              <span className="w-1.5 h-1.5 rounded-full bg-[#59BFD6]" />
+            <div className="text-[#59BFD6] font-mono text-[11px] uppercase tracking-wider">
+              <span>Hotelería Vernácula</span>
             </div>
             <div className="font-condensed text-lg font-bold text-white uppercase">Chiloé & Cava</div>
             <p className="font-sans text-xs text-white/60 leading-relaxed font-light">
@@ -132,9 +130,8 @@ export function ClientMarquee() {
           </div>
 
           <div className="bg-white/[0.03] border border-white/10 rounded-2xl p-5 space-y-2">
-            <div className="flex items-center justify-between text-[#59BFD6] font-mono text-[11px] uppercase tracking-wider">
-              <span>03 &bull; Dron & Aislamiento</span>
-              <span className="w-1.5 h-1.5 rounded-full bg-[#59BFD6]" />
+            <div className="text-[#59BFD6] font-mono text-[11px] uppercase tracking-wider">
+              <span>Dron & Aislamiento</span>
             </div>
             <div className="font-condensed text-lg font-bold text-white uppercase">Río Puelo & Cochamó</div>
             <p className="font-sans text-xs text-white/60 leading-relaxed font-light">
@@ -143,9 +140,8 @@ export function ClientMarquee() {
           </div>
 
           <div className="bg-white/[0.03] border border-white/10 rounded-2xl p-5 space-y-2">
-            <div className="flex items-center justify-between text-[#59BFD6] font-mono text-[11px] uppercase tracking-wider">
-              <span>04 &bull; Confín Austral</span>
-              <span className="w-1.5 h-1.5 rounded-full bg-[#59BFD6]" />
+            <div className="text-[#59BFD6] font-mono text-[11px] uppercase tracking-wider">
+              <span>Confín Austral</span>
             </div>
             <div className="font-condensed text-lg font-bold text-white uppercase">Punta Arenas & Natales</div>
             <p className="font-sans text-xs text-white/60 leading-relaxed font-light">

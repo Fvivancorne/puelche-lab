@@ -38,7 +38,7 @@ const STORIES: OrganicStory[] = [
     mobileTitle: 'Expedición Fluvial en Río Puelo',
     protagonist: 'Guías & Navegantes Fluviales',
     role: 'Expedición Cordillerana',
-    location: 'Río Puelo & Cochamó, Los Lagos',
+    location: 'Río Puelo',
     image: '/images/real/bg-home-2.jpg',
     alt: 'Tagua Tagua Lodge: Navegación fluvial y cordillera en Río Puelo',
     fieldNote:
@@ -64,7 +64,7 @@ const STORIES: OrganicStory[] = [
     mobileTitle: 'Robótica Submarina en Altamar',
     protagonist: 'Tripulación de Robótica Submarina',
     role: 'Oceanografía & Buceo Técnico',
-    location: 'Seno de Reloncaví & Océano Pacífico',
+    location: 'Seno de Reloncaví',
     image: '/images/real/facebook/fb-nazca-1.jpg',
     alt: 'Nazca Oceanografía: Robótica submarina y equipo técnico en faena marítima',
     fieldNote:
@@ -90,7 +90,7 @@ const STORIES: OrganicStory[] = [
     mobileTitle: 'Residencia Austral y Luz Natural en el Lago',
     protagonist: 'Interiorismo Austral Contemporáneo',
     role: 'Arquitectura & Luz Natural',
-    location: 'Puerto Varas & Lago Llanquihue',
+    location: 'Lago Llanquihue',
     image: '/images/real/facebook/fb-cohosting-1.jpg',
     alt: 'CoHosting Chile: Interiorismo contemporáneo y vistas abiertas en Puerto Varas',
     fieldNote:
@@ -116,7 +116,7 @@ const STORIES: OrganicStory[] = [
     mobileTitle: 'Patrimonio Austral frente al Estrecho de Magallanes',
     protagonist: 'Punta Arenas & Última Frontera',
     role: 'Arquitectura Antártica',
-    location: 'Punta Arenas, Estrecho de Magallanes',
+    location: 'Estrecho de Magallanes',
     image: '/images/real/bg-portafolios-fotografia-d-min.jpg',
     alt: 'Hotel Cabo de Hornos: Arquitectura histórica frente al Estrecho de Magallanes',
     fieldNote:
@@ -204,14 +204,6 @@ export function OrganicStoriesSection() {
         className="stories-desktop-runway hidden md:block relative w-full h-[350vh]"
       >
         <div className="stories-desktop-sticky sticky top-0 w-full h-screen min-h-screen overflow-hidden flex flex-col justify-between">
-          {/* Cabecera Flotante Discreta */}
-          <header className="absolute top-6 left-8 md:left-16 z-30 pointer-events-none">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-black/60 backdrop-blur-md border border-white/10 text-[#59BFD6] font-mono text-xs uppercase tracking-[0.25em]">
-              <Feather className="w-3.5 h-3.5 text-[#59BFD6]" />
-              <span>CRÓNICAS DEL PUELCHE</span>
-            </div>
-          </header>
-
           {/* Track Horizontal de Obras */}
           <div
             ref={trackRef}
@@ -256,9 +248,8 @@ export function OrganicStoriesSection() {
                 {isImmersive ? (
                   /* ═══ MODO INMERSIÓN A SANGRE ═══ */
                   <article className="relative z-10 max-w-3xl w-full flex flex-col items-start justify-end h-full pb-24 space-y-4">
-                    <div className="flex items-center gap-1.5 text-xs font-mono text-[#59BFD6]">
-                      <MapPin className="w-3.5 h-3.5 text-[#59BFD6]" />
-                      <span className="uppercase tracking-wider">{story.location}</span>
+                    <div className="text-xs font-mono text-[#59BFD6] uppercase tracking-[0.2em]">
+                      {story.location}
                     </div>
 
                     <h3 className="font-condensed text-5xl sm:text-6xl lg:text-7xl uppercase tracking-tight font-bold text-white leading-[0.95] drop-shadow-2xl">
@@ -271,7 +262,7 @@ export function OrganicStoriesSection() {
 
                     <div className="pt-4 flex items-center gap-6">
                       <span className="font-mono text-xs text-white/50 tracking-wide">
-                        [ {story.num} / 04 ]
+                        {story.num} / 04
                       </span>
                       <Link
                         href={`/portafolio?proyecto=${story.projectSlug}`}
@@ -286,9 +277,8 @@ export function OrganicStoriesSection() {
                   /* ═══ MODO SPLIT: TARJETA FLOTANTE LATERAL ═══ */
                   <article className="relative z-10 max-w-lg w-full bg-black/40 backdrop-blur-md rounded-3xl border border-white/20 p-7 sm:p-9 shadow-[0_25px_60px_rgba(0,0,0,0.6)] space-y-5">
                     <div className="space-y-2">
-                      <div className="flex items-center gap-1.5 text-xs font-mono text-[#59BFD6]">
-                        <MapPin className="w-3.5 h-3.5 text-[#59BFD6]" />
-                        <span className="uppercase tracking-wider">{story.location}</span>
+                      <div className="text-xs font-mono text-[#59BFD6] uppercase tracking-[0.2em]">
+                        {story.location}
                       </div>
 
                       <h3 className="font-condensed text-3xl sm:text-4xl uppercase tracking-tight font-bold text-white leading-tight">
@@ -310,7 +300,7 @@ export function OrganicStoriesSection() {
                     {/* CTA Discreto — enlace con flecha, no botón sólido */}
                     <div className="pt-3 border-t border-white/10 flex items-center justify-between">
                       <span className="font-mono text-xs text-white/50 tracking-wide">
-                        [ {story.num} / 04 ] &bull; {story.role}
+                        {story.num} / 04 &bull; {story.role}
                       </span>
 
                       <Link
@@ -332,7 +322,7 @@ export function OrganicStoriesSection() {
           <footer className="stories-desktop-progress absolute bottom-6 left-8 right-8 md:left-16 md:right-16 z-30 flex items-center justify-between text-xs font-mono text-white/80 bg-black/70 backdrop-blur-md px-6 py-3.5 rounded-full border border-white/15 shadow-2xl">
             <div className="flex items-center gap-3">
               <span className="text-[#59BFD6] font-bold tracking-wider">
-                [ {activeStory.num} / 04 ]
+                {activeStory.num} / 04
               </span>
               <span className="hidden sm:inline text-white/90 font-medium">
                 {activeStory.title}
@@ -370,10 +360,9 @@ export function OrganicStoriesSection() {
       <div className="block md:hidden py-16 px-4">
         {/* Encabezado Móvil */}
         <div className="px-2 mb-8 space-y-3">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/[0.04] border border-white/10 text-[#59BFD6] font-mono text-xs uppercase tracking-[0.2em]">
-            <Feather className="w-3 h-3 text-[#59BFD6]" />
-            <span>CRÓNICAS DEL PUELCHE</span>
-          </div>
+          <span className="font-mono text-xs uppercase tracking-[0.2em] text-[#59BFD6]">
+            Relatos de Expedición
+          </span>
           <h2 className="font-condensed text-3xl uppercase font-bold text-white tracking-tight">
             La Historia Detrás del Disparo
           </h2>
@@ -404,9 +393,8 @@ export function OrganicStoriesSection() {
               {/* Contenido Flotante al Pie */}
               <div className="relative z-10 space-y-3">
                 <div className="space-y-1">
-                  <div className="flex items-center gap-1.5 text-xs font-mono text-[#59BFD6]">
-                    <MapPin className="w-3 h-3 text-[#59BFD6]" />
-                    <span className="uppercase tracking-wider">{story.location}</span>
+                  <div className="text-xs font-mono text-[#59BFD6] uppercase tracking-[0.2em]">
+                    {story.location}
                   </div>
                   <h3 className="font-condensed text-2xl uppercase font-bold text-white leading-tight">
                     {story.mobileTitle || story.title}
@@ -425,7 +413,7 @@ export function OrganicStoriesSection() {
 
                 <div className="pt-2 flex items-center justify-between gap-2 border-t border-white/10">
                   <span className="font-mono text-[10px] text-white/60">
-                    [ {story.num} / 04 ] &bull; {story.role}
+                    {story.num} / 04 &bull; {story.role}
                   </span>
                   <Link
                     href={`/portafolio?proyecto=${story.projectSlug}`}

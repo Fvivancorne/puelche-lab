@@ -23,10 +23,9 @@ export function AuthorDirectionSection() {
         {/* Encabezado de Sección */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 border-b border-white/10 pb-8">
           <div className="space-y-3">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#59BFD6]/10 border border-[#59BFD6]/20 font-mono text-[11px] text-[#59BFD6] uppercase tracking-widest">
-              <Compass className="w-3.5 h-3.5 animate-spin" style={{ animationDuration: '18s' }} />
-              <span>Puerto Varas &bull; 41°19&apos;S 72°59&apos;W</span>
-            </div>
+            <span className="font-mono text-xs uppercase tracking-[0.2em] text-[#59BFD6]">
+              Dirección de Arte & Oficio
+            </span>
             <h2 className="font-condensed text-4xl sm:text-5xl md:text-6xl font-bold uppercase tracking-tight text-white leading-[0.95]">
               Detrás del Lente y la <span className="text-[#59BFD6]">Dirección de Arte</span>
             </h2>
@@ -76,7 +75,7 @@ export function AuthorDirectionSection() {
                 {/* Badge en vivo sobre la foto */}
                 <div className="absolute bottom-2 left-2 right-2 bg-black/70 backdrop-blur-md px-2.5 py-1.5 rounded-lg border border-white/10 flex items-center justify-between text-[10px] font-mono text-white/80">
                   <span>{activePhoto === 'portrait' ? 'En Faena Austral' : 'Trípode & Encuadre'}</span>
-                  <span className="text-[#59BFD6] font-bold">&bull; 41°S</span>
+                  <span className="text-[#59BFD6] font-medium">Puerto Varas</span>
                 </div>
               </div>
 

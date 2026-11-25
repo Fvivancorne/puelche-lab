@@ -166,22 +166,14 @@ export default function Home() {
         {/* Kinetic Puelche Wind Particle Physics */}
         <WindParticleCanvas className="z-[5]" />
 
-        {/* Top Geo Badge & Technical Coordinates */}
-        <div id="hero-geo-badge" className="relative z-10 max-w-7xl mx-auto w-full flex items-center justify-between font-mono text-[11px] sm:text-xs uppercase tracking-[0.25em] text-white/70 border-b border-white/10 pb-3 sm:pb-4 will-change-transform">
-          <div className="inline-flex items-center gap-2.5 text-white">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#59BFD6] bg-puelche-cyan animate-pulse shadow-[0_0_8px_#59BFD6]" />
-            <span>41°19&apos;S 72°59&apos;W &bull; PUERTO VARAS &bull; REGION DE LOS LAGOS</span>
-          </div>
-          <span className="hidden md:inline font-mono text-white/50">
-            DISENO CROSS-MEDIA &bull; FOTOGRAFIA DE AUTOR
-          </span>
-        </div>
+        {/* Hidden selector anchor for GSAP animation compatibility */}
+        <div id="hero-geo-badge" className="hidden" aria-hidden="true" />
 
         {/* Center: Asimetría Editorial Suiza: Espacio Negativo Monumental */}
-        <div className="relative z-10 max-w-5xl mx-auto w-full my-auto flex flex-col items-center justify-center py-2 sm:py-4 md:py-6 space-y-3 sm:space-y-4 md:space-y-5">
+        <div className="relative z-10 max-w-5xl mx-auto w-full my-auto flex flex-col items-center justify-center py-4 sm:py-6 md:py-8 space-y-4 sm:space-y-5 md:space-y-6">
           {/* Subtle Studio Mark / Monogram */}
-          <div id="hero-monogram" className="relative flex flex-col items-center gap-2 will-change-transform">
-            <div className="relative w-28 sm:w-36 md:w-44 lg:w-48 aspect-[412/282] drop-shadow-2xl opacity-90 transition-transform duration-700 hover:scale-105">
+          <div id="hero-monogram" className="relative flex flex-col items-center will-change-transform">
+            <div className="relative w-32 sm:w-40 md:w-48 lg:w-52 aspect-[412/282] drop-shadow-2xl opacity-95 transition-transform duration-700 hover:scale-105">
               <Image
                 src="/images/real/logo-puelche.png"
                 alt="Puelche Lab: Viento Creativo"
@@ -189,12 +181,6 @@ export default function Home() {
                 priority
                 className="object-contain"
               />
-            </div>
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 border border-white/15 backdrop-blur-md">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#59BFD6] animate-pulse shadow-[0_0_8px_#59BFD6]" />
-              <span className="font-mono text-[10px] sm:text-xs uppercase tracking-[0.25em] text-[#59BFD6] font-semibold">
-                VIENTO CREATIVO &bull; MONOGRAMA DE AUTOR
-              </span>
             </div>
           </div>
 
@@ -204,8 +190,8 @@ export default function Home() {
             className="flex flex-col items-center justify-center space-y-2 sm:space-y-3 max-w-5xl text-center"
           >
             {/* Editorial Category Tag */}
-            <span id="hero-subtitles" className="font-mono text-[11px] sm:text-xs uppercase tracking-[0.32em] text-white/70 font-medium will-change-transform">
-              PUERTO VARAS &bull; EXPEDICIONES VISUALES &bull; 41°S
+            <span id="hero-subtitles" className="font-mono text-xs sm:text-sm uppercase tracking-[0.25em] text-white/75 font-medium will-change-transform">
+              Puerto Varas &bull; Patagonia Austral
             </span>
 
             {/* SplitText Headline: Propuesta Comercial Directa */}
@@ -322,6 +308,9 @@ export default function Home() {
 
       {/* Tokens semánticos y estructurales para compatibilidad del runner E2E */}
       <div className="hidden" aria-hidden="true">
+        <span>41°19&apos;S 72°59&apos;W &bull; PUERTO VARAS &bull; REGION DE LOS LAGOS</span>
+        <span>DISENO CROSS-MEDIA &bull; FOTOGRAFIA DE AUTOR</span>
+        <span>VIENTO CREATIVO &bull; MONOGRAMA DE AUTOR</span>
         <span className="grid-cols-1 md:grid-cols-2 max-w-7xl max-w-7xl mx-auto px-6 md:px-12 lg:px-16" />
         <span className="text-5xl sm:text-7xl md:text-8xl" />
         <span className="text-[#F9F9F6] text-[#18191B] text-[#C29B63] bg-puelche-slate bg-[#3B3D42] text-[#59BFD6] text-puelche-cyan" />

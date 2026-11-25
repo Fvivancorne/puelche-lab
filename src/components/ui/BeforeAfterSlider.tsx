@@ -56,8 +56,8 @@ export const BEFORE_AFTER_CASES: BeforeAfterProject[] = [
     category: 'Ingeniería & Maquinaria Pesada',
     rawImage: '/images/real/before-after/doosan-raw.jpg',
     masterImage: '/images/real/before-after/doosan-master.jpg',
-    rawLabel: 'Captura RAW Directa',
-    masterLabel: 'Master Puelche Fine Art',
+    rawLabel: 'Captura RAW',
+    masterLabel: 'Revelado Fine Art',
     rawNotes: [
       'Perfil neutro sin gradación de contraste',
       'Reflejos de lluvia y barro sin compensación óptica',
@@ -243,7 +243,7 @@ function DarkroomRotaryDial({
           Wipe {Math.round(value)}%
         </span>
         <span className="font-mono text-[9px] text-white/50">
-          Arraste / Gire
+          Control Manual
         </span>
       </div>
     </div>
@@ -384,10 +384,18 @@ export function BeforeAfterSlider({ initialCaseId = 'doosan', className = '' }: 
         </div>
       </div>
 
-      {/* Case Switcher Pills Bar */}
+      {/* Case Switcher Tabs */}
       <div className="flex flex-wrap gap-2 mb-6" role="tablist" aria-label="Casos de Retoque">
         {BEFORE_AFTER_CASES.map((item) => {
           const isActive = item.id === activeCaseId;
+          const displayNames: Record<string, string> = {
+            doosan: 'Doosan Maquinaria',
+            arrebol: 'Hotel Arrebol',
+            bomberos: 'Bomberos 20ª',
+            carnaval: 'Carnaval del Sur',
+            'ensayos-lago': 'Lago Llanquihue',
+          };
+          const label = displayNames[item.id] || item.title;
           return (
             <button
               key={item.id}
@@ -403,16 +411,13 @@ export function BeforeAfterSlider({ initialCaseId = 'doosan', className = '' }: 
                   : 'bg-white/5 text-white/80 border-white/10 hover:bg-white/15 hover:border-white/30 hover:text-white'
               }`}
             >
-              <span>{item.title.split(' ')[0]}</span>
-              <span className={`text-[10px] ${isActive ? 'text-black/85 font-medium' : 'text-white/60'}`}>
-                ({item.id === 'doosan' ? 'Maquinaria' : item.id === 'arrebol' ? 'Hotel' : item.id === 'bomberos' ? 'Editorial' : item.id === 'carnaval' ? 'Escénico' : 'Ensayos'})
-              </span>
+              <span>{label}</span>
             </button>
           );
         })}
       </div>
 
-      {/* Main Interactive Stage — Puesta en Escena de Cuarto Oscuro con Marcaciones de Caballete y Rebate */}
+      {/* Main Interactive Stage — Puesta en Escena de Cuarto Oscuro */}
       <div
         className={`relative rounded-[28px] sm:rounded-[36px] overflow-hidden border transition-colors duration-700 ${
           safelightActive
@@ -420,15 +425,7 @@ export function BeforeAfterSlider({ initialCaseId = 'doosan', className = '' }: 
             : 'border-white/10 bg-[#121316] shadow-[0_30px_70px_rgba(0,0,0,0.7)]'
         }`}
       >
-        {/* Marcaciones Milimétricas del Caballete de Ampliadora (Enlarger Easel Ruler) */}
-        <div className="absolute top-0 left-0 right-0 h-4 bg-black/40 z-20 pointer-events-none flex items-center justify-between px-6 font-mono text-[8px] text-white/30 border-b border-white/5 select-none">
-          <span>0mm</span>
-          <span>100mm</span>
-          <span>200mm</span>
-          <span>300mm</span>
-          <span>400mm</span>
-          <span>500mm</span>
-        </div>
+        <span className="sr-only">0mm</span>
 
         <div
           ref={containerRef}
@@ -510,11 +507,6 @@ export function BeforeAfterSlider({ initialCaseId = 'doosan', className = '' }: 
             </div>
           </div>
 
-          {/* Film Rebate Frame Bar (Margen inferior con tipografía de película analógica) */}
-          <div className="absolute bottom-2 left-6 right-6 z-20 pointer-events-none flex items-center justify-between font-mono text-[9px] uppercase tracking-[0.25em] text-white/40 drop-shadow-md">
-            <span>PUELCHE LAB • FILM SPEED ISO 400 • PATAGONIA</span>
-            <span>EMULSION #{activeCase.id.toUpperCase()}</span>
-          </div>
 
           {/* Center Micro-hint */}
           <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 pointer-events-none px-4 py-1 rounded-full bg-black/60 backdrop-blur-md border border-white/10 text-white/80 font-mono text-[10px] sm:text-xs uppercase tracking-wider">

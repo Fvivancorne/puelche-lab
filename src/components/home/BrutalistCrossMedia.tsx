@@ -333,30 +333,10 @@ export function BrutalistCrossMedia() {
 
       {/* Contenido Superior / Encabezado de Sección */}
       <div className="relative z-10 max-w-7xl mx-auto w-full space-y-6 sm:space-y-7">
-        {/* Meta Bar Superior: Estilo Editorial */}
-        <div className="flex flex-wrap items-center justify-between gap-4 border-b border-white/15 pb-3 text-xs uppercase tracking-widest text-white/75 font-condensed">
-          <div className="flex items-center gap-3">
-            <span className="w-2 h-2 rounded-full bg-puelche-cyan" />
-            <span className="text-white font-bold tracking-[0.2em]">VIENTO CREATIVO &bull; MANIFIESTO DE AUTOR</span>
-          </div>
-          <div className="flex items-center gap-3 text-puelche-cyan">
-            <span className="font-medium">PUERTO VARAS &bull; REGIÓN DE LOS LAGOS</span>
-            <span className="hidden sm:inline text-white/40 font-serif italic lowercase tracking-normal">patagonia chilena</span>
-          </div>
-        </div>
-
         {/* Titular Monumental */}
         <div className="space-y-3 sm:space-y-4">
-          <div className="flex flex-wrap items-center gap-3">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-black/40 backdrop-blur-md border border-white/15 text-puelche-cyan font-condensed text-[11px] sm:text-xs uppercase tracking-wider">
-              <span>ESTUDIO CROSS MEDIA &bull; PUERTO VARAS</span>
-            </div>
-
-            {/* Indicador Suave de Vista Activa */}
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-black/50 backdrop-blur-md border border-puelche-cyan/30 text-white/90 font-serif italic text-[11px] sm:text-xs">
-              <span className="w-1.5 h-1.5 rounded-full bg-puelche-cyan" />
-              <span>{activeIdx !== null ? CAPABILITIES[activeIdx].title : 'Panorámica Austral'}</span>
-            </div>
+          <div className="flex items-center gap-2 text-xs font-mono uppercase tracking-[0.2em] text-[#59BFD6]">
+            <span>Estudio de Diseño & Producción Cross Media</span>
           </div>
 
           <h2
@@ -391,10 +371,9 @@ export function BrutalistCrossMedia() {
             <div className="absolute top-0 right-0 w-80 h-80 bg-[#59BFD6]/[0.06] rounded-full blur-3xl pointer-events-none group-hover:bg-[#59BFD6]/[0.12] transition-colors duration-700" />
 
             <div className="space-y-3 relative z-10">
-              <div className="inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.25em] text-[#59BFD6]">
-                <span className="w-1.5 h-1.5 rounded-full bg-[#59BFD6] animate-pulse" />
-                <span>ESTUDIO DE AUTOR &bull; PUERTO VARAS</span>
-              </div>
+              <span className="font-mono text-xs uppercase tracking-[0.2em] text-[#59BFD6]">
+                Manifiesto de Autor
+              </span>
 
               <p className="text-white font-medium text-xl sm:text-2xl lg:text-3xl font-condensed uppercase tracking-tight leading-tight drop-shadow-md">
                 Somos un Estudio de Diseño Cross Media y Fotografía en Puerto Varas.
@@ -412,25 +391,12 @@ export function BrutalistCrossMedia() {
             className="lg:col-span-5 lg:translate-y-4 flex flex-col justify-between space-y-4 bg-[#14151a]/85 backdrop-blur-xl p-6 sm:p-7 rounded-[28px] sm:rounded-[32px] border border-white/15 shadow-[0_25px_70px_rgba(0,0,0,0.9)] relative overflow-hidden group will-change-transform"
           >
             <div className="space-y-2 relative z-10">
-              <span className="font-mono text-[10px] sm:text-[11px] uppercase tracking-[0.3em] text-white/50">
-                INFRAESTRUCTURA &bull; EXPEDICIÓN
+              <span className="font-mono text-xs uppercase tracking-[0.2em] text-white/50">
+                Infraestructura & Producción
               </span>
               <p className="font-light text-white/85 text-xs sm:text-sm lg:text-base leading-relaxed">
                 Contamos con un estudio de fotografía y grabación muy bien equipado, iluminación profesional y equipos de alta gama, tanto en tierra firme como desde el aire con dron 4K, haciendo resaltar tu producto o servicio para que pase al frente en la vitrina del mercado.
               </p>
-            </div>
-
-            {/* Píldoras Táctiles con Acabado de Cuarto Oscuro */}
-            <div className="flex flex-wrap items-center gap-2 pt-3 border-t border-white/10 font-mono text-[11px] text-white/80 relative z-10">
-              <span className="px-3 py-1 rounded-full bg-white/5 border border-white/10 text-white/90">
-                Fotografía de autor
-              </span>
-              <span className="px-3 py-1 rounded-full bg-white/5 border border-white/10 text-white/90">
-                Set propio
-              </span>
-              <span className="px-3 py-1 rounded-full bg-[#59BFD6]/15 text-[#59BFD6] border border-[#59BFD6]/30 font-medium">
-                Territorio austral
-              </span>
             </div>
           </div>
         </div>
@@ -441,11 +407,8 @@ export function BrutalistCrossMedia() {
           ======================================================================
         */}
         <div className="pt-6">
-          <div className="flex items-center justify-between pb-4 text-xs font-condensed uppercase tracking-wider text-white/70">
-            <span className="flex items-center gap-2">
-              <span className="w-1.5 h-1.5 rounded-full bg-puelche-cyan" />
-              <span className="font-bold text-white tracking-widest">CUATRO DIMENSIONES DE NUESTRO OFICIO</span>
-            </span>
+          <div className="flex items-center justify-between pb-4 text-xs font-mono uppercase tracking-wider text-white/60">
+            <span>Disciplinas de Estudio</span>
           </div>
 
           <div ref={cardsContainerRef} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -490,10 +453,6 @@ export function BrutalistCrossMedia() {
                         fill
                         className="object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-transparent to-transparent" />
-                      <div className="absolute bottom-2 left-3 right-3 flex items-center justify-between text-[11px] text-white">
-                        <span className="font-condensed uppercase tracking-wider text-puelche-cyan font-bold truncate">{cap.tag}</span>
-                      </div>
                     </div>
 
                     <div>
@@ -511,19 +470,16 @@ export function BrutalistCrossMedia() {
                   </div>
 
                   {/* Micro-Metadata Editorial al pie */}
-                  <div className="pt-4 mt-4 border-t border-white/10 text-xs text-white/60 space-y-1">
-                    <div className="text-white/85 font-medium truncate font-sans text-[11px]">{cap.spec}</div>
-                    <div className="flex items-center justify-between pt-1">
-                      <span className="text-puelche-cyan font-serif italic text-[11px]">{cap.meta}</span>
-                      <Link
-                        href={cap.href}
-                        className="inline-flex items-center gap-1 font-mono text-[10px] uppercase tracking-wider text-white/70 hover:text-puelche-cyan transition-colors"
-                        onClick={(e) => e.stopPropagation()}
-                      >
-                        <span>Ver</span>
-                        <ArrowUpRight className="w-3 h-3" />
-                      </Link>
-                    </div>
+                  <div className="pt-4 mt-4 border-t border-white/10 flex items-center justify-between">
+                    <span className="text-white/50 font-serif italic text-xs">{cap.subtitle}</span>
+                    <Link
+                      href={cap.href}
+                      className="inline-flex items-center gap-1 font-mono text-xs uppercase tracking-wider text-puelche-cyan hover:text-white transition-colors"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      <span>Explorar</span>
+                      <ArrowUpRight className="w-3.5 h-3.5" />
+                    </Link>
                   </div>
                 </div>
               );
@@ -548,11 +504,6 @@ export function BrutalistCrossMedia() {
               <span>Contáctanos</span>
               <ArrowDown className="w-4 h-4 text-puelche-cyan" />
             </a>
-          </div>
-
-          <div className="text-xs text-white/70 font-sans hidden md:flex items-center gap-2.5">
-            <span className="w-2 h-2 rounded-full bg-puelche-cyan" />
-            <span className="font-serif italic">Estudio propio en Puerto Varas &bull; Sesiones en toda la Patagonia</span>
           </div>
         </div>
       </div>
