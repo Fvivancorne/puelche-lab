@@ -112,12 +112,14 @@ function PortfolioContent() {
       e.stopPropagation();
       return;
     }
-    // 2. Si el puntero se movió más de 4px entre pointerdown y click, fue un arrastre/swipe y NO un click deliberado
+    // 2. Si el puntero se movió más allá del umbral (adaptativo: 14px en táctil móvil, 6px en desktop), fue arrastre y no tap
+    const isTouch = typeof window !== 'undefined' && window.matchMedia('(pointer: coarse)').matches;
+    const threshold = isTouch ? 14 : 6;
     const dist = Math.hypot(
       e.clientX - pointerStartRef.current.x,
       e.clientY - pointerStartRef.current.y
     );
-    if (dist > 4) {
+    if (dist > threshold) {
       e.preventDefault();
       e.stopPropagation();
       return;
@@ -449,7 +451,7 @@ function PortfolioContent() {
     gsap.registerPlugin(ScrollTrigger);
 
     const media = gsap.matchMedia();
-    media.add('(prefers-reduced-motion: no-preference)', () => {
+    media.add('(min-width: 768px) and (prefers-reduced-motion: no-preference)', () => {
       const ctx = gsap.context(() => {
         const getScrollDistance = () => {
           return Math.max(0, track.scrollWidth - window.innerWidth + 120);
@@ -641,9 +643,108 @@ function PortfolioContent() {
         </div>
       </div>
 
+      {/* ── MÓVIL: RÍO CINÉTICO TOUCH SNAP CAROUSEL (Touch-First Native Gestures) ── */}
+      {viewMode === 'river' && (
+        <section
+          aria-label="Río Cinético Austral — Carrusel Táctil Móvil"
+          className="block md:hidden w-full pb-20 pt-2"
+        >
+          {/* Barra de Estado Móvil */}
+          <div className="flex items-center justify-between px-4 pb-3 font-mono text-xs text-white/60 border-b border-white/10 mb-4">
+            <div className="flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-[#59BFD6] animate-pulse" />
+              <span className="text-white text-[11px] uppercase tracking-wider font-semibold">
+                RÍO VISUAL AUSTRAL
+              </span>
+            </div>
+            <div className="flex items-center gap-1.5 text-xs text-[#59BFD6] font-mono">
+              <Waves className="w-3.5 h-3.5 animate-pulse" />
+              <span className="text-[11px]">Desliza [↔]</span>
+            </div>
+          </div>
+
+          {/* Carrusel Horizontal Táctil con Scroll-Snap */}
+          <div
+            className="flex gap-4 overflow-x-auto no-scrollbar snap-x snap-mandatory px-4 pb-4 overscroll-x-contain touch-pan-x"
+            role="region"
+            aria-label="Carrusel táctil de obras"
+          >
+            {filteredProjects.map((project, idx) => (
+              <article
+                key={`mobile-river-${project.id}`}
+                onClick={() => handleOpenProject(project)}
+                className="snap-center shrink-0 w-[84vw] max-w-[340px] bg-[#0e1014]/90 border border-white/10 rounded-[24px] overflow-hidden flex flex-col justify-between p-4 space-y-3 touch-manipulation active:scale-[0.99] transition-transform shadow-xl"
+              >
+                {/* Imagen 16:10 */}
+                <div className="relative aspect-[16/10] w-full rounded-2xl overflow-hidden bg-black/80">
+                  <Image
+                    src={project.image}
+                    alt={project.title}
+                    fill
+                    priority={idx < 2}
+                    className="object-cover"
+                    sizes="84vw"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent pointer-events-none" />
+
+                  <div className="absolute top-3 left-3">
+                    <span className="px-2.5 py-1 rounded-full bg-black/75 backdrop-blur-md border border-white/20 text-[#59BFD6] font-mono text-[10px] uppercase font-semibold">
+                      {project.category}
+                    </span>
+                  </div>
+
+                  <div className="absolute bottom-2.5 left-3 right-3 flex items-center justify-between text-[11px] font-mono text-white/90">
+                    <span className="flex items-center gap-1 bg-black/60 px-2 py-0.5 rounded-full backdrop-blur-md">
+                      <MapPin className="w-3 h-3 text-[#59BFD6]" />
+                      {project.location}
+                    </span>
+                    <span className="bg-black/60 px-2 py-0.5 rounded-full backdrop-blur-md">
+                      {project.year}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Metadatos y Textos */}
+                <div className="space-y-1.5">
+                  <div className="text-[11px] font-mono text-[#59BFD6] uppercase tracking-wider">
+                    Cliente: {project.client}
+                  </div>
+                  <h3 className="font-condensed text-xl font-bold uppercase tracking-tight text-white leading-tight">
+                    {project.title}
+                  </h3>
+                  <p className="text-xs text-white/70 font-sans font-light line-clamp-2">
+                    {project.description}
+                  </p>
+                </div>
+
+                {/* Pie con Deliverables y Botón */}
+                <div className="pt-2 border-t border-white/10 flex items-center justify-between">
+                  <div className="flex flex-wrap gap-1">
+                    {project.deliverables.slice(0, 2).map((d) => (
+                      <span key={d} className="text-[10px] font-mono text-white/50 bg-white/5 px-2 py-0.5 rounded-full">
+                        {d}
+                      </span>
+                    ))}
+                  </div>
+                  <div className="inline-flex items-center gap-1 font-condensed uppercase tracking-wider text-xs font-bold text-[#59BFD6]">
+                    <span>Ver obra</span>
+                    <ArrowUpRight className="w-3.5 h-3.5" />
+                  </div>
+                </div>
+              </article>
+            ))}
+          </div>
+
+          {/* Indicador de posición y contador */}
+          <div className="flex items-center justify-center gap-2 pt-1 font-mono text-xs text-white/40">
+            <span>{filteredProjects.length} proyectos en el archivo austral</span>
+          </div>
+        </section>
+      )}
+
       {/* 
         ======================================================================
-        MODO 1: EL RÍO VISUAL CINÉTICO AUSTRAL (AWWWARDS SOTD PINNED STREAM)
+        MODO 1: EL RÍO VISUAL CINÉTICO AUSTRAL (DESKTOP PINNED STREAM)
         Las fotografías monumentales desfilan de derecha a izquierda conforme
         avanza el scroll vertical. Sin tarjetas rígidas; la luz y la imagen
         mandan. Clic en cualquier obra expande la Hoja de Contactos / Bitácora.
@@ -653,7 +754,7 @@ function PortfolioContent() {
         <section
           ref={riverRunwayRef}
           aria-label="Río Cinético Austral — Pasarela de Obras al Scroll"
-          className="relative w-full overflow-visible"
+          className="hidden md:block relative w-full overflow-visible"
           style={{
             height: `${Math.max(260, Math.round(filteredProjects.length * 48 + 120))}vh`,
           }}
@@ -970,7 +1071,7 @@ function PortfolioContent() {
       */}
       {activeModalProject && (
         <div
-          className="fixed inset-0 z-[100] flex items-center justify-center p-3 sm:p-6 lg:p-10 bg-black/70 backdrop-blur-sm bg-black/90 backdrop-blur-xl animate-in fade-in duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] overscroll-none select-none"
+          className="fixed inset-0 z-[100] flex items-end sm:items-center justify-center p-0 sm:p-6 lg:p-10 pb-[env(safe-area-inset-bottom)] sm:pb-6 bg-black/70 backdrop-blur-sm bg-black/90 backdrop-blur-xl animate-in fade-in duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] overscroll-none select-none"
           onClick={handleCloseModal}
           data-lenis-prevent="true"
           style={{ overscrollBehavior: 'none', overscrollBehaviorX: 'none' }}
@@ -999,14 +1100,16 @@ function PortfolioContent() {
             <ChevronRight className="w-6 h-6 group-hover:translate-x-0.5 transition-transform" />
           </button>
 
-          {/* ── CONTENEDOR MODAL SPLIT EDITORIAL (Apertura expo.out Franco Beltramella) ── */}
+          {/* ── CONTENEDOR MODAL SPLIT EDITORIAL / BOTTOM SHEET EN MÓVIL ── */}
           <div
-            className="relative w-full max-w-6xl max-h-[90vh] bg-[#111215] border border-white/20 rounded-[28px] sm:rounded-[36px] overflow-hidden shadow-[0_25px_90px_rgba(0,0,0,0.95)] flex flex-col z-10 animate-in fade-in zoom-in-[0.98] duration-350 ease-[cubic-bezier(0.16,1,0.3,1)] will-change-transform"
+            className="relative w-full max-w-6xl max-h-[90vh] bg-[#111215] border border-white/20 border-b-0 sm:border-b rounded-t-[32px] sm:rounded-[36px] rounded-b-none sm:rounded-b-[36px] overflow-hidden shadow-[0_25px_90px_rgba(0,0,0,0.95)] flex flex-col z-10 animate-in fade-in zoom-in-[0.98] duration-350 ease-[cubic-bezier(0.16,1,0.3,1)] will-change-transform"
             onClick={(e) => e.stopPropagation()}
             role="dialog"
             aria-modal="true"
             aria-labelledby="modal-title"
           >
+            {/* Indicador de arrastre táctil (Drag Handle) para móvil */}
+            <div className="w-12 h-1.5 rounded-full bg-white/25 mx-auto mt-2.5 mb-1 sm:hidden shrink-0" />
             {/* Header del Modal con Datos de Campo y Botón Cerrar */}
             <div className="flex items-center justify-between px-4 py-3.5 sm:px-8 sm:py-5 border-b border-white/10 bg-[#16171B]/90 backdrop-blur-md shrink-0">
               <div className="flex items-center gap-2 sm:gap-3 min-w-0">
