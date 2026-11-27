@@ -12,6 +12,8 @@ import type {
   CommercialFinding,
   TelemetryPhaseLog,
   AuditStrategy,
+  AgencyHarnessScorecard,
+  AgencyHarnessDimension,
 } from '@/types/auditor';
 
 // Route segment config: force dynamic, prevent static caching
