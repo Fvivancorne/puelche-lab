@@ -20,6 +20,8 @@ export const ContactBriefSchema = z.object({
   projectScale: z.string().optional().default('Propuesta a la medida según alcance'),
   message: z.string().max(2000).optional().default(''),
   clientTimestamp: z.string().optional(),
+  // Honeypot invisible para protección determinista (Jev) contra bots
+  website_url: z.string().max(100).optional().default(''),
 });
 
 export type ContactBrief = z.infer<typeof ContactBriefSchema>;

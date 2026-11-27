@@ -127,6 +127,8 @@ function ContactFormInner() {
   const [message, setMessage] = useState(
     initialProject ? `Consulta referente al proyecto: ${initialProject}` : ''
   );
+  // Dimensión 3 (Seguridad Jev): Honeypot invisible contra bots
+  const [honeypot, setHoneypot] = useState<string>('');
   const [submitted, setSubmitted] = useState<boolean>(false);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
@@ -191,6 +193,7 @@ function ContactFormInner() {
         region: selectedRegion,
         projectScale,
         message,
+        website_url: honeypot,
         clientTimestamp: new Date().toISOString(),
       };
 
@@ -224,6 +227,7 @@ function ContactFormInner() {
     setSelectedBudget('$1.5M — $3.0M CLP');
     setSelectedRegion('Puerto Varas & Cuenca Llanquihue');
     setMessage('');
+    setHoneypot('');
     setSubmitted(false);
     setIsSubmitting(false);
     setSubmitError(null);
@@ -264,6 +268,19 @@ function ContactFormInner() {
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="space-y-6">
+            {/* Dimensión 3: Honeypot invisible contra bots (Jev Security) */}
+            <div className="hidden" aria-hidden="true" style={{ display: 'none' }}>
+              <label htmlFor="website_url">No rellenar este campo</label>
+              <input
+                id="website_url"
+                name="website_url"
+                type="text"
+                tabIndex={-1}
+                autoComplete="off"
+                value={honeypot}
+                onChange={(e) => setHoneypot(e.target.value)}
+              />
+            </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label

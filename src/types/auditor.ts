@@ -199,6 +199,31 @@ export interface TelemetryPhaseLog {
   message: string;
 }
 
+export interface AgencyHarnessItem {
+  name: string;
+  passed: boolean;
+  details: string;
+}
+
+export interface AgencyHarnessDimension {
+  id: 'geo' | 'performance' | 'security' | 'conversion' | 'antigeneric';
+  name: string;
+  categoryTitle: string;
+  passed: boolean;
+  score: number; // 0 - 100
+  items: AgencyHarnessItem[];
+  criticalReason: string;
+  actionableFix: string;
+}
+
+export interface AgencyHarnessScorecard {
+  score: number;
+  passedCount: number;
+  totalDimensions: number;
+  status: 'OPTIMAL' | 'WARNING' | 'CRITICAL';
+  dimensions: AgencyHarnessDimension[];
+}
+
 /**
  * Complete Auditor Response Contract (PROJECT.md line 54-109 + extensions)
  */
@@ -217,6 +242,7 @@ export interface AuditorResponse {
   openGraph: OpenGraphAuditResult;
   commercialFindings: CommercialFinding[];
   telemetryLogs?: TelemetryPhaseLog[];
+  agencyHarness?: AgencyHarnessScorecard;
   durationMs?: number;
   error?: string;
 }

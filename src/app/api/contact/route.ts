@@ -84,8 +84,40 @@ async function dispatchEmailNotification(data: ContactBrief): Promise<boolean> {
   }
 }
 
+// Rate limiter en memoria para Capa Jev (máx 3 envíos por IP cada 60 segundos)
+const ipRateLimitMap = new Map<string, { count: number; expiresAt: number }>();
+
+function checkIpRateLimit(ip: string, limit = 3, windowMs = 60000): boolean {
+  const now = Date.now();
+  const record = ipRateLimitMap.get(ip);
+  if (!record || now > record.expiresAt) {
+    ipRateLimitMap.set(ip, { count: 1, expiresAt: now + windowMs });
+    return true;
+  }
+  if (record.count >= limit) {
+    return false;
+  }
+  record.count += 1;
+  return true;
+}
+
 export async function POST(req: NextRequest) {
   const startTime = performance.now();
+
+  // Dimensión 3 (Seguridad Jev): Rate limiting por IP
+  const forwardedFor = req.headers.get('x-forwarded-for');
+  const clientIp = forwardedFor ? forwardedFor.split(',')[0].trim() : '127.0.0.1';
+
+  if (!checkIpRateLimit(clientIp)) {
+    return NextResponse.json(
+      {
+        success: false,
+        error: 'Rate limit excedido (máximo 3 envíos por minuto). Por favor espera un momento.',
+        executionTimeMs: Math.round((performance.now() - startTime) * 100) / 100,
+      },
+      { status: 429 }
+    );
+  }
 
   try {
     const body = await req.json();
@@ -106,6 +138,20 @@ export async function POST(req: NextRequest) {
 
     const data = parseResult.data;
     const whatsAppLink = buildWhatsAppLink(data);
+
+    // Dimensión 3 (Seguridad Jev): Intercepción de Honeypot silenciosa contra bots
+    if (data.website_url && data.website_url.trim().length > 0) {
+      console.warn(`[Honeypot Trap] Bot detectado y mitigado desde IP ${clientIp}. Contenido falso descartado.`);
+      return NextResponse.json({
+        success: true,
+        message: 'Brief recibido con éxito',
+        whatsAppLink,
+        sanitized: data,
+        savedToDb: false,
+        emailSent: false,
+        executionTimeMs: Math.round((performance.now() - startTime) * 100) / 100,
+      });
+    }
 
     // Persistencia asíncrona no bloqueante
     const [savedToDb, emailSent] = await Promise.all([
