@@ -57,6 +57,9 @@ export const metadata: Metadata = {
   creator: 'Puelche Lab',
   alternates: {
     canonical: './',
+    types: {
+      'application/rss+xml': 'https://www.puelchelab.cl/feed.xml',
+    },
   },
   other: {
     'geo.region': 'CL-LL',

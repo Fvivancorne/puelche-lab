@@ -181,6 +181,17 @@ export function Footer() {
       <div className="w-full bg-[#08090b] py-5 px-6 border-t border-white/10 text-center text-xs font-mono uppercase tracking-widest text-white/50">
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
           <span>&copy; {new Date().getFullYear()} Puelche Lab &bull; Puerto Varas, Región de Los Lagos, Chile</span>
+          <div className="flex items-center gap-4 text-[10px] tracking-wider text-white/40">
+            <Link href="/llms.txt" target="_blank" className="hover:text-[#59BFD6] transition-colors">
+              /llms.txt (IA)
+            </Link>
+            <span>&bull;</span>
+            <Link href="/feed.xml" target="_blank" className="hover:text-[#59BFD6] transition-colors">
+              RSS Feed
+            </Link>
+            <span>&bull;</span>
+            <span className="text-[#59BFD6]/80 font-semibold">Fuente Preferida Google AI</span>
+          </div>
           <span className="text-white/70">Estudio de Diseño Cross Media & Fotografía de Autor</span>
         </div>
       </div>
